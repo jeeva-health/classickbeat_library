@@ -7,6 +7,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Size
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
@@ -17,6 +18,7 @@ import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -57,6 +59,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 setUpCamera()
             }
         }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        cameraExecutor = Executors.newSingleThreadExecutor()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -137,12 +145,29 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
             .setTargetAspectRatio(screenAspectRatio)
             .setTargetRotation(rotation)
+            .setFlashMode(ImageCapture.FLASH_MODE_ON)
             .build()
+
+        val imageAnalyzer =
+            ImageAnalysis.Builder()
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .setTargetResolution(Size(320, 240))
+                .build()
+                .also {
+                    it.setAnalyzer(cameraExecutor, PixelAnalyzer())
+                }
+
 
         cameraProvider.unbindAll()
 
         try {
-            camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
+            camera = cameraProvider.bindToLifecycle(
+                this,
+                cameraSelector,
+                preview,
+                imageCapture,
+                imageAnalyzer
+            )
             preview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)
         } catch (exc: Exception) {
             Timber.e("Use case binding failed: $exc")
