@@ -141,12 +141,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             .setTargetRotation(rotation)
             .build()
 
-        imageCapture = ImageCapture.Builder()
-            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-            .setTargetAspectRatio(screenAspectRatio)
-            .setTargetRotation(rotation)
-            .setFlashMode(ImageCapture.FLASH_MODE_ON)
-            .build()
+//        imageCapture = ImageCapture.Builder()
+//            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+//            .setTargetAspectRatio(screenAspectRatio)
+//            .setTargetRotation(rotation)
+//            .setFlashMode(ImageCapture.FLASH_MODE_ON)
+//            .build()
 
         val imageAnalyzer =
             ImageAnalysis.Builder()
@@ -154,7 +154,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 .setTargetResolution(Size(320, 240))
                 .build()
                 .also {
-                    it.setAnalyzer(cameraExecutor, PixelAnalyzer())
+                    it.setAnalyzer(cameraExecutor, PixelAnalyzer(requireContext()))
                 }
 
 
@@ -165,10 +165,14 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 this,
                 cameraSelector,
                 preview,
-                imageCapture,
+//                imageCapture,
                 imageAnalyzer
             )
             preview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+            val hasFlashUnit = camera?.cameraInfo?.hasFlashUnit() ?: false
+            if (hasFlashUnit) {
+                camera?.cameraControl?.enableTorch(true)
+            }
         } catch (exc: Exception) {
             Timber.e("Use case binding failed: $exc")
         }
