@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.util.concurrent.TimeUnit
 
+const val SCAN_DURATION = 30
+
 class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
 
     private var timer: CountDownTimer? = null
@@ -14,9 +16,12 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
     var isTimerRunning: Boolean = false
         private set
 
-    val timerProgress = MutableLiveData<Int>(30)
+    @Volatile
+    var isProcessing: Boolean = false
 
-    fun startTimer(timeLeftInMillis: Long = 30 * DateUtils.SECOND_IN_MILLIS) {
+    val timerProgress = MutableLiveData(SCAN_DURATION)
+
+    fun startTimer(timeLeftInMillis: Long = SCAN_DURATION * DateUtils.SECOND_IN_MILLIS) {
         timer = object : CountDownTimer(timeLeftInMillis, TimeUnit.SECONDS.toMillis(1)) {
             override fun onFinish() {
                 isTimerRunning = false

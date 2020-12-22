@@ -1,8 +1,6 @@
 package ai.heart.classickbeats.monitor
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.SystemClock
 import android.renderscript.*
 import android.text.format.DateUtils
@@ -10,11 +8,13 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import timber.log.Timber
 import java.nio.ByteBuffer
-import java.nio.ByteOrder
-import java.nio.IntBuffer
 
 
-class PixelAnalyzer constructor(private val context: Context) : ImageAnalysis.Analyzer {
+class PixelAnalyzer constructor(
+    private val context: Context,
+    private val viewModel: MonitorViewModel
+) :
+    ImageAnalysis.Analyzer {
 
     private var previousSecond: Long = 0
     private var currentSecond: Long = 0
@@ -33,9 +33,9 @@ class PixelAnalyzer constructor(private val context: Context) : ImageAnalysis.An
     }
 
     override fun analyze(image: ImageProxy) {
-        Timber.i("CurrentTime1: ${SystemClock.elapsedRealtime()}")
-        processImage(image)
-        Timber.i("CurrentTime2: ${SystemClock.elapsedRealtime()}")
+        if (viewModel.isProcessing) {
+            processImage(image)
+        }
         image.close()
     }
 

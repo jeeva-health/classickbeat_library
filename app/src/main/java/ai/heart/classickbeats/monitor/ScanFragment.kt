@@ -36,6 +36,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private val monitorViewModel: MonitorViewModel by activityViewModels()
 
+    lateinit var pixelAnalyzer: PixelAnalyzer
+
     private var displayId: Int = -1
     private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
     private var preview: Preview? = null
@@ -64,6 +66,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         super.onCreate(savedInstanceState)
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+        pixelAnalyzer = PixelAnalyzer(requireContext(), monitorViewModel)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,6 +88,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             it.visibility = View.GONE
             binding.circularProgressBar.visibility = View.VISIBLE
             monitorViewModel.startTimer()
+            startScanning()
             true
         }
 
@@ -91,8 +96,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             if (it == 0) {
                 binding.circularProgressBar.visibility = View.GONE
                 binding.cameraCaptureButton.visibility = View.VISIBLE
+                endScanning()
             } else {
-                val progress = ((30 - it) * 100 / 30).toFloat()
+                val progress = ((SCAN_DURATION - it) * 100 / SCAN_DURATION).toFloat()
                 binding.circularProgressBar.setProgress(progress)
                 binding.circularProgressBar.invalidate()
             }
@@ -141,22 +147,14 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             .setTargetRotation(rotation)
             .build()
 
-//        imageCapture = ImageCapture.Builder()
-//            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-//            .setTargetAspectRatio(screenAspectRatio)
-//            .setTargetRotation(rotation)
-//            .setFlashMode(ImageCapture.FLASH_MODE_ON)
-//            .build()
-
         val imageAnalyzer =
             ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .setTargetResolution(Size(320, 240))
                 .build()
                 .also {
-                    it.setAnalyzer(cameraExecutor, PixelAnalyzer(requireContext()))
+                    it.setAnalyzer(cameraExecutor, pixelAnalyzer)
                 }
-
 
         cameraProvider.unbindAll()
 
@@ -165,14 +163,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 this,
                 cameraSelector,
                 preview,
-//                imageCapture,
                 imageAnalyzer
             )
             preview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)
-            val hasFlashUnit = camera?.cameraInfo?.hasFlashUnit() ?: false
-            if (hasFlashUnit) {
-                camera?.cameraControl?.enableTorch(true)
-            }
         } catch (exc: Exception) {
             Timber.e("Use case binding failed: $exc")
         }
@@ -205,5 +198,23 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private fun hasFrontCamera(): Boolean {
         return cameraProvider?.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA) ?: false
+    }
+
+    private fun startScanning() {
+        val hasFlashUnit = camera?.cameraInfo?.hasFlashUnit() ?: false
+        if (hasFlashUnit) {
+            camera?.cameraControl?.enableTorch(true)
+        }
+        monitorViewModel.isProcessing = true
+        binding.switchCamera.visibility = View.GONE
+    }
+
+    private fun endScanning() {
+        val hasFlashUnit = camera?.cameraInfo?.hasFlashUnit() ?: false
+        if (hasFlashUnit) {
+            camera?.cameraControl?.enableTorch(false)
+        }
+        monitorViewModel.isProcessing = false
+        binding.switchCamera.visibility = View.VISIBLE
     }
 }
