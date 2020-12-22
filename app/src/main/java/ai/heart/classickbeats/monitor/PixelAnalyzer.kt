@@ -1,7 +1,5 @@
 package ai.heart.classickbeats.monitor
 
-import android.R.attr.x
-import android.R.attr.y
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -12,7 +10,8 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import timber.log.Timber
 import java.nio.ByteBuffer
-import kotlin.experimental.inv
+import java.nio.ByteOrder
+import java.nio.IntBuffer
 
 
 class PixelAnalyzer constructor(private val context: Context) : ImageAnalysis.Analyzer {
@@ -34,76 +33,42 @@ class PixelAnalyzer constructor(private val context: Context) : ImageAnalysis.An
     }
 
     override fun analyze(image: ImageProxy) {
-        // Timber.i("cameraOutput: new Image received")
-        // processImage(image)
-        processImageVip(image)
+        Timber.i("CurrentTime1: ${SystemClock.elapsedRealtime()}")
+        processImage(image)
+        Timber.i("CurrentTime2: ${SystemClock.elapsedRealtime()}")
         image.close()
     }
 
     private fun processImage(image: ImageProxy) {
         val argbArray = yuv420ToARGB(image, context)
-        // Process the output array here
-        val h = image.height
-        val w = image.width
-        val offset = 256.0
-        var i: Int = 0
-        var Rsum: ULong = 0u
-        var Gsum: ULong = 0u
-        var Bsum: ULong = 0u
-        var Asum: ULong = 0u
-        // Timber.i("Height: $h$, Width: $w$")
-        displayCounter()
-        val size = argbArray.count()
-        while (i < size){
-            Rsum += argbArray[i].toUInt()
-            Gsum += argbArray[i+1].toUInt()
-            Bsum += argbArray[i+2].toUInt()
-            Asum += argbArray[i+3].toUInt()
-            i += 4
-        }
-
-        val Rmean = Rsum.toFloat()/(size/4)
-        val Gmean = Gsum.toFloat()/(size/4)
-        val Bmean = Bsum.toFloat()/(size/4)
-        val Amean = Asum.toFloat()/(size/4)
-        val a = argbArray[160].toInt()
-        val b = argbArray[161].toInt()
-        Timber.i("$Rmean \t $Gmean \t $Bmean \t $Amean")
-        Timber.i("Values: $a \t $b")
-        Timber.i("Values: ${argbArray[0].toInt()} \t ${argbArray[1].toInt()} \t ${argbArray[2].toInt()} \t ${argbArray[3].toInt()}")
-    }
-
-    private fun processImageVip(image: ImageProxy) {
-        displayCounter()
-        val bitmap = yuvtoARGBvip(image, context)
-        val h = image.height
-        val w = image.width
-        var colour = bitmap.getPixel(0, 0)
-        var Rsum: Long = 0
-        var Gsum: Long = 0
-        var Bsum: Long = 0
-        var Asum: Long = 0
-        for (hh in 0..(h-1)) {
-            for (ww in 0..(w-1)){
-                colour = bitmap.getPixel(ww, hh)
-                Rsum += Color.red(colour)
-                Gsum += Color.green(colour)
-                Bsum += Color.blue(colour)
-                Asum += Color.alpha(colour)
+        val size = argbArray.size
+        val iterator = argbArray.iterator()
+        var counter = 0
+        var rSum = 0
+        var gSum = 0
+        var bSum = 0
+        while (iterator.hasNext()) {
+            val byte = iterator.nextByte().toInt()
+            val intVal = if (byte < 0) byte + 256 else byte
+            if (++counter < 5) {
+                continue
+            }
+            when (counter % 4) {
+                1 -> rSum += intVal
+                2 -> gSum += intVal
+                3 -> bSum += intVal
             }
         }
-        val Rmean = Rsum.toDouble()/(h*w)
-        val Gmean = Gsum.toDouble()/(h*w)
-        val Bmean = Bsum.toDouble()/(h*w)
-        val Amean = Asum.toDouble()/(h*w)
-        Timber.i("$Rmean \t $Gmean \t $Bmean \t $Amean")
+        val rgbSize = size / 4 - 1
+        Timber.i("rMean: ${rSum / rgbSize}, gMean: ${gSum / rgbSize} and bMean: ${bSum / rgbSize}")
+
+        displayCounter()
     }
 
     private fun displayCounter() {
         val currentTime = SystemClock.elapsedRealtime()
         previousSecond = currentSecond
         currentSecond = currentTime / DateUtils.SECOND_IN_MILLIS
-        // Timber.i("$previousSecond, $currentSecond")
         if (previousSecond == currentSecond) {
             counter++
         } else {
@@ -117,7 +82,7 @@ class PixelAnalyzer constructor(private val context: Context) : ImageAnalysis.An
 
         if (!initialised) {
             val rs = RenderScript.create(context)
-            script = ScriptIntrinsicYuvToRGB.create(rs, Element.U8_4(rs))
+            script = ScriptIntrinsicYuvToRGB.create(rs, Element.U8(rs))
 
             val yuvType: Type.Builder = Type.Builder(rs, Element.U8(rs)).setX(yuvByteArray.size)
             inputAllocation = Allocation.createTyped(rs, yuvType.create(), Allocation.USAGE_SCRIPT)
@@ -139,27 +104,6 @@ class PixelAnalyzer constructor(private val context: Context) : ImageAnalysis.An
 
         outputAllocation?.copyTo(outputArray)
         return outputArray
-    }
-
-    private fun yuvtoARGBvip(image: ImageProxy, context: Context): Bitmap {
-        val byteArray = yuv420ToByteArray(image)
-        val rs = RenderScript.create(context)
-        val yuvToRgbIntrinsic = ScriptIntrinsicYuvToRGB.create(rs, Element.U8_4(rs))
-
-        val yuvType = Type.Builder(rs, Element.U8(rs)).setX(byteArray.size)
-        val inData = Allocation.createTyped(rs, yuvType.create(), Allocation.USAGE_SCRIPT)
-
-        val rgbaType = Type.Builder(rs, Element.RGBA_8888(rs)).setX(image.width).setY(image.height)
-        val outData = Allocation.createTyped(rs, rgbaType.create(), Allocation.USAGE_SCRIPT)
-
-        inData.copyFrom(byteArray)
-
-        yuvToRgbIntrinsic.setInput(inData)
-        yuvToRgbIntrinsic.forEach(outData)
-
-        val bitmap = Bitmap.createBitmap(image.width, image.height, Bitmap.Config.ARGB_8888)
-        outData.copyTo(bitmap)
-        return bitmap
     }
 
     private fun yuv420ToByteArray(image: ImageProxy): ByteArray {
