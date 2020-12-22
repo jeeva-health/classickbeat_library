@@ -12,6 +12,7 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import timber.log.Timber
 import java.nio.ByteBuffer
+import kotlin.experimental.inv
 
 
 class PixelAnalyzer constructor(private val context: Context) : ImageAnalysis.Analyzer {
@@ -34,39 +35,68 @@ class PixelAnalyzer constructor(private val context: Context) : ImageAnalysis.An
 
     override fun analyze(image: ImageProxy) {
         // Timber.i("cameraOutput: new Image received")
-        val output = processImage(image)
+        // processImage(image)
+        processImageVip(image)
         image.close()
     }
 
     private fun processImage(image: ImageProxy) {
         val argbArray = yuv420ToARGB(image, context)
         // Process the output array here
-        var h = image.height;
-        var w = image.width;
-        var offset: Float = 0F
+        val h = image.height
+        val w = image.width
+        val offset = 256.0
+        var i: Int = 0
+        var Rsum: ULong = 0u
+        var Gsum: ULong = 0u
+        var Bsum: ULong = 0u
+        var Asum: ULong = 0u
         // Timber.i("Height: $h$, Width: $w$")
         displayCounter()
-        // val arr_size = argbArray.count()
-//        val a_sum = argbArray.sliceArray(0..(h*w-1))
-//        val a_mean = a_sum.average() + offset
-//        val r_sum = argbArray.sliceArray((h*w)..(2*h*w-1))
-//        val r_mean = r_sum.average() + offset
-//        val g_sum = argbArray.sliceArray((2*h*w)..(3*h*w-1))
-//        val g_mean = g_sum.average() + offset
-//        val b_sum = argbArray.sliceArray((3*h*w)..(4*h*w-1))
-//        val b_mean = b_sum.average() + offset
-//        //val n120 = argbArray.get(0)
-//        Timber.i("A mean: $a_mean, R mean: $r_mean, G mean: $g_mean, B mean: $b_mean")
-        // Timber.i("120th value: $n120$")
+        val size = argbArray.count()
+        while (i < size){
+            Rsum += argbArray[i].toUInt()
+            Gsum += argbArray[i+1].toUInt()
+            Bsum += argbArray[i+2].toUInt()
+            Asum += argbArray[i+3].toUInt()
+            i += 4
+        }
 
+        val Rmean = Rsum.toFloat()/(size/4)
+        val Gmean = Gsum.toFloat()/(size/4)
+        val Bmean = Bsum.toFloat()/(size/4)
+        val Amean = Asum.toFloat()/(size/4)
+        val a = argbArray[160].toInt()
+        val b = argbArray[161].toInt()
+        Timber.i("$Rmean \t $Gmean \t $Bmean \t $Amean")
+        Timber.i("Values: $a \t $b")
+        Timber.i("Values: ${argbArray[0].toInt()} \t ${argbArray[1].toInt()} \t ${argbArray[2].toInt()} \t ${argbArray[3].toInt()}")
+    }
+
+    private fun processImageVip(image: ImageProxy) {
+        displayCounter()
         val bitmap = yuvtoARGBvip(image, context)
-        val colour = bitmap.getPixel(10, 10)
-
-        val red: Int = Color.red(colour)
-        val blue: Int = Color.blue(colour)
-        val green: Int = Color.green(colour)
-        val alpha: Int = Color.alpha(colour)
-        Timber.i("A: $alpha, R: $red, G: $green, B: $blue")
+        val h = image.height
+        val w = image.width
+        var colour = bitmap.getPixel(0, 0)
+        var Rsum: Long = 0
+        var Gsum: Long = 0
+        var Bsum: Long = 0
+        var Asum: Long = 0
+        for (hh in 0..(h-1)) {
+            for (ww in 0..(w-1)){
+                colour = bitmap.getPixel(ww, hh)
+                Rsum += Color.red(colour)
+                Gsum += Color.green(colour)
+                Bsum += Color.blue(colour)
+                Asum += Color.alpha(colour)
+            }
+        }
+        val Rmean = Rsum.toDouble()/(h*w)
+        val Gmean = Gsum.toDouble()/(h*w)
+        val Bmean = Bsum.toDouble()/(h*w)
+        val Amean = Asum.toDouble()/(h*w)
+        Timber.i("$Rmean \t $Gmean \t $Bmean \t $Amean")
     }
 
     private fun displayCounter() {
