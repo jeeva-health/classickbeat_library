@@ -18,6 +18,7 @@ class PixelAnalyzer constructor(
 
     private var previousSecond: Long = 0
     private var currentSecond: Long = 0
+    private var maxIndex: Int = 0
     private var counter: Int = 0
 
     private var script: ScriptIntrinsicYuvToRGB? = null
@@ -41,26 +42,37 @@ class PixelAnalyzer constructor(
 
     private fun processImage(image: ImageProxy) {
         val argbArray = yuv420ToARGB(image, context)
+        val h = image.height
+        val w = image.width
         val size = argbArray.size
-        val iterator = argbArray.iterator()
         var counter = 0
         var rSum = 0
         var gSum = 0
         var bSum = 0
-        while (iterator.hasNext()) {
-            val byte = iterator.nextByte().toInt()
-            val intVal = if (byte < 0) byte + 256 else byte
-            if (++counter < 5) {
-                continue
+        val len = 25
+        val maxX = maxIndex % w
+        val maxY = maxIndex / w
+        var pixelSum = 0
+        while (counter < size) {
+            val counterX = (counter/4) % w
+            val counterY = (counter/4) / w
+            if (kotlin.math.abs(counterX - maxX) <= len && kotlin.math.abs(counterY - maxY) <= len){
+                val byte = argbArray[counter].toInt()
+                when (counter % 4) {
+                    0 -> rSum += byte and 0xFF
+                    1 -> gSum += byte and 0xFF
+                    2 -> bSum += byte and 0xFF
+                }
+                pixelSum++
             }
-            when (counter % 4) {
-                1 -> rSum += intVal
-                2 -> gSum += intVal
-                3 -> bSum += intVal
-            }
+            counter++
         }
-        val rgbSize = size / 4 - 1
-        Timber.i("rMean: ${rSum / rgbSize}, gMean: ${gSum / rgbSize} and bMean: ${bSum / rgbSize}")
+        val rMax = argbArray[maxIndex * 4].toInt() and 0xFF
+        val gMax = argbArray[maxIndex * 4 + 1].toInt() and 0xFF
+        val bMax = argbArray[maxIndex * 4 + 2].toInt() and 0xFF
+        Timber.i("${rSum.toDouble() / pixelSum} \t ${gSum.toDouble() / pixelSum} \t ${bSum.toDouble() / pixelSum}")
+        Timber.i("MaxX: $maxX, MaxY: $maxY, Pixel Sum: $pixelSum")
+        Timber.i("rMax: $rMax, gMax: $gMax, bMax: $bMax")
 
         displayCounter()
     }
@@ -109,6 +121,7 @@ class PixelAnalyzer constructor(
     private fun yuv420ToByteArray(image: ImageProxy): ByteArray {
         val yBuffer = image.planes[0].buffer
         val yData = yBuffer.toByteArray()
+        maxIndex = yData.indices.maxBy { yData[it] } ?: -1
         val uBuffer = image.planes[1].buffer
         val uData = uBuffer.toByteArray()
         val vBuffer = image.planes[2].buffer
