@@ -1,11 +1,10 @@
 package ai.heart.classickbeats.monitor
 
 import android.content.Context
+import android.media.Image
 import android.os.SystemClock
 import android.renderscript.*
 import android.text.format.DateUtils
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageProxy
 import timber.log.Timber
 import java.nio.ByteBuffer
 
@@ -13,8 +12,7 @@ import java.nio.ByteBuffer
 class PixelAnalyzer constructor(
     private val context: Context,
     private val viewModel: MonitorViewModel
-) :
-    ImageAnalysis.Analyzer {
+) {
 
     private var previousSecond: Long = 0
     private var currentSecond: Long = 0
@@ -33,14 +31,7 @@ class PixelAnalyzer constructor(
         return data
     }
 
-    override fun analyze(image: ImageProxy) {
-        if (viewModel.isProcessing) {
-            processImage(image)
-        }
-        image.close()
-    }
-
-    private fun processImage(image: ImageProxy) {
+    fun processImage(image: Image) {
         val argbArray = yuv420ToARGB(image, context)
         val h = image.height
         val w = image.width
@@ -90,7 +81,7 @@ class PixelAnalyzer constructor(
         }
     }
 
-    private fun yuv420ToARGB(image: ImageProxy, context: Context): ByteArray {
+    private fun yuv420ToARGB(image: Image, context: Context): ByteArray {
         val yuvByteArray = yuv420ToByteArray(image)
 
         if (!initialised) {
@@ -119,7 +110,7 @@ class PixelAnalyzer constructor(
         return outputArray
     }
 
-    private fun yuv420ToByteArray(image: ImageProxy): ByteArray {
+    private fun yuv420ToByteArray(image: Image): ByteArray {
         val yBuffer = image.planes[0].buffer
         val yData = yBuffer.toByteArray()
         maxIndex = yData.indices.maxByOrNull { yData[it].toInt() and 0xFF } ?: -1

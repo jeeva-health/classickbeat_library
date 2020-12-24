@@ -4,51 +4,51 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanBinding
 import ai.heart.classickbeats.utils.viewBinding
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context.CAMERA_SERVICE
 import android.content.pm.PackageManager
+import android.graphics.ImageFormat
+import android.graphics.SurfaceTexture
+import android.hardware.camera2.*
+import android.media.ImageReader
 import android.os.Bundle
-import android.util.DisplayMetrics
+import android.os.Handler
+import android.os.HandlerThread
+import android.text.format.DateUtils
 import android.util.Size
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
+import java.util.*
 
 
 @AndroidEntryPoint
 class ScanFragment : Fragment(R.layout.fragment_scan) {
 
-    companion object {
-        private const val RATIO_4_3_VALUE = 4.0 / 3.0
-        private const val RATIO_16_9_VALUE = 16.0 / 9.0
-    }
-
     private val binding by viewBinding(FragmentScanBinding::bind)
 
     private val monitorViewModel: MonitorViewModel by activityViewModels()
 
-    lateinit var pixelAnalyzer: PixelAnalyzer
-
-    private var displayId: Int = -1
     private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
-    private var preview: Preview? = null
-    private var camera: Camera? = null
-    private var cameraProvider: ProcessCameraProvider? = null
-    private var imageCapture: ImageCapture? = null
-    private lateinit var cameraExecutor: ExecutorService
+
+    private var camera: CameraDevice? = null
+    private var session: CameraCaptureSession? = null
+    private var imageReader: ImageReader? = null
+    private var mBackgroundHandler: Handler? = null
+    private var mBackgroundThread: HandlerThread? = null
+    private var cameraID: String? = null
+    private var imageDimension: Size? = null
+    private var cameraManager: CameraManager? = null
+
+    private var pixelAnalyzer: PixelAnalyzer? = null
 
     private val requiredPermissions = listOf(Manifest.permission.CAMERA)
     private val permissionToRequest = mutableListOf<String>()
-
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionResult ->
 
@@ -58,14 +58,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 }
             }
             if (ifAllMustPermissionsAreGranted()) {
-                setUpCamera()
+                startBackgroundThread()
             }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        cameraExecutor = Executors.newSingleThreadExecutor()
 
         pixelAnalyzer = PixelAnalyzer(requireContext(), monitorViewModel)
     }
@@ -76,13 +74,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         checkPermission(Manifest.permission.CAMERA)
         requestForPermissions()
 
-        binding.viewFinder.post {
-            displayId = binding.viewFinder.display.displayId
-        }
-
-        binding.switchCamera.setOnClickListener {
-            switchCamera()
-        }
 
         binding.cameraCaptureButton.setOnLongClickListener {
             it.visibility = View.GONE
@@ -105,9 +96,11 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         })
     }
 
+    private fun ifAllMustPermissionsAreGranted() = permissionToRequest.isEmpty()
+
     private fun requestForPermissions() {
         if (ifAllMustPermissionsAreGranted()) {
-            setUpCamera()
+            startBackgroundThread()
         } else {
             requestPermissionLauncher.launch(permissionToRequest.toTypedArray())
         }
@@ -123,97 +116,157 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
     }
 
-    private fun setUpCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
-        cameraProviderFuture.addListener({
-            cameraProvider = cameraProviderFuture.get()
-
-            bindCameraUseCases()
-        }, ContextCompat.getMainExecutor(requireContext()))
-    }
-
-    private fun bindCameraUseCases() {
-        val metrics = DisplayMetrics().also { binding.viewFinder.display.getRealMetrics(it) }
-        val screenAspectRatio = aspectRatio(metrics.widthPixels, metrics.heightPixels)
-        val rotation = binding.viewFinder.display.rotation
-
-        val cameraProvider =
-            cameraProvider ?: throw IllegalStateException("Camera initialization failed.")
-
-        val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
-
-        preview = Preview.Builder()
-            .setTargetAspectRatio(screenAspectRatio)
-            .setTargetRotation(rotation)
-            .build()
-
-        val imageAnalyzer =
-            ImageAnalysis.Builder()
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .setTargetResolution(Size(320, 240))
-                .build()
-                .also {
-                    it.setAnalyzer(cameraExecutor, pixelAnalyzer)
+    private val cameraStateCallback: CameraDevice.StateCallback =
+        object : CameraDevice.StateCallback() {
+            override fun onOpened(camera: CameraDevice) {
+                this@ScanFragment.camera = camera
+                try {
+                    camera.createCaptureSession(
+                        listOf(imageReader!!.surface),
+                        stateSessionCallback,
+                        mBackgroundHandler
+                    )
+                } catch (e: CameraAccessException) {
+                    Timber.e(e)
                 }
+            }
 
-        cameraProvider.unbindAll()
+            override fun onDisconnected(camera: CameraDevice) {}
+            override fun onError(camera: CameraDevice, error: Int) {}
+        }
 
+    private val stateSessionCallback: CameraCaptureSession.StateCallback =
+        object : CameraCaptureSession.StateCallback() {
+            override fun onConfigured(session: CameraCaptureSession) {
+                this@ScanFragment.session = session
+                try {
+                    session.setRepeatingRequest(
+                        createCaptureRequest()!!,
+                        null,
+                        mBackgroundHandler
+                    )
+                    mBackgroundHandler?.postDelayed(
+                        { stopTakingImage() },
+                        SCAN_DURATION * DateUtils.SECOND_IN_MILLIS
+                    )
+                } catch (e: CameraAccessException) {
+                    Timber.e(e)
+                }
+            }
+
+            override fun onConfigureFailed(session: CameraCaptureSession) {}
+        }
+
+    private val onImageAvailableListener =
+        ImageReader.OnImageAvailableListener { reader: ImageReader ->
+            val img = reader.acquireLatestImage()
+            pixelAnalyzer?.processImage(img)
+            img.close()
+        }
+
+    @SuppressLint("MissingPermission")
+    fun startTakingImages() {
+        cameraManager = requireActivity().getSystemService(CAMERA_SERVICE) as CameraManager
         try {
-            camera = cameraProvider.bindToLifecycle(
-                this,
-                cameraSelector,
-                preview,
-                imageAnalyzer
+            cameraID = getCamera(cameraManager!!)
+            val characteristics = cameraManager?.getCameraCharacteristics(cameraID!!)
+            val map = characteristics?.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)!!
+            imageDimension = map.getOutputSizes(SurfaceTexture::class.java)[0]
+            cameraManager?.setTorchMode(cameraID!!, true)
+            cameraManager?.openCamera(cameraID!!, cameraStateCallback, null)
+            imageReader = ImageReader.newInstance(
+                320,
+                240,
+                ImageFormat.YUV_420_888,
+                30
             )
-            preview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)
-        } catch (exc: Exception) {
-            Timber.e("Use case binding failed: $exc")
+            imageReader?.setOnImageAvailableListener(onImageAvailableListener, mBackgroundHandler)
+        } catch (e: CameraAccessException) {
+            Timber.e(e)
         }
     }
 
-    private fun switchCamera() {
-        lensFacing =
-            if (lensFacing == CameraSelector.LENS_FACING_FRONT) CameraSelector.LENS_FACING_BACK else CameraSelector.LENS_FACING_FRONT
-        setUpCamera()
-    }
-
-    private fun aspectRatio(width: Int, height: Int): Int {
-        val previewRatio = max(width, height).toDouble() / min(width, height)
-        if (abs(previewRatio - RATIO_4_3_VALUE) <= abs(previewRatio - RATIO_16_9_VALUE)) {
-            return AspectRatio.RATIO_4_3
+    private fun getCamera(manager: CameraManager): String? {
+        try {
+            for (cameraId in manager.cameraIdList) {
+                val characteristics = manager.getCameraCharacteristics(cameraId!!)
+                val facing = characteristics.get(CameraCharacteristics.LENS_FACING)
+                if (facing == lensFacing) {
+                    return cameraId
+                }
+            }
+        } catch (e: CameraAccessException) {
+            Timber.e(e)
         }
-        return AspectRatio.RATIO_16_9
+        return null
     }
 
-    private fun ifAllMustPermissionsAreGranted() = permissionToRequest.isEmpty()
+    fun createCaptureRequest(): CaptureRequest? {
+        return try {
+            val builder: CaptureRequest.Builder =
+                camera!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
+            builder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH)
+            builder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON)
+            builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF)
+            builder.set(CaptureRequest.CONTROL_AWB_LOCK, true)
+            builder.addTarget(imageReader!!.surface)
+            builder.build()
+        } catch (e: CameraAccessException) {
+            Timber.e(e)
+            null
+        }
+    }
+
+    fun stopTakingImage() {
+        try {
+            session?.abortCaptures()
+            session?.close()
+            camera?.close()
+        } catch (e: CameraAccessException) {
+            Timber.e(e)
+        }
+    }
+
+    private fun closeCamera() {
+        try {
+            session?.abortCaptures()
+            session?.close()
+            camera?.close()
+            stopBackgroundThread();
+        } catch (e: CameraAccessException) {
+            Timber.e(e)
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
-        cameraExecutor.shutdown()
+        closeCamera()
     }
 
-    private fun hasBackCamera(): Boolean {
-        return cameraProvider?.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) ?: false
+    private fun startBackgroundThread() {
+        mBackgroundThread = HandlerThread("Camera Background")
+        mBackgroundThread?.start()
+        mBackgroundHandler = Handler(mBackgroundThread!!.looper)
     }
 
-    private fun hasFrontCamera(): Boolean {
-        return cameraProvider?.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA) ?: false
+    private fun stopBackgroundThread() {
+        mBackgroundThread?.quitSafely()
+        try {
+            mBackgroundThread?.join()
+            mBackgroundThread = null
+            mBackgroundHandler = null
+        } catch (e: InterruptedException) {
+            Timber.e(e)
+        }
     }
 
     private fun startScanning() {
-        val hasFlashUnit = camera?.cameraInfo?.hasFlashUnit() ?: false
-        if (hasFlashUnit) {
-            camera?.cameraControl?.enableTorch(true)
-        }
         monitorViewModel.isProcessing = true
         binding.switchCamera.visibility = View.GONE
+        startTakingImages()
     }
 
     private fun endScanning() {
-        val hasFlashUnit = camera?.cameraInfo?.hasFlashUnit() ?: false
-        if (hasFlashUnit) {
-            camera?.cameraControl?.enableTorch(false)
-        }
         monitorViewModel.isProcessing = false
         binding.switchCamera.visibility = View.VISIBLE
     }
