@@ -54,9 +54,9 @@ class PixelAnalyzer constructor(
         val maxY = maxIndex / w
         var pixelSum = 0
         while (counter < size) {
-            val counterX = (counter/4) % w
-            val counterY = (counter/4) / w
-            if (kotlin.math.abs(counterX - maxX) <= len && kotlin.math.abs(counterY - maxY) <= len){
+            val counterX = (counter / 4) % w
+            val counterY = (counter / 4) / w
+            if (kotlin.math.abs(counterX - maxX) <= len && kotlin.math.abs(counterY - maxY) <= len) {
                 val byte = argbArray[counter].toInt()
                 when (counter % 4) {
                     0 -> rSum += byte and 0xFF
@@ -67,11 +67,12 @@ class PixelAnalyzer constructor(
             }
             counter++
         }
+        val pixelCount = pixelSum / 4
         val rMax = argbArray[maxIndex * 4].toInt() and 0xFF
         val gMax = argbArray[maxIndex * 4 + 1].toInt() and 0xFF
         val bMax = argbArray[maxIndex * 4 + 2].toInt() and 0xFF
-        Timber.i("${rSum.toDouble() / pixelSum} \t ${gSum.toDouble() / pixelSum} \t ${bSum.toDouble() / pixelSum}")
-        Timber.i("MaxX: $maxX, MaxY: $maxY, Pixel Sum: $pixelSum")
+        Timber.i("${rSum.toDouble() / pixelCount} \t ${gSum.toDouble() / pixelCount} \t ${bSum.toDouble() / pixelCount}")
+        Timber.i("MaxX: $maxX, MaxY: $maxY, Pixel count: $pixelCount")
         Timber.i("rMax: $rMax, gMax: $gMax, bMax: $bMax")
 
         displayCounter()
@@ -121,7 +122,7 @@ class PixelAnalyzer constructor(
     private fun yuv420ToByteArray(image: ImageProxy): ByteArray {
         val yBuffer = image.planes[0].buffer
         val yData = yBuffer.toByteArray()
-        maxIndex = yData.indices.maxBy { yData[it] } ?: -1
+        maxIndex = yData.indices.maxByOrNull { yData[it].toInt() and 0xFF } ?: -1
         val uBuffer = image.planes[1].buffer
         val uData = uBuffer.toByteArray()
         val vBuffer = image.planes[2].buffer
