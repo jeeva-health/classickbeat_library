@@ -173,7 +173,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             frontCamera
         }
         currentCamera.close()
-        showBackCamera != showBackCamera
+        showBackCamera = !showBackCamera
         openCamera()
     }
 
