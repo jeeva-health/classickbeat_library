@@ -3,28 +3,25 @@ package ai.heart.classickbeats.monitor
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanBinding
 import ai.heart.classickbeats.utils.viewBinding
+import ai.heart.classickbeats.widgets.CircleProgressBar
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context.CAMERA_SERVICE
 import android.content.pm.PackageManager
-import android.graphics.ImageFormat
 import android.graphics.SurfaceTexture
-import android.hardware.camera2.*
-import android.media.ImageReader
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
 import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
-import android.text.format.DateUtils
-import android.util.Size
+import android.view.Surface
+import android.view.TextureView
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.*
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import java.util.*
 
 
 @AndroidEntryPoint
@@ -34,18 +31,16 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private val monitorViewModel: MonitorViewModel by activityViewModels()
 
-    private var lensFacing: Int = CameraSelector.LENS_FACING_FRONT
+    private var lensFacing: Int = CameraCharacteristics.LENS_FACING_BACK
 
-    private var camera: CameraDevice? = null
-    private var session: CameraCaptureSession? = null
-    private var imageReader: ImageReader? = null
-    private var mBackgroundHandler: Handler? = null
-    private var mBackgroundThread: HandlerThread? = null
-    private var cameraID: String? = null
-    private var imageDimension: Size? = null
-    private var cameraManager: CameraManager? = null
+    private lateinit var backCamera: Camera
 
     private var pixelAnalyzer: PixelAnalyzer? = null
+
+    private lateinit var textureView: TextureView
+    private lateinit var cameraCaptureButton: AppCompatImageButton
+    private lateinit var switchCamera: AppCompatImageView
+    private lateinit var circularProgressBar: CircleProgressBar
 
     private val requiredPermissions = listOf(Manifest.permission.CAMERA)
     private val permissionToRequest = mutableListOf<String>()
@@ -58,7 +53,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 }
             }
             if (ifAllMustPermissionsAreGranted()) {
-                startBackgroundThread()
+                //startBackgroundThread()
             }
         }
 
@@ -74,10 +69,16 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         checkPermission(Manifest.permission.CAMERA)
         requestForPermissions()
 
+        textureView = binding.viewFinder
+        cameraCaptureButton = binding.cameraCaptureButton
+        switchCamera = binding.switchCamera
+        circularProgressBar = binding.circularProgressBar
 
-        binding.cameraCaptureButton.setOnLongClickListener {
+        textureView.surfaceTextureListener = surfaceTextureListener
+
+        cameraCaptureButton.setOnLongClickListener {
             it.visibility = View.GONE
-            binding.circularProgressBar.visibility = View.VISIBLE
+            circularProgressBar.visibility = View.VISIBLE
             monitorViewModel.startTimer()
             startScanning()
             true
@@ -85,13 +86,13 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
         monitorViewModel.timerProgress.observe(viewLifecycleOwner, {
             if (it == 0) {
-                binding.circularProgressBar.visibility = View.GONE
-                binding.cameraCaptureButton.visibility = View.VISIBLE
+                circularProgressBar.visibility = View.GONE
+                cameraCaptureButton.visibility = View.VISIBLE
                 endScanning()
             } else {
                 val progress = ((SCAN_DURATION - it) * 100 / SCAN_DURATION).toFloat()
-                binding.circularProgressBar.setProgress(progress)
-                binding.circularProgressBar.invalidate()
+                circularProgressBar.setProgress(progress)
+                circularProgressBar.invalidate()
             }
         })
     }
@@ -100,7 +101,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private fun requestForPermissions() {
         if (ifAllMustPermissionsAreGranted()) {
-            startBackgroundThread()
+            //TODO
         } else {
             requestPermissionLauncher.launch(permissionToRequest.toTypedArray())
         }
@@ -116,158 +117,44 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
     }
 
-    private val cameraStateCallback: CameraDevice.StateCallback =
-        object : CameraDevice.StateCallback() {
-            override fun onOpened(camera: CameraDevice) {
-                this@ScanFragment.camera = camera
-                try {
-                    camera.createCaptureSession(
-                        listOf(imageReader!!.surface),
-                        stateSessionCallback,
-                        mBackgroundHandler
-                    )
-                } catch (e: CameraAccessException) {
-                    Timber.e(e)
-                }
+    private val surfaceTextureListener = object : TextureView.SurfaceTextureListener {
+        override fun onSurfaceTextureAvailable(texture: SurfaceTexture, width: Int, height: Int) {
+            openCamera(width, height)
+        }
+
+        override fun onSurfaceTextureSizeChanged(
+            texture: SurfaceTexture,
+            width: Int,
+            height: Int
+        ) {
+        }
+
+        override fun onSurfaceTextureDestroyed(texture: SurfaceTexture) = true
+        override fun onSurfaceTextureUpdated(texture: SurfaceTexture) = Unit
+    }
+
+    private fun openCamera(width: Int, height: Int) {
+        try {
+            val cameraManager = requireActivity().getSystemService(CAMERA_SERVICE) as CameraManager
+            backCamera = Camera(cameraManager, pixelAnalyzer!!, lensFacing)
+            backCamera.let {
+                it.open()
+                val texture = textureView.surfaceTexture
+                texture?.setDefaultBufferSize(width, height)
+                it.start(Surface(texture!!))
             }
-
-            override fun onDisconnected(camera: CameraDevice) {}
-            override fun onError(camera: CameraDevice, error: Int) {}
-        }
-
-    private val stateSessionCallback: CameraCaptureSession.StateCallback =
-        object : CameraCaptureSession.StateCallback() {
-            override fun onConfigured(session: CameraCaptureSession) {
-                this@ScanFragment.session = session
-                try {
-                    session.setRepeatingRequest(
-                        createCaptureRequest()!!,
-                        null,
-                        mBackgroundHandler
-                    )
-                    mBackgroundHandler?.postDelayed(
-                        { stopTakingImage() },
-                        SCAN_DURATION * DateUtils.SECOND_IN_MILLIS
-                    )
-                } catch (e: CameraAccessException) {
-                    Timber.e(e)
-                }
-            }
-
-            override fun onConfigureFailed(session: CameraCaptureSession) {}
-        }
-
-    private val onImageAvailableListener =
-        ImageReader.OnImageAvailableListener { reader: ImageReader ->
-            val img = reader.acquireLatestImage()?:return@OnImageAvailableListener
-            pixelAnalyzer?.processImage(img)
-            img.close()
-        }
-
-    @SuppressLint("MissingPermission")
-    fun startTakingImages() {
-        cameraManager = requireActivity().getSystemService(CAMERA_SERVICE) as CameraManager
-        try {
-            cameraID = getCamera(cameraManager!!)
-            val characteristics = cameraManager?.getCameraCharacteristics(cameraID!!)
-            val map = characteristics?.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)!!
-            imageDimension = map.getOutputSizes(SurfaceTexture::class.java)[0]
-            // cameraManager?.setTorchMode(cameraID!!, true)
-            cameraManager?.openCamera(cameraID!!, cameraStateCallback, null)
-            imageReader = ImageReader.newInstance(
-                320,
-                240,
-                ImageFormat.YUV_420_888,
-                30
-            )
-            imageReader?.setOnImageAvailableListener(onImageAvailableListener, mBackgroundHandler)
-        } catch (e: CameraAccessException) {
-            Timber.e(e)
-        }
-    }
-
-    private fun getCamera(manager: CameraManager): String? {
-        try {
-            for (cameraId in manager.cameraIdList) {
-                val characteristics = manager.getCameraCharacteristics(cameraId!!)
-                val facing = characteristics.get(CameraCharacteristics.LENS_FACING)
-                if (facing == lensFacing) {
-                    return cameraId
-                }
-            }
-        } catch (e: CameraAccessException) {
-            Timber.e(e)
-        }
-        return null
-    }
-
-    fun createCaptureRequest(): CaptureRequest? {
-        return try {
-            val builder: CaptureRequest.Builder =
-                camera!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-            // builder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH)
-            builder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON)
-            builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF)
-            builder.set(CaptureRequest.CONTROL_AWB_LOCK, true)
-            builder.addTarget(imageReader!!.surface)
-            builder.build()
-        } catch (e: CameraAccessException) {
-            Timber.e(e)
-            null
-        }
-    }
-
-    fun stopTakingImage() {
-        try {
-            session?.abortCaptures()
-            session?.close()
-            camera?.close()
-        } catch (e: CameraAccessException) {
-            Timber.e(e)
-        }
-    }
-
-    private fun closeCamera() {
-        try {
-            session?.abortCaptures()
-            session?.close()
-            camera?.close()
-            stopBackgroundThread();
-        } catch (e: CameraAccessException) {
-            Timber.e(e)
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        closeCamera()
-    }
-
-    private fun startBackgroundThread() {
-        mBackgroundThread = HandlerThread("Camera Background")
-        mBackgroundThread?.start()
-        mBackgroundHandler = Handler(mBackgroundThread!!.looper)
-    }
-
-    private fun stopBackgroundThread() {
-        mBackgroundThread?.quitSafely()
-        try {
-            mBackgroundThread?.join()
-            mBackgroundThread = null
-            mBackgroundHandler = null
-        } catch (e: InterruptedException) {
+        } catch (e: Exception) {
             Timber.e(e)
         }
     }
 
     private fun startScanning() {
         monitorViewModel.isProcessing = true
-        binding.switchCamera.visibility = View.GONE
-        startTakingImages()
+        switchCamera.visibility = View.GONE
     }
 
     private fun endScanning() {
         monitorViewModel.isProcessing = false
-        binding.switchCamera.visibility = View.VISIBLE
+        switchCamera.visibility = View.VISIBLE
     }
 }
