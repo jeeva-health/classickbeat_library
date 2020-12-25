@@ -34,7 +34,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private val monitorViewModel: MonitorViewModel by activityViewModels()
 
-    private var lensFacing: Int = CameraSelector.LENS_FACING_FRONT
+    private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
 
     private var camera: CameraDevice? = null
     private var session: CameraCaptureSession? = null
