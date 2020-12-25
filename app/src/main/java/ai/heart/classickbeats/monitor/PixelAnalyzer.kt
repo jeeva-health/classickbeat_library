@@ -40,7 +40,7 @@ class PixelAnalyzer constructor(
         var rSum = 0
         var gSum = 0
         var bSum = 0
-        val len = 25
+        val len = 240
         val maxX = maxIndex % w
         val maxY = maxIndex / w
         var pixelSum = 0

@@ -34,7 +34,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private val monitorViewModel: MonitorViewModel by activityViewModels()
 
-    private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
+    private var lensFacing: Int = CameraSelector.LENS_FACING_FRONT
 
     private var camera: CameraDevice? = null
     private var session: CameraCaptureSession? = null
@@ -159,7 +159,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private val onImageAvailableListener =
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
-            val img = reader.acquireLatestImage()
+            val img = reader.acquireLatestImage()?:return@OnImageAvailableListener
             pixelAnalyzer?.processImage(img)
             img.close()
         }
@@ -172,7 +172,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             val characteristics = cameraManager?.getCameraCharacteristics(cameraID!!)
             val map = characteristics?.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)!!
             imageDimension = map.getOutputSizes(SurfaceTexture::class.java)[0]
-            cameraManager?.setTorchMode(cameraID!!, true)
+            // cameraManager?.setTorchMode(cameraID!!, true)
             cameraManager?.openCamera(cameraID!!, cameraStateCallback, null)
             imageReader = ImageReader.newInstance(
                 320,
@@ -205,7 +205,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         return try {
             val builder: CaptureRequest.Builder =
                 camera!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-            builder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH)
+            // builder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH)
             builder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON)
             builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF)
             builder.set(CaptureRequest.CONTROL_AWB_LOCK, true)
