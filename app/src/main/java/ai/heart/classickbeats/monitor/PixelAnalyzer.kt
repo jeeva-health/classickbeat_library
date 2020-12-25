@@ -37,7 +37,7 @@ class PixelAnalyzer constructor(
     fun processImage(image: Image) {
         val argbArray = yuv420ToARGB(image, context)
         if (imgCount == (skipFrames + avgFrames)){
-            maxIndex = maxIndex/avgFrames
+            maxIndex /= avgFrames
             Timber.i("Averaged MaxIndex is: $maxIndex")
         }
         if (imgCount >= (skipFrames + avgFrames)) {

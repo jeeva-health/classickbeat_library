@@ -58,6 +58,8 @@ class Camera constructor(
 
     private var surface: Surface? = null
 
+    private var viewModel: MonitorViewModel? = null
+
     init {
         cameraId = setUpCameraId(cameraManager, lensFacing)
         characteristics = cameraManager.getCameraCharacteristics(cameraId)
@@ -117,9 +119,10 @@ class Camera constructor(
         }
     }
 
-    fun start(surface: Surface) {
+    fun start(surface: Surface, viewModel: MonitorViewModel) {
 
         this.surface = surface
+        this.viewModel = viewModel
 
         imageReader = ImageReader.newInstance(320, 240, ImageFormat.YUV_420_888, 30)
         imageReader?.setOnImageAvailableListener(onImageAvailableListener, mBackgroundHandler)
@@ -133,7 +136,9 @@ class Camera constructor(
     private val onImageAvailableListener =
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
-            pixelAnalyzer.processImage(img)
+            if (viewModel?.isProcessing == true) {
+                pixelAnalyzer.processImage(img)
+            }
             img.close()
         }
 

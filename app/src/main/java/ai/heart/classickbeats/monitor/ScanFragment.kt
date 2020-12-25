@@ -37,6 +37,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private var pixelAnalyzer: PixelAnalyzer? = null
 
+    private var width: Int = 0
+    private var height: Int = 0
+
     private lateinit var textureView: TextureView
     private lateinit var cameraCaptureButton: AppCompatImageButton
     private lateinit var switchCamera: AppCompatImageView
@@ -53,7 +56,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 }
             }
             if (ifAllMustPermissionsAreGranted()) {
-                //startBackgroundThread()
+                openCamera()
             }
         }
 
@@ -101,7 +104,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private fun requestForPermissions() {
         if (ifAllMustPermissionsAreGranted()) {
-            //TODO
+            openCamera()
         } else {
             requestPermissionLauncher.launch(permissionToRequest.toTypedArray())
         }
@@ -119,7 +122,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private val surfaceTextureListener = object : TextureView.SurfaceTextureListener {
         override fun onSurfaceTextureAvailable(texture: SurfaceTexture, width: Int, height: Int) {
-            openCamera(width, height)
+            this@ScanFragment.width = width
+            this@ScanFragment.height = height
+            openCamera()
         }
 
         override fun onSurfaceTextureSizeChanged(
@@ -133,7 +138,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         override fun onSurfaceTextureUpdated(texture: SurfaceTexture) = Unit
     }
 
-    private fun openCamera(width: Int, height: Int) {
+    private fun openCamera() {
         try {
             val cameraManager = requireActivity().getSystemService(CAMERA_SERVICE) as CameraManager
             backCamera = Camera(cameraManager, pixelAnalyzer!!, lensFacing)
@@ -141,7 +146,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 it.open()
                 val texture = textureView.surfaceTexture
                 texture?.setDefaultBufferSize(width, height)
-                it.start(Surface(texture!!))
+                it.start(Surface(texture!!), monitorViewModel)
             }
         } catch (e: Exception) {
             Timber.e(e)
