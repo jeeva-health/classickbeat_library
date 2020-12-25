@@ -31,14 +31,15 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private val monitorViewModel: MonitorViewModel by activityViewModels()
 
-    private var lensFacing: Int = CameraCharacteristics.LENS_FACING_BACK
-
     private lateinit var backCamera: Camera
+    private lateinit var frontCamera: Camera
 
     private var pixelAnalyzer: PixelAnalyzer? = null
 
     private var width: Int = 0
     private var height: Int = 0
+
+    private var showBackCamera: Boolean = false
 
     private lateinit var textureView: TextureView
     private lateinit var cameraCaptureButton: AppCompatImageButton
@@ -64,6 +65,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         super.onCreate(savedInstanceState)
 
         pixelAnalyzer = PixelAnalyzer(requireContext(), monitorViewModel)
+        val cameraManager = requireActivity().getSystemService(CAMERA_SERVICE) as CameraManager
+        backCamera = Camera(cameraManager, pixelAnalyzer!!, CameraCharacteristics.LENS_FACING_BACK)
+        frontCamera =
+            Camera(cameraManager, pixelAnalyzer!!, CameraCharacteristics.LENS_FACING_FRONT)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,6 +90,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             monitorViewModel.startTimer()
             startScanning()
             true
+        }
+
+        switchCamera.setOnClickListener {
+            switchCamera()
         }
 
         monitorViewModel.timerProgress.observe(viewLifecycleOwner, {
@@ -140,9 +149,13 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private fun openCamera() {
         try {
-            val cameraManager = requireActivity().getSystemService(CAMERA_SERVICE) as CameraManager
-            backCamera = Camera(cameraManager, pixelAnalyzer!!, lensFacing)
-            backCamera.let {
+            val selectedCamera = if (showBackCamera) {
+                backCamera
+            } else {
+                frontCamera
+            }
+
+            selectedCamera.let {
                 it.open()
                 val texture = textureView.surfaceTexture
                 texture?.setDefaultBufferSize(width, height)
@@ -151,6 +164,17 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         } catch (e: Exception) {
             Timber.e(e)
         }
+    }
+
+    private fun switchCamera() {
+        val currentCamera = if (showBackCamera) {
+            backCamera
+        } else {
+            frontCamera
+        }
+        currentCamera.close()
+        showBackCamera != showBackCamera
+        openCamera()
     }
 
     private fun startScanning() {
