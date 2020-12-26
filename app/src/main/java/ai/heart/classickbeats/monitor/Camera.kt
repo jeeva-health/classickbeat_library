@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 class Camera constructor(
     private val cameraManager: CameraManager,
     private val pixelAnalyzer: PixelAnalyzer,
-    lensFacing: Int
+    private val lensFacing: Int
 ) {
 
     companion object {
@@ -138,7 +138,12 @@ class Camera constructor(
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
             if (viewModel?.isProcessing == true) {
-                pixelAnalyzer.processImage(img)
+                if (lensFacing == CameraCharacteristics.LENS_FACING_BACK){
+                    pixelAnalyzer.processImageHeart(img)
+                }
+                else{
+                    pixelAnalyzer.processImageSpO2(img)
+                }
             }
             img.close()
         }
@@ -199,7 +204,9 @@ class Camera constructor(
 //            CaptureRequest.COLOR_CORRECTION_MODE,
 //            CaptureRequest.COLOR_CORRECTION_ABERRATION_MODE_OFF
 //        )
-        builder.set(CaptureRequest.CONTROL_AWB_LOCK, Boolean.TRUE)
+        if (lensFacing == CameraCharacteristics.LENS_FACING_BACK){
+            builder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH)
+        }
     }
 
     private fun setUpCameraId(manager: CameraManager, lensFacing: Int): String {
