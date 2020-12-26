@@ -3,11 +3,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_home"
-    app:startDestination="@id/scanFragment">
+    app:startDestination="@id/cameraSelectionFragment">
 
     <fragment
         android:id="@+id/scanFragment"
         android:name="ai.heart.classickbeats.monitor.ScanFragment"
         android:label="fragment_scan"
-        tools:layout="@layout/fragment_scan" />
+        tools:layout="@layout/fragment_scan" >
+        <action
+            android:id="@+id/action_scanFragment_to_oxygenResultFragment"
+            app:destination="@id/oxygenResultFragment"
+            app:popUpTo="@id/cameraSelectionFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_scanFragment_to_heartResultFragment"
+            app:destination="@id/heartResultFragment"
+            app:popUpTo="@id/cameraSelectionFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="test_type"
+            app:argType="ai.heart.classickbeats.monitor.TestType"
+            android:defaultValue="HEART_RATE" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraSelectionFragment"
+        android:name="ai.heart.classickbeats.monitor.CameraSelectionFragment"
+        android:label="fragment_camera_selection"
+        tools:layout="@layout/fragment_camera_selection" >
+        <action
+            android:id="@+id/action_cameraSelectionFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/oxygenResultFragment"
+        android:name="ai.heart.classickbeats.monitor.OxygenResultFragment"
+        android:label="fragment_oxygen_result"
+        tools:layout="@layout/fragment_oxygen_result" >
+        <action
+            android:id="@+id/action_oxygenResultFragment_to_cameraSelectionFragment"
+            app:destination="@id/cameraSelectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/heartResultFragment"
+        android:name="ai.heart.classickbeats.monitor.HeartResultFragment"
+        android:label="fragment_heart_result"
+        tools:layout="@layout/fragment_heart_result" >
+        <action
+            android:id="@+id/action_heartResultFragment_to_cameraSelectionFragment"
+            app:destination="@id/cameraSelectionFragment" />
+    </fragment>
 </navigation>

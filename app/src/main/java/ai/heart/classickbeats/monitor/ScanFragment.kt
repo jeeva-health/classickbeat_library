@@ -2,11 +2,10 @@ package ai.heart.classickbeats.monitor
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanBinding
+import ai.heart.classickbeats.utils.EventObserver
 import ai.heart.classickbeats.utils.viewBinding
 import ai.heart.classickbeats.widgets.CircleProgressBar
-import android.Manifest
 import android.content.Context.CAMERA_SERVICE
-import android.content.pm.PackageManager
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
@@ -14,12 +13,12 @@ import android.os.Bundle
 import android.view.Surface
 import android.view.TextureView
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatImageButton
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -29,39 +28,22 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private val binding by viewBinding(FragmentScanBinding::bind)
 
+    private val navArgs: ScanFragmentArgs by navArgs()
+
     private val monitorViewModel: MonitorViewModel by activityViewModels()
+
+    private lateinit var navController: NavController
 
     private lateinit var backCamera: Camera
     private lateinit var frontCamera: Camera
 
     private var pixelAnalyzer: PixelAnalyzer? = null
 
-    private var width: Int = 0
-    private var height: Int = 0
-
     private var showBackCamera: Boolean = false
 
     private lateinit var textureView: TextureView
     private lateinit var cameraCaptureButton: AppCompatImageButton
-    private lateinit var switchCamera: AppCompatImageView
     private lateinit var circularProgressBar: CircleProgressBar
-
-    private val requiredPermissions = listOf(Manifest.permission.CAMERA)
-    private val permissionToRequest = mutableListOf<String>()
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionResult ->
-
-            requiredPermissions.forEach { permission ->
-                if (permissionResult[permission] == true) {
-                    permissionToRequest.remove(permission)
-                }
-            }
-            if (ifAllMustPermissionsAreGranted()) {
-                if (width != 0) {
-                    openCamera()
-                }
-            }
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,17 +53,20 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         backCamera = Camera(cameraManager, pixelAnalyzer!!, CameraCharacteristics.LENS_FACING_BACK)
         frontCamera =
             Camera(cameraManager, pixelAnalyzer!!, CameraCharacteristics.LENS_FACING_FRONT)
+
+        showBackCamera = when (navArgs.testType) {
+            TestType.HEART_RATE -> true
+            TestType.OXYGEN_SATURATION -> false
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        checkPermission(Manifest.permission.CAMERA)
-        requestForPermissions()
+        navController = findNavController()
 
         textureView = binding.viewFinder
         cameraCaptureButton = binding.cameraCaptureButton
-        switchCamera = binding.switchCamera
         circularProgressBar = binding.circularProgressBar
 
         textureView.surfaceTextureListener = surfaceTextureListener
@@ -94,11 +79,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             true
         }
 
-        switchCamera.setOnClickListener {
-            switchCamera()
-        }
-
-        monitorViewModel.timerProgress.observe(viewLifecycleOwner, {
+        monitorViewModel.timerProgress.observe(viewLifecycleOwner, EventObserver {
             if (it == 0) {
                 circularProgressBar.visibility = View.GONE
                 cameraCaptureButton.visibility = View.VISIBLE
@@ -111,33 +92,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         })
     }
 
-    private fun ifAllMustPermissionsAreGranted() = permissionToRequest.isEmpty()
-
-    private fun requestForPermissions() {
-        if (ifAllMustPermissionsAreGranted()) {
-            if (width != 0) {
-                openCamera()
-            }
-        } else {
-            requestPermissionLauncher.launch(permissionToRequest.toTypedArray())
-        }
-    }
-
-    private fun checkPermission(permission: String) {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                permission
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            permissionToRequest.add(permission)
-        }
-    }
-
     private val surfaceTextureListener = object : TextureView.SurfaceTextureListener {
         override fun onSurfaceTextureAvailable(texture: SurfaceTexture, width: Int, height: Int) {
-            this@ScanFragment.width = width
-            this@ScanFragment.height = height
-            openCamera()
+            openCamera(width, height)
         }
 
         override fun onSurfaceTextureSizeChanged(
@@ -151,7 +108,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         override fun onSurfaceTextureUpdated(texture: SurfaceTexture) = Unit
     }
 
-    private fun openCamera() {
+    private fun openCamera(width: Int, height: Int) {
         try {
             val selectedCamera = if (showBackCamera) {
                 backCamera
@@ -170,24 +127,37 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
     }
 
-    private fun switchCamera() {
-        val currentCamera = if (showBackCamera) {
-            backCamera
-        } else {
-            frontCamera
+    override fun onDestroy() {
+        super.onDestroy()
+
+        try {
+            backCamera.close()
+            frontCamera.close()
+            monitorViewModel.endTimer()
+        } catch (e: Exception) {
+            Timber.e(e)
         }
-        currentCamera.close()
-        showBackCamera = !showBackCamera
-        openCamera()
     }
 
     private fun startScanning() {
         monitorViewModel.isProcessing = true
-        switchCamera.visibility = View.GONE
     }
 
     private fun endScanning() {
         monitorViewModel.isProcessing = false
-        switchCamera.visibility = View.VISIBLE
+        when (navArgs.testType) {
+            TestType.HEART_RATE -> navigateToHeartResultFragment()
+            TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()
+        }
+    }
+
+    private fun navigateToHeartResultFragment() {
+        val action = ScanFragmentDirections.actionScanFragmentToHeartResultFragment()
+        navController.navigate(action)
+    }
+
+    private fun navigateToOxygenResultFragment() {
+        val action = ScanFragmentDirections.actionScanFragmentToOxygenResultFragment()
+        navController.navigate(action)
     }
 }

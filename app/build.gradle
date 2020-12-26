@@ -26,7 +26,7 @@ android {
 
         python {
             pip {
-                install "-r", "requirements.txt"
+//                install "-r", "requirements.txt"
             }
 //            Change to true for speed
             pyc {
@@ -100,4 +100,7 @@ dependencies {
     implementation "androidx.camera:camera-camera2:$camerax_version"
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
     implementation "androidx.camera:camera-view:1.0.0-alpha20"
+
+    //Lottie
+    implementation 'com.airbnb.android:lottie:3.5.0'
 }
