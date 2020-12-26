@@ -27,11 +27,14 @@ android {
         python {
             pip {
 //                install "-r", "requirements.txt"
+                //install "scipy"
+                //install "requests==2.24.0"
             }
 //            Change to true for speed
             pyc {
                 src false
             }
+           // staticProxy "heartRate"
         }
     }
 

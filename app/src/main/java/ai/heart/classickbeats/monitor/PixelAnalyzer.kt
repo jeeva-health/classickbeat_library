@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.monitor
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.media.Image
 import android.os.SystemClock
 import android.renderscript.*
@@ -26,6 +27,9 @@ class PixelAnalyzer constructor(
     private var inputAllocation: Allocation? = null
     private var outputAllocation: Allocation? = null
     private var initialised: Boolean = false
+    private var sec = 0
+    private var frameRate = 0
+    private var firstSec = true
 
     private fun ByteBuffer.toByteArray(): ByteArray {
         rewind()
@@ -34,7 +38,7 @@ class PixelAnalyzer constructor(
         return data
     }
 
-    fun processImage(image: Image) {
+    fun processImageSpO2(image: Image) {
         val argbArray = yuv420ToARGB(image, context)
         if (imgCount == (skipFrames + avgFrames)){
             maxIndex /= avgFrames
@@ -48,7 +52,7 @@ class PixelAnalyzer constructor(
             var rSum = 0
             var gSum = 0
             var bSum = 0
-            val len = 40
+            val len = 320
             val maxX = maxIndex % w
             val maxY = maxIndex / w
             var pixelSum = 0
@@ -71,8 +75,32 @@ class PixelAnalyzer constructor(
             val gMax = argbArray[maxIndex * 4 + 1].toInt() and 0xFF
             val bMax = argbArray[maxIndex * 4 + 2].toInt() and 0xFF
             Timber.i("${rSum.toDouble() / pixelCount} \t ${gSum.toDouble() / pixelCount} \t ${bSum.toDouble() / pixelCount}")
-//            Timber.i("MaxIndex: $maxIndex, Pixel count: $pixelCount, Image Count: $imgCount")
-//            Timber.i("rMax: $rMax, gMax: $gMax, bMax: $bMax")
+            Timber.i("MaxIndex: $maxIndex, Pixel count: $pixelCount, Image Count: $imgCount")
+            Timber.i("rMax: $rMax, gMax: $gMax, bMax: $bMax")
+            displayCounter()
+        }
+        imgCount++
+    }
+
+    fun processImageHeart(image: Image) {
+        if (imgCount >= skipFrames) {
+            val argbArray = yuv420ToARGB(image, context)
+            val size = argbArray.size
+            var counter = 0
+            var rSum = 0
+            var gSum = 0
+            var bSum = 0
+            while (counter < size) {
+                val byte = argbArray[counter].toInt()
+                when (counter % 4) {
+                    0 -> rSum += byte and 0xFF
+                    1 -> gSum += byte and 0xFF
+                    2 -> bSum += byte and 0xFF
+                }
+                counter++
+            }
+            val pixelCount = size / 4
+            Timber.i("${rSum.toDouble() / pixelCount} \t ${gSum.toDouble() / pixelCount} \t ${bSum.toDouble() / pixelCount}")
             displayCounter()
         }
         imgCount++
@@ -85,7 +113,14 @@ class PixelAnalyzer constructor(
         if (previousSecond == currentSecond) {
             counter++
         } else {
-            Timber.i("Counter for $previousSecond: ${++counter}")
+            if (firstSec){
+                firstSec = false
+            }
+            else{
+                sec++
+                frameRate += ++counter
+            }
+            Timber.i("frameRate $previousSecond: ${counter} Seconds: $sec SumRate: $frameRate")
             counter = 0
         }
     }
@@ -114,6 +149,11 @@ class PixelAnalyzer constructor(
 
         val sizeOfImage = outputAllocation?.bytesSize ?: 0
         val outputArray = ByteArray(sizeOfImage)
+
+//        val bitmap = Bitmap.createBitmap(
+//            image.width, image.height, Bitmap.Config.ARGB_8888
+//        )
+//        outputAllocation?.copyTo(bitmap)
 
         outputAllocation?.copyTo(outputArray)
         return outputArray

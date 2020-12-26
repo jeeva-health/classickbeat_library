@@ -7,13 +7,14 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.view.Surface
 import timber.log.Timber
+import java.lang.Boolean
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 
 class Camera constructor(
     private val cameraManager: CameraManager,
     private val pixelAnalyzer: PixelAnalyzer,
-    lensFacing: Int
+    private val lensFacing: Int
 ) {
 
     companion object {
@@ -137,7 +138,12 @@ class Camera constructor(
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
             if (viewModel?.isProcessing == true) {
-                pixelAnalyzer.processImage(img)
+                if (lensFacing == CameraCharacteristics.LENS_FACING_BACK){
+                    pixelAnalyzer.processImageHeart(img)
+                }
+                else{
+                    pixelAnalyzer.processImageSpO2(img)
+                }
             }
             img.close()
         }
@@ -183,7 +189,7 @@ class Camera constructor(
     private fun createPreviewRequestBuilder(): CaptureRequest.Builder? {
         val builder = cameraDevice?.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
         builder?.addTarget(imageReader!!.surface)
-        builder?.addTarget(surface!!)
+//        builder?.addTarget(surface!!)
         enableDefaultModes(builder)
         return builder
     }
@@ -191,14 +197,16 @@ class Camera constructor(
     private fun enableDefaultModes(builder: CaptureRequest.Builder?) {
         if (builder == null) return
 
-        // builder.set(CaptureRequest.CONTROL_MODE, CaptureRequest.CONTROL_AF_MODE_OFF)
         builder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF)
         builder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON)
-        builder.set(CaptureRequest.CONTROL_AWB_MODE, CaptureRequest.CONTROL_AWB_MODE_OFF)
-        builder.set(
-            CaptureRequest.COLOR_CORRECTION_MODE,
-            CaptureRequest.COLOR_CORRECTION_ABERRATION_MODE_OFF
-        )
+        builder.set(CaptureRequest.CONTROL_AWB_LOCK, Boolean.TRUE)
+        if (lensFacing == CameraCharacteristics.LENS_FACING_BACK){
+            builder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH)
+        }
+//        builder.set(
+//            CaptureRequest.COLOR_CORRECTION_MODE,
+//            CaptureRequest.COLOR_CORRECTION_ABERRATION_MODE_OFF
+//        )
     }
 
     private fun setUpCameraId(manager: CameraManager, lensFacing: Int): String {
