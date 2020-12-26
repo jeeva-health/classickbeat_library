@@ -57,7 +57,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 }
             }
             if (ifAllMustPermissionsAreGranted()) {
-                openCamera()
+                if (width != 0) {
+                    openCamera()
+                }
             }
         }
 
@@ -113,7 +115,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private fun requestForPermissions() {
         if (ifAllMustPermissionsAreGranted()) {
-            openCamera()
+            if (width != 0) {
+                openCamera()
+            }
         } else {
             requestPermissionLauncher.launch(permissionToRequest.toTypedArray())
         }
