@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.view.Surface
 import timber.log.Timber
+import java.lang.Boolean
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 
@@ -182,23 +183,23 @@ class Camera constructor(
 
     private fun createPreviewRequestBuilder(): CaptureRequest.Builder? {
         val builder = cameraDevice?.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
+        enableDefaultModes(builder)
         builder?.addTarget(imageReader!!.surface)
         builder?.addTarget(surface!!)
-        enableDefaultModes(builder)
         return builder
     }
 
     private fun enableDefaultModes(builder: CaptureRequest.Builder?) {
         if (builder == null) return
 
-        // builder.set(CaptureRequest.CONTROL_MODE, CaptureRequest.CONTROL_AF_MODE_OFF)
         builder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF)
         builder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON)
-        builder.set(CaptureRequest.CONTROL_AWB_MODE, CaptureRequest.CONTROL_AWB_MODE_OFF)
-        builder.set(
-            CaptureRequest.COLOR_CORRECTION_MODE,
-            CaptureRequest.COLOR_CORRECTION_ABERRATION_MODE_OFF
-        )
+//        builder.set(CaptureRequest.CONTROL_AWB_MODE, CaptureRequest.CONTROL_AWB_MODE_OFF)
+//        builder.set(
+//            CaptureRequest.COLOR_CORRECTION_MODE,
+//            CaptureRequest.COLOR_CORRECTION_ABERRATION_MODE_OFF
+//        )
+        builder.set(CaptureRequest.CONTROL_AWB_LOCK, Boolean.TRUE)
     }
 
     private fun setUpCameraId(manager: CameraManager, lensFacing: Int): String {
