@@ -152,12 +152,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     }
 
     private fun navigateToHeartResultFragment() {
-        val action = ScanFragmentDirections.actionScanFragmentToHeartResultFragment()
-        navController.navigate(action)
+//        val action = ScanFragmentDirections.actionScanFragmentToHeartResultFragment()
+//        navController.navigate(action)
     }
 
     private fun navigateToOxygenResultFragment() {
-        val action = ScanFragmentDirections.actionScanFragmentToOxygenResultFragment()
-        navController.navigate(action)
+//        val action = ScanFragmentDirections.actionScanFragmentToOxygenResultFragment()
+//        navController.navigate(action)
     }
 }

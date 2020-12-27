@@ -139,9 +139,9 @@ class Camera constructor(
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
             if (viewModel?.isProcessing == true) {
                 if (lensFacing == CameraCharacteristics.LENS_FACING_BACK) {
-                    pixelAnalyzer.processImageHeart(img)
+                    pixelAnalyzer.processImage(img)
                 } else {
-                    pixelAnalyzer.processImageSpO2(img)
+                    pixelAnalyzer.processImage(img)
                 }
             }
             img.close()

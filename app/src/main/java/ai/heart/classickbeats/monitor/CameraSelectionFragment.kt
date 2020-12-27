@@ -83,7 +83,9 @@ class CameraSelectionFragment : Fragment(R.layout.fragment_camera_selection) {
 
     private fun navigateToScanFragment(testType: TestType) {
         val action =
-            CameraSelectionFragmentDirections.actionCameraSelectionFragmentToScanFragment(testType)
+            CameraSelectionFragmentDirections.actionCameraSelectionFragmentToScanFragmentBorrowed(
+                testType
+            )
         navController.navigate(action)
     }
 }
