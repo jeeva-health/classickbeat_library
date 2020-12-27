@@ -171,10 +171,6 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             val cameraManager =
                 requireActivity().getSystemService(CAMERA_SERVICE) as CameraManager
             val cameraID: String = getCamera(cameraManager, cameraFacing)!!
-            val cameraEnabled = when (navArgs.testType) {
-                TestType.HEART_RATE -> true
-                TestType.OXYGEN_SATURATION -> false
-            }
             cameraManager.openCamera(cameraID, cameraStateCallback, null)
         } catch (e: Exception) {
             Timber.e(e)
@@ -190,7 +186,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
                 }
             }
         } catch (e: CameraAccessException) {
-            e.printStackTrace()
+            Timber.e(e)
         }
         return null
     }
@@ -225,7 +221,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             mBackgroundThread = null
             mBackgroundHandler = null
         } catch (e: InterruptedException) {
-            e.printStackTrace()
+            Timber.e(e)
         }
     }
 
@@ -247,6 +243,10 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
 
     private fun endScanning() {
         monitorViewModel.isProcessing = false
+        session?.abortCaptures()
+        camera?.close()
+        stopBackgroundThread()
+        monitorViewModel.endTimer()
         when (navArgs.testType) {
             TestType.HEART_RATE -> navigateToHeartResultFragment()
             TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()
