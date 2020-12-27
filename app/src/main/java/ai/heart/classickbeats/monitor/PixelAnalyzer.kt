@@ -105,6 +105,63 @@ class PixelAnalyzer constructor(
         imgCount++
     }
 
+    fun processImage(image: Image) {
+        val imageWidth = image.width
+        val imageHeight = image.height
+        val argbArray = IntArray(imageWidth * imageHeight)
+        val yBuffer = image.planes[0].buffer
+        yBuffer.position(0)
+        val uvBuffer = image.planes[1].buffer
+        uvBuffer.position(0)
+        var r: Int
+        var g: Int
+        var b: Int
+        var yValue: Int
+        var uValue: Int
+        var vValue: Int
+        var r_sum = 0
+        var g_sum = 0
+        var b_sum = 0
+        var count = 0
+        for (y in 0 until imageHeight - 2) {
+            for (x in 0 until imageWidth - 2) {
+                val yIndex = y * imageWidth + x
+                yValue = yBuffer[yIndex].toInt() and 0xff
+                val uvx = x / 2
+                val uvy = y / 2
+                val uIndex = uvy * imageWidth + 2 * uvx
+                val vIndex = uIndex + 1
+                uValue = (uvBuffer[uIndex].toInt() and 0xff) - 128
+                vValue = (uvBuffer[vIndex].toInt() and 0xff) - 128
+                r = (yValue + 1.370705f * vValue).toInt()
+                g = (yValue - 0.698001f * vValue - 0.337633f * uValue).toInt()
+                b = (yValue + 1.732446f * uValue).toInt()
+                r = clamp(r.toFloat(), 0f, 255f).toInt()
+                g = clamp(g.toFloat(), 0f, 255f).toInt()
+                b = clamp(b.toFloat(), 0f, 255f).toInt()
+                argbArray[yIndex] =
+                    255 shl 24 or (r and 255 shl 16) or (g and 255 shl 8) or (b and 255)
+                r_sum += r
+                g_sum += g
+                b_sum += b
+                count++
+            }
+        }
+        val r_mean = r_sum.toFloat() / count.toFloat()
+        val g_mean = g_sum.toFloat() / count.toFloat()
+        val b_mean = b_sum.toFloat() / count.toFloat()
+        val means = FloatArray(3)
+        means[0] = r_mean
+        means[1] = g_mean
+        means[2] = b_mean
+        Timber.i("rgbMean: " + means[0] + "\t" + means[1] + "\t" + means[2])
+        displayCounter()
+    }
+
+    private fun clamp(value: Float, min: Float, max: Float): Float {
+        return Math.max(min, Math.min(max, value))
+    }
+
     private fun displayCounter() {
         val currentTime = SystemClock.elapsedRealtime()
         previousSecond = currentSecond

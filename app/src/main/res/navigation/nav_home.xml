@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_home"
-    app:startDestination="@id/cameraSelectionFragment">
+    app:startDestination="@id/scanFragmentBorrowed">
 
     <fragment
         android:id="@+id/scanFragment"
@@ -52,4 +52,8 @@
             android:id="@+id/action_heartResultFragment_to_cameraSelectionFragment"
             app:destination="@id/cameraSelectionFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/scanFragmentBorrowed"
+        android:name="ai.heart.classickbeats.monitor.ScanFragmentBorrowed"
+        android:label="ScanFragmentBorrowed" />
 </navigation>
