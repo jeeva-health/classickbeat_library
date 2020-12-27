@@ -1,7 +1,6 @@
 package ai.heart.classickbeats.monitor
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.media.Image
 import android.os.SystemClock
 import android.renderscript.*
@@ -40,7 +39,7 @@ class PixelAnalyzer constructor(
 
     fun processImageSpO2(image: Image) {
         val argbArray = yuv420ToARGB(image, context)
-        if (imgCount == (skipFrames + avgFrames)){
+        if (imgCount == (skipFrames + avgFrames)) {
             maxIndex /= avgFrames
             Timber.i("Averaged MaxIndex is: $maxIndex")
         }
@@ -100,7 +99,7 @@ class PixelAnalyzer constructor(
                 counter++
             }
             val pixelCount = size / 4
-            Timber.i("${rSum.toDouble() / pixelCount} \t ${gSum.toDouble() / pixelCount} \t ${bSum.toDouble() / pixelCount}")
+            Timber.i("rgbMean : ${rSum.toDouble() / pixelCount} \t ${gSum.toDouble() / pixelCount} \t ${bSum.toDouble() / pixelCount}")
             displayCounter()
         }
         imgCount++
@@ -113,10 +112,9 @@ class PixelAnalyzer constructor(
         if (previousSecond == currentSecond) {
             counter++
         } else {
-            if (firstSec){
+            if (firstSec) {
                 firstSec = false
-            }
-            else{
+            } else {
                 sec++
                 frameRate += ++counter
             }
@@ -162,7 +160,7 @@ class PixelAnalyzer constructor(
     private fun yuv420ToByteArray(image: Image): ByteArray {
         val yBuffer = image.planes[0].buffer
         val yData = yBuffer.toByteArray()
-        if ((imgCount >= skipFrames) and (imgCount < (skipFrames + avgFrames))){
+        if ((imgCount >= skipFrames) and (imgCount < (skipFrames + avgFrames))) {
             val m = yData.indices.maxByOrNull { yData[it].toInt() and 0xFF } ?: -1
             Timber.i("MaxIndex: $m")
             maxIndex += m

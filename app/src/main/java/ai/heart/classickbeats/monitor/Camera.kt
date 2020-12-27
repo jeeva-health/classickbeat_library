@@ -5,9 +5,9 @@ import android.hardware.camera2.*
 import android.media.ImageReader
 import android.os.Handler
 import android.os.HandlerThread
+import android.util.Range
 import android.view.Surface
 import timber.log.Timber
-import java.lang.Boolean
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 
@@ -125,7 +125,7 @@ class Camera constructor(
         this.surface = surface
         this.viewModel = viewModel
 
-        imageReader = ImageReader.newInstance(320, 240, ImageFormat.YUV_420_888, 30)
+        imageReader = ImageReader.newInstance(320, 240, ImageFormat.YUV_420_888, 60)
         imageReader?.setOnImageAvailableListener(onImageAvailableListener, mBackgroundHandler)
         cameraDevice?.createCaptureSession(
             listOf(surface, imageReader?.surface),
@@ -138,10 +138,9 @@ class Camera constructor(
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
             if (viewModel?.isProcessing == true) {
-                if (lensFacing == CameraCharacteristics.LENS_FACING_BACK){
+                if (lensFacing == CameraCharacteristics.LENS_FACING_BACK) {
                     pixelAnalyzer.processImageHeart(img)
-                }
-                else{
+                } else {
                     pixelAnalyzer.processImageSpO2(img)
                 }
             }
@@ -188,9 +187,9 @@ class Camera constructor(
 
     private fun createPreviewRequestBuilder(): CaptureRequest.Builder? {
         val builder = cameraDevice?.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-        builder?.addTarget(imageReader!!.surface)
-//        builder?.addTarget(surface!!)
         enableDefaultModes(builder)
+        builder?.addTarget(imageReader!!.surface)
+        builder?.addTarget(surface!!)
         return builder
     }
 
@@ -199,20 +198,28 @@ class Camera constructor(
 
         builder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF)
         builder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON)
-        builder.set(CaptureRequest.CONTROL_AWB_LOCK, Boolean.TRUE)
-        if (lensFacing == CameraCharacteristics.LENS_FACING_BACK){
-            builder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH)
-        }
+//        builder.set(CaptureRequest.CONTROL_AWB_MODE, CaptureRequest.CONTROL_AWB_MODE_OFF)
 //        builder.set(
 //            CaptureRequest.COLOR_CORRECTION_MODE,
 //            CaptureRequest.COLOR_CORRECTION_ABERRATION_MODE_OFF
 //        )
+
+        val fpsRange: Range<Int> = Range(60, 60)
+        builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, fpsRange)
+
+        if (lensFacing == CameraCharacteristics.LENS_FACING_BACK) {
+            builder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH)
+        }
     }
 
     private fun setUpCameraId(manager: CameraManager, lensFacing: Int): String {
         for (cameraId in manager.cameraIdList) {
             val characteristics = manager.getCameraCharacteristics(cameraId)
             val cameraDirection = characteristics.get(CameraCharacteristics.LENS_FACING)
+            characteristics.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES)
+                ?.forEach { range ->
+                    Timber.i("Supported FPS range: (${range.lower} - ${range.upper})")
+                }
             if (cameraDirection != null &&
                 cameraDirection == lensFacing
             ) {
