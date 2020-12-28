@@ -7,8 +7,6 @@ import android.renderscript.*
 import android.text.format.DateUtils
 import timber.log.Timber
 import java.nio.ByteBuffer
-import java.nio.ReadOnlyBufferException
-import kotlin.experimental.inv
 
 
 class PixelAnalyzer constructor(
@@ -84,35 +82,33 @@ class PixelAnalyzer constructor(
         imgCount++
     }
 
-    fun processImageHeart(image: Image) {
-        if (imgCount >= skipFrames) {
-            val argbArray = yuv420ToARGB(image, context)
-            val size = argbArray.size
-            val w = image.width
-            val h = image.height
-            var counter = 0
-            var rSum = 0
-            var gSum = 0
-            var bSum = 0
-            var aSum = 0
-            while (counter < size) {
-                val byte = argbArray[counter].toInt()
-                when (counter % 4) {
-                    0 -> rSum += byte and 0xFF
-                    1 -> gSum += byte and 0xFF
-                    2 -> bSum += byte and 0xFF
-                    3 -> aSum += byte and 0xFF
-                }
-                counter++
+    fun processImageHeart(image: Image): Double {
+        val argbArray = yuv420ToARGB(image, context)
+        val size = argbArray.size
+        val w = image.width
+        val h = image.height
+        var counter = 0
+        var rSum = 0
+        var gSum = 0
+        var bSum = 0
+        var aSum = 0
+        while (counter < size) {
+            val byte = argbArray[counter].toInt()
+            when (counter % 4) {
+                0 -> rSum += byte and 0xFF
+                1 -> gSum += byte and 0xFF
+                2 -> bSum += byte and 0xFF
+                3 -> aSum += byte and 0xFF
             }
-            val p = w*h
-            Timber.i("RGBMean: ${rSum.toDouble() / p} \t ${gSum.toDouble() / p} \t ${bSum.toDouble() / p} \t $h \t $w")
-            displayCounter()
+            counter++
         }
-        imgCount++
+        val p = w * h
+        Timber.i("RGBMean: ${rSum.toDouble() / p} \t ${gSum.toDouble() / p} \t ${bSum.toDouble() / p} \t $h \t $w")
+        displayCounter()
+        return gSum.toDouble() / p
     }
 
-    fun processImage(image: Image) {
+    fun processImage(image: Image): Double {
         val imageWidth = image.width
         val imageHeight = image.height
         val argbArray = IntArray(imageWidth * imageHeight)
@@ -130,8 +126,8 @@ class PixelAnalyzer constructor(
         var g_sum = 0
         var b_sum = 0
         var count = 0
-        for (y in 0 until imageHeight-2) {
-            for (x in 0 until imageWidth-2) {
+        for (y in 0 until imageHeight - 2) {
+            for (x in 0 until imageWidth - 2) {
                 val yIndex = y * imageWidth + x
                 yValue = yBuffer[yIndex].toInt() and 0xff
                 val uvx = x / 2
@@ -162,6 +158,7 @@ class PixelAnalyzer constructor(
         means[2] = b_mean
         Timber.i("rgbMean: " + means[0] + "\t" + means[1] + "\t" + means[2])
         displayCounter()
+        return g_mean.toDouble()
     }
 
     private fun clamp(value: Float, min: Float, max: Float): Float {
@@ -177,11 +174,9 @@ class PixelAnalyzer constructor(
         } else {
             if (firstSec) {
                 firstSec = false
-            }
-            else if (secondSec) {
+            } else if (secondSec) {
                 secondSec = false
-            }
-            else {
+            } else {
                 sec++
                 frameRate += ++counter
             }

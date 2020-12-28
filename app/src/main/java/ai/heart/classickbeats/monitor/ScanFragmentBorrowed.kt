@@ -24,6 +24,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.chaquo.python.Python
 import timber.log.Timber
 import java.lang.Boolean
 
@@ -52,6 +53,8 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
 
     private var width: Int = 0
     private var height: Int = 0
+
+    private val gMeanList = mutableListOf<Double>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -154,10 +157,16 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             override fun onConfigureFailed(session: CameraCaptureSession) {}
         }
 
+    var imageCounter = 0
+
     private val onImageAvailableListener =
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
+            imageCounter++
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
-            pixelAnalyzer?.processImageHeart(img)
+            if (imageCounter > 90) {
+                val gMean = pixelAnalyzer?.processImage(img) ?: 0.0
+                gMeanList.add(gMean)
+            }
             img.close()
         }
 
@@ -252,10 +261,37 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
         camera?.close()
         stopBackgroundThread()
         monitorViewModel.endTimer()
+        val result = calculate()
+        monitorViewModel.hearRateResult = result
         when (navArgs.testType) {
             TestType.HEART_RATE -> navigateToHeartResultFragment()
             TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()
         }
+    }
+
+    private fun calculate(): HeartRateResult {
+        val gMeanArray: Array<Double> = gMeanList.toTypedArray()
+        val python: Python = Python.getInstance()
+        val filePyObject = python.getModule("HeartStats")
+        val classPyObject = filePyObject.callAttr("HeartStats")
+        val response = classPyObject.callAttr("HR_stats", gMeanArray).asList()
+        val bpm = response[0].toDouble()
+        val hrv = response[1].toDouble()
+        val afib = when (response[2].toDouble()) {
+            0.0 -> "Not Detected"
+            1.0 -> "Possible"
+            else -> "Detected"
+        }
+        val quality = response[3].toDouble()
+        val qualityStr = when {
+            quality <= 1e-5 -> "PERFECT Quality Recording, Good job!"
+            quality <= 1e-4 -> "Good Quality Recording!"
+            quality <= 1e-3 -> "Decent Quality Recording, minor hiccups!"
+            quality <= 2e-2 -> "Poor Quality Recording. Please record again!"
+            else -> "Extremely poor signal quality. Please record again!"
+        }
+        val result = HeartRateResult(bpm = bpm, hrv = hrv, aFib = afib, quality = qualityStr)
+        return result
     }
 
     private fun navigateToHeartResultFragment() {

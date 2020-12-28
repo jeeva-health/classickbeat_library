@@ -8,9 +8,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.util.concurrent.TimeUnit
 
-const val SCAN_DURATION = 30
+const val SCAN_DURATION = 33
 
 class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
+
+    var hearRateResult: HeartRateResult? = null
 
     private var timer: CountDownTimer? = null
 

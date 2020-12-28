@@ -33,12 +33,8 @@ android {
         }
 
         python {
-            // buildPython "/Users/vipul_gupta/anaconda3/bin/python"
             pip {
-                install "numpy==1.17.4"
-            }
-            pip {
-                install "scipy==1.4.1"
+                install "-r", "src/main/python/requirements.txt"
             }
 //            Change to true for speed
             pyc {
@@ -114,5 +110,5 @@ dependencies {
     implementation "androidx.camera:camera-view:1.0.0-alpha20"
 
     //Lottie
-    implementation 'com.airbnb.android:lottie:3.5.0'
+    implementation 'com.airbnb.android:lottie:3.6.0'
 }

@@ -6,13 +6,110 @@
     android:layout_height="match_parent"
     tools:context=".monitor.HeartResultFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/center_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Statistics"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/checklist_animation"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/checklist" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/quality"
+        style="@style/result_label"
+        android:layout_marginTop="0dp"
         android:gravity="center"
-        android:text="Show Heart Test result here"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/checklist_animation"
+        tools:text="Quality" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/bpm_tv"
+        style="@style/result_label"
+        android:text="Beats / min:"
+        app:layout_constraintEnd_toEndOf="@id/center_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/quality" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/bpm"
+        style="@style/result_value"
+        app:layout_constraintBaseline_toBaselineOf="@id/bpm_tv"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/center_guideline"
+        tools:text="76" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/hrv_tv"
+        style="@style/result_label"
+        android:text="HRV (sdnn):"
+        app:layout_constraintEnd_toEndOf="@id/center_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/bpm_tv" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/hrv"
+        style="@style/result_value"
+        app:layout_constraintBaseline_toBaselineOf="@id/hrv_tv"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/center_guideline"
+        tools:text="76" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/aFib_tv"
+        style="@style/result_label"
+        android:text="Atrial Fibrillation:"
+        app:layout_constraintEnd_toEndOf="@id/center_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/hrv_tv" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/aFib"
+        style="@style/result_value"
+        app:layout_constraintBaseline_toBaselineOf="@id/aFib_tv"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/center_guideline"
+        tools:text="76" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/re_test_button"
