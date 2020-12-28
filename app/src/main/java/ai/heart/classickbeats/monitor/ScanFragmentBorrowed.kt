@@ -158,14 +158,16 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
         }
 
     var imageCounter = 0
+    var fps = 0
 
     private val onImageAvailableListener =
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
             imageCounter++
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
             if (imageCounter > 90) {
-                val gMean = pixelAnalyzer?.processImage(img) ?: 0.0
-                gMeanList.add(gMean)
+                val gMean = pixelAnalyzer?.processImage(img) ?: Pair(0.0, 0)
+                gMeanList.add(gMean.first)
+                fps = gMean.second
             }
             img.close()
         }
@@ -274,7 +276,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
         val python: Python = Python.getInstance()
         val filePyObject = python.getModule("HeartStats")
         val classPyObject = filePyObject.callAttr("HeartStats")
-        val response = classPyObject.callAttr("HR_stats", gMeanArray).asList()
+        val response = classPyObject.callAttr("HR_stats", gMeanArray, fps).asList()
         val bpm = response[0].toDouble()
         val hrv = response[1].toDouble()
         val afib = when (response[2].toDouble()) {

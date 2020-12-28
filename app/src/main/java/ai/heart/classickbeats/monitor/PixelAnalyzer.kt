@@ -7,6 +7,7 @@ import android.renderscript.*
 import android.text.format.DateUtils
 import timber.log.Timber
 import java.nio.ByteBuffer
+import kotlin.math.roundToInt
 
 
 class PixelAnalyzer constructor(
@@ -108,7 +109,7 @@ class PixelAnalyzer constructor(
         return gSum.toDouble() / p
     }
 
-    fun processImage(image: Image): Double {
+    fun processImage(image: Image): Pair<Double, Int> {
         val imageWidth = image.width
         val imageHeight = image.height
         val argbArray = IntArray(imageWidth * imageHeight)
@@ -158,7 +159,13 @@ class PixelAnalyzer constructor(
         means[2] = b_mean
         Timber.i("rgbMean: " + means[0] + "\t" + means[1] + "\t" + means[2])
         displayCounter()
-        return g_mean.toDouble()
+        val fps = if (sec > 0){
+            (frameRate.toDouble()/sec).roundToInt()
+        }
+        else{
+            0
+        }
+        return Pair(g_mean.toDouble(), fps)
     }
 
     private fun clamp(value: Float, min: Float, max: Float): Float {
