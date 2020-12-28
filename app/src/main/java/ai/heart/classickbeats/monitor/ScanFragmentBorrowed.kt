@@ -157,7 +157,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
     private val onImageAvailableListener =
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
-            pixelAnalyzer?.processImage(img)
+            pixelAnalyzer?.processImageHeart(img)
             img.close()
         }
 

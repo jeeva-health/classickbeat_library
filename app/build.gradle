@@ -20,11 +20,20 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+//        sourceSets{
+//            main{
+//                python{
+//                    srcDirs = ["src/main/Python"]
+//                }
+//            }
+//        }
+
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
 
         python {
+            // buildPython "/Users/vipul_gupta/anaconda3/bin/python"
             pip {
 //                install "numpy"
 //                install "scipy"
