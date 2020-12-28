@@ -35,14 +35,15 @@ android {
         python {
             // buildPython "/Users/vipul_gupta/anaconda3/bin/python"
             pip {
-//                install "numpy"
-//                install "scipy"
+                install "numpy==1.17.4"
+            }
+            pip {
+                install "scipy==1.4.1"
             }
 //            Change to true for speed
             pyc {
                 src false
             }
-            // staticProxy "HelloWorld"
         }
     }
 
