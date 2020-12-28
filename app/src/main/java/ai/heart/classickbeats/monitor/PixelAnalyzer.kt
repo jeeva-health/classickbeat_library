@@ -83,7 +83,7 @@ class PixelAnalyzer constructor(
         imgCount++
     }
 
-    fun processImageHeart(image: Image): Double {
+    fun processImageHeart(image: Image): Pair<Double, Int> {
         val argbArray = yuv420ToARGB(image, context)
         val size = argbArray.size
         val w = image.width
@@ -106,7 +106,13 @@ class PixelAnalyzer constructor(
         val p = w * h
         Timber.i("RGBMean: ${rSum.toDouble() / p} \t ${gSum.toDouble() / p} \t ${bSum.toDouble() / p} \t $h \t $w")
         displayCounter()
-        return gSum.toDouble() / p
+        val fps = if (sec > 0){
+            (frameRate.toDouble()/sec).roundToInt()
+        }
+        else{
+            0
+        }
+        return Pair(gSum.toDouble()/p, fps)
     }
 
     fun processImage(image: Image): Pair<Double, Int> {

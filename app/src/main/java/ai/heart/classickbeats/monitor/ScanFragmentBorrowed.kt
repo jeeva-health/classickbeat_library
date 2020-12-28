@@ -165,7 +165,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             imageCounter++
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
             if (imageCounter > 90) {
-                val gMean = pixelAnalyzer?.processImage(img) ?: Pair(0.0, 0)
+                val gMean = pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
                 gMeanList.add(gMean.first)
                 fps = gMean.second
             }
