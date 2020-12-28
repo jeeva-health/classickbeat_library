@@ -14,6 +14,7 @@ import android.media.ImageReader
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
+import android.util.Range
 import android.view.Surface
 import android.view.TextureView
 import android.view.View
@@ -25,7 +26,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import timber.log.Timber
 import java.lang.Boolean
-import java.util.*
 
 
 class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
@@ -119,7 +119,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
                     imageReader = ImageReader.newInstance(
                         320,
                         240,
-                        ImageFormat.YUV_420_888,
+                         ImageFormat.YUV_420_888,
                         30
                     )
                     imageReader?.setOnImageAvailableListener(
@@ -201,6 +201,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             builder.addTarget(imageReader!!.surface)
             builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF)
             builder.set(CaptureRequest.CONTROL_AWB_LOCK, Boolean.TRUE)
+            builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range.create(30,60))
             builder.build()
         } catch (e: CameraAccessException) {
             Timber.e(e)

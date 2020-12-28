@@ -8,11 +8,13 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.chaquo.python.Python
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -79,6 +81,7 @@ class CameraSelectionFragment : Fragment(R.layout.fragment_camera_selection) {
 
         checkPermission(Manifest.permission.CAMERA)
         requestForPermissions()
+        // Toast.makeText(requireContext(), getPythonHelloWorld(), Toast.LENGTH_LONG).show()
     }
 
     private fun navigateToScanFragment(testType: TestType) {
@@ -88,4 +91,10 @@ class CameraSelectionFragment : Fragment(R.layout.fragment_camera_selection) {
             )
         navController.navigate(action)
     }
+
+//    private fun getPythonHelloWorld(): String {
+//        val python = Python.getInstance()
+//        val pythonFile = python.getModule("HelloWorld")
+//        return pythonFile.callAttr("myfunc(5)").toString()
+//    }
 }
