@@ -26,7 +26,10 @@ android {
 
         python {
             pip {
-//                install "-r", "requirements.txt"
+                install "numpy==1.17.4"
+            }
+            pip {
+                install "scipy==1.4.1"
             }
 //            Change to true for speed
             pyc {
