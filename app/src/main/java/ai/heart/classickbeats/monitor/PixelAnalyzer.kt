@@ -7,6 +7,8 @@ import android.renderscript.*
 import android.text.format.DateUtils
 import timber.log.Timber
 import java.nio.ByteBuffer
+import java.nio.ReadOnlyBufferException
+import kotlin.experimental.inv
 
 
 class PixelAnalyzer constructor(
@@ -19,7 +21,7 @@ class PixelAnalyzer constructor(
     private var maxIndex: Int = 0
     private var counter: Int = 0
     private var imgCount: Int = 0
-    private val skipFrames: Int = 60
+    private val skipFrames: Int = 0
     private val avgFrames: Int = 90
 
     private var script: ScriptIntrinsicYuvToRGB? = null
@@ -29,6 +31,7 @@ class PixelAnalyzer constructor(
     private var sec = 0
     private var frameRate = 0
     private var firstSec = true
+    private var secondSec = true
 
     private fun ByteBuffer.toByteArray(): ByteArray {
         rewind()
@@ -85,21 +88,25 @@ class PixelAnalyzer constructor(
         if (imgCount >= skipFrames) {
             val argbArray = yuv420ToARGB(image, context)
             val size = argbArray.size
+            val w = image.width
+            val h = image.height
             var counter = 0
             var rSum = 0
             var gSum = 0
             var bSum = 0
+            var aSum = 0
             while (counter < size) {
                 val byte = argbArray[counter].toInt()
                 when (counter % 4) {
                     0 -> rSum += byte and 0xFF
                     1 -> gSum += byte and 0xFF
                     2 -> bSum += byte and 0xFF
+                    3 -> aSum += byte and 0xFF
                 }
                 counter++
             }
-            val pixelCount = size / 4
-            Timber.i("rgbMean : ${rSum.toDouble() / pixelCount} \t ${gSum.toDouble() / pixelCount} \t ${bSum.toDouble() / pixelCount}")
+            val p = w*h
+            Timber.i("RGBMean: ${rSum.toDouble() / p} \t ${gSum.toDouble() / p} \t ${bSum.toDouble() / p} \t $h \t $w")
             displayCounter()
         }
         imgCount++
@@ -123,8 +130,8 @@ class PixelAnalyzer constructor(
         var g_sum = 0
         var b_sum = 0
         var count = 0
-        for (y in 0 until imageHeight - 2) {
-            for (x in 0 until imageWidth - 2) {
+        for (y in 0 until imageHeight-2) {
+            for (x in 0 until imageWidth-2) {
                 val yIndex = y * imageWidth + x
                 yValue = yBuffer[yIndex].toInt() and 0xff
                 val uvx = x / 2
@@ -139,8 +146,7 @@ class PixelAnalyzer constructor(
                 r = clamp(r.toFloat(), 0f, 255f).toInt()
                 g = clamp(g.toFloat(), 0f, 255f).toInt()
                 b = clamp(b.toFloat(), 0f, 255f).toInt()
-                argbArray[yIndex] =
-                    255 shl 24 or (r and 255 shl 16) or (g and 255 shl 8) or (b and 255)
+//                argbArray[yIndex] = 255 shl 24 or (r and 255 shl 16) or (g and 255 shl 8) or (b and 255)
                 r_sum += r
                 g_sum += g
                 b_sum += b
@@ -171,11 +177,15 @@ class PixelAnalyzer constructor(
         } else {
             if (firstSec) {
                 firstSec = false
-            } else {
+            }
+            else if (secondSec) {
+                secondSec = false
+            }
+            else {
                 sec++
                 frameRate += ++counter
             }
-            Timber.i("frameRate $previousSecond: ${counter} Seconds: $sec SumRate: $frameRate")
+            Timber.i("frameRate: ${counter} Seconds: $sec SumRate: $frameRate")
             counter = 0
         }
     }
@@ -217,15 +227,76 @@ class PixelAnalyzer constructor(
     private fun yuv420ToByteArray(image: Image): ByteArray {
         val yBuffer = image.planes[0].buffer
         val yData = yBuffer.toByteArray()
-        if ((imgCount >= skipFrames) and (imgCount < (skipFrames + avgFrames))) {
-            val m = yData.indices.maxByOrNull { yData[it].toInt() and 0xFF } ?: -1
-            Timber.i("MaxIndex: $m")
-            maxIndex += m
-        }
+//        if ((imgCount >= skipFrames) and (imgCount < (skipFrames + avgFrames))) {
+//            val m = yData.indices.maxByOrNull { yData[it].toInt() and 0xFF } ?: -1
+//            Timber.i("MaxIndex: $m")
+//            maxIndex += m
+//        }
         val uBuffer = image.planes[1].buffer
         val uData = uBuffer.toByteArray()
         val vBuffer = image.planes[2].buffer
         val vData = vBuffer.toByteArray()
         return yData + vData + uData
     }
+
+//    private fun yuv420ToByteArray(image: Image): ByteArray {
+//        val width = image.width
+//        val height = image.height
+//        val ySize = width * height
+//        val uvSize = width * height / 4
+//        val nv21 = ByteArray(ySize + uvSize * 2)
+//        val yBuffer = image.planes[0].buffer // Y
+//        val uBuffer = image.planes[1].buffer // U
+//        val vBuffer = image.planes[2].buffer // V
+//        var rowStride = image.planes[0].rowStride
+//        assert(image.planes[0].pixelStride == 1)
+//        var pos = 0
+//        if (rowStride == width) { // likely
+//            yBuffer[nv21, 0, ySize]
+//            pos += ySize
+//        } else {
+//            var yBufferPos = -rowStride.toLong() // not an actual position
+//            while (pos < ySize) {
+//                yBufferPos += rowStride.toLong()
+//                yBuffer.position(yBufferPos.toInt())
+//                yBuffer[nv21, pos, width]
+//                pos += width
+//            }
+//        }
+//        rowStride = image.planes[2].rowStride
+//        val pixelStride = image.planes[2].pixelStride
+//        assert(rowStride == image.planes[1].rowStride)
+//        assert(pixelStride == image.planes[1].pixelStride)
+//        if (pixelStride == 2 && rowStride == width && uBuffer[0] == vBuffer[1]) {
+//            // maybe V an U planes overlap as per NV21, which means vBuffer[1] is alias of uBuffer[0]
+//            val savePixel = vBuffer[1]
+//            try {
+//                vBuffer.put(1, savePixel.inv() as Byte)
+//                if (uBuffer[0] == savePixel.inv() as Byte) {
+//                    vBuffer.put(1, savePixel)
+//                    vBuffer.position(0)
+//                    uBuffer.position(0)
+//                    vBuffer[nv21, ySize, 1]
+//                    uBuffer[nv21, ySize + 1, uBuffer.remaining()]
+//                    return nv21 // shortcut
+//                }
+//            } catch (ex: ReadOnlyBufferException) {
+//                // unfortunately, we cannot check if vBuffer and uBuffer overlap
+//            }
+//
+//            // unfortunately, the check failed. We must save U and V pixel by pixel
+//            vBuffer.put(1, savePixel)
+//        }
+//
+//        // other optimizations could check if (pixelStride == 1) or (pixelStride == 2),
+//        // but performance gain would be less significant
+//        for (row in 0 until height / 2) {
+//            for (col in 0 until width / 2) {
+//                val vuPos = col * pixelStride + row * rowStride
+//                nv21[pos++] = vBuffer[vuPos]
+//                nv21[pos++] = uBuffer[vuPos]
+//            }
+//        }
+//        return nv21
+//    }
 }
