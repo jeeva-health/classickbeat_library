@@ -83,6 +83,31 @@ class PixelAnalyzer constructor(
         imgCount++
     }
 
+    fun processImageSpO2Y(image: Image): Pair<Double, Int> {
+        val yBuffer = image.planes[0].buffer
+        val w = image.width
+        val h = image.height
+        val yData = yBuffer.toByteArray()
+        val size = yData.size
+        var ySum = 0
+        var counter = 0
+        while (counter < size) {
+            val byte = yData[counter].toInt()
+            ySum += byte and 0xFF
+            counter++
+        }
+        val yMean = ySum.toDouble()/size
+        displayCounter()
+        val fps = if (sec > 0){
+            (frameRate.toDouble()/sec).roundToInt()
+        }
+        else{
+            0
+        }
+        Timber.i("YMean: $yMean \t FPS: $fps \t $h \t $w")
+        return Pair(yMean, fps)
+    }
+
     fun processImageHeart(image: Image): Pair<Double, Int> {
         val argbArray = yuv420ToARGB(image, context)
         val size = argbArray.size
@@ -104,7 +129,6 @@ class PixelAnalyzer constructor(
             counter++
         }
         val p = w * h
-        Timber.i("RGBMean: ${rSum.toDouble() / p} \t ${gSum.toDouble() / p} \t ${bSum.toDouble() / p} \t $h \t $w")
         displayCounter()
         val fps = if (sec > 0){
             (frameRate.toDouble()/sec).roundToInt()
@@ -112,6 +136,7 @@ class PixelAnalyzer constructor(
         else{
             0
         }
+        Timber.i("RGBMean: ${rSum.toDouble() / p} \t ${gSum.toDouble() / p} \t ${bSum.toDouble() / p} \t FPS: $fps")
         return Pair(gSum.toDouble()/p, fps)
     }
 
@@ -193,7 +218,7 @@ class PixelAnalyzer constructor(
                 sec++
                 frameRate += ++counter
             }
-            Timber.i("frameRate: ${counter} Seconds: $sec SumRate: $frameRate")
+            // Timber.i("frameRate: ${counter} Seconds: $sec SumRate: $frameRate")
             counter = 0
         }
     }

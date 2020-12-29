@@ -133,15 +133,11 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
                     val texture = textureView.surfaceTexture
                     texture?.setDefaultBufferSize(width, height)
 
-//                    camera.createCaptureSession(
-//                        listOf(Surface(texture!!), imageReader?.surface),
-//                        stateSessionCallback,
-//                        mBackgroundHandler
-//                    )
-                    camera.createConstrainedHighSpeedCaptureSession(
+                    camera.createCaptureSession(
                         listOf(Surface(texture!!), imageReader?.surface),
                         stateSessionCallback,
-                        mBackgroundHandler)
+                        mBackgroundHandler
+                    )
                 } catch (e: CameraAccessException) {
                     Timber.e("Failed Camera Session $e")
                 }
@@ -169,7 +165,11 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             imageCounter++
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
             if (imageCounter > 90) {
-                val gMean = pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
+                val gMean = when (navArgs.testType) {
+                    TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
+                    TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImageSpO2Y(img) ?: Pair(0.0, 0)
+                }
+                // val gMean = pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
                 gMeanList.add(gMean.first)
                 fps = gMean.second
             }
@@ -222,11 +222,14 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             if (navArgs.testType == TestType.HEART_RATE) {
                 builder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH)
             }
+            val texture = textureView.surfaceTexture
+            texture?.setDefaultBufferSize(width, height)
             builder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON)
             builder.addTarget(imageReader!!.surface)
+            builder.addTarget(Surface(texture)!!)
             builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF)
             builder.set(CaptureRequest.CONTROL_AWB_LOCK, Boolean.TRUE)
-            builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range.create(30, 90))
+            builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range.create(30, 60))
 //            builder.set(CaptureRequest.SENSOR_SENSITIVITY, 100);
 //            builder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 10000000);
             builder.build()
