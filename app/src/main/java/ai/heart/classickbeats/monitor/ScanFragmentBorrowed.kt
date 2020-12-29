@@ -133,11 +133,15 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
                     val texture = textureView.surfaceTexture
                     texture?.setDefaultBufferSize(width, height)
 
-                    camera.createCaptureSession(
+//                    camera.createCaptureSession(
+//                        listOf(Surface(texture!!), imageReader?.surface),
+//                        stateSessionCallback,
+//                        mBackgroundHandler
+//                    )
+                    camera.createConstrainedHighSpeedCaptureSession(
                         listOf(Surface(texture!!), imageReader?.surface),
                         stateSessionCallback,
-                        mBackgroundHandler
-                    )
+                        mBackgroundHandler)
                 } catch (e: CameraAccessException) {
                     Timber.e("Failed Camera Session $e")
                 }
@@ -196,6 +200,12 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
                     ?.forEach { range ->
                         Timber.i("Supported FPS range: (${range.lower} - ${range.upper})")
                     }
+                val map =
+                    characteristics[CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP]
+                val fpsRange =
+                    map!!.highSpeedVideoFpsRanges // this range intends available fps range of device's camera.
+
+
                 if (cameraFacing == characteristics.get(CameraCharacteristics.LENS_FACING)) {
                     return cameraId
                 }
@@ -216,7 +226,9 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             builder.addTarget(imageReader!!.surface)
             builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF)
             builder.set(CaptureRequest.CONTROL_AWB_LOCK, Boolean.TRUE)
-            builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range.create(30, 60))
+            builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range.create(30, 90))
+//            builder.set(CaptureRequest.SENSOR_SENSITIVITY, 100);
+//            builder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 10000000);
             builder.build()
         } catch (e: CameraAccessException) {
             Timber.e(e)
