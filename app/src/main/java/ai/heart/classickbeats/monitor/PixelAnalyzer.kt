@@ -7,6 +7,8 @@ import android.renderscript.*
 import android.text.format.DateUtils
 import timber.log.Timber
 import java.nio.ByteBuffer
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 
@@ -113,22 +115,36 @@ class PixelAnalyzer constructor(
         val size = argbArray.size
         val w = image.width
         val h = image.height
-        var counter = 0
+        var ind = 0
         var rSum = 0
         var gSum = 0
         var bSum = 0
         var aSum = 0
-        while (counter < size) {
-            val byte = argbArray[counter].toInt()
-            when (counter % 4) {
-                0 -> rSum += byte and 0xFF
-                1 -> gSum += byte and 0xFF
-                2 -> bSum += byte and 0xFF
-                3 -> aSum += byte and 0xFF
+        val len = 60
+        var count = 0
+        for (y in max(0,h/2 - len) until min(h - 2, h/2 + len)) {
+            for (x in max(0, w/2 - len) until min(w - 2, w/2 + len)) {
+                ind = y * w + x
+                rSum += argbArray[ind*4].toInt() and 0xFF
+                gSum += argbArray[ind*4+1].toInt() and 0xFF
+                bSum += argbArray[ind*4+2].toInt() and 0xFF
+                aSum += argbArray[ind*4+3].toInt() and 0xFF
+                count++
             }
-            counter++
         }
-        val p = w * h
+//        while (counter < size) {
+//            val byte = argbArray[counter].toInt()
+//            when (counter % 4) {
+//                0 -> rSum += byte and 0xFF
+//                1 -> gSum += byte and 0xFF
+//                2 -> bSum += byte and 0xFF
+//            }
+//            counter++
+//        }
+        val rMean = rSum.toDouble() / count
+        val gMean = gSum.toDouble() / count
+        val bMean = bSum.toDouble() / count
+        val aMean = aSum.toDouble() / count
         displayCounter()
         val fps = if (sec > 0){
             (frameRate.toDouble()/sec).roundToInt()
@@ -136,14 +152,14 @@ class PixelAnalyzer constructor(
         else{
             0
         }
-        Timber.i("RGBMean: ${rSum.toDouble() / p} \t ${gSum.toDouble() / p} \t ${bSum.toDouble() / p} \t FPS: $fps")
-        return Pair(gSum.toDouble()/p, fps)
+        Timber.i("RGBMean: $rMean \t $gMean \t $bMean \t $aMean \t FPS: $fps")
+        return Pair(gMean, fps)
     }
 
     fun processImage(image: Image): Pair<Double, Int> {
-        val imageWidth = image.width
-        val imageHeight = image.height
-        val argbArray = IntArray(imageWidth * imageHeight)
+        val w = image.width
+        val h = image.height
+        // val argbArray = IntArray(w * h)
         val yBuffer = image.planes[0].buffer
         yBuffer.position(0)
         val uvBuffer = image.planes[1].buffer
@@ -158,13 +174,14 @@ class PixelAnalyzer constructor(
         var g_sum = 0
         var b_sum = 0
         var count = 0
-        for (y in 0 until imageHeight - 2) {
-            for (x in 0 until imageWidth - 2) {
-                val yIndex = y * imageWidth + x
+        val len = 40  // Length of square is (2*len)
+        for (y in max(0,h/2 - len) until min(h - 2, h/2 + len)) {
+            for (x in max(0, w/2 - len) until min(w - 2, w/2 + len)) {
+                val yIndex = y * w + x
                 yValue = yBuffer[yIndex].toInt() and 0xff
                 val uvx = x / 2
                 val uvy = y / 2
-                val uIndex = uvy * imageWidth + 2 * uvx
+                val uIndex = uvy * w + 2 * uvx
                 val vIndex = uIndex + 1
                 uValue = (uvBuffer[uIndex].toInt() and 0xff) - 128
                 vValue = (uvBuffer[vIndex].toInt() and 0xff) - 128
@@ -181,14 +198,9 @@ class PixelAnalyzer constructor(
                 count++
             }
         }
-        val r_mean = r_sum.toFloat() / count.toFloat()
-        val g_mean = g_sum.toFloat() / count.toFloat()
-        val b_mean = b_sum.toFloat() / count.toFloat()
-        val means = FloatArray(3)
-        means[0] = r_mean
-        means[1] = g_mean
-        means[2] = b_mean
-        Timber.i("rgbMean: " + means[0] + "\t" + means[1] + "\t" + means[2])
+        val rMean = r_sum.toDouble() / count
+        val gMean = g_sum.toDouble() / count
+        val bMean = b_sum.toDouble() / count
         displayCounter()
         val fps = if (sec > 0){
             (frameRate.toDouble()/sec).roundToInt()
@@ -196,7 +208,8 @@ class PixelAnalyzer constructor(
         else{
             0
         }
-        return Pair(g_mean.toDouble(), fps)
+        Timber.i("rgbMean: " + rMean + "\t" + gMean + "\t" + bMean + "\t" + fps)
+        return Pair(gMean, fps)
     }
 
     private fun clamp(value: Float, min: Float, max: Float): Float {

@@ -152,6 +152,16 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             override fun onConfigured(session: CameraCaptureSession) {
                 this@ScanFragmentBorrowed.session = session
                 Timber.i("Session Start")
+
+                try {
+                    session?.setRepeatingRequest(
+                        createCaptureRequest()!!,
+                        null,
+                        mBackgroundHandler
+                    )
+                } catch (e: CameraAccessException) {
+                    Timber.e(e)
+                }
             }
 
             override fun onConfigureFailed(session: CameraCaptureSession) {}
@@ -162,7 +172,9 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
 
     private val onImageAvailableListener =
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
-            imageCounter++
+            if (monitorViewModel.isProcessing){
+                imageCounter++
+            }
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
             if (imageCounter > 90) {
                 val gMean = when (navArgs.testType) {
@@ -230,7 +242,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF)
             builder.set(CaptureRequest.CONTROL_AWB_LOCK, Boolean.TRUE)
             builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range.create(30, 60))
-//            builder.set(CaptureRequest.SENSOR_SENSITIVITY, 100);
+            builder.set(CaptureRequest.SENSOR_SENSITIVITY, 50);
 //            builder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 10000000);
             builder.build()
         } catch (e: CameraAccessException) {
@@ -258,16 +270,6 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
 
     @SuppressLint("MissingPermission")
     private fun startScanning() {
-        try {
-            session?.setRepeatingRequest(
-                createCaptureRequest()!!,
-                null,
-                mBackgroundHandler
-            )
-        } catch (e: CameraAccessException) {
-            Timber.e(e)
-        }
-
         monitorViewModel.isProcessing = true
         monitorViewModel.startTimer()
     }
@@ -284,6 +286,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             TestType.HEART_RATE -> navigateToHeartResultFragment()
             TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()
         }
+        imageCounter = 0
     }
 
     private fun calculate(): HeartRateResult {
