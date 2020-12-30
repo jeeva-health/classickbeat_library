@@ -90,15 +90,23 @@ class PixelAnalyzer constructor(
         val w = image.width
         val h = image.height
         val yData = yBuffer.toByteArray()
-        val size = yData.size
         var ySum = 0
-        var counter = 0
-        while (counter < size) {
-            val byte = yData[counter].toInt()
-            ySum += byte and 0xFF
-            counter++
+        val len = 60
+        var count = 0
+        var ind = 0
+        for (y in max(0,h/2 - len) until min(h - 2, h/2 + len)) {
+            for (x in max(0, w/2 - len) until min(w - 2, w/2 + len)) {
+                ind = y * w + x
+                ySum += yData[ind].toInt() and 0xFF
+                count++
+            }
         }
-        val yMean = ySum.toDouble()/size
+//        while (counter < size) {
+//            val byte = yData[counter].toInt()
+//            ySum += byte and 0xFF
+//            counter++
+//        }
+        val yMean = ySum.toDouble()/count
         displayCounter()
         val fps = if (sec > 0){
             (frameRate.toDouble()/sec).roundToInt()
@@ -120,7 +128,7 @@ class PixelAnalyzer constructor(
         var gSum = 0
         var bSum = 0
         var aSum = 0
-        val len = 60
+        val len = 120
         var count = 0
         for (y in max(0,h/2 - len) until min(h - 2, h/2 + len)) {
             for (x in max(0, w/2 - len) until min(w - 2, w/2 + len)) {
