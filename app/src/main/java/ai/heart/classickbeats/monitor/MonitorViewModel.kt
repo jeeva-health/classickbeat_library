@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.util.concurrent.TimeUnit
 
-const val SCAN_DURATION = 33
+const val SCAN_DURATION = 13
 
 class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
 

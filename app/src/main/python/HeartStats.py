@@ -2,6 +2,11 @@ import numpy as np
 from scipy import signal
 from scipy.signal import filtfilt
 from scipy.special import rel_entr
+import os
+os.environ["PATH"] = ":".join([p for p in os.environ["PATH"].split(":")
+                               if os.access(p, os.R_OK | os.X_OK)])
+import matplotlib.pyplot as plt
+from android.os import Environment
 
 
 class HeartStats:
@@ -74,13 +79,11 @@ class HeartStats:
                                          mode='valid'))
 
     def HR_stats(self, data, fs=30):
-        sqi1 = HeartStats.sqi(data)
         time = range(len(data))
         time = [x / fs for x in time]
         fn = 0.5 * fs
         b, a = signal.cheby2(4, 20, np.array([0.7, 4]) / fn, 'bandpass')
         data = filtfilt(b, a, data)
-        sqi2 = HeartStats.sqi(data)
 
         # moving average
         w_size = int(fs * .5)  # width of moving window
@@ -98,7 +101,6 @@ class HeartStats:
 
         # remove envelope
         signal_pure = sign[w_size: -w_size] / mov_avg
-        sqi3 = HeartStats.sqi(signal_pure)
 
         final_peaks, RR, bpm, quality = HeartStats.peaks_arr(fs, time, signal_pure, sign)
         RR_diff = np.abs(np.diff(RR, 1, 0))  # time variation between consecutive RR intervals
@@ -119,7 +121,7 @@ class HeartStats:
         rmssd_normalized = rmssd / ibi
         rmsThres = 0.1  ## Or is it 0.115 from other paper
 
-        Nbins = 16
+        Nbins = 2
         time_len = Nbins * (len(time) // 16)
         arr_splits = np.split(np.arange(time_len), Nbins)
         p_bin = np.zeros(Nbins)
@@ -141,5 +143,21 @@ class HeartStats:
                 s = 2.0
         else:
             s = 0.0
+
+        fname = str(Environment.getExternalStorageDirectory())
+        fname += "/Pictures/ppg.jpg"
+        fig = plt.figure(figsize=(20,6))
+        plt.subplot(211)
+        plt.plot(time, data, 'r-')
+        plt.xlabel('Time (s)')
+        plt.ylabel('Raw PPG Data')
+        # plt.grid(True)
+
+        plt.subplot(212)
+        plt.plot(mt_new, signal_pure, 'g-')
+        plt.xlabel('Time (s)')
+        plt.ylabel('Filtered PPG Data')
+        # plt.grid(True)
+        plt.savefig(fname,format='png', bbox_inches = "tight")
 
         return [bpm, sdnn, s, quality]

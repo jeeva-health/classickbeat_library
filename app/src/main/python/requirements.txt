@@ -1,2 +1,4 @@
 scipy==1.4.1
 numpy==1.17.4
+matplotlib
+# opencv-python

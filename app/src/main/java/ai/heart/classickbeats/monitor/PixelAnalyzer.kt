@@ -128,7 +128,7 @@ class PixelAnalyzer constructor(
         var gSum = 0
         var bSum = 0
         var aSum = 0
-        val len = 120
+        val len = 200
         var count = 0
         for (y in max(0,h/2 - len) until min(h - 2, h/2 + len)) {
             for (x in max(0, w/2 - len) until min(w - 2, w/2 + len)) {
@@ -136,7 +136,7 @@ class PixelAnalyzer constructor(
                 rSum += argbArray[ind*4].toInt() and 0xFF
                 gSum += argbArray[ind*4+1].toInt() and 0xFF
                 bSum += argbArray[ind*4+2].toInt() and 0xFF
-                aSum += argbArray[ind*4+3].toInt() and 0xFF
+                // aSum += argbArray[ind*4+3].toInt() and 0xFF
                 count++
             }
         }
@@ -152,15 +152,16 @@ class PixelAnalyzer constructor(
         val rMean = rSum.toDouble() / count
         val gMean = gSum.toDouble() / count
         val bMean = bSum.toDouble() / count
-        val aMean = aSum.toDouble() / count
+        // val aMean = aSum.toDouble() / count
         displayCounter()
+        val timeStamp = SystemClock.elapsedRealtime()
         val fps = if (sec > 0){
             (frameRate.toDouble()/sec).roundToInt()
         }
         else{
             0
         }
-        Timber.i("RGBMean: $rMean \t $gMean \t $bMean \t $aMean \t FPS: $fps")
+        Timber.i("RGBMean: $rMean \t $gMean \t $bMean \t TimeStamp: $timeStamp \t FPS: $fps")
         return Pair(gMean, fps)
     }
 
@@ -239,7 +240,7 @@ class PixelAnalyzer constructor(
                 sec++
                 frameRate += ++counter
             }
-            // Timber.i("frameRate: ${counter} Seconds: $sec SumRate: $frameRate")
+            Timber.i("frameRate: ${counter} Seconds: $sec SumRate: $frameRate")
             counter = 0
         }
     }

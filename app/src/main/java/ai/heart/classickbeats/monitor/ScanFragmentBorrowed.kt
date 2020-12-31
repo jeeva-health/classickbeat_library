@@ -238,11 +238,11 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             texture?.setDefaultBufferSize(width, height)
             builder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON)
             builder.addTarget(imageReader!!.surface)
-            builder.addTarget(Surface(texture)!!)
+             builder.addTarget(Surface(texture)!!)
             builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF)
             builder.set(CaptureRequest.CONTROL_AWB_LOCK, Boolean.TRUE)
             builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range.create(30, 60))
-            builder.set(CaptureRequest.SENSOR_SENSITIVITY, 50);
+//            builder.set(CaptureRequest.SENSOR_SENSITIVITY, 50);
 //            builder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 10000000);
             builder.build()
         } catch (e: CameraAccessException) {
