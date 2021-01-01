@@ -55,6 +55,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
     private var height: Int = 0
 
     private val gMeanList = mutableListOf<Double>()
+    private val timeList = mutableListOf<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -176,14 +177,14 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
                 imageCounter++
             }
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
-            if (imageCounter > 90) {
+            if (imageCounter >= 90) {
                 val gMean = when (navArgs.testType) {
                     TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
                     TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImageSpO2Y(img) ?: Pair(0.0, 0)
                 }
                 // val gMean = pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
                 gMeanList.add(gMean.first)
-                fps = gMean.second
+                timeList.add(gMean.second)
             }
             img.close()
         }
@@ -291,10 +292,11 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
 
     private fun calculate(): HeartRateResult {
         val gMeanArray: Array<Double> = gMeanList.toTypedArray()
+        val timeArray: Array<Int> = timeList.toTypedArray()
         val python: Python = Python.getInstance()
         val filePyObject = python.getModule("HeartStats")
         val classPyObject = filePyObject.callAttr("HeartStats")
-        val response = classPyObject.callAttr("HR_stats", gMeanArray, fps).asList()
+        val response = classPyObject.callAttr("HR_stats", gMeanArray, timeArray).asList()
         val bpm = response[0].toDouble()
         val hrv = response[1].toDouble()
         val afib = when (response[2].toDouble()) {

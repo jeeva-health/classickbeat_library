@@ -78,9 +78,13 @@ class HeartStats:
                              np.convolve(x, np.ones((2 * w + 1,)) / (2 * w + 1),
                                          mode='valid'))
 
-    def HR_stats(self, data, fs=30):
-        time = range(len(data))
-        time = [x / fs for x in time]
+    def HR_stats(self, data, time):
+        # time = range(len(data))
+        # time = [x / fs for x in time]
+        data_raw = data
+        time = np.array(time) - time[0]
+        time = (1.0*time)/1000
+        fs = len(time)/(max(time)-min(time))
         fn = 0.5 * fs
         b, a = signal.cheby2(4, 20, np.array([0.7, 4]) / fn, 'bandpass')
         data = filtfilt(b, a, data)
@@ -146,9 +150,9 @@ class HeartStats:
 
         fname = str(Environment.getExternalStorageDirectory())
         fname += "/Pictures/ppg.jpg"
-        fig = plt.figure(figsize=(20,6))
+        fig = plt.figure(figsize=(20,3))
         plt.subplot(211)
-        plt.plot(time, data, 'r-')
+        plt.plot(time, data_raw, 'r-')
         plt.xlabel('Time (s)')
         plt.ylabel('Raw PPG Data')
         # plt.grid(True)

@@ -153,8 +153,8 @@ class PixelAnalyzer constructor(
         val gMean = gSum.toDouble() / count
         val bMean = bSum.toDouble() / count
         // val aMean = aSum.toDouble() / count
-        displayCounter()
-        val timeStamp = SystemClock.elapsedRealtime()
+        // displayCounter()
+        val timeStamp = SystemClock.elapsedRealtime().toInt()
         val fps = if (sec > 0){
             (frameRate.toDouble()/sec).roundToInt()
         }
@@ -162,7 +162,7 @@ class PixelAnalyzer constructor(
             0
         }
         Timber.i("RGBMean: $rMean \t $gMean \t $bMean \t TimeStamp: $timeStamp \t FPS: $fps")
-        return Pair(gMean, fps)
+        return Pair(gMean, timeStamp)
     }
 
     fun processImage(image: Image): Pair<Double, Int> {

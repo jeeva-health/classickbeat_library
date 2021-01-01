@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.button.MaterialButton
 import java.io.File
 import kotlin.math.roundToInt
@@ -44,7 +45,9 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
             navigateToSelectionFragment()
         }
 
-        Glide.with(this).load(File("/storage/emulated/0/Pictures/ppg.jpg")).into(binding.graph)
+        Glide.with(this).load(File("/storage/emulated/0/Pictures/ppg.jpg")).diskCacheStrategy(
+            DiskCacheStrategy.NONE)
+            .skipMemoryCache(true).into(binding.graph)
     }
 
     private fun navigateToSelectionFragment() {
