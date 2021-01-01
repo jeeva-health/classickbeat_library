@@ -114,4 +114,8 @@ dependencies {
 
     //Lottie
     implementation 'com.airbnb.android:lottie:3.6.0'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
 }

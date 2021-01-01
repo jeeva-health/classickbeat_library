@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
+import java.io.File
 import kotlin.math.roundToInt
 
 
@@ -41,6 +43,8 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
         testAgainButton.setSafeOnClickListener {
             navigateToSelectionFragment()
         }
+
+        Glide.with(this).load(File("/storage/emulated/0/Pictures/ppg.jpg")).into(binding.graph)
     }
 
     private fun navigateToSelectionFragment() {
