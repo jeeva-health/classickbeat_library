@@ -86,6 +86,9 @@ class PixelAnalyzer constructor(
     }
 
     fun processImageSpO2Y(image: Image): Pair<Double, Int> {
+        val argbArray = yuv420ToARGB(image, context)
+        var yMean = 0.0
+        var fps = 0
         if (imgCount == (avgFrames)) {
             maxIndex /= avgFrames
             Timber.i("Averaged MaxIndex is: $maxIndex")
@@ -113,7 +116,7 @@ class PixelAnalyzer constructor(
             //            ySum += byte and 0xFF
             //            counter++
             //        }
-            val yMean = ySum.toDouble() / count
+            yMean = ySum.toDouble() / count
             displayCounter()
             val fps = if (sec > 0) {
                 (frameRate.toDouble() / sec).roundToInt()
@@ -121,9 +124,9 @@ class PixelAnalyzer constructor(
                 0
             }
             Timber.i("YMean: $yMean \t FPS: $fps \t $h \t $w")
-            return Pair(yMean, fps)
         }
-        return Pair(0.0, 0)
+        imgCount++
+        return Pair(yMean, fps)
     }
 
     fun processImageHeart(image: Image): Pair<Double, Int> {
