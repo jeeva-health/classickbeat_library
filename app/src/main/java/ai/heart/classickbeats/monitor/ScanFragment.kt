@@ -67,6 +67,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
         (requireActivity() as MainActivity).hideSystemUI()
 
+        val scanMessage = when (navArgs.testType) {
+            TestType.HEART_RATE -> "Please cover the flash and camera with your finger gently."
+            TestType.OXYGEN_SATURATION -> "Please align the add-on with the front camera and place your figure gently inside the add-on."
+        }
+        binding.scanMessage.text = scanMessage
+
         navController = findNavController()
 
         textureView = binding.viewFinder

@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.monitor
 
+import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentOxygenResultBinding
 import ai.heart.classickbeats.utils.setSafeOnClickListener
@@ -22,6 +23,8 @@ class OxygenResultFragment : Fragment(R.layout.fragment_oxygen_result) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (requireActivity() as MainActivity).showSystemUI()
 
         navController = findNavController()
 

@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.monitor
 
+import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentHeartResultBinding
 import ai.heart.classickbeats.utils.setSafeOnClickListener
@@ -30,6 +31,8 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (requireActivity() as MainActivity).showSystemUI()
+
         navController = findNavController()
 
         testAgainButton = binding.reTestButton
@@ -46,7 +49,8 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
         }
 
         Glide.with(this).load(File("/storage/emulated/0/Pictures/ppg.jpg")).diskCacheStrategy(
-            DiskCacheStrategy.NONE)
+            DiskCacheStrategy.NONE
+        )
             .skipMemoryCache(true).into(binding.graph)
     }
 

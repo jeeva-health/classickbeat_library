@@ -18,18 +18,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/scan_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="36dp"
         android:gravity="center"
         android:letterSpacing="0.04"
-        android:text="Please cover the flash and camera with your finger gently."
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        tools:text="Please cover the flash and camera with your finger gently."
         tools:textColor="@color/black" />
 
     <com.airbnb.lottie.LottieAnimationView
