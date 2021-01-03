@@ -200,7 +200,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
                 imageCounter++
             }
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
-            if (imageCounter >= fps*3) {
+            if (imageCounter >= fps*1) {
                 val means = when (navArgs.testType) {
                     TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img) ?: Triple(0.0, 0.0, 0)
                     TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img) ?: Triple(0.0, 0.0, 0)
