@@ -26,9 +26,10 @@ class CalculatingFragment : Fragment(R.layout.fragment_calculating) {
         binding.animation.postDelayed({
             when (monitorViewModel.testType) {
                 TestType.HEART_RATE -> navigateToHeartResultFragment()
-                TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()
+                //TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()
+                TestType.OXYGEN_SATURATION -> navigateToHeartResultFragment()
             }
-        }, 3000)
+        }, 7000)
     }
 
     private fun navigateToHeartResultFragment() {

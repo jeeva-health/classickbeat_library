@@ -113,9 +113,11 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
 
         monitorViewModel.timerProgress.observe(viewLifecycleOwner, EventObserver {
             if (it == 0) {
-                circularProgressBar.visibility = View.GONE
-                cameraCaptureButton.visibility = View.VISIBLE
-                endScanning()
+                if (monitorViewModel.isProcessing){
+                    circularProgressBar.visibility = View.GONE
+                    cameraCaptureButton.visibility = View.VISIBLE
+                    endScanning()
+                }
             } else {
                 val progress = ((SCAN_DURATION - it) * 100 / SCAN_DURATION).toFloat()
                 circularProgressBar.setProgress(progress)
