@@ -4,17 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:keepScreenOn="true"
     tools:context=".monitor.ScanFragment">
 
     <TextureView
         android:id="@+id/view_finder"
-        android:layout_width="320dp"
-        android:layout_height="240dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="36dp"
+        android:gravity="center"
+        android:letterSpacing="0.04"
+        android:text="Please cover the flash and camera with your finger gently."
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:textColor="@color/black" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/camera_capture_button"
