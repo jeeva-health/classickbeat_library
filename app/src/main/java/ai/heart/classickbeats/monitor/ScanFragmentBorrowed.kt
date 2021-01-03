@@ -57,6 +57,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
     private val mean1List = mutableListOf<Double>()
     private val mean2List = mutableListOf<Double>()
     private val timeList = mutableListOf<Int>()
+    private val fps = 60
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -177,7 +178,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
                 imageCounter++
             }
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
-            if (imageCounter >= 90) {
+            if (imageCounter >= fps*3) {
                 val means = when (navArgs.testType) {
                     TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img) ?: Triple(0.0, 0.0, 0)
                     TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img) ?: Triple(0.0, 0.0, 0)
@@ -243,7 +244,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
              builder.addTarget(Surface(texture)!!)
             builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF)
             builder.set(CaptureRequest.CONTROL_AWB_LOCK, Boolean.TRUE)
-            builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range.create(30, 60))
+            builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range.create(fps, fps))
 //            builder.set(CaptureRequest.SENSOR_SENSITIVITY, 50);
 //            builder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 10000000);
             builder.build()
@@ -310,8 +311,8 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
         val quality = response[3].toDouble()
         val qualityStr = when {
             quality <= 1e-5 -> "PERFECT Quality Recording, Good job!"
-            quality <= 1e-4 -> "Good Quality Recording!"
-            quality <= 1e-3 -> "Decent Quality Recording, minor hiccups!"
+            quality <= 1e-4 -> "Good Quality Recording, Good job!"
+            quality <= 1e-3 -> "Decent Quality Recording!"
             quality <= 2e-2 -> "Poor Quality Recording. Please record again!"
             else -> "Extremely poor signal quality. Please record again!"
         }
