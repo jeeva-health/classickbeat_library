@@ -28,6 +28,8 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
 
     var testType: TestType = TestType.HEART_RATE
 
+    val outputComputed = MutableLiveData(Event(false))
+
     var isTimerRunning: Boolean = false
         private set
 
@@ -82,6 +84,7 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
             }
             hearRateResult =
                 HeartRateResult(bpm = bpm, hrv = hrv, aFib = afib, quality = qualityStr)
+            outputComputed.postValue(Event(true))
         }
     }
 }

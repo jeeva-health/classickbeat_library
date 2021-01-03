@@ -23,13 +23,12 @@ class CalculatingFragment : Fragment(R.layout.fragment_calculating) {
 
         navController = findNavController()
 
-        binding.animation.postDelayed({
+        monitorViewModel.outputComputed.observe(viewLifecycleOwner, {
             when (monitorViewModel.testType) {
                 TestType.HEART_RATE -> navigateToHeartResultFragment()
-                //TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()
-                TestType.OXYGEN_SATURATION -> navigateToHeartResultFragment()
+                TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()
             }
-        }, 7000)
+        })
     }
 
     private fun navigateToHeartResultFragment() {
