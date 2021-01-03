@@ -106,7 +106,7 @@ class CircleProgressBar @JvmOverloads constructor(
         }
 
         textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = ContextCompat.getColor(context, R.color.very_dark_grey)
+            color = ContextCompat.getColor(context, R.color.white)
             textSize = 18.0f * 2.25f //todo:: the value should be dpi of device
             textAlign = Paint.Align.CENTER
             typeface = Typeface.DEFAULT_BOLD
@@ -118,7 +118,7 @@ class CircleProgressBar @JvmOverloads constructor(
         canvas.drawOval(rectF, backgroundPaint)
         val angle = 360 * progress / max
         canvas.drawArc(rectF, startAngle, angle, false, foregroundPaint)
-        val textStr = progress.toInt().toString() + "%"
+        val textStr = ((100 - progress) * 30 / 100).toInt().toString()
         val xPos = rectF.centerX()
         val yPos = rectF.centerY() + textPaint.textSize / 4
         canvas.drawText(textStr, xPos, yPos, textPaint)

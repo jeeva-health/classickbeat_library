@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun hideSystemUI() {
-        actionBar?.hide()
+        supportActionBar?.hide()
         @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility = (
                 View.SYSTEM_UI_FLAG_IMMERSIVE

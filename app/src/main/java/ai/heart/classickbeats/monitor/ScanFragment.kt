@@ -6,6 +6,7 @@ import ai.heart.classickbeats.databinding.FragmentScanBinding
 import ai.heart.classickbeats.utils.EventObserver
 import ai.heart.classickbeats.utils.viewBinding
 import ai.heart.classickbeats.widgets.CircleProgressBar
+import android.animation.Animator
 import android.content.Context.CAMERA_SERVICE
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.CameraCharacteristics
@@ -76,9 +77,26 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
         cameraCaptureButton.setOnLongClickListener {
             it.visibility = View.GONE
-            circularProgressBar.visibility = View.VISIBLE
-            monitorViewModel.startTimer()
-            startScanning()
+            binding.countdownAnimation.visibility = View.VISIBLE
+            binding.countdownAnimation.playAnimation()
+            binding.countdownAnimation.addAnimatorListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(p0: Animator?) {
+                }
+
+                override fun onAnimationEnd(p0: Animator?) {
+                    binding.countdownAnimation.visibility = View.GONE
+                    circularProgressBar.visibility = View.VISIBLE
+                    monitorViewModel.startTimer()
+                    startScanning()
+                }
+
+                override fun onAnimationCancel(p0: Animator?) {
+                }
+
+                override fun onAnimationRepeat(p0: Animator?) {
+                }
+
+            })
             true
         }
 
