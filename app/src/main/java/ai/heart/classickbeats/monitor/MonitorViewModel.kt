@@ -84,6 +84,9 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
             }
             hearRateResult =
                 HeartRateResult(bpm = bpm, hrv = hrv, aFib = afib, quality = qualityStr)
+            mean1List.clear()
+            mean2List.clear()
+            timeList.clear()
             outputComputed.postValue(Event(true))
         }
     }

@@ -2,6 +2,7 @@ package ai.heart.classickbeats.monitor
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentCalculatingBinding
+import ai.heart.classickbeats.utils.EventObserver
 import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
 import android.view.View
@@ -23,10 +24,13 @@ class CalculatingFragment : Fragment(R.layout.fragment_calculating) {
 
         navController = findNavController()
 
-        monitorViewModel.outputComputed.observe(viewLifecycleOwner, {
-            when (monitorViewModel.testType) {
-                TestType.HEART_RATE -> navigateToHeartResultFragment()
-                TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()
+        monitorViewModel.outputComputed.observe(viewLifecycleOwner, EventObserver{
+            if (it){
+                when (monitorViewModel.testType) {
+                    TestType.HEART_RATE -> navigateToHeartResultFragment()
+                    //TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()
+                    TestType.OXYGEN_SATURATION -> navigateToHeartResultFragment()
+                }
             }
         })
     }
