@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.monitor
 
+import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanBinding
 import ai.heart.classickbeats.utils.EventObserver
@@ -62,6 +63,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (requireActivity() as MainActivity).hideSystemUI()
 
         navController = findNavController()
 
