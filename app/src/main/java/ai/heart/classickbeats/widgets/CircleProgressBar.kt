@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.widgets
 
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.monitor.SCAN_DURATION
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Canvas
@@ -118,7 +119,7 @@ class CircleProgressBar @JvmOverloads constructor(
         canvas.drawOval(rectF, backgroundPaint)
         val angle = 360 * progress / max
         canvas.drawArc(rectF, startAngle, angle, false, foregroundPaint)
-        val textStr = ((100 - progress) * 30 / 100).toInt().toString()
+        val textStr = ((100 - progress) * SCAN_DURATION / 100).toInt().toString()
         val xPos = rectF.centerX()
         val yPos = rectF.centerY() + textPaint.textSize / 4
         canvas.drawText(textStr, xPos, yPos, textPaint)
