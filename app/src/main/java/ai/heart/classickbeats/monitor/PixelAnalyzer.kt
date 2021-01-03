@@ -228,8 +228,9 @@ class PixelAnalyzer constructor(
         else{
             0
         }
+        val timeStamp = SystemClock.elapsedRealtime().toInt()
         Timber.i("rgbMean: " + rMean + "\t" + gMean + "\t" + bMean + "\t" + fps)
-        return Pair(gMean, fps)
+        return Pair(rMean, timeStamp)
     }
 
     private fun clamp(value: Float, min: Float, max: Float): Float {

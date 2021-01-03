@@ -180,7 +180,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             if (imageCounter >= 90) {
                 val gMean = when (navArgs.testType) {
                     TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
-                    TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImageSpO2Y(img) ?: Pair(0.0, 0)
+                    TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img) ?: Pair(0.0, 0)
                 }
                 // val gMean = pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
                 gMeanList.add(gMean.first)
@@ -285,7 +285,8 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
         monitorViewModel.hearRateResult = result
         when (navArgs.testType) {
             TestType.HEART_RATE -> navigateToHeartResultFragment()
-            TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()
+            //TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()
+            TestType.OXYGEN_SATURATION -> navigateToHeartResultFragment()
         }
         imageCounter = 0
     }
