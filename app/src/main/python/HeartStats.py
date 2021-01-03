@@ -10,12 +10,6 @@ from android.os import Environment
 
 
 class HeartStats:
-
-    def sqi(data):
-        m = np.mean(data)
-        s = np.std(data)
-        return np.mean(((data - m) / s) ** 3)
-
     def detect_peaks(signal, mov_avg):
         window = []
         peaklist = []
@@ -78,35 +72,30 @@ class HeartStats:
                              np.convolve(x, np.ones((2 * w + 1,)) / (2 * w + 1),
                                          mode='valid'))
 
-    def HR_stats(self, data, time):
-        # time = range(len(data))
-        # time = [x / fs for x in time]
-        data_raw = data
+    def processing_data(data, time):
         time = np.array(time) - time[0]
         time = (1.0*time)/1000
         fs = len(time)/(max(time)-min(time))
         fn = 0.5 * fs
         b, a = signal.cheby2(4, 20, np.array([0.7, 4]) / fn, 'bandpass')
         data = filtfilt(b, a, data)
-
-        # moving average
         w_size = int(fs * .5)  # width of moving window
         mt, ms = HeartStats.m_avg(time, data, w_size)  # computation of moving average
-
-        # remove global modulation
         sign = (data[w_size: -w_size] - ms)
-
-        # compute signal envelope
         analytical_signal = np.abs(signal.hilbert(sign))
         w_size = int(fs)
-
-        # moving averate of envelope
         mt_new, mov_avg = HeartStats.m_avg(mt, analytical_signal, w_size)
-
-        # remove envelope
         signal_pure = sign[w_size: -w_size] / mov_avg
+        return mt_new, signal_pure, HeartStats.peaks_arr(fs, time, signal_pure, sign)
 
-        final_peaks, RR, bpm, quality = HeartStats.peaks_arr(fs, time, signal_pure, sign)
+    def HR_stats(self, data1, data2, time):
+        mt_new, signal_pure, result = HeartStats.processing_data(data1, time)
+        mt_new2, signal_pure2, result2 = HeartStats.processing_data(data2, time)
+        if result2[3] < result[3]:
+            mt_new = mt_new2
+            signal_pure = signal_pure2
+            result = result2
+        final_peaks, RR, bpm, quality = result
         RR_diff = np.abs(np.diff(RR, 1, 0))  # time variation between consecutive RR intervals
         ibi = np.mean(RR)  # mean Inter Beat Interval
         bpm = 60000 / ibi  # mean bpm
@@ -115,8 +104,8 @@ class HeartStats:
             RR_diff ** 2))  # Take the square root of the mean of the list of squared differences
 
         x = np.multiply(RR[1:-1] - RR[:-2], RR[1:-1] - RR[2:])  # we have a turning point when x>0
-        turning_point_ratio = lambda w: len(w[w > 0.]) / len(
-            w)  # turning point ratio (randomness index)
+        # turning point ratio (randomness index)
+        turning_point_ratio = lambda w: len(w[w > 0.]) / len(w)
         tpr = turning_point_ratio(x)
         x = np.multiply(RR_diff[1:-1] - RR_diff[:-2],
                         RR_diff[1:-1] - RR_diff[2:])  # same but with RR_diff instead of RR
@@ -150,18 +139,6 @@ class HeartStats:
 
         fname = str(Environment.getExternalStorageDirectory())
         fname += "/Pictures/ppg.jpg"
-        # fig = plt.figure(figsize=(20,3))
-        # plt.subplot(211)
-        # plt.plot(time, data_raw, 'r-')
-        # plt.xlabel('Time (s)')
-        # plt.ylabel('Raw PPG Data')
-        # # plt.grid(True)
-        #
-        # plt.subplot(212)
-        # plt.plot(mt_new, signal_pure, 'g-')
-        # plt.xlabel('Time (s)')
-        # plt.ylabel('Filtered PPG Data')
-        # # plt.grid(True)
 
         a = int(len(mt_new)/2)
         plt.figure(figsize=(6,3))

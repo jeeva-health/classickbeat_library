@@ -54,7 +54,8 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
     private var width: Int = 0
     private var height: Int = 0
 
-    private val gMeanList = mutableListOf<Double>()
+    private val mean1List = mutableListOf<Double>()
+    private val mean2List = mutableListOf<Double>()
     private val timeList = mutableListOf<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -169,7 +170,6 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
         }
 
     var imageCounter = 0
-    var fps = 0
 
     private val onImageAvailableListener =
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
@@ -178,13 +178,14 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             }
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
             if (imageCounter >= 90) {
-                val gMean = when (navArgs.testType) {
-                    TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
-                    TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img) ?: Pair(0.0, 0)
+                val means = when (navArgs.testType) {
+                    TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img) ?: Triple(0.0, 0.0, 0)
+                    TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img) ?: Triple(0.0, 0.0, 0)
                 }
                 // val gMean = pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
-                gMeanList.add(gMean.first)
-                timeList.add(gMean.second)
+                mean1List.add(means.first)
+                mean2List.add(means.second)
+                timeList.add(means.third)
             }
             img.close()
         }
@@ -292,12 +293,13 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
     }
 
     private fun calculate(): HeartRateResult {
-        val gMeanArray: Array<Double> = gMeanList.toTypedArray()
+        val mean1Array: Array<Double> = mean1List.toTypedArray()
+        val mean2Array: Array<Double> = mean2List.toTypedArray()
         val timeArray: Array<Int> = timeList.toTypedArray()
         val python: Python = Python.getInstance()
         val filePyObject = python.getModule("HeartStats")
         val classPyObject = filePyObject.callAttr("HeartStats")
-        val response = classPyObject.callAttr("HR_stats", gMeanArray, timeArray).asList()
+        val response = classPyObject.callAttr("HR_stats", mean1Array, mean2Array, timeArray).asList()
         val bpm = response[0].toDouble()
         val hrv = response[1].toDouble()
         val afib = when (response[2].toDouble()) {

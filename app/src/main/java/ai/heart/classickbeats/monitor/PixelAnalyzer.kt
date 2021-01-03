@@ -129,7 +129,7 @@ class PixelAnalyzer constructor(
         return Pair(yMean, fps)
     }
 
-    fun processImageHeart(image: Image): Pair<Double, Int> {
+    fun processImageHeart(image: Image): Triple<Double, Double, Int> {
         val argbArray = yuv420ToARGB(image, context)
         val size = argbArray.size
         val w = image.width
@@ -139,7 +139,7 @@ class PixelAnalyzer constructor(
         var gSum = 0
         var bSum = 0
         var aSum = 0
-        val len = 200
+        val len = 320
         var count = 0
         for (y in max(0,h/2 - len) until min(h - 2, h/2 + len)) {
             for (x in max(0, w/2 - len) until min(w - 2, w/2 + len)) {
@@ -173,10 +173,10 @@ class PixelAnalyzer constructor(
             0
         }
         Timber.i("RGBMean: $rMean \t $gMean \t $bMean \t TimeStamp: $timeStamp \t FPS: $fps")
-        return Pair(gMean, timeStamp)
+        return Triple(rMean, gMean, timeStamp)
     }
 
-    fun processImage(image: Image): Pair<Double, Int> {
+    fun processImage(image: Image): Triple<Double, Double, Int> {
         val w = image.width
         val h = image.height
         // val argbArray = IntArray(w * h)
@@ -194,7 +194,7 @@ class PixelAnalyzer constructor(
         var g_sum = 0
         var b_sum = 0
         var count = 0
-        val len = 40  // Length of square is (2*len)
+        val len = 320  // Length of square is (2*len)
         for (y in max(0,h/2 - len) until min(h - 2, h/2 + len)) {
             for (x in max(0, w/2 - len) until min(w - 2, w/2 + len)) {
                 val yIndex = y * w + x
@@ -230,7 +230,7 @@ class PixelAnalyzer constructor(
         }
         val timeStamp = SystemClock.elapsedRealtime().toInt()
         Timber.i("rgbMean: " + rMean + "\t" + gMean + "\t" + bMean + "\t" + fps)
-        return Pair(rMean, timeStamp)
+        return Triple(rMean, bMean, timeStamp)
     }
 
     private fun clamp(value: Float, min: Float, max: Float): Float {
@@ -294,11 +294,11 @@ class PixelAnalyzer constructor(
     private fun yuv420ToByteArray(image: Image): ByteArray {
         val yBuffer = image.planes[0].buffer
         val yData = yBuffer.toByteArray()
-        if (imgCount < avgFrames) {
-            val m = yData.indices.maxBy{ yData[it].toInt() and 0xFF } ?: -1
-            Timber.i("MaxIndex: $m")
-            maxIndex += m
-        }
+//        if (imgCount < avgFrames) {
+//            val m = yData.indices.maxBy{ yData[it].toInt() and 0xFF } ?: -1
+//            Timber.i("MaxIndex: $m")
+//            maxIndex += m
+//        }
         val uBuffer = image.planes[1].buffer
         val uData = uBuffer.toByteArray()
         val vBuffer = image.planes[2].buffer
