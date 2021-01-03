@@ -26,7 +26,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.chaquo.python.Python
 import timber.log.Timber
 import java.lang.Boolean
 
@@ -56,9 +55,6 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
     private var width: Int = 0
     private var height: Int = 0
 
-    private val mean1List = mutableListOf<Double>()
-    private val mean2List = mutableListOf<Double>()
-    private val timeList = mutableListOf<Int>()
     private val fps = 60
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +67,14 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
         super.onViewCreated(view, savedInstanceState)
 
         (requireActivity() as MainActivity).hideSystemUI()
+
+        monitorViewModel.testType = navArgs.testType
+
+        val scanMessage = when (navArgs.testType) {
+            TestType.HEART_RATE -> "Please cover the flash and camera with your finger gently."
+            TestType.OXYGEN_SATURATION -> "Please align the add-on with the front camera and place your figure gently inside the add-on."
+        }
+        binding.scanMessage.text = scanMessage
 
         navController = findNavController()
 
@@ -196,19 +200,27 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
 
     private val onImageAvailableListener =
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
-            if (monitorViewModel.isProcessing){
+            if (monitorViewModel.isProcessing) {
                 imageCounter++
             }
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
-            if (imageCounter >= fps*1) {
+            if (imageCounter >= fps * 1) {
                 val means = when (navArgs.testType) {
-                    TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img) ?: Triple(0.0, 0.0, 0)
-                    TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img) ?: Triple(0.0, 0.0, 0)
+                    TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img) ?: Triple(
+                        0.0,
+                        0.0,
+                        0
+                    )
+                    TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img) ?: Triple(
+                        0.0,
+                        0.0,
+                        0
+                    )
                 }
                 // val gMean = pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
-                mean1List.add(means.first)
-                mean2List.add(means.second)
-                timeList.add(means.third)
+                monitorViewModel.mean1List.add(means.first)
+                monitorViewModel.mean2List.add(means.second)
+                monitorViewModel.timeList.add(means.third)
             }
             img.close()
         }
@@ -263,7 +275,7 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
             texture?.setDefaultBufferSize(width, height)
             builder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON)
             builder.addTarget(imageReader!!.surface)
-             builder.addTarget(Surface(texture)!!)
+            builder.addTarget(Surface(texture)!!)
             builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF)
             builder.set(CaptureRequest.CONTROL_AWB_LOCK, Boolean.TRUE)
             builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range.create(fps, fps))
@@ -305,52 +317,16 @@ class ScanFragmentBorrowed : Fragment(R.layout.fragment_scan) {
         camera?.close()
         stopBackgroundThread()
         monitorViewModel.endTimer()
-        val result = calculate()
-        monitorViewModel.hearRateResult = result
-        when (navArgs.testType) {
-            TestType.HEART_RATE -> navigateToHeartResultFragment()
-            //TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()
-            TestType.OXYGEN_SATURATION -> navigateToHeartResultFragment()
-        }
+        monitorViewModel.calculateResult()
+
+        navigateToCalculationFragment()
+
         imageCounter = 0
     }
 
-    private fun calculate(): HeartRateResult {
-        val mean1Array: Array<Double> = mean1List.toTypedArray()
-        val mean2Array: Array<Double> = mean2List.toTypedArray()
-        val timeArray: Array<Int> = timeList.toTypedArray()
-        val python: Python = Python.getInstance()
-        val filePyObject = python.getModule("HeartStats")
-        val classPyObject = filePyObject.callAttr("HeartStats")
-        val response = classPyObject.callAttr("HR_stats", mean1Array, mean2Array, timeArray).asList()
-        val bpm = response[0].toDouble()
-        val hrv = response[1].toDouble()
-        val afib = when (response[2].toDouble()) {
-            0.0 -> "Not Detected"
-            1.0 -> "Possible"
-            else -> "Detected"
-        }
-        val quality = response[3].toDouble()
-        val qualityStr = when {
-            quality <= 1e-5 -> "PERFECT Quality Recording, Good job!"
-            quality <= 1e-4 -> "Good Quality Recording, Good job!"
-            quality <= 1e-3 -> "Decent Quality Recording!"
-            quality <= 2e-2 -> "Poor Quality Recording. Please record again!"
-            else -> "Extremely poor signal quality. Please record again!"
-        }
-        val result = HeartRateResult(bpm = bpm, hrv = hrv, aFib = afib, quality = qualityStr)
-        return result
-    }
-
-    private fun navigateToHeartResultFragment() {
+    private fun navigateToCalculationFragment() {
         val action =
-            ScanFragmentBorrowedDirections.actionScanFragmentBorrowedToHeartResultFragment()
-        navController.navigate(action)
-    }
-
-    private fun navigateToOxygenResultFragment() {
-        val action =
-            ScanFragmentBorrowedDirections.actionScanFragmentBorrowedToOxygenResultFragment()
+            ScanFragmentBorrowedDirections.actionScanFragmentBorrowedToCalculatingFragment()
         navController.navigate(action)
     }
 

@@ -50,18 +50,26 @@
         android:id="@+id/scanFragmentBorrowed"
         android:name="ai.heart.classickbeats.monitor.ScanFragmentBorrowed"
         android:label="ScanFragmentBorrowed"
-        app:startDestination="@id/action_scanFragmentBorrowed_to_oxygenResultFragment"
         tools:layout="@layout/fragment_scan">
-        <action
-            android:id="@+id/action_scanFragmentBorrowed_to_heartResultFragment"
-            app:destination="@id/heartResultFragment" />
-        <action
-            android:id="@+id/action_scanFragmentBorrowed_to_oxygenResultFragment"
-            app:destination="@id/oxygenResultFragment" />
         <argument
             android:name="test_type"
             android:defaultValue="HEART_RATE"
             app:argType="ai.heart.classickbeats.monitor.TestType" />
+        <action
+            android:id="@+id/action_scanFragmentBorrowed_to_calculatingFragment"
+            app:destination="@id/calculatingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/calculatingFragment"
+        android:name="ai.heart.classickbeats.monitor.CalculatingFragment"
+        android:label="fragment_calculating"
+        tools:layout="@layout/fragment_calculating">
+        <action
+            android:id="@+id/action_calculatingFragment_to_heartResultFragment"
+            app:destination="@id/heartResultFragment" />
+        <action
+            android:id="@+id/action_calculatingFragment_to_oxygenResultFragment"
+            app:destination="@id/oxygenResultFragment" />
     </fragment>
 
 </navigation>
