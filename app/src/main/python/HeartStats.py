@@ -114,7 +114,7 @@ class HeartStats:
         rmssd_normalized = rmssd / ibi
         rmsThres = 0.1  ## Or is it 0.115 from other paper
 
-        Nbins = 2
+        Nbins = 4
         time_len = Nbins * (len(time) // 16)
         arr_splits = np.split(np.arange(time_len), Nbins)
         p_bin = np.zeros(Nbins)
