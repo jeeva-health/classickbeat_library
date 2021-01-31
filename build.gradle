@@ -30,7 +30,7 @@ buildscript {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 
-        classpath "com.chaquo.python:gradle:9.0.0"
+        classpath "com.chaquo.python:gradle:8.0.1"
     }
 }
 
