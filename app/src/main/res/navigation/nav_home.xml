@@ -6,24 +6,13 @@
     app:startDestination="@id/cameraSelectionFragment">
 
     <fragment
-        android:id="@+id/scanFragment"
-        android:name="ai.heart.classickbeats.monitor.ScanFragment"
-        android:label="fragment_scan"
-        tools:layout="@layout/fragment_scan">
-        <argument
-            android:name="test_type"
-            android:defaultValue="HEART_RATE"
-            app:argType="ai.heart.classickbeats.monitor.TestType" />
-    </fragment>
-
-    <fragment
         android:id="@+id/cameraSelectionFragment"
         android:name="ai.heart.classickbeats.monitor.CameraSelectionFragment"
         android:label="fragment_camera_selection"
         tools:layout="@layout/fragment_camera_selection">
         <action
-            android:id="@+id/action_cameraSelectionFragment_to_scanFragmentBorrowed"
-            app:destination="@id/scanFragmentBorrowed" />
+            android:id="@+id/action_cameraSelectionFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
     </fragment>
 
     <fragment
@@ -47,16 +36,16 @@
     </fragment>
 
     <fragment
-        android:id="@+id/scanFragmentBorrowed"
-        android:name="ai.heart.classickbeats.monitor.ScanFragmentBorrowed"
-        android:label="ScanFragmentBorrowed"
+        android:id="@+id/scanFragment"
+        android:name="ai.heart.classickbeats.monitor.ScanFragment"
+        android:label="ScanFragment"
         tools:layout="@layout/fragment_scan">
         <argument
             android:name="test_type"
             android:defaultValue="HEART_RATE"
             app:argType="ai.heart.classickbeats.monitor.TestType" />
         <action
-            android:id="@+id/action_scanFragmentBorrowed_to_calculatingFragment"
+            android:id="@+id/action_scanFragment_to_calculatingFragment"
             app:destination="@id/calculatingFragment" />
     </fragment>
     <fragment

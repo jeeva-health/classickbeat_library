@@ -7,11 +7,17 @@ import ai.heart.classickbeats.utils.EventObserver
 import ai.heart.classickbeats.utils.viewBinding
 import ai.heart.classickbeats.widgets.CircleProgressBar
 import android.animation.Animator
+import android.annotation.SuppressLint
 import android.content.Context.CAMERA_SERVICE
+import android.graphics.Color
+import android.graphics.ImageFormat
 import android.graphics.SurfaceTexture
-import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.CameraManager
+import android.hardware.camera2.*
+import android.media.ImageReader
 import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
+import android.util.Range
 import android.view.Surface
 import android.view.TextureView
 import android.view.View
@@ -21,45 +27,50 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import dagger.hilt.android.AndroidEntryPoint
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.YAxis.AxisDependency
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import timber.log.Timber
+import java.lang.Boolean
 
 
-@AndroidEntryPoint
-class ScanFragment : Fragment(R.layout.fragment_scan) {
+class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListener {
 
     private val binding by viewBinding(FragmentScanBinding::bind)
 
-    private val navArgs: ScanFragmentArgs by navArgs()
-
     private val monitorViewModel: MonitorViewModel by activityViewModels()
+
+    private val navArgs: ScanFragmentArgs by navArgs()
 
     private lateinit var navController: NavController
 
-    private lateinit var backCamera: Camera
-    private lateinit var frontCamera: Camera
+    private lateinit var chart: LineChart
+
+    private var camera: CameraDevice? = null
+    private var session: CameraCaptureSession? = null
+    private var imageReader: ImageReader? = null
+    private var mBackgroundHandler: Handler? = null
+    private var mBackgroundThread: HandlerThread? = null
 
     private var pixelAnalyzer: PixelAnalyzer? = null
-
-    private var showBackCamera: Boolean = false
 
     private lateinit var textureView: TextureView
     private lateinit var cameraCaptureButton: AppCompatImageButton
     private lateinit var circularProgressBar: CircleProgressBar
 
+    private var width: Int = 0
+    private var height: Int = 0
+
+    private val fps = 60
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         pixelAnalyzer = PixelAnalyzer(requireContext(), monitorViewModel)
-        val cameraManager = requireActivity().getSystemService(CAMERA_SERVICE) as CameraManager
-        backCamera = Camera(cameraManager, pixelAnalyzer!!, CameraCharacteristics.LENS_FACING_BACK)
-        frontCamera =
-            Camera(cameraManager, pixelAnalyzer!!, CameraCharacteristics.LENS_FACING_FRONT)
-
-        showBackCamera = when (navArgs.testType) {
-            TestType.HEART_RATE -> true
-            TestType.OXYGEN_SATURATION -> false
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,11 +78,23 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
         (requireActivity() as MainActivity).hideSystemUI()
 
+        monitorViewModel.testType = navArgs.testType
+
         val scanMessage = when (navArgs.testType) {
             TestType.HEART_RATE -> "Please cover the flash and camera with your finger gently."
             TestType.OXYGEN_SATURATION -> "Please align the add-on with the front camera and place your figure gently inside the add-on."
         }
         binding.scanMessage.text = scanMessage
+
+        chart = binding.lineChart.apply {
+            setOnChartValueSelectedListener(this@ScanFragment)
+            setDrawGridBackground(false)
+            description.isEnabled = false
+            xAxis.setDrawAxisLine(false)
+            xAxis.setDrawGridLines(false)
+            setNoDataText("")
+            invalidate()
+        }
 
         navController = findNavController()
 
@@ -106,11 +129,15 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             true
         }
 
+        startBackgroundThread()
+
         monitorViewModel.timerProgress.observe(viewLifecycleOwner, EventObserver {
             if (it == 0) {
-                circularProgressBar.visibility = View.GONE
-                cameraCaptureButton.visibility = View.VISIBLE
-                endScanning()
+                if (monitorViewModel.isProcessing) {
+                    circularProgressBar.visibility = View.GONE
+                    cameraCaptureButton.visibility = View.VISIBLE
+                    endScanning()
+                }
             } else {
                 val progress = ((SCAN_DURATION - it) * 100 / SCAN_DURATION).toFloat()
                 circularProgressBar.setProgress(progress)
@@ -121,7 +148,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private val surfaceTextureListener = object : TextureView.SurfaceTextureListener {
         override fun onSurfaceTextureAvailable(texture: SurfaceTexture, width: Int, height: Int) {
-            openCamera(width, height)
+            this@ScanFragment.width = width
+            this@ScanFragment.height = height
+            openCamera()
         }
 
         override fun onSurfaceTextureSizeChanged(
@@ -135,56 +164,245 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         override fun onSurfaceTextureUpdated(texture: SurfaceTexture) = Unit
     }
 
-    private fun openCamera(width: Int, height: Int) {
-        try {
-            val selectedCamera = if (showBackCamera) {
-                backCamera
-            } else {
-                frontCamera
+    private val cameraStateCallback: CameraDevice.StateCallback =
+        object : CameraDevice.StateCallback() {
+            override fun onOpened(camera: CameraDevice) {
+                this@ScanFragment.camera = camera
+                Timber.i("Camera Open Called")
+                try {
+                    imageReader = ImageReader.newInstance(
+                        320,
+                        240,
+                        ImageFormat.YUV_420_888,
+                        30
+                    )
+                    imageReader?.setOnImageAvailableListener(
+                        onImageAvailableListener,
+                        mBackgroundHandler
+                    )
+
+                    val texture = textureView.surfaceTexture
+                    texture?.setDefaultBufferSize(width, height)
+
+                    camera.createCaptureSession(
+                        listOf(Surface(texture!!), imageReader?.surface),
+                        stateSessionCallback,
+                        mBackgroundHandler
+                    )
+                } catch (e: CameraAccessException) {
+                    Timber.e("Failed Camera Session $e")
+                }
             }
 
-            selectedCamera.let {
-                it.open()
-                val texture = textureView.surfaceTexture
-                texture?.setDefaultBufferSize(width, height)
-                it.start(Surface(texture!!), monitorViewModel)
+            override fun onDisconnected(camera: CameraDevice) {}
+            override fun onError(camera: CameraDevice, error: Int) {}
+        }
+
+    private val stateSessionCallback: CameraCaptureSession.StateCallback =
+        object : CameraCaptureSession.StateCallback() {
+            override fun onConfigured(session: CameraCaptureSession) {
+                this@ScanFragment.session = session
+                Timber.i("Session Start")
+
+                try {
+                    session.setRepeatingRequest(
+                        createCaptureRequest()!!,
+                        null,
+                        mBackgroundHandler
+                    )
+                } catch (e: CameraAccessException) {
+                    Timber.e(e)
+                }
             }
+
+            override fun onConfigureFailed(session: CameraCaptureSession) {}
+        }
+
+    var imageCounter = 0
+
+    private val onImageAvailableListener =
+        ImageReader.OnImageAvailableListener { reader: ImageReader ->
+            if (monitorViewModel.isProcessing) {
+                imageCounter++
+            }
+            val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
+            if (imageCounter >= fps * 1) {
+                val means = when (navArgs.testType) {
+                    TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img) ?: Triple(
+                        0.0,
+                        0.0,
+                        0
+                    )
+                    TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img) ?: Triple(
+                        0.0,
+                        0.0,
+                        0
+                    )
+                }
+                // val gMean = pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
+                monitorViewModel.mean1List.add(means.first)
+                monitorViewModel.mean2List.add(means.second)
+                monitorViewModel.timeList.add(means.third)
+                addEntry(monitorViewModel.mean2List.size, means.second)
+            }
+            img.close()
+        }
+
+    @SuppressLint("MissingPermission")
+    private fun openCamera() {
+        try {
+            val cameraFacing = when (navArgs.testType) {
+                TestType.HEART_RATE -> CameraCharacteristics.LENS_FACING_BACK
+                TestType.OXYGEN_SATURATION -> CameraCharacteristics.LENS_FACING_FRONT
+            }
+            val cameraManager =
+                requireActivity().getSystemService(CAMERA_SERVICE) as CameraManager
+            val cameraID: String = getCamera(cameraManager, cameraFacing)!!
+            cameraManager.openCamera(cameraID, cameraStateCallback, null)
         } catch (e: Exception) {
             Timber.e(e)
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
+    private fun getCamera(manager: CameraManager, cameraFacing: Int): String? {
         try {
-            backCamera.close()
-            frontCamera.close()
-            monitorViewModel.endTimer()
-        } catch (e: Exception) {
+            for (cameraId in manager.cameraIdList) {
+                val characteristics = manager.getCameraCharacteristics(cameraId!!)
+                characteristics.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES)
+                    ?.forEach { range ->
+                        Timber.i("Supported FPS range: (${range.lower} - ${range.upper})")
+                    }
+                val map =
+                    characteristics[CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP]
+                val fpsRange =
+                    map!!.highSpeedVideoFpsRanges // this range intends available fps range of device's camera.
+
+
+                if (cameraFacing == characteristics.get(CameraCharacteristics.LENS_FACING)) {
+                    return cameraId
+                }
+            }
+        } catch (e: CameraAccessException) {
+            Timber.e(e)
+        }
+        return null
+    }
+
+    private fun createCaptureRequest(): CaptureRequest? {
+        return try {
+            val builder = camera!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
+            if (navArgs.testType == TestType.HEART_RATE) {
+                builder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH)
+            }
+            val texture = textureView.surfaceTexture
+            texture?.setDefaultBufferSize(width, height)
+            builder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON)
+            builder.addTarget(imageReader!!.surface)
+            builder.addTarget(Surface(texture))
+            builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF)
+            builder.set(CaptureRequest.CONTROL_AWB_LOCK, Boolean.TRUE)
+            builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range.create(fps, fps))
+//            builder.set(CaptureRequest.SENSOR_SENSITIVITY, 50);
+//            builder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 10000000);
+            builder.build()
+        } catch (e: CameraAccessException) {
+            Timber.e(e)
+            null
+        }
+    }
+
+    private fun startBackgroundThread() {
+        mBackgroundThread = HandlerThread("Camera Background")
+        mBackgroundThread?.start()
+        mBackgroundHandler = Handler(mBackgroundThread!!.looper)
+    }
+
+    private fun stopBackgroundThread() {
+        mBackgroundThread!!.quitSafely()
+        try {
+            mBackgroundThread!!.join()
+            mBackgroundThread = null
+            mBackgroundHandler = null
+        } catch (e: InterruptedException) {
             Timber.e(e)
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun startScanning() {
         monitorViewModel.isProcessing = true
+        monitorViewModel.startTimer()
     }
 
     private fun endScanning() {
         monitorViewModel.isProcessing = false
-        when (navArgs.testType) {
-            TestType.HEART_RATE -> navigateToHeartResultFragment()
-            TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()
+        session?.abortCaptures()
+        camera?.close()
+        stopBackgroundThread()
+        monitorViewModel.endTimer()
+        monitorViewModel.calculateResult()
+
+        navigateToCalculationFragment()
+
+        imageCounter = 0
+    }
+
+    private fun navigateToCalculationFragment() {
+        val action =
+            ScanFragmentDirections.actionScanFragmentToCalculatingFragment()
+        navController.navigate(action)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            session?.abortCaptures()
+            camera?.close()
+            stopBackgroundThread()
+            monitorViewModel.endTimer()
+        } catch (e: CameraAccessException) {
+            Timber.e(e)
         }
     }
 
-    private fun navigateToHeartResultFragment() {
-//        val action = ScanFragmentDirections.actionScanFragmentToHeartResultFragment()
-//        navController.navigate(action)
+    private fun createSet(): LineDataSet {
+        val set = LineDataSet(null, "DataSet 1")
+        set.lineWidth = 2.5f
+        set.color = Color.rgb(240, 99, 99)
+        set.axisDependency = AxisDependency.LEFT
+        set.valueTextSize = 10f
+        set.setDrawCircles(false)
+        return set
     }
 
-    private fun navigateToOxygenResultFragment() {
-//        val action = ScanFragmentDirections.actionScanFragmentToOxygenResultFragment()
-//        navController.navigate(action)
+    private fun addEntry(x: Int, y: Double) {
+        var data = chart.data
+        if (data == null) {
+            data = LineData()
+            chart.data = data
+        }
+
+        var set = data.getDataSetByIndex(0)
+        if (set == null) {
+            set = createSet()
+            data.addDataSet(set)
+        }
+
+        // choose a random dataSet
+        val randomDataSetIndex = (Math.random() * data.dataSetCount).toInt()
+        data.addEntry(Entry(x.toFloat(), y.toFloat()), randomDataSetIndex)
+        data.notifyDataChanged()
+
+        chart.notifyDataSetChanged()
+        chart.setVisibleXRangeMaximum(300f)
+        //chart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
+
+        chart.moveViewTo((data.entryCount - 7).toFloat(), 50f, AxisDependency.LEFT)
+    }
+
+    override fun onValueSelected(e: Entry?, h: Highlight?) {
+    }
+
+    override fun onNothingSelected() {
     }
 }
