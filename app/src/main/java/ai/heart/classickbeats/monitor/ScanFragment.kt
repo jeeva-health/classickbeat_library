@@ -67,6 +67,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
 
     private val fps = 30
 
+    private val movingAvgWindow = 3
+
+    private val movingList = mutableListOf<Double>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -90,8 +94,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
             setOnChartValueSelectedListener(this@ScanFragment)
             setDrawGridBackground(false)
             description.isEnabled = false
-            xAxis.setDrawAxisLine(false)
-            xAxis.setDrawGridLines(false)
+            axisRight.isEnabled = false
+            axisLeft.isEnabled = false
+            xAxis.isEnabled = false
+            legend.isEnabled = false
             setNoDataText("")
             invalidate()
         }
@@ -368,9 +374,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
     private fun createSet(): LineDataSet {
         val set = LineDataSet(null, "DataSet 1")
         set.lineWidth = 2.5f
-        set.color = Color.rgb(240, 99, 99)
+        set.color = Color.rgb(255, 255, 255)
         set.axisDependency = AxisDependency.LEFT
         set.valueTextSize = 10f
+        set.setDrawValues(false)
         set.setDrawCircles(false)
         return set
     }
@@ -388,16 +395,24 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
             data.addDataSet(set)
         }
 
-        // choose a random dataSet
-        val randomDataSetIndex = (Math.random() * data.dataSetCount).toInt()
-        data.addEntry(Entry(x.toFloat(), y.toFloat()), randomDataSetIndex)
+        val yValue = if (movingList.size < movingAvgWindow) {
+            movingList.add(y)
+            y
+        } else {
+            movingList.removeAt(0)
+            movingList.add(y)
+            Timber.i("list size: ${movingList.size}")
+            movingList.average()
+        }
+
+        data.addEntry(Entry(x.toFloat(), yValue.toFloat()), 0)
         data.notifyDataChanged()
 
         chart.notifyDataSetChanged()
-        chart.setVisibleXRangeMaximum(300f)
+        chart.setVisibleXRangeMaximum(150f)
         //chart.setVisibleYRangeMaximum(15, AxisDependency.LEFT);
 
-        chart.moveViewTo((data.entryCount - 7).toFloat(), 50f, AxisDependency.LEFT)
+        chart.moveViewTo((data.entryCount - 7).toFloat(), 0f, AxisDependency.LEFT)
     }
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
