@@ -67,7 +67,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
 
     private val fps = 30
 
-    private val movingAvgWindow = 3
+    private val movingAvgWindow = 5
 
     private val movingList = mutableListOf<Double>()
 
@@ -374,7 +374,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
     private fun createSet(): LineDataSet {
         val set = LineDataSet(null, "DataSet 1")
         set.lineWidth = 2.5f
-        set.color = Color.rgb(255, 255, 255)
+        set.color = Color.rgb(255, 0, 0)
         set.axisDependency = AxisDependency.LEFT
         set.valueTextSize = 10f
         set.setDrawValues(false)
