@@ -164,7 +164,7 @@ class PixelAnalyzer constructor(
         val gMean = gSum.toDouble() / count
         val bMean = bSum.toDouble() / count
         // val aMean = aSum.toDouble() / count
-        // displayCounter()
+        displayCounter()
         val timeStamp = SystemClock.elapsedRealtime().toInt()
         val fps = if (sec > 0){
             (frameRate.toDouble()/sec).roundToInt()
@@ -252,7 +252,7 @@ class PixelAnalyzer constructor(
                 sec++
                 frameRate += ++counter
             }
-            Timber.i("frameRate: ${counter} Seconds: $sec SumRate: $frameRate")
+            //Timber.i("frameRate: ${counter} Seconds: $sec SumRate: $frameRate")
             counter = 0
         }
     }

@@ -65,7 +65,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
     private var width: Int = 0
     private var height: Int = 0
 
-    private val fps = 60
+    private val fps = 30
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -243,7 +243,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
                 monitorViewModel.mean1List.add(means.first)
                 monitorViewModel.mean2List.add(means.second)
                 monitorViewModel.timeList.add(means.third)
-                addEntry(monitorViewModel.mean2List.size, means.second)
+                addEntry(monitorViewModel.mean1List.size, means.first)
             }
             img.close()
         }
