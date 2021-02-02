@@ -130,8 +130,8 @@ class PixelAnalyzer constructor(
     }
 
     fun processImageHeart(image: Image): Triple<Double, Double, Int> {
+        val timeStamp = SystemClock.elapsedRealtime().toInt()
         val argbArray = yuv420ToARGB(image, context)
-        val size = argbArray.size
         val w = image.width
         val h = image.height
         var ind = 0
@@ -165,7 +165,6 @@ class PixelAnalyzer constructor(
         val bMean = bSum.toDouble() / count
         // val aMean = aSum.toDouble() / count
         displayCounter()
-        val timeStamp = SystemClock.elapsedRealtime().toInt()
         val fps = if (sec > 0){
             (frameRate.toDouble()/sec).roundToInt()
         }

@@ -374,7 +374,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
     private fun createSet(): LineDataSet {
         val set = LineDataSet(null, "DataSet 1")
         set.lineWidth = 2.5f
-        set.color = Color.rgb(255, 0, 0)
+        set.color = Color.rgb(255, 50, 50)
         set.axisDependency = AxisDependency.LEFT
         set.valueTextSize = 10f
         set.setDrawValues(false)

@@ -1,6 +1,7 @@
 import numpy as np
 from scipy import signal
 from scipy.signal import filtfilt
+from scipy.interpolate import interp1d
 import os
 os.environ["PATH"] = ":".join([p for p in os.environ["PATH"].split(":")
                                if os.access(p, os.R_OK | os.X_OK)])
@@ -87,8 +88,6 @@ class HeartStats:
         return filtfilt(b, a, data)
 
     def processing_data(data, time):
-        time = np.array(time) - time[0]
-        time = (1.0*time)/1000
         fs = len(time)/(max(time)-min(time))
         data = HeartStats.cheby_filter(data, fs)
         w_size = int(fs * .5)  # width of moving window
@@ -119,7 +118,15 @@ class HeartStats:
         return result, signal_pure, mt
 
     def HR_stats(self, data1, data2, time):
-        result, signal_pure, mt = HeartStats.HR_stats_helper(data1, data2, time)
+        time = np.array(time) - time[0]
+        time = (1.0*time)
+        time = time/1000
+        f1 = interp1d(time, data1, kind='linear')
+        f2 = interp1d(time, data2, kind='linear')
+
+        time_int = np.linspace(0, max(time), num=3000)
+
+        result, signal_pure, mt = HeartStats.HR_stats_helper(f1(time_int), f1(time_int), time_int)
         fname = str(Environment.getExternalStorageDirectory())
         fname += "/Pictures/ppg.jpg"
 
