@@ -79,7 +79,7 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
                 quality <= 1e-5 -> "PERFECT Quality Recording, Good job!"
                 quality <= 1e-4 -> "Good Quality Recording, Good job!"
                 quality <= 1e-3 -> "Decent Quality Recording!"
-                quality <= 2e-2 -> "Poor Quality Recording. Please record again!"
+                quality <= 1e-2 -> "Poor Quality Recording. Please record again!"
                 else -> "Extremely poor signal quality. Please record again!"
             }
             hearRateResult =
