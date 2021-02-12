@@ -8,10 +8,15 @@ import ai.heart.classickbeats.utils.viewBinding
 import ai.heart.classickbeats.widgets.CircleProgressBar
 import android.animation.Animator
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Context.CAMERA_SERVICE
 import android.graphics.Color
 import android.graphics.ImageFormat
 import android.graphics.SurfaceTexture
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.hardware.camera2.*
 import android.media.ImageReader
 import android.os.Bundle
@@ -36,9 +41,11 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import timber.log.Timber
 import java.lang.Boolean
+import kotlin.math.sqrt
 
 
-class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListener {
+class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListener,
+    SensorEventListener {
 
     private val binding by viewBinding(FragmentScanBinding::bind)
 
@@ -49,6 +56,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
     private lateinit var navController: NavController
 
     private lateinit var chart: LineChart
+
+    private lateinit var sensorManager: SensorManager
+
+    private var mAccelerometer: Sensor? = null
 
     private var camera: CameraDevice? = null
     private var session: CameraCaptureSession? = null
@@ -71,10 +82,25 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
 
     private val movingList = mutableListOf<Double>()
 
+    private lateinit var mGravity: FloatArray
+    private var mAccel = 0f
+    private var mAccelCurrent = 0f
+    private var mAccelLast = 0f
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         pixelAnalyzer = PixelAnalyzer(requireContext(), monitorViewModel)
+
+        sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
+        mAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+
+        if (mAccelerometer == null) {
+            TODO("No Accelerometer found")
+        }
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -138,6 +164,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
         startBackgroundThread()
 
         monitorViewModel.timerProgress.observe(viewLifecycleOwner, EventObserver {
+            Timber.i("Timer: $it")
             if (it == 0) {
                 if (monitorViewModel.isProcessing) {
                     circularProgressBar.visibility = View.GONE
@@ -228,28 +255,28 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
 
     private val onImageAvailableListener =
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
+            val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
             if (monitorViewModel.isProcessing) {
                 imageCounter++
-            }
-            val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
-            if (imageCounter >= fps * 1) {
-                val means = when (navArgs.testType) {
-                    TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img) ?: Triple(
-                        0.0,
-                        0.0,
-                        0
-                    )
-                    TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img) ?: Triple(
-                        0.0,
-                        0.0,
-                        0
-                    )
+                if (imageCounter >= fps * 1) {
+                    val means = when (navArgs.testType) {
+                        TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img) ?: Triple(
+                            0.0,
+                            0.0,
+                            0
+                        )
+                        TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img) ?: Triple(
+                            0.0,
+                            0.0,
+                            0
+                        )
+                    }
+                    // val gMean = pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
+                    monitorViewModel.mean1List.add(means.first)
+                    monitorViewModel.mean2List.add(means.second)
+                    monitorViewModel.timeList.add(means.third)
+                    addEntry(monitorViewModel.mean1List.size, means.first)
                 }
-                // val gMean = pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
-                monitorViewModel.mean1List.add(means.first)
-                monitorViewModel.mean2List.add(means.second)
-                monitorViewModel.timeList.add(means.third)
-                addEntry(monitorViewModel.mean1List.size, means.first)
             }
             img.close()
         }
@@ -419,5 +446,48 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
     }
 
     override fun onNothingSelected() {
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
+            mGravity = event.values.clone()
+            val x: Float = mGravity.get(0)
+            val y: Float = mGravity.get(1)
+            val z: Float = mGravity.get(2)
+            mAccelLast = mAccelCurrent
+            mAccelCurrent = sqrt(x * x + y * y + z * z)
+            val delta: Float = mAccelCurrent - mAccelLast
+            mAccel = mAccel * 0.9f + delta
+            if (mAccel > 3) {
+                Timber.i("mAccel: $mAccel")
+                if (monitorViewModel.isProcessing) {
+                    restartReading()
+                }
+            }
+        }
+    }
+
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+        Timber.i("mAccel: p1: $p1")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mAccelerometer?.also { accelerometer ->
+            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(this)
+    }
+
+    private fun restartReading() {
+        monitorViewModel.resetTimer()
+        circularProgressBar.setProgress(0.0f)
+        circularProgressBar.visibility = View.GONE
+        cameraCaptureButton.visibility = View.VISIBLE
+        chart.data?.clearValues()
     }
 }

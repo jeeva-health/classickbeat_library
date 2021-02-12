@@ -57,6 +57,14 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
         timer?.cancel()
     }
 
+    fun resetTimer() {
+        timer?.cancel()
+        mean1List.clear()
+        mean2List.clear()
+        isTimerRunning = false
+        isProcessing = false
+    }
+
     fun calculateResult() {
         viewModelScope.launch(Dispatchers.Default) {
             val mean1Array: Array<Double> = mean1List.toTypedArray()
