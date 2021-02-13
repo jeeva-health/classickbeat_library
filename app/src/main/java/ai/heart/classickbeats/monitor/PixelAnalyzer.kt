@@ -176,6 +176,7 @@ class PixelAnalyzer constructor(
     }
 
     fun processImage(image: Image): Triple<Double, Double, Int> {
+        val timeStamp = SystemClock.elapsedRealtime().toInt()
         val w = image.width
         val h = image.height
         // val argbArray = IntArray(w * h)
@@ -193,7 +194,7 @@ class PixelAnalyzer constructor(
         var g_sum = 0
         var b_sum = 0
         var count = 0
-        val len = 320  // Length of square is (2*len)
+        val len = 60  // Length of square is (2*len)
         for (y in max(0,h/2 - len) until min(h - 2, h/2 + len)) {
             for (x in max(0, w/2 - len) until min(w - 2, w/2 + len)) {
                 val yIndex = y * w + x
@@ -227,9 +228,8 @@ class PixelAnalyzer constructor(
         else{
             0
         }
-        val timeStamp = SystemClock.elapsedRealtime().toInt()
         Timber.i("rgbMean: " + rMean + "\t" + gMean + "\t" + bMean + "\t" + fps)
-        return Triple(rMean, bMean, timeStamp)
+        return Triple(rMean, gMean, timeStamp)
     }
 
     private fun clamp(value: Float, min: Float, max: Float): Float {

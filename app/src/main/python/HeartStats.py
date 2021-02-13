@@ -126,7 +126,7 @@ class HeartStats:
 
         time_int = np.linspace(0, max(time), num=3000)
 
-        result, signal_pure, mt = HeartStats.HR_stats_helper(f1(time_int), f1(time_int), time_int)
+        result, signal_pure, mt = HeartStats.HR_stats_helper(f1(time_int), f2(time_int), time_int)
         fname = str(Environment.getExternalStorageDirectory())
         fname += "/Pictures/ppg.jpg"
 
