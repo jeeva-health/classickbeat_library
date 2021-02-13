@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.monitor
 
+import ai.heart.classickbeats.compute.LinearInterp
 import ai.heart.classickbeats.utils.Event
 import android.os.CountDownTimer
 import android.text.format.DateUtils
@@ -65,8 +66,15 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
         isProcessing = false
     }
 
+    var outputList: List<Double>? = null
+
     fun calculateResult() {
         viewModelScope.launch(Dispatchers.Default) {
+
+            val lin = LinearInterp()
+            outputList =
+                lin.interpolate(timeList.toTypedArray(), mean1List.toTypedArray(), SCAN_DURATION)
+
             val mean1Array: Array<Double> = mean1List.toTypedArray()
             val mean2Array: Array<Double> = mean2List.toTypedArray()
             val timeArray: Array<Int> = timeList.toTypedArray()
