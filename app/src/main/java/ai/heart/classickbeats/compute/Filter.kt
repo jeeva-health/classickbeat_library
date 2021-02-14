@@ -1,5 +1,7 @@
 package ai.heart.classickbeats.compute
 
+import uk.me.berndporr.iirj.ChebyshevII
+
 class Filter{
     fun chebyFilter(X: Array<Double>): List<Double>{
         /*
@@ -23,6 +25,17 @@ class Filter{
         val y = Filtfilt.doFiltfilt(B.toCollection(ArrayList()), A.toCollection(ArrayList()), X.toCollection(ArrayList()))
 
 
+        return y
+    }
+
+    fun chebyFilter2(X: Array<Double>): List<Double>{
+        val fs = 100.0
+        val cheby = ChebyshevII()
+        cheby.bandPass(4, 100.0, 2.2, 3.1, 10.0)
+        val y = mutableListOf<Double>()
+        for(i in 0 until X.size){
+            y.add(cheby.filter(X[i]))
+        }
         return y
     }
 }

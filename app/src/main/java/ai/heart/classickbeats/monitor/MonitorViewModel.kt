@@ -77,7 +77,7 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
             outputList =
                 lin.interpolate(timeList.toTypedArray(), mean1List.toTypedArray(), SCAN_DURATION)
             val filt = Filter()
-            filtOut = filt.chebyFilter(outputList!!.toTypedArray())
+            filtOut = filt.chebyFilter2(outputList!!.toTypedArray())
 
             val mean1Array: Array<Double> = mean1List.toTypedArray()
             val mean2Array: Array<Double> = mean2List.toTypedArray()
