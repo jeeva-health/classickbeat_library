@@ -2,6 +2,7 @@ package ai.heart.classickbeats.monitor
 
 import ai.heart.classickbeats.compute.Filter
 import ai.heart.classickbeats.compute.LinearInterp
+import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.utils.Event
 import android.os.CountDownTimer
 import android.text.format.DateUtils
@@ -12,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import com.chaquo.python.Python
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 const val SCAN_DURATION = 30
@@ -69,6 +71,7 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
 
     var outputList: List<Double>? = null
     var filtOut: List<Double>? = null
+    var centeredSignal: List<Double>? = null
 
     fun calculateResult() {
         viewModelScope.launch(Dispatchers.Default) {
@@ -76,8 +79,13 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
             val lin = LinearInterp()
             outputList =
                 lin.interpolate(timeList.toTypedArray(), mean1List.toTypedArray(), SCAN_DURATION)
-            val filt = Filter()
-            filtOut = filt.chebyFilter2(outputList!!.toTypedArray())
+             val filt = Filter()
+             filtOut = filt.chebyBandpass2(outputList!!.toTypedArray())
+             Timber.i("Filt size: ${filtOut!!.size}")
+
+            val processData = ProcessingData()
+            val movingAverage = processData.movAvg(outputList!!.toTypedArray(), 50)
+            centeredSignal = processData.centering(outputList!!.toTypedArray(), movingAverage!!.toTypedArray(), 50)
 
             val mean1Array: Array<Double> = mean1List.toTypedArray()
             val mean2Array: Array<Double> = mean2List.toTypedArray()

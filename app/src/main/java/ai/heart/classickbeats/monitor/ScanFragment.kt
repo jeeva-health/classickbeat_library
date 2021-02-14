@@ -428,7 +428,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan), OnChartValueSelectedListe
         } else {
             movingList.removeAt(0)
             movingList.add(y)
-            Timber.i("list size: ${movingList.size}")
+            // Timber.i("list size: ${movingList.size}")
             movingList.average()
         }
 

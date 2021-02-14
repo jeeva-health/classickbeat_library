@@ -1,6 +1,8 @@
 package ai.heart.classickbeats.compute
 
-import uk.me.berndporr.iirj.ChebyshevII
+import com.github.psambit9791.jdsp.filter.Chebyshev
+//import uk.me.berndporr.iirj.ChebyshevII
+
 
 class Filter{
     fun chebyFilter(X: Array<Double>): List<Double>{
@@ -12,15 +14,10 @@ class Filter{
             53.46344067, -40.14459053,  18.87179701,  -5.07834891,
             0.59896551])
         */
-//        val B = ArrayList<Double>()
-//        val A = ArrayList<Double>()
         val B = doubleArrayOf(0.08538951, -0.64831602,  2.18417638, -4.26809226,  5.29368476,
             -4.26809226,  2.18417638, -0.64831602,  0.08538951)
         val A = doubleArrayOf(1.0       ,  -7.46143988,  24.39396243, -45.6437863 ,
             53.46344067, -40.14459053,  18.87179701,  -5.07834891, 0.59896551)
-
-        val a = doubleArrayOf(0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0)
-        val b = doubleArrayOf(0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0)
 
         val y = Filtfilt.doFiltfilt(B.toCollection(ArrayList()), A.toCollection(ArrayList()), X.toCollection(ArrayList()))
 
@@ -28,14 +25,29 @@ class Filter{
         return y
     }
 
-    fun chebyFilter2(X: Array<Double>): List<Double>{
-        val fs = 100.0
-        val cheby = ChebyshevII()
-        cheby.bandPass(4, 100.0, 2.2, 3.1, 10.0)
-        val y = mutableListOf<Double>()
-        for(i in 0 until X.size){
-            y.add(cheby.filter(X[i]))
-        }
-        return y
+//    fun chebyBandpass(X: Array<Double>): List<Double>{
+//        val cheby = ChebyshevII()
+//        cheby.bandPass(4, 100.0, 2.2, 3.6, 10.0)
+//        val y = mutableListOf<Double>()
+//        for(i in 0 until X.size){
+//            y.add(cheby.filter(X[i]))
+//        }
+//        return y
+//    }
+
+    fun chebyBandpass2(X: Array<Double>): List<Double>{
+        val cheby = Chebyshev(X.toDoubleArray(), 100.0, 1.0, 2)
+        val y = cheby.bandPassFilter(4, 0.4, 4.0)
+        return y.toMutableList()
     }
+
+//    fun chebyLowpass(X: Array<Double>): List<Double>{
+//        val cheby = ChebyshevII()
+//        cheby.lowPass(4, 100.0, 0.4, 1.0)
+//        val y = mutableListOf<Double>()
+//        for(i in 0 until X.size){
+//            y.add(cheby.filter(X[i]))
+//        }
+//        return y
+//    }
 }

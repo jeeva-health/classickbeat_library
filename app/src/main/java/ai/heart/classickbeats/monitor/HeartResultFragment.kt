@@ -75,6 +75,7 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result), OnChartVal
 
 //        drawLine(monitorViewModel.outputList!!)
         drawLine(monitorViewModel.filtOut!!)
+//        drawLine(monitorViewModel.centeredSignal!!)
     }
 
     private fun navigateToSelectionFragment() {
