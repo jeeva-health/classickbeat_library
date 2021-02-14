@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-const val SCAN_DURATION = 30
+const val SCAN_DURATION = 10
 
 class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
 
@@ -72,20 +72,28 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
     var outputList: List<Double>? = null
     var filtOut: List<Double>? = null
     var centeredSignal: List<Double>? = null
+    var envelopeAverage: List<Double>? = null
+    var finalSignal: List<Double>? = null
 
     fun calculateResult() {
         viewModelScope.launch(Dispatchers.Default) {
 
+            val window = 50
             val lin = LinearInterp()
-            outputList =
-                lin.interpolate(timeList.toTypedArray(), mean1List.toTypedArray(), SCAN_DURATION)
-             val filt = Filter()
-             filtOut = filt.chebyBandpass2(outputList!!.toTypedArray())
-             Timber.i("Filt size: ${filtOut!!.size}")
+            outputList = lin.interpolate(timeList.toTypedArray(), mean1List.toTypedArray(), SCAN_DURATION)
 
             val processData = ProcessingData()
-            val movingAverage = processData.movAvg(outputList!!.toTypedArray(), 50)
-            centeredSignal = processData.centering(outputList!!.toTypedArray(), movingAverage!!.toTypedArray(), 50)
+            val movingAverage = processData.movAvg(outputList!!.toTypedArray(), window)
+            centeredSignal = processData.centering(outputList!!.toTypedArray(), movingAverage!!.toTypedArray(), window)
+
+            val filt = Filter()
+            filtOut = filt.chebyBandpass2(centeredSignal!!.toTypedArray())
+            // Timber.i("Filt size: ${filtOut!!.size}")
+            val envelope = filt.hilbert(filtOut!!.toTypedArray())
+
+            envelopeAverage = processData.movAvg(envelope!!.toTypedArray(), window)
+            finalSignal = processData.leveling(filtOut!!.toTypedArray(), envelopeAverage!!.toTypedArray(), window)
+            Timber.i("Filt size: ${finalSignal!!.size}")
 
             val mean1Array: Array<Double> = mean1List.toTypedArray()
             val mean2Array: Array<Double> = mean2List.toTypedArray()

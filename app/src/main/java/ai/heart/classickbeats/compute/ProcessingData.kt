@@ -1,8 +1,5 @@
 package ai.heart.classickbeats.compute
 
-import com.github.psambit9791.jdsp.transform.Hilbert
-
-
 class ProcessingData{
     fun movAvg(X: Array<Double>, window: Int): List<Double>{
         val movingWindow = mutableListOf<Double>()
@@ -29,10 +26,13 @@ class ProcessingData{
         return differ
     }
 
-    fun hilbert(X: Array<Double>): List<Double>{
-        val h = Hilbert(X.toDoubleArray())
-        h.hilbertTransform()
-        h.output
-        return (h.amplitudeEnvelope).toMutableList()
+    fun leveling(X: Array<Double>, movAvg: Array<Double>, window: Int): List<Double>{
+        val Xlist = X.toMutableList()
+        for (i in 0 until window){
+            Xlist.removeAt(0)
+        }
+        assert(Xlist.size == movAvg.size)
+        val differ = Xlist.zip(movAvg, Double::div)
+        return differ
     }
 }
