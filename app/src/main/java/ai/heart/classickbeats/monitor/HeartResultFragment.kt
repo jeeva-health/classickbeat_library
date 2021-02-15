@@ -23,10 +23,12 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.button.MaterialButton
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import kotlin.math.roundToInt
 
 
+@AndroidEntryPoint
 class HeartResultFragment : Fragment(R.layout.fragment_heart_result), OnChartValueSelectedListener {
 
     private val binding by viewBinding(FragmentHeartResultBinding::bind)
