@@ -1,7 +1,8 @@
-package ai.heart.classickbeats.monitor
+package ai.heart.classickbeats.ui.monitor
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentCameraSelectionBinding
+import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
 import android.Manifest
@@ -14,7 +15,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

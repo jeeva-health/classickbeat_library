@@ -1,7 +1,8 @@
-package ai.heart.classickbeats.monitor
+package ai.heart.classickbeats.ui.monitor
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentCalculatingBinding
+import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.utils.EventObserver
 import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle

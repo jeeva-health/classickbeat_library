@@ -1,11 +1,11 @@
-package ai.heart.classickbeats.monitor
+package ai.heart.classickbeats.ui.monitor
 
 import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentHeartResultBinding
+import ai.heart.classickbeats.graph.LineGraph
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -15,13 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -29,7 +22,7 @@ import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
-class HeartResultFragment : Fragment(R.layout.fragment_heart_result), OnChartValueSelectedListener {
+class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
 
     private val binding by viewBinding(FragmentHeartResultBinding::bind)
 
@@ -67,7 +60,6 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result), OnChartVal
             .skipMemoryCache(true).into(binding.graph)
 
         chart = binding.lineChart.apply {
-            setOnChartValueSelectedListener(this@HeartResultFragment)
             setDrawGridBackground(false)
             description.isEnabled = false
             legend.isEnabled = false
@@ -76,47 +68,13 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result), OnChartVal
         }
 
 //        drawLine(monitorViewModel.outputList!!)
-        drawLine(monitorViewModel.finalSignal!!)
 //        drawLine(monitorViewModel.centeredSignal!!)
+        LineGraph.drawLineGraph(chart, monitorViewModel.finalSignal!!)
     }
 
     private fun navigateToSelectionFragment() {
         val action =
             HeartResultFragmentDirections.actionHeartResultFragmentToCameraSelectionFragment()
         navController.navigate(action)
-    }
-
-    override fun onValueSelected(e: Entry?, h: Highlight?) {
-        //TODO("Not yet implemented")
-    }
-
-    override fun onNothingSelected() {
-        //TODO("Not yet implemented")
-    }
-
-    private fun createSet(values: ArrayList<Entry>): LineDataSet {
-        val set = LineDataSet(values, "DataSet 1")
-        set.lineWidth = 1.0f
-        set.color = Color.rgb(0, 0, 0)
-        set.axisDependency = YAxis.AxisDependency.LEFT
-        set.valueTextSize = 10f
-        set.setDrawValues(false)
-        set.setDrawCircles(false)
-        return set
-    }
-
-    private fun drawLine(data: List<Double>) {
-        val values: ArrayList<Entry> = ArrayList()
-        data.forEachIndexed { index, d ->
-            values.add(Entry(index.toFloat(), d.toFloat()))
-        }
-
-        val lineDataSet = createSet(values)
-
-        val dataSets: ArrayList<ILineDataSet> = ArrayList()
-        dataSets.add(lineDataSet)
-
-        val lineData = LineData(dataSets)
-        chart.data = lineData
     }
 }

@@ -1,12 +1,13 @@
-package ai.heart.classickbeats.monitor
+package ai.heart.classickbeats.ui.monitor
 
 import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanBinding
+import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.graph.RunningGraph
+import ai.heart.classickbeats.ui.widgets.CircleProgressBar
 import ai.heart.classickbeats.utils.EventObserver
 import ai.heart.classickbeats.utils.viewBinding
-import ai.heart.classickbeats.widgets.CircleProgressBar
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
@@ -254,10 +255,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                             0
                         )
                     }
-                    // val gMean = pixelAnalyzer?.processImageHeart(img) ?: Pair(0.0, 0)
-                    monitorViewModel.mean1List.add(means.first)
-                    monitorViewModel.mean2List.add(means.second)
-                    monitorViewModel.timeList.add(means.third)
+                    val rMean = means.first
+                    val gMean = means.second
+                    val timeStamp = means.third
+                    monitorViewModel.mean1List.add(rMean)
+                    monitorViewModel.mean2List.add(gMean)
+                    monitorViewModel.timeList.add(timeStamp)
                     RunningGraph.addEntry(chart, monitorViewModel.mean1List.size, means.first)
                 }
             }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/cameraSelectionFragment"
-        android:name="ai.heart.classickbeats.monitor.CameraSelectionFragment"
+        android:name="ai.heart.classickbeats.ui.monitor.CameraSelectionFragment"
         android:label="fragment_camera_selection"
         tools:layout="@layout/fragment_camera_selection">
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/oxygenResultFragment"
-        android:name="ai.heart.classickbeats.monitor.OxygenResultFragment"
+        android:name="ai.heart.classickbeats.ui.monitor.OxygenResultFragment"
         android:label="fragment_oxygen_result"
         tools:layout="@layout/fragment_oxygen_result">
         <action
@@ -27,7 +27,7 @@
 
     <fragment
         android:id="@+id/heartResultFragment"
-        android:name="ai.heart.classickbeats.monitor.HeartResultFragment"
+        android:name="ai.heart.classickbeats.ui.monitor.HeartResultFragment"
         android:label="fragment_heart_result"
         tools:layout="@layout/fragment_heart_result">
         <action
@@ -37,20 +37,19 @@
 
     <fragment
         android:id="@+id/scanFragment"
-        android:name="ai.heart.classickbeats.monitor.ScanFragment"
+        android:name="ai.heart.classickbeats.ui.monitor.ScanFragment"
         android:label="ScanFragment"
         tools:layout="@layout/fragment_scan">
         <argument
             android:name="test_type"
-            android:defaultValue="HEART_RATE"
-            app:argType="ai.heart.classickbeats.monitor.TestType" />
+            app:argType="ai.heart.classickbeats.domain.TestType" />
         <action
             android:id="@+id/action_scanFragment_to_calculatingFragment"
             app:destination="@id/calculatingFragment" />
     </fragment>
     <fragment
         android:id="@+id/calculatingFragment"
-        android:name="ai.heart.classickbeats.monitor.CalculatingFragment"
+        android:name="ai.heart.classickbeats.ui.monitor.CalculatingFragment"
         android:label="fragment_calculating"
         tools:layout="@layout/fragment_calculating">
         <action

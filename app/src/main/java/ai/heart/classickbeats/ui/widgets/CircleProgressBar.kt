@@ -1,7 +1,7 @@
-package ai.heart.classickbeats.widgets
+package ai.heart.classickbeats.ui.widgets
 
 import ai.heart.classickbeats.R
-import ai.heart.classickbeats.monitor.SCAN_DURATION
+import ai.heart.classickbeats.ui.monitor.SCAN_DURATION
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Canvas

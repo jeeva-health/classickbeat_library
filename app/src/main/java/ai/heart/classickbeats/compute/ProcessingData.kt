@@ -1,10 +1,10 @@
 package ai.heart.classickbeats.compute
+
 import org.apache.commons.math3.analysis.interpolation.AkimaSplineInterpolator
-
-import kotlin.math.sqrt
 import kotlin.math.pow
+import kotlin.math.sqrt
 
-class ProcessingData{
+class ProcessingData {
 
     fun interpolate(xArray: Array<Int>, yArray: Array<Double>, duration: Int): List<Double> {
         val akimaSplineInterpolator = AkimaSplineInterpolator()
@@ -24,7 +24,7 @@ class ProcessingData{
         return outputList
     }
 
-    fun movAvg(X: Array<Double>, window: Int): List<Double>{
+    fun movAvg(X: Array<Double>, window: Int): List<Double> {
         val movingWindow = mutableListOf<Double>()
         val y = mutableListOf<Double>()
         for (i in 0 until X.size) {
@@ -39,9 +39,9 @@ class ProcessingData{
         return y
     }
 
-    fun centering(X: Array<Double>, movAvg: Array<Double>, window: Int): List<Double>{
+    fun centering(X: Array<Double>, movAvg: Array<Double>, window: Int): List<Double> {
         val Xlist = X.toMutableList()
-        for (i in 0 until window){
+        for (i in 0 until window) {
             Xlist.removeAt(0)
         }
         assert(Xlist.size == movAvg.size)
@@ -49,9 +49,9 @@ class ProcessingData{
         return differ
     }
 
-    fun leveling(X: Array<Double>, movAvg: Array<Double>, window: Int): List<Double>{
+    fun leveling(X: Array<Double>, movAvg: Array<Double>, window: Int): List<Double> {
         val Xlist = X.toMutableList()
-        for (i in 0 until window){
+        for (i in 0 until window) {
             Xlist.removeAt(0)
         }
         assert(Xlist.size == movAvg.size)
@@ -59,25 +59,28 @@ class ProcessingData{
         return differ
     }
 
-    fun heartRateAndHRV(peaks: List<Int>): Pair<Double, Double>{
+    fun heartRateAndHRV(peaks: List<Int>): Pair<Double, Double> {
 
         fun sd(data: DoubleArray): Double {
             val mean = data.average()
             return data
                 .fold(0.0, { accumulator, next -> accumulator + (next - mean).pow(2.0) })
-                .let { sqrt(it / data.size )
+                .let {
+                    sqrt(it / data.size)
                 }
         }
 
         val time = (0 until 3000).toList()
         val ibiList = mutableListOf<Double>() //Time in milliseconds
 
-        for(i in 0 until peaks.size-1){
-            ibiList.add((time[peaks[i+1]] - time[peaks[i]])*10.0)
+        for (i in 0 until peaks.size - 1) {
+            ibiList.add((time[peaks[i + 1]] - time[peaks[i]]) * 10.0)
         }
-        val ibi = ibiList.average()
-        // Add a condition to keep ibi from 0.6*ibi < t < 1.4*ibi
-        val bpm = (60*1000.0)/ibi
+        val ibiAvg = ibiList.average()
+        val lowerBand = 0.6 * ibiAvg
+        val upperBand = 1.4 * ibiAvg
+        val filteredIbiList = ibiList.filter { it > lowerBand && it < upperBand }
+        val bpm = (60 * 1000.0) / ibiAvg
         val SDNN = sd(ibiList.toDoubleArray())
         return Pair(bpm, SDNN)
     }

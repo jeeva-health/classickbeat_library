@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.monitor
+package ai.heart.classickbeats.ui.monitor
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent
