@@ -9,7 +9,6 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chaquo.python.Python
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -81,14 +80,14 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
             val processData = ProcessingData()
             outputList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray(), SCAN_DURATION)
             val movingAverage = processData.movAvg(outputList!!.toTypedArray(), window)
-            centeredSignal = processData.centering(outputList!!.toTypedArray(), movingAverage!!.toTypedArray(), window)
+            centeredSignal = processData.centering(outputList!!.toTypedArray(), movingAverage.toTypedArray(), window)
 
             val filt = Filter()
             filtOut = filt.chebyBandpass(centeredSignal!!.toTypedArray())
             // Timber.i("Filt size: ${filtOut!!.size}")
             val envelope = filt.hilbert(filtOut!!.toTypedArray())
 
-            envelopeAverage = processData.movAvg(envelope!!.toTypedArray(), window)
+            envelopeAverage = processData.movAvg(envelope.toTypedArray(), window)
             finalSignal = processData.leveling(filtOut!!.toTypedArray(), envelopeAverage!!.toTypedArray(), window)
             Timber.i("Filt size: ${finalSignal!!.size}")
             val peaksQ = filt.peakDetection(finalSignal!!.toTypedArray())
