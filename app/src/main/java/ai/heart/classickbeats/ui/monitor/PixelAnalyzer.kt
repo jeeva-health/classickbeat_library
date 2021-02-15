@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.ui.monitor
 
+import ai.heart.classickbeats.domain.CameraReading
 import android.content.Context
 import android.media.Image
 import android.os.SystemClock
@@ -129,7 +130,7 @@ class PixelAnalyzer constructor(
         return Pair(yMean, fps)
     }
 
-    fun processImageHeart(image: Image): Triple<Double, Double, Int> {
+    fun processImageHeart(image: Image): CameraReading {
         val timeStamp = SystemClock.elapsedRealtime().toInt()
         val argbArray = yuv420ToARGB(image, context)
         val w = image.width
@@ -141,12 +142,12 @@ class PixelAnalyzer constructor(
         var aSum = 0
         val len = 60
         var count = 0
-        for (y in max(0,h/2 - len) until min(h - 2, h/2 + len)) {
-            for (x in max(0, w/2 - len) until min(w - 2, w/2 + len)) {
+        for (y in max(0, h / 2 - len) until min(h - 2, h / 2 + len)) {
+            for (x in max(0, w / 2 - len) until min(w - 2, w / 2 + len)) {
                 ind = y * w + x
-                rSum += argbArray[ind*4].toInt() and 0xFF
-                gSum += argbArray[ind*4+1].toInt() and 0xFF
-                bSum += argbArray[ind*4+2].toInt() and 0xFF
+                rSum += argbArray[ind * 4].toInt() and 0xFF
+                gSum += argbArray[ind * 4 + 1].toInt() and 0xFF
+                bSum += argbArray[ind * 4 + 2].toInt() and 0xFF
                 // aSum += argbArray[ind*4+3].toInt() and 0xFF
                 count++
             }
@@ -165,17 +166,16 @@ class PixelAnalyzer constructor(
         val bMean = bSum.toDouble() / count
         // val aMean = aSum.toDouble() / count
         displayCounter()
-        val fps = if (sec > 0){
-            (frameRate.toDouble()/sec).roundToInt()
-        }
-        else{
+        val fps = if (sec > 0) {
+            (frameRate.toDouble() / sec).roundToInt()
+        } else {
             0
         }
         Timber.i("RGBMean: $rMean \t $gMean \t $bMean \t TimeStamp: $timeStamp \t FPS: $fps")
-        return Triple(rMean, gMean, timeStamp)
+        return CameraReading(rMean, gMean, bMean, timeStamp)
     }
 
-    fun processImage(image: Image): Triple<Double, Double, Int> {
+    fun processImage(image: Image): CameraReading {
         val timeStamp = SystemClock.elapsedRealtime().toInt()
         val w = image.width
         val h = image.height
@@ -195,8 +195,8 @@ class PixelAnalyzer constructor(
         var b_sum = 0
         var count = 0
         val len = 60  // Length of square is (2*len)
-        for (y in max(0,h/2 - len) until min(h - 2, h/2 + len)) {
-            for (x in max(0, w/2 - len) until min(w - 2, w/2 + len)) {
+        for (y in max(0, h / 2 - len) until min(h - 2, h / 2 + len)) {
+            for (x in max(0, w / 2 - len) until min(w - 2, w / 2 + len)) {
                 val yIndex = y * w + x
                 yValue = yBuffer[yIndex].toInt() and 0xff
                 val uvx = x / 2
@@ -222,14 +222,13 @@ class PixelAnalyzer constructor(
         val gMean = g_sum.toDouble() / count
         val bMean = b_sum.toDouble() / count
         displayCounter()
-        val fps = if (sec > 0){
-            (frameRate.toDouble()/sec).roundToInt()
-        }
-        else{
+        val fps = if (sec > 0) {
+            (frameRate.toDouble() / sec).roundToInt()
+        } else {
             0
         }
         Timber.i("rgbMean: " + rMean + "\t" + gMean + "\t" + bMean + "\t" + fps)
-        return Triple(rMean, gMean, timeStamp)
+        return CameraReading(rMean, gMean, bMean, timeStamp)
     }
 
     private fun clamp(value: Float, min: Float, max: Float): Float {

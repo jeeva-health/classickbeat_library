@@ -3,6 +3,7 @@ package ai.heart.classickbeats.ui.monitor
 import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanBinding
+import ai.heart.classickbeats.domain.CameraReading
 import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.graph.RunningGraph
 import ai.heart.classickbeats.ui.widgets.CircleProgressBar
@@ -71,6 +72,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private lateinit var accelerometerListener: AccelerometerListener
 
     private val fps = 30
+
+    private var badImageCounter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -243,25 +246,24 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             if (monitorViewModel.isProcessing) {
                 imageCounter++
                 if (imageCounter >= fps * 1) {
-                    val means = when (navArgs.testType) {
-                        TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img) ?: Triple(
-                            0.0,
-                            0.0,
-                            0
-                        )
-                        TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img) ?: Triple(
-                            0.0,
-                            0.0,
-                            0
-                        )
+                    val cameraReading: CameraReading? = when (navArgs.testType) {
+                        TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img)
+                        TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img)
                     }
-                    val rMean = means.first
-                    val gMean = means.second
-                    val timeStamp = means.third
-                    monitorViewModel.mean1List.add(rMean)
-                    monitorViewModel.mean2List.add(gMean)
-                    monitorViewModel.timeList.add(timeStamp)
-                    RunningGraph.addEntry(chart, monitorViewModel.mean1List.size, means.first)
+                    cameraReading?.apply {
+                        if (green / red <= 1 / 2 && blue / red <= 1 / 2) {
+                            badImageCounter++
+                        } else {
+                            badImageCounter = 0
+                        }
+                        if (badImageCounter >= 15) {
+                            restartReading()
+                        }
+                        monitorViewModel.mean1List.add(red)
+                        monitorViewModel.mean2List.add(green)
+                        monitorViewModel.timeList.add(timeStamp)
+                        RunningGraph.addEntry(chart, monitorViewModel.mean1List.size, red)
+                    }
                 }
             }
             img.close()
@@ -402,6 +404,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private fun restartReading() {
         monitorViewModel.resetTimer()
+        badImageCounter = 0
         circularProgressBar.setProgress(0.0f)
         circularProgressBar.visibility = View.GONE
         cameraCaptureButton.visibility = View.VISIBLE
