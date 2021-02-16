@@ -21,7 +21,7 @@ class Filter{
     }
 
     fun chebyBandpass(X: Array<Double>): List<Double>{
-        val rf = 5.0
+        val rf = 1.0
         val cheby = Chebyshev(X.toDoubleArray(), 100.0, rf, 2)
         val fX = cheby.bandPassFilter(4, 0.4, 4.0)
         val fXR = reverseArray(fX)
@@ -61,7 +61,7 @@ class Filter{
 
         val peaks = out.peaks
         Timber.i("Size, Peaks: ${peaks.size}, ${Arrays.toString(peaks)}")
-        var filteredPeaks = out.filterByProminence(peaks, 0.5, null)
+        var filteredPeaks = out.filterByProminence(peaks, 0.2, null)
         Timber.i("Size, Prominent Peaks: ${filteredPeaks.size}, ${Arrays.toString(filteredPeaks)}")
 //        filteredPeaks = out.filterByWidth(filteredPeaks, 20.0, null)
 //        Timber.i("Size, Wide and Prominent Peaks: ${filteredPeaks.size}, ${Arrays.toString(filteredPeaks)}")

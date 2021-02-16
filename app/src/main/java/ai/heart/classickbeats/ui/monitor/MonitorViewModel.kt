@@ -90,15 +90,21 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
             filtOut = filt.chebyBandpass(centeredSignal!!.toTypedArray())
             filtOut = filtOut!!.drop(300)
             val envelope = filt.hilbert(filtOut!!.toTypedArray())
-
             val envelopeAverage = processData.movAvg(envelope.toTypedArray(), window)
             finalSignal = processData.leveling(filtOut!!.toTypedArray(), envelopeAverage!!.toTypedArray(), window)
 
-//            finalSignal = filtOut
             val peaksQ = filt.peakDetection(finalSignal!!.toTypedArray())
             val peaks = peaksQ.first
             val quality = peaksQ.second
             Timber.i("Signal Quality: $quality")
+
+            // Checking peaks location without filter
+            val centeredSignal2 = centeredSignal!!.drop(300)
+            val envelope2 = filt.hilbert(centeredSignal2!!.toTypedArray())
+            val envelopeAverage2 = processData.movAvg(envelope2.toTypedArray(), window)
+            val finalSignal2 = processData.leveling(centeredSignal2!!.toTypedArray(), envelopeAverage2!!.toTypedArray(), window)
+            val peaksQ2 = filt.peakDetection(finalSignal2!!.toTypedArray())
+            Timber.i("Signal 2 Quality: ${peaksQ2.second}")
 
             val bpmHRV = processData.heartRateAndHRV(peaks, finalSignal!!.size)
             val bpm = bpmHRV.first
