@@ -96,7 +96,7 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
             val quality = peaksQ.second
             Timber.i("Signal Quality: $quality")
 
-            val bpmHRV = processData.heartRateAndHRV(peaks)
+            val bpmHRV = processData.heartRateAndHRV(peaks, SCAN_DURATION)
             val bpm = bpmHRV.first
             val hrv = bpmHRV.second
 

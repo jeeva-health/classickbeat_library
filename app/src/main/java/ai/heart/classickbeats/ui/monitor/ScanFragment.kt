@@ -251,13 +251,13 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img)
                     }
                     cameraReading?.apply {
-                        if (green / red <= 1 / 2 && blue / red <= 1 / 2) {
+                        if (green / red > 1 / 2 || blue / red > 1 / 2) {
                             badImageCounter++
                         } else {
                             badImageCounter = 0
                         }
                         if (badImageCounter >= 15) {
-                            restartReading()
+//                            restartReading()
                         }
                         monitorViewModel.mean1List.add(red)
                         monitorViewModel.mean2List.add(green)

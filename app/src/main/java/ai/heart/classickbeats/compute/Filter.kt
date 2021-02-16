@@ -11,10 +11,26 @@ import kotlin.math.sqrt
 
 class Filter{
 
+    fun reverseArray(X: DoubleArray): DoubleArray{
+        var out = mutableListOf<Double>()
+        val N = X.size
+        for (i in 0 until N){
+            out.add(X[N-i-1])
+        }
+        return out.toDoubleArray()
+    }
+
     fun chebyBandpass(X: Array<Double>): List<Double>{
-        val cheby = Chebyshev(X.toDoubleArray(), 100.0, 10.0, 2)
-        val y = cheby.bandPassFilter(4, 0.4, 4.0)
-        return y.toMutableList()
+        val rf = 10.0
+        val cheby = Chebyshev(X.toDoubleArray(), 100.0, rf, 2)
+        val fX = cheby.bandPassFilter(4, 0.4, 4.0)
+        val fXR = reverseArray(fX)
+
+        val cheby2 = Chebyshev(fXR, 100.0, rf, 2)
+        val ffXR = cheby2.bandPassFilter(4, 0.4, 4.0)
+        val ffXRR = reverseArray(ffXR)
+
+        return ffXRR.toMutableList()
     }
 
     fun hilbert(X: Array<Double>): List<Double>{

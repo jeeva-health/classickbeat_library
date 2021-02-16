@@ -33,17 +33,17 @@ class ProcessingData {
             } else {
                 movingWindow.removeAt(0)
                 movingWindow.add(X[i])
-                y.add(movingWindow.average())
             }
+            y.add(movingWindow.average())
         }
         return y
     }
 
     fun centering(X: Array<Double>, movAvg: Array<Double>, window: Int): List<Double> {
         val Xlist = X.toMutableList()
-        for (i in 0 until window) {
-            Xlist.removeAt(0)
-        }
+//        for (i in 0 until window) {
+//            Xlist.removeAt(0)
+//        }
         assert(Xlist.size == movAvg.size)
         val differ = Xlist.zip(movAvg, Double::minus)
         return differ
@@ -51,15 +51,15 @@ class ProcessingData {
 
     fun leveling(X: Array<Double>, movAvg: Array<Double>, window: Int): List<Double> {
         val Xlist = X.toMutableList()
-        for (i in 0 until window) {
-            Xlist.removeAt(0)
-        }
+//        for (i in 0 until window) {
+//            Xlist.removeAt(0)
+//        }
         assert(Xlist.size == movAvg.size)
         val differ = Xlist.zip(movAvg, Double::div)
         return differ
     }
 
-    fun heartRateAndHRV(peaks: List<Int>): Pair<Double, Double> {
+    fun heartRateAndHRV(peaks: List<Int>, scanDuration: Int): Pair<Double, Double> {
 
         fun sd(data: DoubleArray): Double {
             val mean = data.average()
@@ -70,7 +70,7 @@ class ProcessingData {
                 }
         }
 
-        val time = (0 until 3000).toList()
+        val time = (0 until 100*scanDuration).toList()
         val ibiList = mutableListOf<Double>() //Time in milliseconds
 
         for (i in 0 until peaks.size - 1) {
@@ -80,8 +80,9 @@ class ProcessingData {
         val lowerBand = 0.6 * ibiAvg
         val upperBand = 1.4 * ibiAvg
         val filteredIbiList = ibiList.filter { it > lowerBand && it < upperBand }
-        val bpm = (60 * 1000.0) / ibiAvg
-        val SDNN = sd(ibiList.toDoubleArray())
+        val ibiAvg2 = filteredIbiList.average()
+        val bpm = (60 * 1000.0) / ibiAvg2
+        val SDNN = sd(filteredIbiList.toDoubleArray())
         return Pair(bpm, SDNN)
     }
 }

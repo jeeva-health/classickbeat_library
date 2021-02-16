@@ -13,7 +13,7 @@ object LineGraph {
     private fun createLineDataSet(values: ArrayList<Entry>): LineDataSet {
         val set = LineDataSet(values, "DataSet 1")
         set.lineWidth = 1.0f
-        set.color = Color.rgb(0, 0, 0)
+        set.color = Color.rgb(255, 0, 0)
         set.axisDependency = YAxis.AxisDependency.LEFT
         set.valueTextSize = 10f
         set.setDrawValues(false)
