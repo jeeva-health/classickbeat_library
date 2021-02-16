@@ -1,8 +1,11 @@
 package ai.heart.classickbeats.compute
 
 import org.apache.commons.math3.analysis.interpolation.AkimaSplineInterpolator
+import timber.log.Timber
+import java.util.*
 import kotlin.math.pow
 import kotlin.math.sqrt
+import java.util.*
 
 class ProcessingData {
 
@@ -59,16 +62,16 @@ class ProcessingData {
         return differ
     }
 
-    fun heartRateAndHRV(peaks: List<Int>, scanDuration: Int): Pair<Double, Double> {
+    fun sd(data: DoubleArray): Double {
+        val mean = data.average()
+        return data
+            .fold(0.0, { accumulator, next -> accumulator + (next - mean).pow(2.0) })
+            .let {
+                sqrt(it / data.size)
+            }
+    }
 
-        fun sd(data: DoubleArray): Double {
-            val mean = data.average()
-            return data
-                .fold(0.0, { accumulator, next -> accumulator + (next - mean).pow(2.0) })
-                .let {
-                    sqrt(it / data.size)
-                }
-        }
+    fun heartRateAndHRV(peaks: List<Int>, scanDuration: Int): Pair<Double, Double> {
 
         val time = (0 until 100*scanDuration).toList()
         val ibiList = mutableListOf<Double>() //Time in milliseconds
@@ -77,9 +80,11 @@ class ProcessingData {
             ibiList.add((time[peaks[i + 1]] - time[peaks[i]]) * 10.0)
         }
         val ibiAvg = ibiList.average()
-        val lowerBand = 0.6 * ibiAvg
-        val upperBand = 1.4 * ibiAvg
-        val filteredIbiList = ibiList.filter { it > lowerBand && it < upperBand }
+        Timber.i("Size, ibiList: ${ibiList.size}, ${Arrays.toString(ibiList.toDoubleArray())}")
+        val filteredIbiList = ibiList.filter { it > 0.6 * ibiAvg && it < 1.4 * ibiAvg }
+        Timber.i("Size, filteredIbiList: ${ibiList.size}, ${Arrays.toString(ibiList.toDoubleArray())}")
+//        val rejectedIntervals = ibiList.filter { it <= 0.6 * ibiAvg && it >= 1.4 * ibiAvg }
+//        Timber.i("Rejected Intervals Size: ${rejectedIntervals.size}")
         val ibiAvg2 = filteredIbiList.average()
         val bpm = (60 * 1000.0) / ibiAvg2
         val SDNN = sd(filteredIbiList.toDoubleArray())

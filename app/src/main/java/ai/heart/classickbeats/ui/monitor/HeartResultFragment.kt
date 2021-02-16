@@ -67,8 +67,6 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
             invalidate()
         }
 
-//        drawLine(monitorViewModel.outputList!!)
-//        drawLine(monitorViewModel.centeredSignal!!)
         LineGraph.drawLineGraph(chart, monitorViewModel.finalSignal!!)
     }
 

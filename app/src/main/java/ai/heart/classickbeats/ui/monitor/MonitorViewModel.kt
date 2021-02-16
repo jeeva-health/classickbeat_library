@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-const val SCAN_DURATION = 31
+const val SCAN_DURATION = 33
 
 class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
 
@@ -71,7 +71,6 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
     var outputList: List<Double>? = null
     var filtOut: List<Double>? = null
     var centeredSignal: List<Double>? = null
-    var envelopeAverage: List<Double>? = null
     var finalSignal: List<Double>? = null
 
     fun calculateResult() {
@@ -80,23 +79,28 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
             val window = 50
             val processData = ProcessingData()
             outputList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray(), SCAN_DURATION)
+            outputList = processData.movAvg(outputList!!.toTypedArray(), 10)
+
             val movingAverage = processData.movAvg(outputList!!.toTypedArray(), window)
             centeredSignal = processData.centering(outputList!!.toTypedArray(), movingAverage.toTypedArray(), window)
+//            val x0 = outputList!![0]
+//            centeredSignal = outputList!!.map { it - x0 }
 
             val filt = Filter()
             filtOut = filt.chebyBandpass(centeredSignal!!.toTypedArray())
-            // Timber.i("Filt size: ${filtOut!!.size}")
+            filtOut = filtOut!!.drop(300)
             val envelope = filt.hilbert(filtOut!!.toTypedArray())
 
-            envelopeAverage = processData.movAvg(envelope.toTypedArray(), window)
+            val envelopeAverage = processData.movAvg(envelope.toTypedArray(), window)
             finalSignal = processData.leveling(filtOut!!.toTypedArray(), envelopeAverage!!.toTypedArray(), window)
-            Timber.i("Filt size: ${finalSignal!!.size}")
+
+//            finalSignal = filtOut
             val peaksQ = filt.peakDetection(finalSignal!!.toTypedArray())
             val peaks = peaksQ.first
             val quality = peaksQ.second
             Timber.i("Signal Quality: $quality")
 
-            val bpmHRV = processData.heartRateAndHRV(peaks, SCAN_DURATION)
+            val bpmHRV = processData.heartRateAndHRV(peaks, finalSignal!!.size)
             val bpm = bpmHRV.first
             val hrv = bpmHRV.second
 
