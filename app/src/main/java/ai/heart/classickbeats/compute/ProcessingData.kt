@@ -9,17 +9,17 @@ import java.util.*
 
 class ProcessingData {
 
-    fun interpolate(xArray: Array<Int>, yArray: Array<Double>, duration: Int): List<Double> {
+    fun interpolate(xArray: Array<Int>, yArray: Array<Double>): List<Double> {
         val akimaSplineInterpolator = AkimaSplineInterpolator()
         val x0 = xArray[0]
         val pXDouble = xArray.map { (it - x0).toDouble() }
 
-        val polynomialFunction =
-            akimaSplineInterpolator.interpolate(pXDouble.toDoubleArray(), yArray.toDoubleArray())
-        val size = duration * 100
-
+        val polynomialFunction = akimaSplineInterpolator.interpolate(pXDouble.toDoubleArray(), yArray.toDoubleArray())
         val xMax = pXDouble.maxOrNull()!!
-        val inputList = (0 until size).map { it * xMax / size }
+        val size = (xMax/10).toInt()
+
+        Timber.i("Max time recorded: $xMax")
+        val inputList = (0 until size).map { it * 10.0 }
         val outputList = mutableListOf<Double>()
         for (i in inputList) {
             outputList.add(polynomialFunction.value(i))
@@ -81,8 +81,8 @@ class ProcessingData {
         }
         val ibiAvg = ibiList.average()
         Timber.i("Size, ibiList: ${ibiList.size}, ${Arrays.toString(ibiList.toDoubleArray())}")
-        val filteredIbiList = ibiList.filter { it > 0.6 * ibiAvg && it < 1.4 * ibiAvg }
-        Timber.i("Size, filteredIbiList: ${ibiList.size}, ${Arrays.toString(ibiList.toDoubleArray())}")
+        val filteredIbiList = ibiList.filter { it > 0.5 * ibiAvg && it < 1.5 * ibiAvg }
+        Timber.i("Size, filteredIbiList: ${filteredIbiList.size}, ${Arrays.toString(filteredIbiList.toDoubleArray())}")
 //        val rejectedIntervals = ibiList.filter { it <= 0.6 * ibiAvg && it >= 1.4 * ibiAvg }
 //        Timber.i("Rejected Intervals Size: ${rejectedIntervals.size}")
         val ibiAvg2 = filteredIbiList.average()

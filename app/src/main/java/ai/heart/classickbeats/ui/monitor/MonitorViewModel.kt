@@ -78,13 +78,11 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
 
             val window = 50
             val processData = ProcessingData()
-            outputList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray(), SCAN_DURATION)
+            outputList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray())
             outputList = processData.movAvg(outputList!!.toTypedArray(), 10)
 
             val movingAverage = processData.movAvg(outputList!!.toTypedArray(), window)
             centeredSignal = processData.centering(outputList!!.toTypedArray(), movingAverage.toTypedArray(), window)
-//            val x0 = outputList!![0]
-//            centeredSignal = outputList!!.map { it - x0 }
 
             val filt = Filter()
             filtOut = filt.chebyBandpass(centeredSignal!!.toTypedArray())
@@ -106,7 +104,7 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
             val peaksQ2 = filt.peakDetection(finalSignal2!!.toTypedArray())
             Timber.i("Signal 2 Quality: ${peaksQ2.second}")
 
-            val bpmHRV = processData.heartRateAndHRV(peaks, finalSignal!!.size)
+            val bpmHRV = processData.heartRateAndHRV(peaks, SCAN_DURATION)
             val bpm = bpmHRV.first
             val hrv = bpmHRV.second
 
