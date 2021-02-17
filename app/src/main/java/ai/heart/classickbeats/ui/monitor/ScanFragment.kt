@@ -8,6 +8,7 @@ import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.graph.RunningGraph
 import ai.heart.classickbeats.ui.widgets.CircleProgressBar
 import ai.heart.classickbeats.utils.EventObserver
+import ai.heart.classickbeats.utils.postOnMainLooper
 import ai.heart.classickbeats.utils.viewBinding
 import android.animation.Animator
 import android.annotation.SuppressLint
@@ -251,13 +252,17 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img)
                     }
                     cameraReading?.apply {
+                        Timber.i("ratio1: $green/$red")
+                        Timber.i("ratio2: $blue/$red")
                         if (green / red > 1 / 2 || blue / red > 1 / 2) {
                             badImageCounter++
                         } else {
                             badImageCounter = 0
                         }
-                        if (badImageCounter >= 15) {
-//                            restartReading()
+                        if (badImageCounter >= 45) {
+                            postOnMainLooper {
+                                restartReading()
+                            }
                         }
                         monitorViewModel.mean1List.add(red)
                         monitorViewModel.mean2List.add(green)
