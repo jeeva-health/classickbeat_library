@@ -252,9 +252,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img)
                     }
                     cameraReading?.apply {
-                        Timber.i("ratio1: $green/$red")
-                        Timber.i("ratio2: $blue/$red")
-                        if (green / red > 1 / 2 || blue / red > 1 / 2) {
+                        Timber.i("ratio1: ${green/red}")
+                        Timber.i("ratio2: ${blue/red}")
+                        if (green / red > 0.5 || blue / red > 0.5) {
                             badImageCounter++
                         } else {
                             badImageCounter = 0
@@ -264,6 +264,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                                 restartReading()
                             }
                         }
+                        Timber.i("badImageCounter: $badImageCounter")
                         monitorViewModel.mean1List.add(red)
                         monitorViewModel.mean2List.add(green)
                         monitorViewModel.timeList.add(timeStamp)
@@ -418,6 +419,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private val handleAcceleration = fun() {
         if (monitorViewModel.isProcessing) {
+            Timber.i("Moving too much!")
             restartReading()
         }
     }
