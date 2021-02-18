@@ -1,8 +1,9 @@
-package ai.heart.classickbeats.monitor
+package ai.heart.classickbeats.ui.monitor
 
 import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentHeartResultBinding
+import ai.heart.classickbeats.graph.LineGraph
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
@@ -13,11 +14,14 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.github.mikephil.charting.charts.LineChart
 import com.google.android.material.button.MaterialButton
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import kotlin.math.roundToInt
 
 
+@AndroidEntryPoint
 class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
 
     private val binding by viewBinding(FragmentHeartResultBinding::bind)
@@ -25,6 +29,8 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
     private lateinit var navController: NavController
 
     private lateinit var testAgainButton: MaterialButton
+
+    private lateinit var chart: LineChart
 
     private val monitorViewModel: MonitorViewModel by activityViewModels()
 
@@ -52,6 +58,16 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
             DiskCacheStrategy.NONE
         )
             .skipMemoryCache(true).into(binding.graph)
+
+        chart = binding.lineChart.apply {
+            setDrawGridBackground(false)
+            description.isEnabled = false
+            legend.isEnabled = false
+            setNoDataText("")
+            invalidate()
+        }
+
+        LineGraph.drawLineGraph(chart, monitorViewModel.finalSignal!!)
     }
 
     private fun navigateToSelectionFragment() {

@@ -1,7 +1,8 @@
-package ai.heart.classickbeats.monitor
+package ai.heart.classickbeats.ui.monitor
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentCalculatingBinding
+import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.utils.EventObserver
 import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
@@ -10,7 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class CalculatingFragment : Fragment(R.layout.fragment_calculating) {
 
     private val binding by viewBinding(FragmentCalculatingBinding::bind)
@@ -24,8 +28,8 @@ class CalculatingFragment : Fragment(R.layout.fragment_calculating) {
 
         navController = findNavController()
 
-        monitorViewModel.outputComputed.observe(viewLifecycleOwner, EventObserver{
-            if (it){
+        monitorViewModel.outputComputed.observe(viewLifecycleOwner, EventObserver {
+            if (it) {
                 when (monitorViewModel.testType) {
                     TestType.HEART_RATE -> navigateToHeartResultFragment()
                     //TestType.OXYGEN_SATURATION -> navigateToOxygenResultFragment()

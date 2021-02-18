@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".monitor.HeartResultFragment">
+    tools:context=".ui.monitor.HeartResultFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start_guideline"
@@ -58,6 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:scaleType="fitCenter"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toBottomOf="@id/title" />
@@ -120,6 +121,17 @@
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/center_guideline"
         tools:text="76" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/line_chart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="24dp"
+        app:layout_constraintBottom_toTopOf="@id/re_test_button"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/aFib_tv"
+        app:layout_constraintVertical_bias="0" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/re_test_button"

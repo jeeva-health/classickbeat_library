@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:keepScreenOn="true"
-    tools:context=".monitor.ScanFragment">
+    tools:context=".ui.monitor.ScanFragment">
 
     <TextureView
         android:id="@+id/view_finder"
@@ -62,7 +62,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <ai.heart.classickbeats.widgets.CircleProgressBar
+    <ai.heart.classickbeats.ui.widgets.CircleProgressBar
         android:id="@+id/circular_progress_bar"
         android:layout_width="92dp"
         android:layout_height="92dp"

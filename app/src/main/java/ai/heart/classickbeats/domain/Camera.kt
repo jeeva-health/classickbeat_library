@@ -1,5 +1,7 @@
-package ai.heart.classickbeats.monitor
+package ai.heart.classickbeats.domain
 
+import ai.heart.classickbeats.ui.monitor.MonitorViewModel
+import ai.heart.classickbeats.ui.monitor.PixelAnalyzer
 import android.graphics.ImageFormat
 import android.hardware.camera2.*
 import android.media.ImageReader

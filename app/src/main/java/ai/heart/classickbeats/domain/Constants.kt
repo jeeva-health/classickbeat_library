@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.monitor
+package ai.heart.classickbeats.domain
 
 enum class TestType {
     HEART_RATE,

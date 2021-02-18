@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.monitor
+package ai.heart.classickbeats.ui.monitor
 
 import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
@@ -11,8 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class OxygenResultFragment : Fragment(R.layout.fragment_oxygen_result) {
 
     private val binding by viewBinding(FragmentOxygenResultBinding::bind)
