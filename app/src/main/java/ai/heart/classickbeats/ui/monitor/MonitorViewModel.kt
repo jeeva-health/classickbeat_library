@@ -85,7 +85,8 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
             centeredSignal = processData.centering(outputList!!.toTypedArray(), movingAverage.toTypedArray(), window)
 
             val filt = Filter()
-            filtOut = filt.chebyBandpass(centeredSignal!!.toTypedArray())
+//            filtOut = filt.chebyBandpass(centeredSignal!!.toTypedArray())
+            filtOut = filt.filtfilt(centeredSignal!!.toTypedArray())
             filtOut = filtOut!!.drop(300)
             val envelope = filt.hilbert(filtOut!!.toTypedArray())
             val envelopeAverage = processData.movAvg(envelope.toTypedArray(), window)
