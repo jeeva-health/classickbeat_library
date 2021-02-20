@@ -27,6 +27,7 @@ class Filter{
             53.46344067, -40.14459053,  18.87179701,  -5.07834891, 0.59896551)
 
         val y = Filtfilt.doFiltfilt(B.toCollection(ArrayList()), A.toCollection(ArrayList()), X.toCollection(ArrayList()))
+        Timber.i("Size of Filter output: ${y.size}")
 
 
         return y

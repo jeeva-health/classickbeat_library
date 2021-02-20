@@ -88,9 +88,10 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
 //            filtOut = filt.chebyBandpass(centeredSignal!!.toTypedArray())
             filtOut = filt.filtfilt(centeredSignal!!.toTypedArray())
             filtOut = filtOut!!.drop(300)
-            val envelope = filt.hilbert(filtOut!!.toTypedArray())
-            val envelopeAverage = processData.movAvg(envelope.toTypedArray(), window)
-            finalSignal = processData.leveling(filtOut!!.toTypedArray(), envelopeAverage!!.toTypedArray(), window)
+//            val envelope = filt.hilbert(filtOut!!.toTypedArray())
+//            val envelopeAverage = processData.movAvg(envelope.toTypedArray(), window)
+//            finalSignal = processData.leveling(filtOut!!.toTypedArray(), envelopeAverage!!.toTypedArray(), window)
+            finalSignal = filtOut
 
             val peaksQ = filt.peakDetection(finalSignal!!.toTypedArray())
             val peaks = peaksQ.first

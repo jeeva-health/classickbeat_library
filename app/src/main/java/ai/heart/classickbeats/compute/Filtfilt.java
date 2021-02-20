@@ -6,12 +6,13 @@ public class Filtfilt {
     /**
      *
      * @param B
-     *            滤波器参数B
+     * Filter parameter B
      * @param A
-     *            滤波器参数A
+     *            Filter parameter A
      * @param input
-     *            要滤波的数组 ： 要求是一维，长度要大于B数组。
-     * @return 滤波后的结果 返回double数组。
+     *            The array to be filtered: The requirement is one-dimensional and the length is greater than the B array.
+     * @return
+     * The filtered result returns a double array.
      */
     public static ArrayList<Double> doFiltfilt(ArrayList<Double> B,
                                                ArrayList<Double> A, ArrayList<Double> X) {
