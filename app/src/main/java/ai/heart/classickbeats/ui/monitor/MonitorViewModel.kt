@@ -10,14 +10,17 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 const val SCAN_DURATION = 33
 
-class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
+@HiltViewModel
+class MonitorViewModel @Inject constructor() : ViewModel() {
 
     var hearRateResult: HeartRateResult? = null
 
@@ -82,14 +85,22 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
             outputList = processData.movAvg(outputList!!.toTypedArray(), 10)
 
             val movingAverage = processData.movAvg(outputList!!.toTypedArray(), window)
-            centeredSignal = processData.centering(outputList!!.toTypedArray(), movingAverage.toTypedArray(), window)
+            centeredSignal = processData.centering(
+                outputList!!.toTypedArray(),
+                movingAverage.toTypedArray(),
+                window
+            )
 
             val filt = Filter()
             filtOut = filt.chebyBandpass(centeredSignal!!.toTypedArray())
             filtOut = filtOut!!.drop(300)
             val envelope = filt.hilbert(filtOut!!.toTypedArray())
             val envelopeAverage = processData.movAvg(envelope.toTypedArray(), window)
-            finalSignal = processData.leveling(filtOut!!.toTypedArray(), envelopeAverage!!.toTypedArray(), window)
+            finalSignal = processData.leveling(
+                filtOut!!.toTypedArray(),
+                envelopeAverage!!.toTypedArray(),
+                window
+            )
 
             val peaksQ = filt.peakDetection(finalSignal!!.toTypedArray())
             val peaks = peaksQ.first
@@ -100,7 +111,11 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
             val centeredSignal2 = centeredSignal!!.drop(300)
             val envelope2 = filt.hilbert(centeredSignal2!!.toTypedArray())
             val envelopeAverage2 = processData.movAvg(envelope2.toTypedArray(), window)
-            val finalSignal2 = processData.leveling(centeredSignal2!!.toTypedArray(), envelopeAverage2!!.toTypedArray(), window)
+            val finalSignal2 = processData.leveling(
+                centeredSignal2!!.toTypedArray(),
+                envelopeAverage2!!.toTypedArray(),
+                window
+            )
             val peaksQ2 = filt.peakDetection(finalSignal2!!.toTypedArray())
             Timber.i("Signal 2 Quality: ${peaksQ2.second}")
 
