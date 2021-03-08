@@ -107,17 +107,13 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
             val quality = peaksQ.second
             Timber.i("Signal Quality: $quality")
 
-            // Checking peaks location without filter
-            val centeredSignal2 = centeredSignal!!.drop(300)
-            val envelope2 = filt.hilbert(centeredSignal2!!.toTypedArray())
-            val envelopeAverage2 = processData.movAvg(envelope2.toTypedArray(), window)
-            val finalSignal2 = processData.leveling(
-                centeredSignal2!!.toTypedArray(),
-                envelopeAverage2!!.toTypedArray(),
-                window
-            )
-            val peaksQ2 = filt.peakDetection(finalSignal2!!.toTypedArray())
-            Timber.i("Signal 2 Quality: ${peaksQ2.second}")
+//            // Checking peaks location without filter
+//            val centeredSignal2 = centeredSignal!!.drop(300)
+//            val envelope2 = filt.hilbert(centeredSignal2!!.toTypedArray())
+//            val envelopeAverage2 = processData.movAvg(envelope2.toTypedArray(), window)
+//            val finalSignal2 = processData.leveling(centeredSignal2!!.toTypedArray(), envelopeAverage2!!.toTypedArray(), window)
+//            val peaksQ2 = filt.peakDetection(finalSignal2!!.toTypedArray())
+//            Timber.i("Signal 2 Quality: ${peaksQ2.second}")
 
             val bpmHRV = processData.heartRateAndHRV(peaks, SCAN_DURATION)
             val bpm = bpmHRV.first
