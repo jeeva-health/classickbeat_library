@@ -3,27 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_home"
-    app:startDestination="@id/cameraSelectionFragment">
-
-    <fragment
-        android:id="@+id/cameraSelectionFragment"
-        android:name="ai.heart.classickbeats.ui.monitor.CameraSelectionFragment"
-        android:label="fragment_camera_selection"
-        tools:layout="@layout/fragment_camera_selection">
-        <action
-            android:id="@+id/action_cameraSelectionFragment_to_scanFragment"
-            app:destination="@id/scanFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/oxygenResultFragment"
-        android:name="ai.heart.classickbeats.ui.monitor.OxygenResultFragment"
-        android:label="fragment_oxygen_result"
-        tools:layout="@layout/fragment_oxygen_result">
-        <action
-            android:id="@+id/action_oxygenResultFragment_to_cameraSelectionFragment"
-            app:destination="@id/cameraSelectionFragment" />
-    </fragment>
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/heartResultFragment"
@@ -31,8 +11,8 @@
         android:label="fragment_heart_result"
         tools:layout="@layout/fragment_heart_result">
         <action
-            android:id="@+id/action_heartResultFragment_to_cameraSelectionFragment"
-            app:destination="@id/cameraSelectionFragment" />
+            android:id="@+id/action_heartResultFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
     </fragment>
 
     <fragment
@@ -55,9 +35,24 @@
         <action
             android:id="@+id/action_calculatingFragment_to_heartResultFragment"
             app:destination="@id/heartResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="ai.heart.classickbeats.ui.login.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash">
         <action
-            android:id="@+id/action_calculatingFragment_to_oxygenResultFragment"
-            app:destination="@id/oxygenResultFragment" />
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="ai.heart.classickbeats.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
     </fragment>
 
 </navigation>

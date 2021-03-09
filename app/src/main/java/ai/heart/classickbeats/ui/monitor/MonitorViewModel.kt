@@ -10,14 +10,17 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 const val SCAN_DURATION = 33
 
-class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
+@HiltViewModel
+class MonitorViewModel @Inject constructor() : ViewModel() {
 
     var hearRateResult: HeartRateResult? = null
 
@@ -82,16 +85,23 @@ class MonitorViewModel @ViewModelInject constructor() : ViewModel() {
             outputList = processData.movAvg(outputList!!.toTypedArray(), 10)
 
             val movingAverage = processData.movAvg(outputList!!.toTypedArray(), window)
-            centeredSignal = processData.centering(outputList!!.toTypedArray(), movingAverage.toTypedArray(), window)
+            centeredSignal = processData.centering(
+                outputList!!.toTypedArray(),
+                movingAverage.toTypedArray(),
+                window
+            )
 
             val filt = Filter()
             filtOut = filt.chebyBandpass(centeredSignal!!.toTypedArray())
 //            filtOut = filt.filtfilt(centeredSignal!!.toTypedArray())
             filtOut = filtOut!!.drop(300)
-//            val envelope = filt.hilbert(filtOut!!.toTypedArray())
-//            val envelopeAverage = processData.movAvg(envelope.toTypedArray(), window)
-//            finalSignal = processData.leveling(filtOut!!.toTypedArray(), envelopeAverage!!.toTypedArray(), window)
-            finalSignal = filtOut
+            val envelope = filt.hilbert(filtOut!!.toTypedArray())
+            val envelopeAverage = processData.movAvg(envelope.toTypedArray(), window)
+            finalSignal = processData.leveling(
+                filtOut!!.toTypedArray(),
+                envelopeAverage!!.toTypedArray(),
+                window
+            )
 
             val peaksQ = filt.peakDetection(finalSignal!!.toTypedArray())
             val peaks = peaksQ.first
