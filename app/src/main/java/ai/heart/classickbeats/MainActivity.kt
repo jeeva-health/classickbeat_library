@@ -16,8 +16,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
-        System.loadLibrary("native-lib")
     }
 
     fun hideSystemUI() {
