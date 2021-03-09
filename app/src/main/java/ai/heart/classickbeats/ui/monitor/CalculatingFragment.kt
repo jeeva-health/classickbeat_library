@@ -44,10 +44,4 @@ class CalculatingFragment : Fragment(R.layout.fragment_calculating) {
             CalculatingFragmentDirections.actionCalculatingFragmentToHeartResultFragment()
         navController.navigate(action)
     }
-
-    private fun navigateToOxygenResultFragment() {
-        val action =
-            CalculatingFragmentDirections.actionCalculatingFragmentToOxygenResultFragment()
-        navController.navigate(action)
-    }
 }

@@ -3,6 +3,7 @@ package ai.heart.classickbeats.ui.monitor
 import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentHeartResultBinding
+import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.graph.LineGraph
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
@@ -51,7 +52,7 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
         }
 
         testAgainButton.setSafeOnClickListener {
-            navigateToSelectionFragment()
+            navigateToScanFragment()
         }
 
         Glide.with(this).load(File("/storage/emulated/0/Pictures/ppg.jpg")).diskCacheStrategy(
@@ -70,9 +71,9 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
         LineGraph.drawLineGraph(chart, monitorViewModel.finalSignal!!)
     }
 
-    private fun navigateToSelectionFragment() {
+    private fun navigateToScanFragment() {
         val action =
-            HeartResultFragmentDirections.actionHeartResultFragmentToCameraSelectionFragment()
+            HeartResultFragmentDirections.actionHeartResultFragmentToScanFragment(testType = TestType.HEART_RATE)
         navController.navigate(action)
     }
 }
