@@ -31,7 +31,11 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
 
     private lateinit var testAgainButton: MaterialButton
 
-    private lateinit var chart: LineChart
+    private lateinit var chart1: LineChart
+
+    private lateinit var chart2: LineChart
+
+    private lateinit var chart3: LineChart
 
     private val monitorViewModel: MonitorViewModel by activityViewModels()
 
@@ -60,7 +64,7 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
         )
             .skipMemoryCache(true).into(binding.graph)
 
-        chart = binding.lineChart.apply {
+        chart1 = binding.lineChart1.apply {
             setDrawGridBackground(false)
             description.isEnabled = false
             legend.isEnabled = false
@@ -68,7 +72,27 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
             invalidate()
         }
 
-        LineGraph.drawLineGraph(chart, monitorViewModel.finalSignal!!)
+        chart2 = binding.lineChart2.apply {
+            setDrawGridBackground(false)
+            description.isEnabled = false
+            legend.isEnabled = false
+            setNoDataText("")
+            invalidate()
+        }
+
+        chart3 = binding.lineChart3.apply {
+            setDrawGridBackground(false)
+            description.isEnabled = false
+            legend.isEnabled = false
+            setNoDataText("")
+            invalidate()
+        }
+
+        LineGraph.drawLineGraph(chart1, monitorViewModel.finalSignal!!)
+
+        LineGraph.drawLineGraph(chart2, monitorViewModel.finalSignal!!)
+
+        LineGraph.drawLineGraph(chart3, monitorViewModel.finalSignal!!)
     }
 
     private fun navigateToScanFragment() {

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_home"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/scanFragment">
 
     <fragment
         android:id="@+id/heartResultFragment"
@@ -22,7 +22,8 @@
         tools:layout="@layout/fragment_scan">
         <argument
             android:name="test_type"
-            app:argType="ai.heart.classickbeats.domain.TestType" />
+            app:argType="ai.heart.classickbeats.domain.TestType"
+            android:defaultValue="HEART_RATE" />
         <action
             android:id="@+id/action_scanFragment_to_calculatingFragment"
             app:destination="@id/calculatingFragment" />
