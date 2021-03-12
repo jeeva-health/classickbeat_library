@@ -88,9 +88,9 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
             invalidate()
         }
 
-        LineGraph.drawLineGraph(chart1, monitorViewModel.finalSignal!!)
+        LineGraph.drawLineGraph(chart1, monitorViewModel.outputList!!)
 
-        LineGraph.drawLineGraph(chart2, monitorViewModel.finalSignal!!)
+        LineGraph.drawLineGraph(chart2, monitorViewModel.centeredSignal!!)
 
         LineGraph.drawLineGraph(chart3, monitorViewModel.finalSignal!!)
     }

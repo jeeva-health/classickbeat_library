@@ -82,7 +82,7 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
             val window = 50
             val processData = ProcessingData()
             outputList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray())
-            outputList = processData.movAvg(outputList!!.toTypedArray(), 10)
+//            outputList = processData.movAvg(outputList!!.toTypedArray(), 10)
 
             val movingAverage = processData.movAvg(outputList!!.toTypedArray(), window)
             centeredSignal = processData.centering(
@@ -94,14 +94,16 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
             val filt = Filter()
             filtOut = filt.chebyBandpass(centeredSignal!!.toTypedArray())
 //            filtOut = filt.filtfilt(centeredSignal!!.toTypedArray())
-            filtOut = filtOut!!.drop(300)
-            val envelope = filt.hilbert(filtOut!!.toTypedArray())
-            val envelopeAverage = processData.movAvg(envelope.toTypedArray(), window)
-            finalSignal = processData.leveling(
-                filtOut!!.toTypedArray(),
-                envelopeAverage!!.toTypedArray(),
-                window
-            )
+//            filtOut = filtOut!!.drop(300)
+//            val envelope = filt.hilbert(filtOut!!.toTypedArray())
+//            val envelopeAverage = processData.movAvg(envelope.toTypedArray(), window)
+//            finalSignal = processData.leveling(
+//                filtOut!!.toTypedArray(),
+//                envelopeAverage!!.toTypedArray(),
+//                window
+//            )
+
+            finalSignal = filtOut
 
             val peaksQ = filt.peakDetection(finalSignal!!.toTypedArray())
             val peaks = peaksQ.first
