@@ -5,7 +5,7 @@ import timber.log.Timber
 import java.util.*
 import kotlin.math.pow
 import kotlin.math.sqrt
-import java.util.*
+
 
 class ProcessingData {
 
@@ -27,23 +27,26 @@ class ProcessingData {
         return outputList
     }
 
-    fun movAvg(X: Array<Double>, window: Int): List<Double> {
-        val movingWindow = mutableListOf<Double>()
-        val y = mutableListOf<Double>()
-        for (i in 0 until X.size) {
-            if (i < window) {
-                movingWindow.add(X[i])
-            } else {
-                movingWindow.removeAt(0)
-                movingWindow.add(X[i])
-            }
-            y.add(movingWindow.average())
-        }
-        return y
+    fun movAvg(X: Array<Double>, window_size: Int): List<Double> {
+        return X.toMutableList().windowed(size = window_size, step = 1, partialWindows = false) { window -> window.average() }
+//        val movingWindow = mutableListOf<Double>()
+//        val y = mutableListOf<Double>()
+//        for (i in 0 until X.size) {
+//            if (i < window) {
+//                movingWindow.add(X[i])
+//            } else {
+//                movingWindow.removeAt(0)
+//                movingWindow.add(X[i])
+//            }
+//            y.add(movingWindow.average())
+//
+//        }
     }
 
-    fun centering(X: Array<Double>, movAvg: Array<Double>, window: Int): List<Double> {
-        val Xlist = X.toMutableList()
+    fun centering(X: Array<Double>, movAvg: Array<Double>, window_size: Int): List<Double> {
+        val offset = (window_size - 1)/2
+        val X_reqd = X.copyOfRange(offset, X.size - offset)
+        val Xlist = X_reqd.toMutableList()
 //        for (i in 0 until window) {
 //            Xlist.removeAt(0)
 //        }

@@ -75,22 +75,25 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
     var filtOut: List<Double>? = null
     var centeredSignal: List<Double>? = null
     var finalSignal: List<Double>? = null
+    var movingAverage: List<Double>? = null
 
     fun calculateResult() {
         viewModelScope.launch(Dispatchers.Default) {
 
-            val window = 50
+            val window_size = 101
             val processData = ProcessingData()
             outputList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray())
-//            outputList = processData.movAvg(outputList!!.toTypedArray(), 10)
-
-            val movingAverage = processData.movAvg(outputList!!.toTypedArray(), window)
+            outputList = processData.movAvg(outputList!!.toTypedArray(), 11)
+            movingAverage = processData.movAvg(outputList!!.toTypedArray(), window_size)
             centeredSignal = processData.centering(
                 outputList!!.toTypedArray(),
-                movingAverage.toTypedArray(),
-                window
+                movingAverage!!.toTypedArray(),
+                window_size
             )
-
+            val rawSize = outputList!!.size
+            val centeredSize = centeredSignal!!.size
+            val movavgSize = movingAverage!!.size
+            Timber.i("Sizes: raw, centered, movavg: $rawSize, $centeredSize, $movavgSize")
             val filt = Filter()
             filtOut = filt.chebyBandpass(centeredSignal!!.toTypedArray())
 //            filtOut = filt.filtfilt(centeredSignal!!.toTypedArray())

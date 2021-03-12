@@ -92,7 +92,7 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
 
         LineGraph.drawLineGraph(chart2, monitorViewModel.centeredSignal!!)
 
-        LineGraph.drawLineGraph(chart3, monitorViewModel.finalSignal!!)
+        LineGraph.drawLineGraph(chart3, monitorViewModel.movingAverage!!)
     }
 
     private fun navigateToScanFragment() {

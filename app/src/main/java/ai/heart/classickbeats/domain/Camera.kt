@@ -206,7 +206,7 @@ class Camera constructor(
 //            CaptureRequest.COLOR_CORRECTION_ABERRATION_MODE_OFF
 //        )
 
-        val fpsRange: Range<Int> = Range(60, 60)
+        val fpsRange: Range<Int> = Range(30, 30)
         builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, fpsRange)
 
         if (lensFacing == CameraCharacteristics.LENS_FACING_BACK) {
