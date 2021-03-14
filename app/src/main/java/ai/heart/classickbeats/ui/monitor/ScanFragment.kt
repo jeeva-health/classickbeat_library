@@ -135,7 +135,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 override fun onAnimationEnd(p0: Animator?) {
                     binding.countdownAnimation.visibility = View.GONE
                     circularProgressBar.visibility = View.VISIBLE
-                    monitorViewModel.startTimer()
                     startScanning()
                 }
 
@@ -252,8 +251,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img)
                     }
                     cameraReading?.apply {
-                        Timber.i("ratio1: ${green/red}")
-                        Timber.i("ratio2: ${blue/red}")
+                        Timber.i("ratio1: ${green / red}")
+                        Timber.i("ratio2: ${blue / red}")
                         if (green / red > 0.5 || blue / red > 0.5) {
                             badImageCounter++
                         } else {
@@ -357,8 +356,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     @SuppressLint("MissingPermission")
     private fun startScanning() {
-        monitorViewModel.isProcessing = true
-        monitorViewModel.startTimer()
+        if (monitorViewModel.isProcessing) {
+            Timber.e("scanning already running")
+        } else {
+            monitorViewModel.isProcessing = true
+            monitorViewModel.startTimer()
+        }
     }
 
     private fun endScanning() {

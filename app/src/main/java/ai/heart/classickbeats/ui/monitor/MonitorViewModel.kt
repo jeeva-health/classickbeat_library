@@ -6,7 +6,6 @@ import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.utils.Event
 import android.os.CountDownTimer
 import android.text.format.DateUtils
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -45,6 +44,7 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
     val timerProgress = MutableLiveData(Event(SCAN_DURATION))
 
     fun startTimer(timeLeftInMillis: Long = SCAN_DURATION * DateUtils.SECOND_IN_MILLIS) {
+        timer?.cancel()
         timer = object : CountDownTimer(timeLeftInMillis, TimeUnit.SECONDS.toMillis(1)) {
             override fun onFinish() {
                 isTimerRunning = false
@@ -61,10 +61,12 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
 
     fun endTimer() {
         timer?.cancel()
+        timer = null
     }
 
     fun resetTimer() {
         timer?.cancel()
+        timer = null
         mean1List.clear()
         mean2List.clear()
         isTimerRunning = false
