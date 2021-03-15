@@ -38,14 +38,19 @@ class ProcessingData {
         ) { window -> window.maxOrNull()!! - window.minOrNull()!! }
         val medianAmplitude = median(maxMinWindow)
         val outlierWindowIndex =
-            maxMinWindow.mapIndexed { index, d -> if (d > 2.5 * medianAmplitude) index else -1 }
+            maxMinWindow.mapIndexed { index, d -> if (d > 4 * medianAmplitude) index else -1 }
                 .filter { it != -1 }
         val outlierDataIndex = mutableListOf<Int>()
         outlierWindowIndex.forEach {
             val outlierSubWindow = it * windowSize until it * windowSize + windowSize
             outlierDataIndex.addAll(outlierSubWindow.toList())
         }
-        return X.toMutableList().filterIndexed { index, d -> index !in outlierWindowIndex }
+
+        val akimaSplineInterpolator = AkimaSplineInterpolator()
+        val polynomialFunction =
+            akimaSplineInterpolator.interpolate(pXDouble.toDoubleArray(), yArray.toDoubleArray())
+
+        return X.toMutableList().filterIndexed { index, d -> !outlierDataIndex.contains(index)}
     }
 
     fun movAvg(X: Array<Double>, window_size: Int): List<Double> {

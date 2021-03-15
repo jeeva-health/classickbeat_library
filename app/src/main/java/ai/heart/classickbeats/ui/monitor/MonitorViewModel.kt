@@ -81,6 +81,7 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
     var envelopeAverage: List<Double>? = null
     var envelope: List<Double>? = null
     var interpolatedList: List<Double>? = null
+    var withoutSpikes: List<Double>? = null
 
     fun calculateResult() {
         viewModelScope.launch(Dispatchers.Default) {
@@ -88,7 +89,7 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
             val windowSize = 101
             val processData = ProcessingData()
             outputList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray())
-            // outputList = processData.movAvg(interpolatedList!!.toTypedArray(), 11)
+            outputList = processData.movAvg(outputList!!.toTypedArray(), 11)
             movingAverage = processData.movAvg(outputList!!.toTypedArray(), windowSize)
             centeredSignal = processData.centering(
                 outputList!!.toTypedArray(),
@@ -97,11 +98,12 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
             )
 
             val filt = Filter()
-            envelope = filt.hilbert(centeredSignal!!.toTypedArray())
+            withoutSpikes = processData.spikeRemover(centeredSignal!!.toTypedArray())
+            envelope = filt.hilbert(withoutSpikes!!.toTypedArray())
             val windowSize2 = 101
             envelopeAverage = processData.movAvg(envelope!!.toTypedArray(), windowSize2)
             leveledSignal = processData.leveling(
-                centeredSignal!!.toTypedArray(),
+                withoutSpikes!!.toTypedArray(),
                 envelopeAverage!!.toTypedArray(),
                 windowSize2
             )

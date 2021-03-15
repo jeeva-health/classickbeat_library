@@ -114,7 +114,7 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
 
         LineGraph.drawLineGraph(chart2, monitorViewModel.centeredSignal!!)
 
-        LineGraph.drawLineGraph(chart3, monitorViewModel.envelope!!)
+        LineGraph.drawLineGraph(chart3, monitorViewModel.withoutSpikes!!)
 
         LineGraph.drawLineGraph(chart4, monitorViewModel.envelopeAverage!!)
 
