@@ -83,10 +83,11 @@ class ProcessingData {
         val ibiMedian = median(ibiList)
         Timber.i("Size, Median, ibiList: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
         val filteredIbiList = ibiList.filter { it > 0.8 * ibiMedian && it < 1.2 * ibiMedian }
-        Timber.i("Size, filteredIbiList: ${filteredIbiList.size}, ${Arrays.toString(filteredIbiList.toDoubleArray())}")
-//        val rejectedIntervals = ibiList.filter { it <= 0.6 * ibiAvg && it >= 1.4 * ibiAvg }
-//        Timber.i("Rejected Intervals Size: ${rejectedIntervals.size}")
         val ibiAvg2 = filteredIbiList.average()
+        Timber.i("Size, Avg, filteredIbiList: ${filteredIbiList.size}, $ibiAvg2, " +
+                "${Arrays.toString(filteredIbiList.toDoubleArray())}")
+//        val rejectedIntervals = ibiList.filter { it <= 0.6 * ibiAvg && it >= 1.4 * ibiAvg }
+//        Timber.i("Rejected Intervals Size: ${rejectedIntervals.size}"
         val bpm = (60 * 1000.0) / ibiAvg2
         val SDNN = sd(filteredIbiList.toDoubleArray())
         return Pair(bpm, SDNN)

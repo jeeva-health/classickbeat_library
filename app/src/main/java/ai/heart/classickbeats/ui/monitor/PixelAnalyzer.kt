@@ -227,7 +227,7 @@ class PixelAnalyzer constructor(
         } else {
             0
         }
-        Timber.i("rgbMean: " + rMean + "\t" + gMean + "\t" + bMean + "\t" + fps)
+        Timber.i("RGBMean: $rMean \t $gMean \t $bMean \t TimeStamp: $timeStamp \t FPS: $fps")
         return CameraReading(rMean, gMean, bMean, timeStamp)
     }
 

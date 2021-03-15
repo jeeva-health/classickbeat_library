@@ -3,16 +3,16 @@ package ai.heart.classickbeats.compute;
 import java.util.ArrayList;
 
 public class Filtfilt {
+
     /**
      *
      * @param B
-     * Filter parameter B
+     *            滤波器参数B
      * @param A
-     *            Filter parameter A
+     *            滤波器参数A
      * @param input
-     *            The array to be filtered: The requirement is one-dimensional and the length is greater than the B array.
-     * @return
-     * The filtered result returns a double array.
+     *            要滤波的数组 ： 要求是一维，长度要大于B数组。
+     * @return 滤波后的结果 返回double数组。
      */
     public static ArrayList<Double> doFiltfilt(ArrayList<Double> B,
                                                ArrayList<Double> A, ArrayList<Double> X) {
@@ -165,8 +165,9 @@ public class Filtfilt {
         if (A.get(0) == 0) {
             throw new RuntimeException("A 数组第一个元素不能为零！");
         }
-        changeArray(A, A.get(0));
-        changeArray(B, A.get(0));
+        double a0 = A.get(0);
+        changeArray(A, a0);
+        changeArray(B, a0);
 
 
         int input_size = X.size();
@@ -256,4 +257,5 @@ public class Filtfilt {
         }
         return temp;
     }
+
 }
