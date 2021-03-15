@@ -106,11 +106,11 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
                 windowSize2
             )
 
-            filtOut = filt.chebyBandpass(leveledSignal!!.toTypedArray())
+//            filtOut = filt.chebyBandpass(leveledSignal!!.toTypedArray())
             // filtOut = filt.filtfiltChinese(leveledSignal!!.toTypedArray())
             // filtOut = filtOut!!.drop(300)
 
-            val peaksQ = filt.peakDetection(filtOut!!.toTypedArray())
+            val peaksQ = filt.peakDetection(leveledSignal!!.toTypedArray())
             val peaks = peaksQ.first
             val quality = peaksQ.second
             Timber.i("Signal Quality: $quality")

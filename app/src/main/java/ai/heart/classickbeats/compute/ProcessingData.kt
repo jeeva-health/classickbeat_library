@@ -9,6 +9,8 @@ import kotlin.math.sqrt
 
 class ProcessingData {
 
+    fun median(l: List<Double>) = l.sorted().let { (it[it.size / 2] + it[(it.size - 1) / 2]) / 2 }
+
     fun interpolate(xArray: Array<Int>, yArray: Array<Double>): List<Double> {
         val akimaSplineInterpolator = AkimaSplineInterpolator()
         val x0 = xArray[0]
@@ -24,6 +26,24 @@ class ProcessingData {
         for (i in inputList) {
             outputList.add(polynomialFunction.value(i))
         }
+        return outputList
+    }
+
+    fun spikeRemover(X: Array<Double>): List<Double> {
+        val windowSize = 50
+        val maxMinWindow = X.toMutableList().windowed(
+            size = windowSize,
+            step = windowSize,
+            partialWindows = false
+        ) { window -> window.max()!! - window.min()!! }
+        val medianAmplitude = median(maxMinWindow)
+        val outlierWindows = maxMinWindow.filter{it > 2.5 * medianAmplitude}
+        val outputList = mutableListOf<Double>()
+        val nicerWindows = X.toMutableList().windowed(
+            size = windowSize,
+            step = windowSize,
+            partialWindows = false
+        ) { window -> outputList + window if (window.max()!! - window.min()!! > 2.5 * medianAmplitude)}
         return outputList
     }
 
@@ -69,8 +89,6 @@ class ProcessingData {
                 sqrt(it / data.size)
             }
     }
-
-    fun median(l: List<Double>) = l.sorted().let { (it[it.size / 2] + it[(it.size - 1) / 2]) / 2 }
 
     fun heartRateAndHRV(peaks: List<Int>, scanDuration: Int): Pair<Double, Double> {
 

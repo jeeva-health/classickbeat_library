@@ -114,11 +114,11 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
 
         LineGraph.drawLineGraph(chart2, monitorViewModel.centeredSignal!!)
 
-        LineGraph.drawLineGraph(chart3, monitorViewModel.envelopeAverage!!)
+        LineGraph.drawLineGraph(chart3, monitorViewModel.envelope!!)
 
-        LineGraph.drawLineGraph(chart4, monitorViewModel.leveledSignal!!)
+        LineGraph.drawLineGraph(chart4, monitorViewModel.envelopeAverage!!)
 
-        LineGraph.drawLineGraph(chart5, monitorViewModel.filtOut!!)
+        LineGraph.drawLineGraph(chart5, monitorViewModel.leveledSignal!!)
     }
 
     private fun navigateToScanFragment() {
