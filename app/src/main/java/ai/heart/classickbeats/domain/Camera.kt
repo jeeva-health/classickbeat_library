@@ -127,7 +127,7 @@ class Camera constructor(
         this.surface = surface
         this.viewModel = viewModel
 
-        imageReader = ImageReader.newInstance(320, 240, ImageFormat.YUV_420_888, 60)
+        imageReader = ImageReader.newInstance(640, 480, ImageFormat.YUV_420_888, 60)
         imageReader?.setOnImageAvailableListener(onImageAvailableListener, mBackgroundHandler)
         cameraDevice?.createCaptureSession(
             listOf(surface, imageReader?.surface),

@@ -47,19 +47,15 @@ class ProcessingData {
         val offset = (window_size - 1)/2
         val X_reqd = X.copyOfRange(offset, X.size - offset)
         val Xlist = X_reqd.toMutableList()
-//        for (i in 0 until window) {
-//            Xlist.removeAt(0)
-//        }
         assert(Xlist.size == movAvg.size)
         val differ = Xlist.zip(movAvg, Double::minus)
         return differ
     }
 
-    fun leveling(X: Array<Double>, movAvg: Array<Double>, window: Int): List<Double> {
-        val Xlist = X.toMutableList()
-//        for (i in 0 until window) {
-//            Xlist.removeAt(0)
-//        }
+    fun leveling(X: Array<Double>, movAvg: Array<Double>, window_size: Int): List<Double> {
+        val offset = (window_size - 1)/2
+        val X_reqd = X.copyOfRange(offset, X.size - offset)
+        val Xlist = X_reqd.toMutableList()
         assert(Xlist.size == movAvg.size)
         val differ = Xlist.zip(movAvg, Double::div)
         return differ
@@ -74,6 +70,8 @@ class ProcessingData {
             }
     }
 
+    fun median(l: List<Double>) = l.sorted().let { (it[it.size / 2] + it[(it.size - 1) / 2]) / 2 }
+
     fun heartRateAndHRV(peaks: List<Int>, scanDuration: Int): Pair<Double, Double> {
 
         val time = (0 until 100*scanDuration).toList()
@@ -82,9 +80,9 @@ class ProcessingData {
         for (i in 0 until peaks.size - 1) {
             ibiList.add((time[peaks[i + 1]] - time[peaks[i]]) * 10.0)
         }
-        val ibiAvg = ibiList.average()
-        Timber.i("Size, ibiList: ${ibiList.size}, ${Arrays.toString(ibiList.toDoubleArray())}")
-        val filteredIbiList = ibiList.filter { it > 0.5 * ibiAvg && it < 1.5 * ibiAvg }
+        val ibiMedian = median(ibiList)
+        Timber.i("Size, Median, ibiList: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
+        val filteredIbiList = ibiList.filter { it > 0.8 * ibiMedian && it < 1.2 * ibiMedian }
         Timber.i("Size, filteredIbiList: ${filteredIbiList.size}, ${Arrays.toString(filteredIbiList.toDoubleArray())}")
 //        val rejectedIntervals = ibiList.filter { it <= 0.6 * ibiAvg && it >= 1.4 * ibiAvg }
 //        Timber.i("Rejected Intervals Size: ${rejectedIntervals.size}")

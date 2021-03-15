@@ -37,6 +37,10 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
 
     private lateinit var chart3: LineChart
 
+    private lateinit var chart4: LineChart
+
+    private lateinit var chart5: LineChart
+
     private val monitorViewModel: MonitorViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,11 +92,33 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
             invalidate()
         }
 
+        chart4 = binding.lineChart4.apply {
+            setDrawGridBackground(false)
+            description.isEnabled = false
+            legend.isEnabled = false
+            setNoDataText("")
+            invalidate()
+        }
+
+        chart5 = binding.lineChart5.apply {
+            setDrawGridBackground(false)
+            description.isEnabled = false
+            legend.isEnabled = false
+            setNoDataText("")
+            invalidate()
+        }
+
+        // LineGraph.drawLineGraph(chart1, monitorViewModel.interpolatedList!!)
+
         LineGraph.drawLineGraph(chart1, monitorViewModel.outputList!!)
 
         LineGraph.drawLineGraph(chart2, monitorViewModel.centeredSignal!!)
 
-        LineGraph.drawLineGraph(chart3, monitorViewModel.movingAverage!!)
+        LineGraph.drawLineGraph(chart3, monitorViewModel.envelopeAverage!!)
+
+        LineGraph.drawLineGraph(chart4, monitorViewModel.leveledSignal!!)
+
+        LineGraph.drawLineGraph(chart5, monitorViewModel.filtOut!!)
     }
 
     private fun navigateToScanFragment() {

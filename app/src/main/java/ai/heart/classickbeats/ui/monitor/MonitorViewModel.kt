@@ -74,41 +74,40 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
     var outputList: List<Double>? = null
     var filtOut: List<Double>? = null
     var centeredSignal: List<Double>? = null
-    var finalSignal: List<Double>? = null
+    var leveledSignal: List<Double>? = null
     var movingAverage: List<Double>? = null
+    var envelopeAverage: List<Double>? = null
+    var envelope: List<Double>? = null
+    var interpolatedList: List<Double>? = null
 
     fun calculateResult() {
         viewModelScope.launch(Dispatchers.Default) {
 
-            val window_size = 101
+            val windowSize = 101
             val processData = ProcessingData()
             outputList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray())
-            outputList = processData.movAvg(outputList!!.toTypedArray(), 11)
-            movingAverage = processData.movAvg(outputList!!.toTypedArray(), window_size)
+            // outputList = processData.movAvg(interpolatedList!!.toTypedArray(), 11)
+            movingAverage = processData.movAvg(outputList!!.toTypedArray(), windowSize)
             centeredSignal = processData.centering(
                 outputList!!.toTypedArray(),
                 movingAverage!!.toTypedArray(),
-                window_size
+                windowSize
             )
-            val rawSize = outputList!!.size
-            val centeredSize = centeredSignal!!.size
-            val movavgSize = movingAverage!!.size
-            Timber.i("Sizes: raw, centered, movavg: $rawSize, $centeredSize, $movavgSize")
+
             val filt = Filter()
-            filtOut = filt.chebyBandpass(centeredSignal!!.toTypedArray())
-//            filtOut = filt.filtfilt(centeredSignal!!.toTypedArray())
-//            filtOut = filtOut!!.drop(300)
-//            val envelope = filt.hilbert(filtOut!!.toTypedArray())
-//            val envelopeAverage = processData.movAvg(envelope.toTypedArray(), window)
-//            finalSignal = processData.leveling(
-//                filtOut!!.toTypedArray(),
-//                envelopeAverage!!.toTypedArray(),
-//                window
-//            )
+            envelope = filt.hilbert(centeredSignal!!.toTypedArray())
+            val windowSize2 = 101
+            envelopeAverage = processData.movAvg(envelope!!.toTypedArray(), windowSize2)
+            leveledSignal = processData.leveling(
+                centeredSignal!!.toTypedArray(),
+                envelopeAverage!!.toTypedArray(),
+                windowSize2
+            )
 
-            finalSignal = filtOut
+            filtOut = filt.chebyBandpass(leveledSignal!!.toTypedArray())
+            // filtOut = filtOut!!.drop(300)
 
-            val peaksQ = filt.peakDetection(finalSignal!!.toTypedArray())
+            val peaksQ = filt.peakDetection(filtOut!!.toTypedArray())
             val peaks = peaksQ.first
             val quality = peaksQ.second
             Timber.i("Signal Quality: $quality")
