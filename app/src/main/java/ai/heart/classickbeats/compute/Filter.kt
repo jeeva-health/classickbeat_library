@@ -10,7 +10,8 @@ import kotlin.math.sqrt
 
 
 class Filter{
-    fun filtfilt(X: Array<Double>): List<Double>{
+
+    fun filtfiltChinese(X: Array<Double>): List<Double>{
         /*
         From python scipy
         b = array([ 0.08538951, -0.64831602,  2.18417638, -4.26809226,  5.29368476,

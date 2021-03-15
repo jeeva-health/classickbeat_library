@@ -91,7 +91,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         arrayOf(loginButton, signUpButton).forEach { button ->
             button.setSafeOnClickListener {
-                launchSignInFlow()
+                //launchSignInFlow()
+                navigateToScanFragment()
             }
         }
 

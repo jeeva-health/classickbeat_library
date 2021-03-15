@@ -248,7 +248,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 imageCounter++
                 if (imageCounter >= fps * 1) {
                     val cameraReading: CameraReading? = when (navArgs.testType) {
-                        TestType.HEART_RATE -> pixelAnalyzer?.processImageHeart(img)
+                        TestType.HEART_RATE -> pixelAnalyzer?.processImage(img)
                         TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImage(img)
                     }
                     cameraReading?.apply {

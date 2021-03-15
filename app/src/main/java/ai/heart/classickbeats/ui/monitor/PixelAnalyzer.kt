@@ -194,7 +194,7 @@ class PixelAnalyzer constructor(
         var g_sum = 0
         var b_sum = 0
         var count = 0
-        val len = 60  // Length of square is (2*len)
+        val len = 200  // Length of square is (2*len)
         for (y in max(0, h / 2 - len) until min(h - 2, h / 2 + len)) {
             for (x in max(0, w / 2 - len) until min(w - 2, w / 2 + len)) {
                 val yIndex = y * w + x
