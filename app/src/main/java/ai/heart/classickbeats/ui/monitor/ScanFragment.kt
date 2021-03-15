@@ -9,6 +9,7 @@ import ai.heart.classickbeats.graph.RunningGraph
 import ai.heart.classickbeats.ui.widgets.CircleProgressBar
 import ai.heart.classickbeats.utils.EventObserver
 import ai.heart.classickbeats.utils.postOnMainLooper
+import ai.heart.classickbeats.utils.showLongToast
 import ai.heart.classickbeats.utils.viewBinding
 import android.animation.Animator
 import android.annotation.SuppressLint
@@ -260,6 +261,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         }
                         if (badImageCounter >= 45) {
                             postOnMainLooper {
+                                showLongToast("Please keep finger properly")
                                 restartReading()
                             }
                         }
@@ -423,6 +425,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private val handleAcceleration = fun() {
         if (monitorViewModel.isProcessing) {
             Timber.i("Moving too much!")
+            showLongToast("Moving too much!")
             restartReading()
         }
     }
