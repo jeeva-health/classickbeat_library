@@ -31,7 +31,7 @@ class ProcessingData {
     }
 
     fun spikeRemover(X: Array<Double>): List<Double> {
-        val windowSize = 50
+        val windowSize = 20
         val maxMinWindow = X.toMutableList().windowed(
             size = windowSize,
             step = windowSize
@@ -46,11 +46,22 @@ class ProcessingData {
             outlierDataIndex.addAll(outlierSubWindow.toList())
         }
 
+        val filteredDataIndex =
+            (X.indices).toList().filter { !outlierDataIndex.contains(it) }.map { it.toDouble() }
+
         val akimaSplineInterpolator = AkimaSplineInterpolator()
         val polynomialFunction =
-            akimaSplineInterpolator.interpolate(pXDouble.toDoubleArray(), yArray.toDoubleArray())
+            akimaSplineInterpolator.interpolate(
+                filteredDataIndex.toDoubleArray(),
+                X.toDoubleArray()
+            )
 
-        return X.toMutableList().filterIndexed { index, d -> !outlierDataIndex.contains(index)}
+        val withoutSpikesData = mutableListOf<Double>()
+        for (i in X.indices) {
+            withoutSpikesData.add(polynomialFunction.value(i.toDouble()))
+        }
+
+        return withoutSpikesData
     }
 
     fun movAvg(X: Array<Double>, window_size: Int): List<Double> {
