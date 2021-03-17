@@ -31,15 +31,17 @@ class ProcessingData {
     }
 
     fun spikeRemover(X: Array<Double>): List<Double> {
-        val windowSize = 20
+        val windowSize = 50
         val maxMinWindow = X.toMutableList().windowed(
             size = windowSize,
             step = windowSize
         ) { window -> window.maxOrNull()!! - window.minOrNull()!! }
         val medianAmplitude = median(maxMinWindow)
         val outlierWindowIndex =
-            maxMinWindow.mapIndexed { index, d -> if (d > 4 * medianAmplitude) index else -1 }
+            maxMinWindow.mapIndexed { index, d -> if (d > 3 * medianAmplitude) index else -1 }
                 .filter { it != -1 }
+        if (outlierWindowIndex.isEmpty())
+            return X.toList()
         val outlierDataIndex = mutableListOf<Int>()
         outlierWindowIndex.forEach {
             val outlierSubWindow = it * windowSize until it * windowSize + windowSize
@@ -47,13 +49,13 @@ class ProcessingData {
         }
 
         val filteredDataIndex =
-            (X.indices).toList().filter { !outlierDataIndex.contains(it) }.map { it.toDouble() }
+            (X.indices).toList().filter { !outlierDataIndex.contains(it) }
 
         val akimaSplineInterpolator = AkimaSplineInterpolator()
         val polynomialFunction =
             akimaSplineInterpolator.interpolate(
-                filteredDataIndex.toDoubleArray(),
-                X.toDoubleArray()
+                filteredDataIndex.map { it.toDouble() }.toDoubleArray(),
+                X.toList().filterIndexed { index, d -> filteredDataIndex.contains(index) }.toDoubleArray()
             )
 
         val withoutSpikesData = mutableListOf<Double>()
