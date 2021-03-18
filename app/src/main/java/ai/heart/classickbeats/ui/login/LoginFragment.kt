@@ -2,7 +2,6 @@ package ai.heart.classickbeats.ui.login
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentLoginBinding
-import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.showLongToast
 import ai.heart.classickbeats.utils.showShortToast
@@ -91,8 +90,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         arrayOf(loginButton, signUpButton).forEach { button ->
             button.setSafeOnClickListener {
-                //launchSignInFlow()
-                navigateToScanFragment()
+                launchSignInFlow()
+                //navigateToScanFragment()
             }
         }
 
@@ -131,7 +130,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
                 showShortToast("Login successful")
-                navigateToScanFragment()
+                navigateToSelectionFragment()
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -143,9 +142,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
     }
 
-    private fun navigateToScanFragment() {
-        val action =
-            LoginFragmentDirections.actionLoginFragmentToScanFragment(testType = TestType.HEART_RATE)
+    private fun navigateToSelectionFragment() {
+        val action = LoginFragmentDirections.actionLoginFragmentToSelectionFragment()
         navController.navigate(action)
     }
 }

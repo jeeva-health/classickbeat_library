@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_heartResultFragment_to_scanFragment"
             app:destination="@id/scanFragment" />
+        <action
+            android:id="@+id/action_heartResultFragment_to_selectionFragment"
+            app:destination="@id/selectionFragment" />
     </fragment>
 
     <fragment
@@ -22,8 +25,8 @@
         tools:layout="@layout/fragment_scan">
         <argument
             android:name="test_type"
-            app:argType="ai.heart.classickbeats.domain.TestType"
-            android:defaultValue="HEART_RATE" />
+            android:defaultValue="HEART_RATE"
+            app:argType="ai.heart.classickbeats.domain.TestType" />
         <action
             android:id="@+id/action_scanFragment_to_calculatingFragment"
             app:destination="@id/calculatingFragment" />
@@ -52,8 +55,25 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_loginFragment_to_scanFragment"
+            android:id="@+id/action_loginFragment_to_selectionFragment"
+            app:destination="@id/selectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/logBpFragment"
+        android:name="ai.heart.classickbeats.ui.logging.LogBpFragment"
+        android:label="fragment_log_bp"
+        tools:layout="@layout/fragment_log_bp" />
+    <fragment
+        android:id="@+id/selectionFragment"
+        android:name="ai.heart.classickbeats.ui.home.SelectionFragment"
+        android:label="fragment_selection"
+        tools:layout="@layout/fragment_selection">
+        <action
+            android:id="@+id/action_selectionFragment_to_scanFragment"
             app:destination="@id/scanFragment" />
+        <action
+            android:id="@+id/action_selectionFragment_to_logBpFragment"
+            app:destination="@id/logBpFragment" />
     </fragment>
 
 </navigation>
