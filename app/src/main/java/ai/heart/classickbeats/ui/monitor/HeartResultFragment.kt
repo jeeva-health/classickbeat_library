@@ -9,6 +9,7 @@ import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -16,7 +17,6 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.github.mikephil.charting.charts.LineChart
-import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import kotlin.math.roundToInt
@@ -29,7 +29,9 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
 
     private lateinit var navController: NavController
 
-    private lateinit var testAgainButton: MaterialButton
+    private lateinit var testAgainButton: AppCompatButton
+
+    private lateinit var backButton: AppCompatButton
 
     private lateinit var chart1: LineChart
 
@@ -52,6 +54,8 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
 
         testAgainButton = binding.reTestButton
 
+        backButton = binding.exitTestButton
+
         monitorViewModel.hearRateResult?.let {
             binding.quality.text = it.quality
             binding.aFib.text = it.aFib
@@ -61,6 +65,10 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
 
         testAgainButton.setSafeOnClickListener {
             navigateToScanFragment()
+        }
+
+        backButton.setSafeOnClickListener {
+            navigateToSelectionFragment()
         }
 
         Glide.with(this).load(File("/storage/emulated/0/Pictures/ppg.jpg")).diskCacheStrategy(
@@ -124,6 +132,11 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
     private fun navigateToScanFragment() {
         val action =
             HeartResultFragmentDirections.actionHeartResultFragmentToScanFragment(testType = TestType.HEART_RATE)
+        navController.navigate(action)
+    }
+
+    private fun navigateToSelectionFragment() {
+        val action = HeartResultFragmentDirections.actionHeartResultFragmentToSelectionFragment()
         navController.navigate(action)
     }
 }

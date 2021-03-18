@@ -69,6 +69,7 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
         timer = null
         mean1List.clear()
         mean2List.clear()
+        timeList.clear()
         isTimerRunning = false
         isProcessing = false
     }
