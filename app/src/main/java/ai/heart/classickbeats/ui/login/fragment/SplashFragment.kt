@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.login
+package ai.heart.classickbeats.ui.login.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.utils.postOnMainLooper

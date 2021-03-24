@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.utils
 
+import ai.heart.classickbeats.MainActivity
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -26,4 +27,12 @@ fun Fragment.postOnMainLooper(call: () -> Unit) {
     GlobalScope.launch(Dispatchers.Main) {
         call.invoke()
     }
+}
+
+fun Fragment.showLoadingBar() {
+    (requireActivity() as MainActivity).showLoadingBar()
+}
+
+fun Fragment.hideLoadingBar() {
+    (requireActivity() as MainActivity).hideLoadingBar()
 }

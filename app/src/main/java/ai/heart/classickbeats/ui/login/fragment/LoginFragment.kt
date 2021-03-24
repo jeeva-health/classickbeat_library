@@ -1,28 +1,26 @@
-package ai.heart.classickbeats.ui.login
+package ai.heart.classickbeats.ui.login.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentLoginBinding
-import ai.heart.classickbeats.utils.setSafeOnClickListener
-import ai.heart.classickbeats.utils.showLongToast
-import ai.heart.classickbeats.utils.showShortToast
-import ai.heart.classickbeats.utils.viewBinding
+import ai.heart.classickbeats.storage.SharedPreferenceStorage
+import ai.heart.classickbeats.ui.login.LoginViewModel
+import ai.heart.classickbeats.utils.*
 import android.Manifest
-import android.app.Activity
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 const val RC_SIGN_IN = 1005
 
@@ -30,6 +28,11 @@ const val RC_SIGN_IN = 1005
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private val binding by viewBinding(FragmentLoginBinding::bind)
+
+    private val logInViewModel by activityViewModels<LoginViewModel>()
+
+    @Inject
+    lateinit var sharedPreferenceStorage: SharedPreferenceStorage
 
     private lateinit var loginButton: AppCompatButton
 
@@ -90,8 +93,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         arrayOf(loginButton, signUpButton).forEach { button ->
             button.setSafeOnClickListener {
+                observeAuthenticationState()
                 launchSignInFlow()
-                //navigateToScanFragment()
             }
         }
 
@@ -120,30 +123,44 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         )
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
-
-            if (resultCode == Activity.RESULT_OK) {
-                // Successfully signed in
-                val user = FirebaseAuth.getInstance().currentUser
-                showShortToast("Login successful")
-                navigateToSelectionFragment()
-                // ...
-            } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
-                showLongToast("Login failed")
-            }
-        }
-    }
-
     private fun navigateToSelectionFragment() {
         val action = LoginFragmentDirections.actionLoginFragmentToSelectionFragment()
         navController.navigate(action)
+    }
+
+    private fun observeAuthenticationState() {
+
+        logInViewModel.firebaseAuthenticationState.observe(
+            viewLifecycleOwner,
+            EventObserver { authState ->
+                when (authState) {
+                    LoginViewModel.AuthenticationState.INVALID_AUTHENTICATION -> {
+                        Toast.makeText(activity, "Login Failed", Toast.LENGTH_LONG).show()
+                    }
+                    LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+                        Toast.makeText(activity, "Login Successfully", Toast.LENGTH_LONG).show()
+                        logInViewModel.loginUser()
+                    }
+                }
+            })
+
+        logInViewModel.loginState.observe(viewLifecycleOwner, EventObserver { isUserLoggedIn ->
+            if (isUserLoggedIn) {
+                if (sharedPreferenceStorage.onBoardingCompleted) {
+                    navController.popBackStack()
+                } else {
+                    navigateToSelectionFragment()
+                }
+            }
+        })
+
+        logInViewModel.showLoading.observe(
+            viewLifecycleOwner, { showLoading ->
+                if (showLoading) {
+                    showLoadingBar()
+                } else {
+                    hideLoadingBar()
+                }
+            })
     }
 }

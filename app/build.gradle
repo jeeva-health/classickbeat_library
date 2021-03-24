@@ -8,6 +8,10 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
+def apiKeyPropertiesFile = rootProject.file("apikeys.properties")
+def apiKeyProperties = new Properties()
+apiKeyProperties.load(new FileInputStream(apiKeyPropertiesFile))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -30,12 +34,28 @@ android {
     }
 
     buildTypes {
+
+        def BASE_URL = "BASE_URL"
+        def CLIENT_ID = "CLIENT_ID"
+        def CLIENT_SECRET = "CLIENT_SECRET"
+
         debug {
             debuggable true
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-DEBUG'
+
+            buildConfigField "String", BASE_URL, apiKeyProperties['DEV_BASE_URL']
+            buildConfigField "String", CLIENT_ID, apiKeyProperties['DEV_CLIENT_ID']
+            buildConfigField "String", CLIENT_SECRET, apiKeyProperties['DEV_CLIENT_SECRET']
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", BASE_URL, apiKeyProperties['PROD_BASE_URL']
+            buildConfigField "String", CLIENT_ID, apiKeyProperties['PROD_CLIENT_ID']
+            buildConfigField "String", CLIENT_SECRET, apiKeyProperties['PROD_CLIENT_SECRET']
         }
     }
     buildFeatures {
@@ -130,4 +150,18 @@ dependencies {
     implementation 'com.google.android.play:core:1.10.0'
     implementation 'com.google.android.play:core-ktx:1.8.1'
 
+    // Moshi
+    implementation "com.squareup.moshi:moshi:$version_moshi"
+    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$version_moshi"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+    implementation "com.squareup.okhttp3:okhttp:$version_okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$version_okhttp"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_kotlin_coroutines"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
+    implementation 'org.conscrypt:conscrypt-android:2.5.1'
 }
