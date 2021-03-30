@@ -76,4 +76,7 @@
     <color name="positiveOption">#807ac943</color>
     <color name="progressPositive">#f0b4b743</color>
     <color name="progressNegative">#f8f4f4</color>
+
+    <color name="dim_background">#2F000000</color>
+
 </resources>

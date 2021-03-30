@@ -15,4 +15,15 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_home" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dim_background"
+        android:elevation="16dp"
+        android:indeterminateTint="@color/very_dark_cyan"
+        android:padding="144dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

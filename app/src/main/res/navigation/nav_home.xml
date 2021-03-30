@@ -42,16 +42,19 @@
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
-        android:name="ai.heart.classickbeats.ui.login.SplashFragment"
+        android:name="ai.heart.classickbeats.ui.login.fragment.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_selectionFragment"
+            app:destination="@id/selectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="ai.heart.classickbeats.ui.login.LoginFragment"
+        android:name="ai.heart.classickbeats.ui.login.fragment.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
