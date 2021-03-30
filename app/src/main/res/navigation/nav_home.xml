@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_selectionFragment"
+            app:destination="@id/selectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
