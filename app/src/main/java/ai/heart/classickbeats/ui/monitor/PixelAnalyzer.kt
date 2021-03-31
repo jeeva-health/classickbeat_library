@@ -8,6 +8,8 @@ import android.renderscript.*
 import android.text.format.DateUtils
 import timber.log.Timber
 import java.nio.ByteBuffer
+import java.nio.ReadOnlyBufferException
+import kotlin.experimental.inv
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -40,6 +42,64 @@ class PixelAnalyzer constructor(
         val data = ByteArray(remaining())
         get(data)
         return data
+    }
+
+    private fun clamp(value: Float, min: Float, max: Float): Float {
+        return Math.max(min, Math.min(max, value))
+    }
+
+    private fun displayCounter() {
+        val currentTime = SystemClock.elapsedRealtime()
+        previousSecond = currentSecond
+        currentSecond = currentTime / DateUtils.SECOND_IN_MILLIS
+        if (previousSecond == currentSecond) {
+            counter++
+        } else {
+            if (firstSec) {
+                firstSec = false
+            } else if (secondSec) {
+                secondSec = false
+            } else {
+                sec++
+                frameRate += ++counter
+            }
+            //Timber.i("frameRate: ${counter} Seconds: $sec SumRate: $frameRate")
+            counter = 0
+        }
+    }
+
+    private fun yuv420ToARGB(image: Image, context: Context): ByteArray {
+        val yuvByteArray = yuv420ToByteArray(image)
+
+        if (!initialised) {
+            val rs = RenderScript.create(context)
+            script = ScriptIntrinsicYuvToRGB.create(rs, Element.U8(rs))
+
+            val yuvType: Type.Builder = Type.Builder(rs, Element.U8(rs)).setX(yuvByteArray.size)
+            inputAllocation = Allocation.createTyped(rs, yuvType.create(), Allocation.USAGE_SCRIPT)
+            val rgbaType: Type.Builder = Type.Builder(rs, Element.RGBA_8888(rs))
+                .setX(image.width)
+                .setY(image.height)
+            outputAllocation = Allocation.createTyped(
+                rs, rgbaType.create(), Allocation.USAGE_SCRIPT
+            )
+            initialised = true
+        }
+
+        inputAllocation?.copyFrom(yuvByteArray)
+        script?.setInput(inputAllocation)
+        script?.forEach(outputAllocation)
+
+        val sizeOfImage = outputAllocation?.bytesSize ?: 0
+        val outputArray = ByteArray(sizeOfImage)
+
+//        val bitmap = Bitmap.createBitmap(
+//            image.width, image.height, Bitmap.Config.ARGB_8888
+//        )
+//        outputAllocation?.copyTo(bitmap)
+
+        outputAllocation?.copyTo(outputArray)
+        return outputArray
     }
 
     fun processImageSpO2(image: Image) {
@@ -130,7 +190,7 @@ class PixelAnalyzer constructor(
         return Pair(yMean, fps)
     }
 
-    fun processImageHeart(image: Image): CameraReading {
+    fun processImageRenderScript(image: Image): CameraReading {
         val timeStamp = SystemClock.elapsedRealtime().toInt()
         val argbArray = yuv420ToARGB(image, context)
         val w = image.width
@@ -175,8 +235,9 @@ class PixelAnalyzer constructor(
         return CameraReading(rMean, gMean, bMean, timeStamp)
     }
 
-    fun processImage(image: Image): CameraReading {
+    fun processImageNaive(image: Image): CameraReading {
         val timeStamp = SystemClock.elapsedRealtime().toInt()
+        val yuvByteArray = yuv420ToByteArray(image)
         val w = image.width
         val h = image.height
         // val argbArray = IntArray(w * h)
@@ -194,7 +255,7 @@ class PixelAnalyzer constructor(
         var g_sum = 0
         var b_sum = 0
         var count = 0
-        val len = 200  // Length of square is (2*len)
+        val len = h/3  // Length of square is (2*len)
         for (y in max(0, h / 2 - len) until min(h - 2, h / 2 + len)) {
             for (x in max(0, w / 2 - len) until min(w - 2, w / 2 + len)) {
                 val yIndex = y * w + x
@@ -231,65 +292,64 @@ class PixelAnalyzer constructor(
         return CameraReading(rMean, gMean, bMean, timeStamp)
     }
 
-    private fun clamp(value: Float, min: Float, max: Float): Float {
-        return Math.max(min, Math.min(max, value))
-    }
-
-    private fun displayCounter() {
-        val currentTime = SystemClock.elapsedRealtime()
-        previousSecond = currentSecond
-        currentSecond = currentTime / DateUtils.SECOND_IN_MILLIS
-        if (previousSecond == currentSecond) {
-            counter++
-        } else {
-            if (firstSec) {
-                firstSec = false
-            } else if (secondSec) {
-                secondSec = false
-            } else {
-                sec++
-                frameRate += ++counter
-            }
-            //Timber.i("frameRate: ${counter} Seconds: $sec SumRate: $frameRate")
-            counter = 0
-        }
-    }
-
-    private fun yuv420ToARGB(image: Image, context: Context): ByteArray {
+    fun processImage(image: Image): CameraReading {
+        val timeStamp = SystemClock.elapsedRealtime().toInt()
         val yuvByteArray = yuv420ToByteArray(image)
-
-        if (!initialised) {
-            val rs = RenderScript.create(context)
-            script = ScriptIntrinsicYuvToRGB.create(rs, Element.U8(rs))
-
-            val yuvType: Type.Builder = Type.Builder(rs, Element.U8(rs)).setX(yuvByteArray.size)
-            inputAllocation = Allocation.createTyped(rs, yuvType.create(), Allocation.USAGE_SCRIPT)
-            val rgbaType: Type.Builder = Type.Builder(rs, Element.RGBA_8888(rs))
-                .setX(image.width)
-                .setY(image.height)
-            outputAllocation = Allocation.createTyped(
-                rs, rgbaType.create(), Allocation.USAGE_SCRIPT
-            )
-            initialised = true
+        val w = image.width
+        val h = image.height
+        // val argbArray = IntArray(w * h)
+        val yBuffer = image.planes[0].buffer
+        yBuffer.position(0)
+        val uvBuffer = image.planes[1].buffer
+        uvBuffer.position(0)
+        var r: Int
+        var g: Int
+        var b: Int
+        var yValue: Int
+        var uValue: Int
+        var vValue: Int
+        var r_sum = 0
+        var g_sum = 0
+        var b_sum = 0
+        var count = 0
+        val len = h/3  // Length of square is (2*len)
+        for (y in max(0, h / 2 - len) until min(h - 2, h / 2 + len)) {
+            for (x in max(0, w / 2 - len) until min(w - 2, w / 2 + len)) {
+                val yIndex = y * w + x
+                yValue = yBuffer[yIndex].toInt() and 0xff
+                val uvx = x / 2
+                val uvy = y / 2
+                val uIndex = uvy * w + 2 * uvx
+                val vIndex = uIndex + 1
+                uValue = (uvBuffer[uIndex].toInt() and 0xff) - 128
+                vValue = (uvBuffer[vIndex].toInt() and 0xff) - 128
+                r = (yValue + 1.370705f * vValue).toInt()
+                g = (yValue - 0.698001f * vValue - 0.337633f * uValue).toInt()
+                b = (yValue + 1.732446f * uValue).toInt()
+                r = clamp(r.toFloat(), 0f, 255f).toInt()
+                g = clamp(g.toFloat(), 0f, 255f).toInt()
+                b = clamp(b.toFloat(), 0f, 255f).toInt()
+//                argbArray[yIndex] = 255 shl 24 or (r and 255 shl 16) or (g and 255 shl 8) or (b and 255)
+                r_sum += r
+                g_sum += g
+                b_sum += b
+                count++
+            }
         }
-
-        inputAllocation?.copyFrom(yuvByteArray)
-        script?.setInput(inputAllocation)
-        script?.forEach(outputAllocation)
-
-        val sizeOfImage = outputAllocation?.bytesSize ?: 0
-        val outputArray = ByteArray(sizeOfImage)
-
-//        val bitmap = Bitmap.createBitmap(
-//            image.width, image.height, Bitmap.Config.ARGB_8888
-//        )
-//        outputAllocation?.copyTo(bitmap)
-
-        outputAllocation?.copyTo(outputArray)
-        return outputArray
+        val rMean = r_sum.toDouble() / count
+        val gMean = g_sum.toDouble() / count
+        val bMean = b_sum.toDouble() / count
+        displayCounter()
+        val fps = if (sec > 0) {
+            (frameRate.toDouble() / sec).roundToInt()
+        } else {
+            0
+        }
+        Timber.i("RGBMean: $rMean \t $gMean \t $bMean \t TimeStamp: $timeStamp \t FPS: $fps")
+        return CameraReading(rMean, gMean, bMean, timeStamp)
     }
 
-    private fun yuv420ToByteArray(image: Image): ByteArray {
+    private fun yuv420ToByteArrayNaive(image: Image): ByteArray {
         val yBuffer = image.planes[0].buffer
         val yData = yBuffer.toByteArray()
 //        if (imgCount < avgFrames) {
@@ -301,67 +361,68 @@ class PixelAnalyzer constructor(
         val uData = uBuffer.toByteArray()
         val vBuffer = image.planes[2].buffer
         val vData = vBuffer.toByteArray()
+        Timber.i("ySize: ${yData.size}, uSize: ${uData.size}, vSize: ${vData.size}")
         return yData + vData + uData
     }
 
-//    private fun yuv420ToByteArray(image: Image): ByteArray {
-//        val width = image.width
-//        val height = image.height
-//        val ySize = width * height
-//        val uvSize = width * height / 4
-//        val nv21 = ByteArray(ySize + uvSize * 2)
-//        val yBuffer = image.planes[0].buffer // Y
-//        val uBuffer = image.planes[1].buffer // U
-//        val vBuffer = image.planes[2].buffer // V
-//        var rowStride = image.planes[0].rowStride
-//        assert(image.planes[0].pixelStride == 1)
-//        var pos = 0
-//        if (rowStride == width) { // likely
-//            yBuffer[nv21, 0, ySize]
-//            pos += ySize
-//        } else {
-//            var yBufferPos = -rowStride.toLong() // not an actual position
-//            while (pos < ySize) {
-//                yBufferPos += rowStride.toLong()
-//                yBuffer.position(yBufferPos.toInt())
-//                yBuffer[nv21, pos, width]
-//                pos += width
-//            }
-//        }
-//        rowStride = image.planes[2].rowStride
-//        val pixelStride = image.planes[2].pixelStride
-//        assert(rowStride == image.planes[1].rowStride)
-//        assert(pixelStride == image.planes[1].pixelStride)
-//        if (pixelStride == 2 && rowStride == width && uBuffer[0] == vBuffer[1]) {
-//            // maybe V an U planes overlap as per NV21, which means vBuffer[1] is alias of uBuffer[0]
-//            val savePixel = vBuffer[1]
-//            try {
-//                vBuffer.put(1, savePixel.inv() as Byte)
-//                if (uBuffer[0] == savePixel.inv() as Byte) {
-//                    vBuffer.put(1, savePixel)
-//                    vBuffer.position(0)
-//                    uBuffer.position(0)
-//                    vBuffer[nv21, ySize, 1]
-//                    uBuffer[nv21, ySize + 1, uBuffer.remaining()]
-//                    return nv21 // shortcut
-//                }
-//            } catch (ex: ReadOnlyBufferException) {
-//                // unfortunately, we cannot check if vBuffer and uBuffer overlap
-//            }
-//
-//            // unfortunately, the check failed. We must save U and V pixel by pixel
-//            vBuffer.put(1, savePixel)
-//        }
-//
-//        // other optimizations could check if (pixelStride == 1) or (pixelStride == 2),
-//        // but performance gain would be less significant
-//        for (row in 0 until height / 2) {
-//            for (col in 0 until width / 2) {
-//                val vuPos = col * pixelStride + row * rowStride
-//                nv21[pos++] = vBuffer[vuPos]
-//                nv21[pos++] = uBuffer[vuPos]
-//            }
-//        }
-//        return nv21
-//    }
+    private fun yuv420ToByteArray(image: Image): ByteArray {
+        val width = image.width
+        val height = image.height
+        val ySize = width * height
+        val uvSize = width * height / 4
+        val nv21 = ByteArray(ySize + uvSize * 2)
+        val yBuffer = image.planes[0].buffer // Y
+        val uBuffer = image.planes[1].buffer // U
+        val vBuffer = image.planes[2].buffer // V
+        var rowStride = image.planes[0].rowStride
+        assert(image.planes[0].pixelStride == 1)
+        var pos = 0
+        if (rowStride == width) { // likely
+            yBuffer[nv21, 0, ySize]
+            pos += ySize
+        } else {
+            var yBufferPos = -rowStride.toLong() // not an actual position
+            while (pos < ySize) {
+                yBufferPos += rowStride.toLong()
+                yBuffer.position(yBufferPos.toInt())
+                yBuffer[nv21, pos, width]
+                pos += width
+            }
+        }
+        rowStride = image.planes[2].rowStride
+        val pixelStride = image.planes[2].pixelStride
+        assert(rowStride == image.planes[1].rowStride)
+        assert(pixelStride == image.planes[1].pixelStride)
+        if (pixelStride == 2 && rowStride == width && uBuffer[0] == vBuffer[1]) {
+            // maybe V an U planes overlap as per NV21, which means vBuffer[1] is alias of uBuffer[0]
+            val savePixel = vBuffer[1]
+            try {
+                vBuffer.put(1, savePixel.inv() as Byte)
+                if (uBuffer[0] == savePixel.inv() as Byte) {
+                    vBuffer.put(1, savePixel)
+                    vBuffer.position(0)
+                    uBuffer.position(0)
+                    vBuffer[nv21, ySize, 1]
+                    uBuffer[nv21, ySize + 1, uBuffer.remaining()]
+                    return nv21 // shortcut
+                }
+            } catch (ex: ReadOnlyBufferException) {
+                // unfortunately, we cannot check if vBuffer and uBuffer overlap
+            }
+
+            // unfortunately, the check failed. We must save U and V pixel by pixel
+            vBuffer.put(1, savePixel)
+        }
+
+        // other optimizations could check if (pixelStride == 1) or (pixelStride == 2),
+        // but performance gain would be less significant
+        for (row in 0 until height / 2) {
+            for (col in 0 until width / 2) {
+                val vuPos = col * pixelStride + row * rowStride
+                nv21[pos++] = vBuffer[vuPos]
+                nv21[pos++] = uBuffer[vuPos]
+            }
+        }
+        return nv21
+    }
 }

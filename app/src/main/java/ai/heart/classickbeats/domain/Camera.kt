@@ -198,9 +198,10 @@ class Camera constructor(
     private fun enableDefaultModes(builder: CaptureRequest.Builder?) {
         if (builder == null) return
 
-        builder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF)
-        builder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON)
+//        builder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_OFF)
+//        builder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON)
 //        builder.set(CaptureRequest.CONTROL_AWB_MODE, CaptureRequest.CONTROL_AWB_MODE_OFF)
+        builder.set(CaptureRequest.CONTROL_MODE, CaptureRequest.CONTROL_MODE_OFF)
 //        builder.set(
 //            CaptureRequest.COLOR_CORRECTION_MODE,
 //            CaptureRequest.COLOR_CORRECTION_ABERRATION_MODE_OFF
