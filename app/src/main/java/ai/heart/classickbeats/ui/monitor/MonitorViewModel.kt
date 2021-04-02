@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.ui.monitor
 
 import ai.heart.classickbeats.compute.Filter
+import ai.heart.classickbeats.compute.MAPmodeling
 import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.utils.Event
@@ -13,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -127,13 +129,19 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
 //            Timber.i("Signal 2 Quality: ${peaksQ2.second}")
 
             val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION)
-            val bpm= pulseStats[0]
+            val meanNN= pulseStats[0]
             val sdnn = pulseStats[1]
             val rmssd = pulseStats[2]
             val pnn50 = pulseStats[3]
             val ln = pulseStats[4]
 
+            val bpm = (60 * 1000.0) / meanNN
+
+            val mapModeling = MAPmodeling()
+            val binProbsMAP = mapModeling.bAgePrediction(27.0, 0, meanNN, sdnn, rmssd, pnn50)
+
             Timber.i("BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
+            Timber.i("binProbsMAP: ${Arrays.toString(binProbsMAP.toDoubleArray())}")
 
             val qualityStr = when {
                 quality <= 1e-5 -> "PERFECT Quality Recording, Good job!"

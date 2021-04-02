@@ -131,7 +131,6 @@ class ProcessingData {
             "Size, Avg, filteredIbiList: ${filteredIbiList.size}, $ibiAvg2, " +
                     "${Arrays.toString(filteredIbiList.toDoubleArray())}"
         )
-        val bpm = (60 * 1000.0) / ibiAvg2
         val SDNN = sd(filteredIbiList.toDoubleArray())
         var rmssd = 0.0
         var nn50 = 0
@@ -145,7 +144,7 @@ class ProcessingData {
         }
         rmssd = sqrt(rmssd/ibiSize)
         val pnn50 = (100.0*nn50)/ibiSize
-        val pulseStats = listOf(bpm, SDNN, rmssd, pnn50, ln(rmssd))
+        val pulseStats = listOf(ibiAvg2, SDNN, rmssd, pnn50, ln(rmssd))
 
         return pulseStats
     }
