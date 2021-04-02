@@ -200,7 +200,7 @@ class PixelAnalyzer constructor(
         var gSum = 0
         var bSum = 0
         var aSum = 0
-        val len = 60
+        val len = h/3
         var count = 0
         for (y in max(0, h / 2 - len) until min(h - 2, h / 2 + len)) {
             for (x in max(0, w / 2 - len) until min(w - 2, w / 2 + len)) {
@@ -236,63 +236,6 @@ class PixelAnalyzer constructor(
     }
 
     fun processImageNaive(image: Image): CameraReading {
-        val timeStamp = SystemClock.elapsedRealtime().toInt()
-        val yuvByteArray = yuv420ToByteArray(image)
-        val w = image.width
-        val h = image.height
-        // val argbArray = IntArray(w * h)
-        val yBuffer = image.planes[0].buffer
-        yBuffer.position(0)
-        val uvBuffer = image.planes[1].buffer
-        uvBuffer.position(0)
-        var r: Int
-        var g: Int
-        var b: Int
-        var yValue: Int
-        var uValue: Int
-        var vValue: Int
-        var r_sum = 0
-        var g_sum = 0
-        var b_sum = 0
-        var count = 0
-        val len = h/3  // Length of square is (2*len)
-        for (y in max(0, h / 2 - len) until min(h - 2, h / 2 + len)) {
-            for (x in max(0, w / 2 - len) until min(w - 2, w / 2 + len)) {
-                val yIndex = y * w + x
-                yValue = yBuffer[yIndex].toInt() and 0xff
-                val uvx = x / 2
-                val uvy = y / 2
-                val uIndex = uvy * w + 2 * uvx
-                val vIndex = uIndex + 1
-                uValue = (uvBuffer[uIndex].toInt() and 0xff) - 128
-                vValue = (uvBuffer[vIndex].toInt() and 0xff) - 128
-                r = (yValue + 1.370705f * vValue).toInt()
-                g = (yValue - 0.698001f * vValue - 0.337633f * uValue).toInt()
-                b = (yValue + 1.732446f * uValue).toInt()
-                r = clamp(r.toFloat(), 0f, 255f).toInt()
-                g = clamp(g.toFloat(), 0f, 255f).toInt()
-                b = clamp(b.toFloat(), 0f, 255f).toInt()
-//                argbArray[yIndex] = 255 shl 24 or (r and 255 shl 16) or (g and 255 shl 8) or (b and 255)
-                r_sum += r
-                g_sum += g
-                b_sum += b
-                count++
-            }
-        }
-        val rMean = r_sum.toDouble() / count
-        val gMean = g_sum.toDouble() / count
-        val bMean = b_sum.toDouble() / count
-        displayCounter()
-        val fps = if (sec > 0) {
-            (frameRate.toDouble() / sec).roundToInt()
-        } else {
-            0
-        }
-        Timber.i("RGBMean: $rMean \t $gMean \t $bMean \t TimeStamp: $timeStamp \t FPS: $fps")
-        return CameraReading(rMean, gMean, bMean, timeStamp)
-    }
-
-    fun processImage(image: Image): CameraReading {
         val timeStamp = SystemClock.elapsedRealtime().toInt()
         val yuvByteArray = yuv420ToByteArray(image)
         val w = image.width

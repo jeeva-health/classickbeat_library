@@ -126,26 +126,15 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
 //            val peaksQ2 = filt.peakDetection(finalSignal2!!.toTypedArray())
 //            Timber.i("Signal 2 Quality: ${peaksQ2.second}")
 
-            val bpmHRV = processData.heartRateAndHRV(peaks, SCAN_DURATION)
-            val bpm = bpmHRV.first
-            val hrv = bpmHRV.second
+            val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION)
+            val bpm= pulseStats[0]
+            val sdnn = pulseStats[1]
+            val rmssd = pulseStats[2]
+            val pnn50 = pulseStats[3]
+            val ln = pulseStats[4]
 
-//            val mean1Array: Array<Double> = mean1List.toTypedArray()
-//            val mean2Array: Array<Double> = mean2List.toTypedArray()
-//            val timeArray: Array<Int> = timeList.toTypedArray()
-//            val python: Python = Python.getInstance()
-//            val filePyObject = python.getModule("HeartStats")
-//            val classPyObject = filePyObject.callAttr("HeartStats")
-//            val response =
-//                classPyObject.callAttr("HR_stats", mean1Array, mean2Array, timeArray).asList()
-//            val bpm = response[0].toDouble()
-//            val hrv = response[1].toDouble()
-//            val afib = when (response[2].toDouble()) {
-//                0.0 -> "Not Detected"
-//                1.0 -> "Possible"
-//                else -> "Detected"
-//            }
-//            val quality = response[3].toDouble()
+            Timber.i("BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
+
             val qualityStr = when {
                 quality <= 1e-5 -> "PERFECT Quality Recording, Good job!"
                 quality <= 1e-4 -> "Good Quality Recording, Good job!"
@@ -154,7 +143,7 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
                 else -> "Extremely poor signal quality. Please record again!"
             }
             hearRateResult =
-                HeartRateResult(bpm = bpm, hrv = hrv, aFib = "Not Detected", quality = qualityStr)
+                HeartRateResult(bpm = bpm, hrv = sdnn, aFib = "Not Detected", quality = qualityStr)
             mean1List.clear()
             mean2List.clear()
             timeList.clear()

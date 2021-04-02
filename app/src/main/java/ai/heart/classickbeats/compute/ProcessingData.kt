@@ -3,6 +3,8 @@ package ai.heart.classickbeats.compute
 import org.apache.commons.math3.analysis.interpolation.AkimaSplineInterpolator
 import timber.log.Timber
 import java.util.*
+import kotlin.math.absoluteValue
+import kotlin.math.ln
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -113,7 +115,7 @@ class ProcessingData {
             }
     }
 
-    fun heartRateAndHRV(peaks: List<Int>, scanDuration: Int): Pair<Double, Double> {
+    fun heartRateAndHRV(peaks: List<Int>, scanDuration: Int): List<Double> {
 
         val time = (0 until 100 * scanDuration).toList()
         val ibiList = mutableListOf<Double>() //Time in milliseconds
@@ -129,10 +131,22 @@ class ProcessingData {
             "Size, Avg, filteredIbiList: ${filteredIbiList.size}, $ibiAvg2, " +
                     "${Arrays.toString(filteredIbiList.toDoubleArray())}"
         )
-//        val rejectedIntervals = ibiList.filter { it <= 0.6 * ibiAvg && it >= 1.4 * ibiAvg }
-//        Timber.i("Rejected Intervals Size: ${rejectedIntervals.size}"
         val bpm = (60 * 1000.0) / ibiAvg2
         val SDNN = sd(filteredIbiList.toDoubleArray())
-        return Pair(bpm, SDNN)
+        var rmssd = 0.0
+        var nn50 = 0
+        val ibiSize = filteredIbiList.size - 1
+        for (i in 0 until ibiSize){
+            val diffRR = (filteredIbiList[i] - filteredIbiList[i+1]).absoluteValue
+            rmssd += diffRR.pow(2)
+            if (diffRR >= 50){
+                nn50 += 1
+            }
+        }
+        rmssd = sqrt(rmssd/ibiSize)
+        val pnn50 = (100.0*nn50)/ibiSize
+        val pulseStats = listOf(bpm, SDNN, rmssd, pnn50, ln(rmssd))
+
+        return pulseStats
     }
 }
