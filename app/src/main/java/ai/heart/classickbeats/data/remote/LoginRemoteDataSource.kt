@@ -4,7 +4,9 @@ import ai.heart.classickbeats.data.BaseRemoteDataSource
 import ai.heart.classickbeats.data.LoginDataSource
 import ai.heart.classickbeats.data.model.request.LoginRequest
 import ai.heart.classickbeats.data.model.request.RefreshTokenRequest
+import ai.heart.classickbeats.data.model.request.RegisterRequest
 import ai.heart.classickbeats.data.model.response.LoginResponse
+import ai.heart.classickbeats.data.model.response.RegisterResponse
 import ai.heart.classickbeats.network.SessionManager
 import ai.heart.classickbeats.utils.Result
 import ai.heart.classickbeats.utils.data
@@ -36,5 +38,14 @@ class LoginRemoteDataSource internal constructor(
                 return@withContext Result.Success(refreshTokenResponse.data!!.responseData!!)
             }
             return@withContext Result.Error(refreshTokenResponse.error!!)
+        }
+
+    override suspend fun registerUser(registerRequest: RegisterRequest): Result<RegisterResponse.Data> =
+        withContext(ioDispatcher) {
+            val registerResponse = safeApiCall { apiService.register(registerRequest) }
+            if (registerResponse.succeeded) {
+                return@withContext Result.Success(registerResponse.data!!.responseData)
+            }
+            return@withContext Result.Error(registerResponse.error!!)
         }
 }

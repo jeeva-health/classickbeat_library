@@ -3,12 +3,15 @@ package ai.heart.classickbeats.data
 import ai.heart.classickbeats.BuildConfig
 import ai.heart.classickbeats.data.model.request.LoginRequest
 import ai.heart.classickbeats.data.model.request.RefreshTokenRequest
-import ai.heart.classickbeats.data.model.response.LoginResponse
+import ai.heart.classickbeats.data.model.request.RegisterRequest
 import ai.heart.classickbeats.data.remote.LoginRemoteDataSource
+import ai.heart.classickbeats.domain.model.User
+import ai.heart.classickbeats.mapper.UserDataMapper
 import ai.heart.classickbeats.network.LoginRepositoryHolder
 import ai.heart.classickbeats.network.SessionManager
 import ai.heart.classickbeats.storage.SharedPreferenceStorage
 import ai.heart.classickbeats.utils.Result
+import ai.heart.classickbeats.utils.error
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import timber.log.Timber
 import javax.inject.Inject
@@ -18,6 +21,7 @@ class LoginRepository @Inject constructor(
     private val loginRemoteDataSource: LoginRemoteDataSource,
     private val sessionManager: SessionManager,
     private val sharedPreferenceStorage: SharedPreferenceStorage,
+    private val userDataMapper: UserDataMapper,
     loginRepositoryHolder: LoginRepositoryHolder
 ) {
 
@@ -25,11 +29,11 @@ class LoginRepository @Inject constructor(
         loginRepositoryHolder.loginRepository = this
     }
 
-    var loggedInUser: LoginResponse.Data.User? = null
+    var loggedInUser: User? = null
 
     var loginError: String = "Login failed. Please try again"
 
-    suspend fun loginUser(firebaseToken: String): Boolean {
+    suspend fun loginUser(firebaseToken: String): Pair<Boolean, Boolean> {
         val loginRequest = LoginRequest(
             clientId = BuildConfig.CLIENT_ID,
             clientSecret = BuildConfig.CLIENT_SECRET,
@@ -37,13 +41,12 @@ class LoginRepository @Inject constructor(
         )
         val response = loginRemoteDataSource.login(loginRequest)
         if (response is Result.Success) {
-            loggedInUser = response.data.user
-            val userName = loggedInUser?.name
-            userName?.let {
+            loggedInUser = userDataMapper.map(response.data.user!!)
+            val isUserRegistered = response.data.isRegistered ?: false
+            loggedInUser?.name?.let {
                 sharedPreferenceStorage.userName = it
             }
-            val phoneNumber = loggedInUser?.phoneNumber
-            phoneNumber?.let {
+            loggedInUser?.phoneNumber?.let {
                 sharedPreferenceStorage.userNumber = it
             }
             val accessToken = response.data.accessToken
@@ -54,10 +57,10 @@ class LoginRepository @Inject constructor(
             if (refreshToken != null) {
                 sessionManager.saveRefreshToken(refreshToken)
             }
-            return true
+            return Pair(true, isUserRegistered)
         }
-        loginError = (response as Result.Error).exception
-        return false
+        loginError = (response as Result.Error).exception!!
+        return Pair(false, second = false)
     }
 
     suspend fun refreshToken(): Boolean {
@@ -83,5 +86,22 @@ class LoginRepository @Inject constructor(
             Result.Loading -> throw IllegalStateException("refreshToken response invalid state")
         }
         return false
+    }
+
+    suspend fun registerUser(fullName: String): Result<User> {
+        val registerRequest = RegisterRequest(
+            fullName = fullName
+        )
+        val response = loginRemoteDataSource.registerUser(registerRequest)
+        when (response) {
+            is Result.Success -> {
+                val user = userDataMapper.map(response.data.user!!)
+                loggedInUser = user
+                return Result.Success(user)
+            }
+            is Result.Error -> Timber.e(response.exception)
+            Result.Loading -> throw IllegalStateException("registerUser response invalid state")
+        }
+        return Result.Error(response.error)
     }
 }

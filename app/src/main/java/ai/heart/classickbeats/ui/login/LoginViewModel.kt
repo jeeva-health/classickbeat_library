@@ -6,6 +6,8 @@ import ai.heart.classickbeats.storage.SharedPreferenceStorage
 import ai.heart.classickbeats.utils.Event
 import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -19,11 +21,18 @@ class LoginViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    enum class RequestType {
+        LOGIN,
+        REGISTER
+    }
+
     enum class AuthenticationState {
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
     }
 
     var currentFirebaseUser: FirebaseUser? = null
+
+    var isUserRegistered: Boolean = false
 
     val showLoading = MutableLiveData<Boolean>(false)
 
@@ -41,7 +50,12 @@ class LoginViewModel @Inject constructor(
 
     val loginState = MutableLiveData<Event<Boolean>>()
 
+    val apiResponse = MutableLiveData<Event<RequestType>>()
+
+    var apiError: String? = null
+
     fun logoutUser() {
+        Firebase.auth.signOut()
         sessionManager.removeAuthToken()
         sharedPreferenceStorage.removeAllUserProps()
     }
@@ -62,9 +76,19 @@ class LoginViewModel @Inject constructor(
             if (firebaseToken == null) {
                 // TODO:: handle this case
             } else {
-                val loginResponse = loginRepository.loginUser(firebaseToken)
+                val (loginResponse, isUserRegistered) = loginRepository.loginUser(firebaseToken)
+                this@LoginViewModel.isUserRegistered = isUserRegistered
                 loginState.postValue(Event(loginResponse))
             }
+            showLoading.postValue(false)
+        }
+    }
+
+    fun registerUser(fullName: String) {
+        showLoading.postValue(true)
+        viewModelScope.launch {
+            val response = loginRepository.registerUser(fullName)
+            apiResponse.postValue(Event(RequestType.REGISTER))
             showLoading.postValue(false)
         }
     }

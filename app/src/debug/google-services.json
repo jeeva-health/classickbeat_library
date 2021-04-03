@@ -51,6 +51,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "339312108441-56c41jp83o21r78un5jltkp0q0i4itd2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ai.heart.classickbeats.debug",
+            "certificate_hash": "d7ff684e0452cb88c0f7a3b153beb0c5431bd597"
+          }
+        },
+        {
           "client_id": "339312108441-8iotlnna8eof8l01j1umcpqcvgehv8b1.apps.googleusercontent.com",
           "client_type": 3
         }

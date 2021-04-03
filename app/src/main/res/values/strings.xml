@@ -10,4 +10,9 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+    <string name="enter_name">Enter your name</string>
+    <string name="enter_age">Enter your age</string>
+    <string name="enter_weight">Enter your weight</string>
+    <string name="enter_height">Enter your height</string>
+    <string name="register">Register</string>
 </resources>

@@ -110,7 +110,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         // they will need to create a password as well
         val providers = arrayListOf(
             AuthUI.IdpConfig.PhoneBuilder().setDefaultCountryIso("IN")
-                .setWhitelistedCountries(listOf("IN")).build()
+                .setWhitelistedCountries(listOf("IN", "US")).build()
         )
 
         // Create and launch sign-in intent.
@@ -128,39 +128,47 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         navController.navigate(action)
     }
 
+    private fun navigateToRegisterFragment() {
+        val action = LoginFragmentDirections.actionLoginFragmentToRegistrationFragment()
+        navController.navigate(action)
+    }
+
     private fun observeAuthenticationState() {
 
-        logInViewModel.firebaseAuthenticationState.observe(
-            viewLifecycleOwner,
-            EventObserver { authState ->
-                when (authState) {
-                    LoginViewModel.AuthenticationState.INVALID_AUTHENTICATION -> {
-                        Toast.makeText(activity, "Login Failed", Toast.LENGTH_LONG).show()
+        logInViewModel.apply {
+
+            firebaseAuthenticationState.observe(
+                viewLifecycleOwner,
+                EventObserver { authState ->
+                    when (authState) {
+                        LoginViewModel.AuthenticationState.INVALID_AUTHENTICATION -> {
+                            Toast.makeText(activity, "Login Failed", Toast.LENGTH_LONG).show()
+                        }
+                        LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+                            Toast.makeText(activity, "Login Successfully", Toast.LENGTH_LONG).show()
+                            loginUser()
+                        }
                     }
-                    LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-                        Toast.makeText(activity, "Login Successfully", Toast.LENGTH_LONG).show()
-                        logInViewModel.loginUser()
+                })
+
+            loginState.observe(viewLifecycleOwner, EventObserver { isUserLoggedIn ->
+                if (isUserLoggedIn) {
+                    if (isUserRegistered) {
+                        navigateToSelectionFragment()
+                    } else {
+                        navigateToRegisterFragment()
                     }
                 }
             })
 
-        logInViewModel.loginState.observe(viewLifecycleOwner, EventObserver { isUserLoggedIn ->
-            if (isUserLoggedIn) {
-                if (sharedPreferenceStorage.onBoardingCompleted) {
-                    navController.popBackStack()
-                } else {
-                    navigateToSelectionFragment()
-                }
-            }
-        })
-
-        logInViewModel.showLoading.observe(
-            viewLifecycleOwner, { showLoading ->
-                if (showLoading) {
-                    showLoadingBar()
-                } else {
-                    hideLoadingBar()
-                }
-            })
+            showLoading.observe(
+                viewLifecycleOwner, { showLoading ->
+                    if (showLoading) {
+                        showLoadingBar()
+                    } else {
+                        hideLoadingBar()
+                    }
+                })
+        }
     }
 }

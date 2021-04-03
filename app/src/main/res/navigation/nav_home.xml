@@ -60,6 +60,9 @@
         <action
             android:id="@+id/action_loginFragment_to_selectionFragment"
             app:destination="@id/selectionFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
     </fragment>
     <fragment
         android:id="@+id/logBpFragment"
@@ -77,6 +80,15 @@
         <action
             android:id="@+id/action_selectionFragment_to_logBpFragment"
             app:destination="@id/logBpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="ai.heart.classickbeats.ui.login.fragment.RegistrationFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" >
+        <action
+            android:id="@+id/action_registrationFragment_to_selectionFragment"
+            app:destination="@id/selectionFragment" />
     </fragment>
 
 </navigation>
