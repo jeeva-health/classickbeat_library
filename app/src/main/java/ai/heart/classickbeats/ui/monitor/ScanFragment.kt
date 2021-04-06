@@ -429,4 +429,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             restartReading()
         }
     }
+
+    fun updateDynamicHeartRate(bpm: Int) {
+        val heartRateStr = "$bpm bpm"
+        binding.heartRate.text = heartRateStr
+    }
 }
