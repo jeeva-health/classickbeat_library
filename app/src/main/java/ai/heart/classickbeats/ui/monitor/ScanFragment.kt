@@ -35,9 +35,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.github.mikephil.charting.charts.LineChart
+import com.github.psambit9791.jdsp.signal.peaks.FindPeak
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.lang.Boolean
+import java.util.*
 
 @AndroidEntryPoint
 class ScanFragment : Fragment(R.layout.fragment_scan) {
@@ -74,6 +76,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private lateinit var accelerometerListener: AccelerometerListener
 
     private val fps = 30
+    private var localTimeLast = 0
 
     private var badImageCounter = 0
 
@@ -105,6 +108,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             TestType.OXYGEN_SATURATION -> "Please align the add-on with the front camera and place your figure gently inside the add-on."
         }
         binding.scanMessage.text = scanMessage
+        updateDynamicHeartRate(-1)
 
         chart = binding.lineChart.apply {
             setDrawGridBackground(false)
@@ -252,8 +256,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImageRenderScript(img)
                     }
                     cameraReading?.apply {
-                        Timber.i("ratio1: ${green / red}")
-                        Timber.i("ratio2: ${blue / red}")
                         if (green / red > 0.5 || blue / red > 0.5) {
                             badImageCounter++
                         } else {
@@ -269,6 +271,17 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         monitorViewModel.mean1List.add(red)
                         monitorViewModel.mean2List.add(green)
                         monitorViewModel.timeList.add(timeStamp)
+
+                        // Calculating dynamic heart rate
+                        val totalTimeElapsed = timeStamp - monitorViewModel.timeList[0]
+                        val localTimeElapsed = timeStamp - localTimeLast
+                        Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
+                        if (totalTimeElapsed >= 5000 && localTimeElapsed >= 2000){
+                            val dynamicBPM = calculateDynamicBPM(monitorViewModel.mean1List.takeLast(150),
+                                monitorViewModel.timeList.takeLast(150))
+                            updateDynamicHeartRate(dynamicBPM)
+                            localTimeLast = monitorViewModel.timeList.last()
+                        }
                         RunningGraph.addEntry(chart, monitorViewModel.mean1List.size, red)
                     }
                 }
@@ -427,6 +440,34 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             Timber.i("Moving too much!")
             showLongToast("Moving too much!")
             restartReading()
+        }
+    }
+
+    fun calculateDynamicBPM(meanList: List<Double>, timeStamp: List<Int>): Int{
+        val fp = FindPeak(meanList.toDoubleArray())
+        val out = fp.detectPeaks()
+
+        val peaks = out.peaks
+        Timber.i("Size, Dynamic Peaks: ${peaks.size}, ${Arrays.toString(peaks)}")
+        var filteredPeaks = out.filterByProminence(peaks, 0.4, null)
+        Timber.i("Size, Dynamic Prominent Peaks: ${filteredPeaks.size}, ${Arrays.toString(filteredPeaks)}")
+
+        val ibiList = mutableListOf<Double>() //Time in milliseconds
+        for (i in 0 until filteredPeaks.size - 1) {
+            ibiList.add((timeStamp[filteredPeaks[i + 1]] - timeStamp[filteredPeaks[i]])*1.0)
+        }
+        val ibiAvg = ibiList.average()
+        Timber.i("Size, Average, ibiList: ${ibiList.size}, $ibiAvg, ${Arrays.toString(ibiList.toDoubleArray())}")
+        return ((60 * 1000.0) / ibiAvg).toInt()
+    }
+
+    fun updateDynamicHeartRate(bpm: Int) {
+        postOnMainLooper {
+            var heartRateStr = "-- bpm"
+            if (bpm >= 0){
+                heartRateStr = "$bpm bpm"
+            }
+            binding.heartRate.text = heartRateStr
         }
     }
 }
