@@ -139,9 +139,13 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
 
             val mapModeling = MAPmodeling()
             val binProbsMAP = mapModeling.bAgePrediction(27.0, 0, meanNN, sdnn, rmssd, pnn50)
+            val activeSedantryProb = mapModeling.activeSedantryPrediction(27.0, meanNN, rmssd)
+            val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
 
             Timber.i("BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
             Timber.i("binProbsMAP: ${Arrays.toString(binProbsMAP.toDoubleArray())}")
+            Timber.i("Sedantry and Active Probs: ${Arrays.toString(activeSedantryProb.toDoubleArray())}")
+            Timber.i("Stress Probs: ${Arrays.toString(stressProb.toDoubleArray())}")
 
             val qualityStr = when {
                 quality <= 1e-5 -> "PERFECT Quality Recording, Good job!"
