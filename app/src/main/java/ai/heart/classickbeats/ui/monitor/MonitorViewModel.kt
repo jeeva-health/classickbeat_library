@@ -92,12 +92,12 @@ class MonitorViewModel @Inject constructor(
     var envelope: List<Double>? = null
     var interpolatedList: List<Double>? = null
     var withoutSpikes: List<Double>? = null
+    val processData = ProcessingData()
 
     fun calculateResult() {
         viewModelScope.launch(Dispatchers.Default) {
 
             val windowSize = 101
-            val processData = ProcessingData()
             outputList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray())
             outputList = processData.movAvg(outputList!!.toTypedArray(), 11)
             movingAverage = processData.movAvg(outputList!!.toTypedArray(), windowSize)

@@ -444,7 +444,14 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     }
 
     fun calculateDynamicBPM(meanList: List<Double>, timeStamp: List<Int>): Int{
-        val fp = FindPeak(meanList.toDoubleArray())
+        val windowSize = 21
+        val movAvgMean = monitorViewModel.processData.movAvg(meanList!!.toTypedArray(), windowSize)
+        val centeredSignal = monitorViewModel.processData.centering(
+            meanList!!.toTypedArray(),
+            movAvgMean!!.toTypedArray(),
+            windowSize
+        )
+        val fp = FindPeak(centeredSignal.toDoubleArray())
         val out = fp.detectPeaks()
 
         val peaks = out.peaks
