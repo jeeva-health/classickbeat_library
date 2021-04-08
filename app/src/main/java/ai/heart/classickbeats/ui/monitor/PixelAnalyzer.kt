@@ -200,7 +200,8 @@ class PixelAnalyzer constructor(
         var gSum = 0
         var bSum = 0
         var aSum = 0
-        val len = h/3
+        // val len = h/3
+        val len = w
         var count = 0
         for (y in max(0, h / 2 - len) until min(h - 2, h / 2 + len)) {
             for (x in max(0, w / 2 - len) until min(w - 2, w / 2 + len)) {
