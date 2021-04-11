@@ -116,13 +116,11 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
             invalidate()
         }
 
-        // LineGraph.drawLineGraph(chart1, monitorViewModel.interpolatedList!!)
+        LineGraph.drawLineGraph(chart1, monitorViewModel.centeredSignal.toList())
 
-        LineGraph.drawLineGraph(chart1, monitorViewModel.outputList!!)
+        LineGraph.drawLineGraph(chart2, monitorViewModel.interpolatedList!!)
 
-        LineGraph.drawLineGraph(chart2, monitorViewModel.centeredSignal!!)
-
-        LineGraph.drawLineGraph(chart3, monitorViewModel.withoutSpikes!!)
+        LineGraph.drawLineGraph(chart3, monitorViewModel.envelope!!)
 
         LineGraph.drawLineGraph(chart4, monitorViewModel.envelopeAverage!!)
 

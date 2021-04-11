@@ -35,9 +35,8 @@ class MonitorViewModel @Inject constructor(
     private var timer: CountDownTimer? = null
 
     val mean1List = mutableListOf<Double>()
-
     val mean2List = mutableListOf<Double>()
-
+    val centeredSignal = mutableListOf<Double>()
     val timeList = mutableListOf<Int>()
 
     var testType: TestType = TestType.HEART_RATE
@@ -83,37 +82,36 @@ class MonitorViewModel @Inject constructor(
         isProcessing = false
     }
 
-    var outputList: List<Double>? = null
-    var filtOut: List<Double>? = null
-    var centeredSignal: List<Double>? = null
     var leveledSignal: List<Double>? = null
-    var movingAverage: List<Double>? = null
     var envelopeAverage: List<Double>? = null
     var envelope: List<Double>? = null
     var interpolatedList: List<Double>? = null
     var withoutSpikes: List<Double>? = null
     val processData = ProcessingData()
+    val fps = 30
 
     fun calculateResult() {
         viewModelScope.launch(Dispatchers.Default) {
 
-            val windowSize = 101
-            outputList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray())
-            outputList = processData.movAvg(outputList!!.toTypedArray(), 11)
-            movingAverage = processData.movAvg(outputList!!.toTypedArray(), windowSize)
-            centeredSignal = processData.centering(
-                outputList!!.toTypedArray(),
-                movingAverage!!.toTypedArray(),
-                windowSize
-            )
+            val offset = 16
+            Timber.i("Calculating PULSE STATS, offset $offset")
+            val time = timeList.subList(offset, timeList.size - offset).toTypedArray()
+            Timber.i("LIST sizes ${time.size}, ${mean1List.size}, ${centeredSignal.size}")
+            assert(time.size==centeredSignal.size)
+            interpolatedList = processData.interpolate(time,
+                centeredSignal.toTypedArray())
+//            interpolatedList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray())
+
+            Timber.i("Interpolated signal done")
+//            withoutSpikes = processData.spikeRemover(interpolatedList!!.toTypedArray())
+//            Timber.i("Spikes done")
 
             val filt = Filter()
-            withoutSpikes = processData.spikeRemover(centeredSignal!!.toTypedArray())
-            envelope = filt.hilbert(withoutSpikes!!.toTypedArray())
+            envelope = filt.hilbert(interpolatedList!!.toTypedArray())
             val windowSize2 = 101
             envelopeAverage = processData.movAvg(envelope!!.toTypedArray(), windowSize2)
             leveledSignal = processData.leveling(
-                withoutSpikes!!.toTypedArray(),
+                interpolatedList!!.toTypedArray(),
                 envelopeAverage!!.toTypedArray(),
                 windowSize2
             )
@@ -126,14 +124,6 @@ class MonitorViewModel @Inject constructor(
             val peaks = peaksQ.first
             val quality = peaksQ.second
             Timber.i("Signal Quality: $quality")
-
-//            // Checking peaks location without filter
-//            val centeredSignal2 = centeredSignal!!.drop(300)
-//            val envelope2 = filt.hilbert(centeredSignal2!!.toTypedArray())
-//            val envelopeAverage2 = processData.movAvg(envelope2.toTypedArray(), window)
-//            val finalSignal2 = processData.leveling(centeredSignal2!!.toTypedArray(), envelopeAverage2!!.toTypedArray(), window)
-//            val peaksQ2 = filt.peakDetection(finalSignal2!!.toTypedArray())
-//            Timber.i("Signal 2 Quality: ${peaksQ2.second}")
 
             val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION)
             val meanNN = pulseStats[0]
@@ -183,6 +173,7 @@ class MonitorViewModel @Inject constructor(
             mean1List.clear()
             mean2List.clear()
             timeList.clear()
+            centeredSignal.clear()
             outputComputed.postValue(Event(true))
         }
     }
