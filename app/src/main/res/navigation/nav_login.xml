@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_login"
+    app:startDestination="@id/signUpModeSelectionFragment">
+
+    <fragment
+        android:id="@+id/loginModeSelectionFragment"
+        android:name="ai.heart.classickbeats.ui.login.fragment.LoginModeSelectionFragment"
+        android:label="fragment_login_mode_selection"
+        tools:layout="@layout/fragment_login_mode_selection" >
+        <action
+            android:id="@+id/action_loginModeSelectionFragment_to_signUpModeSelectionFragment"
+            app:destination="@id/signUpModeSelectionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signUpModeSelectionFragment"
+        android:name="ai.heart.classickbeats.ui.login.fragment.SignUpModeSelectionFragment"
+        android:label="fragment_sign_up_mode_selection"
+        tools:layout="@layout/fragment_sign_up_mode_selection" >
+        <action
+            android:id="@+id/action_signUpModeSelectionFragment_to_loginModeSelectionFragment"
+            app:destination="@id/loginModeSelectionFragment" />
+    </fragment>
+</navigation>

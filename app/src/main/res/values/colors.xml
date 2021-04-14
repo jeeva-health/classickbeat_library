@@ -20,6 +20,7 @@
 
     <color name="bright_orange">#f8a142</color>
 
+    <color name="very_pale_red">#fffbfb</color>
     <color name="light_grayish_red">#f2dede</color>
     <color name="light_grayish_red_3">#f8f4f4</color>
     <color name="light_grayish_red_4">#f1efef</color>
@@ -34,14 +35,14 @@
     <color name="very_dark_pink">#5f0339</color>
 
     <color name="soft_blue_2">#61c3f2</color>
-    <color name="bright_blue_2">#3fa6e9</color>
+    <color name="bright_blue">#32a4fc</color>
+    <color name="vivid_blue">#1D56D9</color>
     <color name="strong_blue">#0071bc</color>
     <color name="dark_blue_3">#07399e</color>
     <color name="dark_blue_4">#1440ad</color>
     <color name="dark_blue_5">#137daa</color>
     <color name="dark_blue_6">#092d86</color>
-
-    <color name="very_dark_blue">#192953</color>
+    <color name="very_dark_blue">#1C1662</color>
 
     <color name="moderate_green">#7ac943</color>
 
