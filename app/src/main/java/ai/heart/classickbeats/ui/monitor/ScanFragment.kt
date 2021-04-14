@@ -288,7 +288,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         if (movAvgSmall.size > 0){
                             monitorViewModel.processData.runningMovAvg(movAvgSmall.last(), largeWindow, movWindowLarge, movAvgLarge)
                             if (movAvgSmall.size >= largeWindow){
-                                monitorViewModel.centeredSignal.add(movAvgSmall[movAvgSmall.size - offset] - movAvgLarge.last())
+                                val x = movAvgSmall[movAvgSmall.size - offset] - movAvgLarge.last()
+                                monitorViewModel.centeredSignal.add(x)
+                                RunningGraph.addEntry(chart, monitorViewModel.centeredSignal.size, x)
                             }
                         }
                         // Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
@@ -304,7 +306,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                             updateDynamicHeartRate(dynamicBPM)
                             localTimeLast = monitorViewModel.timeList.last()
                         }
-                        RunningGraph.addEntry(chart, monitorViewModel.mean1List.size, red)
                     }
                 }
             }
@@ -471,7 +472,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
         val peaks = out.peaks
         Timber.i("Size, Dynamic Peaks: ${peaks.size}, ${Arrays.toString(peaks)}")
-        var filteredPeaks = out.filterByProminence(peaks, 0.2, null)
+        var filteredPeaks = out.filterByProminence(peaks, 0.3, null)
         Timber.i("Size, Dynamic Prominent Peaks: ${filteredPeaks.size}, ${Arrays.toString(filteredPeaks)}")
 
         val ibiList = mutableListOf<Double>() //Time in milliseconds
