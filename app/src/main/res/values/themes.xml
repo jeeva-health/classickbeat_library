@@ -13,6 +13,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="materialButtonStyle">@style/Widget.App.Button</item>
+        <item name="switchStyle">@style/Widget.App.Switch</item>
     </style>
 
     <style name="Base.AppTheme.Login">
@@ -30,6 +31,11 @@
     <style name="ThemeOverlay.App.ButtonSecondary" parent="">
         <item name="colorPrimary">@color/white</item>
         <item name="colorOnPrimary">@color/vivid_blue</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Switch" parent="">
+        <item name="colorOnSurface">@color/very_soft_orange</item>
+        <item name="colorSecondary">@color/very_soft_orange</item>
     </style>
 
 </resources>
