@@ -191,7 +191,7 @@ class PixelAnalyzer constructor(
     }
 
     fun processImageRenderScript(image: Image): CameraReading {
-        val timeStamp = SystemClock.elapsedRealtime().toInt()
+        val timeStamp = (image.timestamp/(1000000.0)).toInt() //SystemClock.elapsedRealtime().toInt()
         val argbArray = yuv420ToARGB(image, context)
         val w = image.width
         val h = image.height
