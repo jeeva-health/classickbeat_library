@@ -135,8 +135,30 @@ class ProcessingData {
         for (i in 0 until peaks.size - 1) {
             ibiList.add((time[peaks[i + 1]] - time[peaks[i]]) * 10.0)
         }
-        val ibiMedian = median(ibiList)
+        var ibiMedian = median(ibiList)
         Timber.i("Size, Median, ibiList: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
+        var i = 0
+        while (i < ibiList.size-1){
+            if (ibiList[i] + ibiList[i+1] < 1.5 * ibiMedian){
+                ibiList[i] = ibiList[i] + ibiList[i+1]
+                ibiList.removeAt(i+1)
+            }
+            i++
+        }
+        ibiMedian = median(ibiList)
+        Timber.i("Size, Median, ibiList2: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
+
+        i = 0
+        while (i < ibiList.size-1){
+            if (ibiList[i] + ibiList[i+1] < 1.5 * ibiMedian){
+                ibiList[i] = ibiList[i] + ibiList[i+1]
+                ibiList.removeAt(i+1)
+            }
+            i++
+        }
+        ibiMedian = median(ibiList)
+        Timber.i("Size, Median, ibiList3: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
+
         val filteredIbiList = ibiList.filter { it > 0.8 * ibiMedian && it < 1.2 * ibiMedian }
         val ibiAvg2 = filteredIbiList.average()
         Timber.i(
