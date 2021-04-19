@@ -288,7 +288,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         if (movAvgSmall.size > 0){
                             monitorViewModel.processData.runningMovAvg(movAvgSmall.last(), largeWindow, movWindowLarge, movAvgLarge)
                             if (movAvgSmall.size >= largeWindow){
-                                val x = movAvgSmall[movAvgSmall.size - offset] - movAvgLarge.last()
+                                val x = -1.0*(movAvgSmall[movAvgSmall.size - offset] - movAvgLarge.last())
                                 monitorViewModel.centeredSignal.add(x)
                                 RunningGraph.addEntry(chart, monitorViewModel.centeredSignal.size, x)
                             }
@@ -472,7 +472,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
         val peaks = out.peaks
         Timber.i("Size, Dynamic Peaks: ${peaks.size}, ${Arrays.toString(peaks)}")
-        var filteredPeaks = out.filterByProminence(peaks, 0.3, null)
+        var filteredPeaks = out.filterByProminence(peaks, 0.4, null)
         Timber.i("Size, Dynamic Prominent Peaks: ${filteredPeaks.size}, ${Arrays.toString(filteredPeaks)}")
 
         val ibiList = mutableListOf<Double>() //Time in milliseconds
