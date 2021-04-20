@@ -19,4 +19,8 @@
     <string name="sign_up_google">Sign up with Google</string>
     <string name="login_mobile">Login with Mobile</string>
     <string name="login_google">Login with Google</string>
+
+    <string name="playback_channel_name">Playback</string>
+    <string name="playback_channel_description">Playback channel</string>
+
 </resources>
