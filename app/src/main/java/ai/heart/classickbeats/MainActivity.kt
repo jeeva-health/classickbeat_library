@@ -1,10 +1,15 @@
 package ai.heart.classickbeats
 
 import ai.heart.classickbeats.databinding.ActivityMainBinding
+import ai.heart.classickbeats.model.Constants
 import ai.heart.classickbeats.network.SessionManager
 import ai.heart.classickbeats.storage.SharedPreferenceStorage
 import ai.heart.classickbeats.ui.login.LoginViewModel
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -38,6 +43,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding?.root
         setContentView(view)
+
+        createNotificationChannel()
 
         sessionManager.updateNetworkIssueStatus(true)
 
@@ -92,4 +99,21 @@ class MainActivity : AppCompatActivity() {
         binding?.progressBar?.visibility = View.GONE
         window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.playback_channel_name)
+            val descriptionText = getString(R.string.playback_channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel =
+                NotificationChannel(Constants.PLAYBACK_CHANNEL_ID, name, importance).apply {
+                    description = descriptionText
+                }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
 }

@@ -1,2 +1,4 @@
+include ':model'
+include ':media'
 include ':app'
 rootProject.name = "Classick Beats"
