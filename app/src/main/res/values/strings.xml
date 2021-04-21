@@ -15,4 +15,8 @@
     <string name="enter_weight">Enter your weight</string>
     <string name="enter_height">Enter your height</string>
     <string name="register">Register</string>
+    <string name="sign_up_mobile">Sign up with Mobile</string>
+    <string name="sign_up_google">Sign up with Google</string>
+    <string name="login_mobile">Login with Mobile</string>
+    <string name="login_google">Login with Google</string>
 </resources>

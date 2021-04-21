@@ -2,6 +2,7 @@ package ai.heart.classickbeats.data.remote
 
 import ai.heart.classickbeats.data.BaseRemoteDataSource
 import ai.heart.classickbeats.data.LoginDataSource
+import ai.heart.classickbeats.data.model.entity.PPGEntity
 import ai.heart.classickbeats.data.model.request.LoginRequest
 import ai.heart.classickbeats.data.model.request.RefreshTokenRequest
 import ai.heart.classickbeats.data.model.request.RegisterRequest
@@ -47,5 +48,14 @@ class LoginRemoteDataSource internal constructor(
                 return@withContext Result.Success(registerResponse.data!!.responseData)
             }
             return@withContext Result.Error(registerResponse.error!!)
+        }
+
+    override suspend fun recordPPG(ppgEntity: PPGEntity): Result<Boolean> =
+        withContext(ioDispatcher) {
+            val response = safeApiCall { apiService.recordPPG(ppgEntity) }
+            if (response.succeeded) {
+                return@withContext Result.Success(true)
+            }
+            return@withContext Result.Error(response.error)
         }
 }

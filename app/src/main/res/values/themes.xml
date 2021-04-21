@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ClassickBeats" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="Base.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/orange</item>
         <item name="colorPrimaryVariant">@color/orange</item>
@@ -12,10 +12,30 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="materialButtonStyle">@style/Widget.App.Button</item>
+        <item name="switchStyle">@style/Widget.App.Switch</item>
     </style>
 
-    <style name="ThemeOverlay.ClassickBeats.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
-        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    <style name="Base.AppTheme.Login">
+        <item name="android:statusBarColor">@color/very_dark_blue</item>
+        <item name="colorPrimaryDark">@color/very_dark_blue</item>
+        <item name="android:colorPrimaryDark">@color/very_dark_blue</item>
+        <item name="android:background">@color/very_dark_blue</item>
     </style>
+
+    <style name="ThemeOverlay.App.Button" parent="">
+        <item name="colorPrimary">@color/bright_blue</item>
+        <item name="colorOnPrimary">@color/very_pale_red</item>
+    </style>
+
+    <style name="ThemeOverlay.App.ButtonSecondary" parent="">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/vivid_blue</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Switch" parent="">
+        <item name="colorOnSurface">@color/very_soft_orange</item>
+        <item name="colorSecondary">@color/very_soft_orange</item>
+    </style>
+
 </resources>

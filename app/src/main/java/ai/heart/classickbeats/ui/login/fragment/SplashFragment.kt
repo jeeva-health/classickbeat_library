@@ -47,7 +47,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
     }
 
     private fun navigateToLoginFragment() {
-        val action = SplashFragmentDirections.actionSplashFragmentToLoginFragment()
+        val action = SplashFragmentDirections.actionSplashFragmentToNavLogin()
         navController.navigate(action)
     }
 }

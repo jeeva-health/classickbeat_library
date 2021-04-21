@@ -3,7 +3,10 @@ package ai.heart.classickbeats.ui.monitor
 import ai.heart.classickbeats.compute.Filter
 import ai.heart.classickbeats.compute.MAPmodeling
 import ai.heart.classickbeats.compute.ProcessingData
+import ai.heart.classickbeats.data.LoginRepository
+import ai.heart.classickbeats.data.model.entity.PPGEntity
 import ai.heart.classickbeats.domain.TestType
+import ai.heart.classickbeats.storage.SharedPreferenceStorage
 import ai.heart.classickbeats.utils.Event
 import android.os.CountDownTimer
 import android.text.format.DateUtils
@@ -21,7 +24,11 @@ import javax.inject.Inject
 const val SCAN_DURATION = 33
 
 @HiltViewModel
-class MonitorViewModel @Inject constructor() : ViewModel() {
+class MonitorViewModel @Inject constructor(
+    private val sharedPreferenceStorage: SharedPreferenceStorage,
+    private val loginRepository: LoginRepository
+) :
+    ViewModel() {
 
     var hearRateResult: HeartRateResult? = null
 
@@ -129,7 +136,7 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
 //            Timber.i("Signal 2 Quality: ${peaksQ2.second}")
 
             val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION)
-            val meanNN= pulseStats[0]
+            val meanNN = pulseStats[0]
             val sdnn = pulseStats[1]
             val rmssd = pulseStats[2]
             val pnn50 = pulseStats[3]
@@ -139,9 +146,13 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
 
             val mapModeling = MAPmodeling()
             val binProbsMAP = mapModeling.bAgePrediction(27.0, 0, meanNN, sdnn, rmssd, pnn50)
+            val activeSedantryProb = mapModeling.activeSedantryPrediction(27.0, meanNN, rmssd)
+            val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
 
             Timber.i("BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
             Timber.i("binProbsMAP: ${Arrays.toString(binProbsMAP.toDoubleArray())}")
+            Timber.i("Sedantry and Active Probs: ${Arrays.toString(activeSedantryProb.toDoubleArray())}")
+            Timber.i("Stress Probs: ${Arrays.toString(stressProb.toDoubleArray())}")
 
             val qualityStr = when {
                 quality <= 1e-5 -> "PERFECT Quality Recording, Good job!"
@@ -152,6 +163,23 @@ class MonitorViewModel @Inject constructor() : ViewModel() {
             }
             hearRateResult =
                 HeartRateResult(bpm = bpm, hrv = sdnn, aFib = "Not Detected", quality = qualityStr)
+
+            val timeStamp0 = timeList[0]
+            val ppgEntity = PPGEntity(
+                userId = sharedPreferenceStorage.userId,
+                rMeans = mean1List.toList().map { String.format("%.4f", it).toFloat() },
+                gMeans = mean2List.toList().map { String.format("%.4f", it).toFloat() },
+                filteredRMeans = leveledSignal?.map { String.format("%.4f", it).toFloat() },
+                cameraTimeStamps = timeList.toList().map { it.toLong() - timeStamp0.toLong() },
+                hr = String.format("%.4f", bpm).toFloat(),
+                meanNN = String.format("%.4f", meanNN).toFloat(),
+                sdnn = String.format("%.4f", sdnn).toFloat(),
+                pnn50 = String.format("%.4f", pnn50).toFloat(),
+                ln = String.format("%.4f", ln).toFloat(),
+                quality = String.format("%.8f", quality).toFloat(),
+            )
+            loginRepository.recordPPG(ppgEntity)
+
             mean1List.clear()
             mean2List.clear()
             timeList.clear()

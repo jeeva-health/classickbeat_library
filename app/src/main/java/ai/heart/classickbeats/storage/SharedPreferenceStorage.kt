@@ -18,6 +18,7 @@ class SharedPreferenceStorage @Inject constructor(@ApplicationContext context: C
         const val USER_NAME = "user_name"
         const val USER_PHONE_NUMBER = "user_number"
         const val USER_EMAIL_ADDRESS = "user_email"
+        const val USER_ID = "user_id"
     }
 
     private val prefs: Lazy<SharedPreferences> = lazy {
@@ -54,12 +55,19 @@ class SharedPreferenceStorage @Inject constructor(@ApplicationContext context: C
         ""
     )
 
+    override var userId: Long by LongPreference(
+        prefs,
+        USER_ID,
+        1
+    )
+
     fun removeAllUserProps() {
         val editor = prefs.value.edit()
         editor.remove(SELECTED_EXAM_ID)
         editor.remove(USER_NAME)
         editor.remove(USER_PHONE_NUMBER)
         editor.remove(USER_EMAIL_ADDRESS)
+        editor.remove(USER_ID)
         editor.apply()
     }
 }

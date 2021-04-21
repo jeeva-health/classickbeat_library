@@ -31,6 +31,7 @@
             android:id="@+id/action_scanFragment_to_calculatingFragment"
             app:destination="@id/calculatingFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/calculatingFragment"
         android:name="ai.heart.classickbeats.ui.monitor.CalculatingFragment"
@@ -40,18 +41,20 @@
             android:id="@+id/action_calculatingFragment_to_heartResultFragment"
             app:destination="@id/heartResultFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/splashFragment"
         android:name="ai.heart.classickbeats.ui.login.fragment.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash">
         <action
-            android:id="@+id/action_splashFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
             android:id="@+id/action_splashFragment_to_selectionFragment"
             app:destination="@id/selectionFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_nav_login"
+            app:destination="@id/nav_login" />
     </fragment>
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="ai.heart.classickbeats.ui.login.fragment.LoginFragment"
@@ -64,6 +67,7 @@
             android:id="@+id/action_loginFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/logBpFragment"
         android:name="ai.heart.classickbeats.ui.logging.LogBpFragment"
@@ -81,14 +85,17 @@
             android:id="@+id/action_selectionFragment_to_logBpFragment"
             app:destination="@id/logBpFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/registrationFragment"
         android:name="ai.heart.classickbeats.ui.login.fragment.RegistrationFragment"
         android:label="fragment_registration"
-        tools:layout="@layout/fragment_registration" >
+        tools:layout="@layout/fragment_registration">
         <action
             android:id="@+id/action_registrationFragment_to_selectionFragment"
             app:destination="@id/selectionFragment" />
     </fragment>
+
+    <include app:graph="@navigation/nav_login" />
 
 </navigation>

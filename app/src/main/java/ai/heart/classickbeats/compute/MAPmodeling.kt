@@ -78,8 +78,84 @@ class MAPmodeling {
         return output
     }
 
+    fun activeSedantryPrediction(cAge: Double, meanNN: Double, rmssd: Double): MutableList<Double>{
+        var meanNNMeanArr = listOf<Double>()
+        var meanNNStdArr = listOf<Double>()
+        var rmssdMeanArr = listOf<Double>()
+        var rmssdStdArr = listOf<Double>()
+
+        // 1st and 2nd index correspond to sedantry and active values, respectively
+        if (cAge < 50.0){
+            // Young Population Statistics
+            meanNNMeanArr = listOf<Double>(874.0, 1034.0)
+            meanNNStdArr = listOf<Double>(123.8, 100.3)
+
+            rmssdMeanArr = listOf<Double>(34.0, 63.0)
+            rmssdStdArr = listOf<Double>(14.6, 19.9)
+        } else {
+            meanNNMeanArr = listOf<Double>(893.0, 1109.0)
+            meanNNStdArr = listOf<Double>(93.8, 186.3)
+
+            rmssdMeanArr = listOf<Double>(27.0, 48.0)
+            rmssdStdArr = listOf<Double>(9.2, 22.4)
+        }
+
+        var output = mutableListOf<Double>()
+
+        val numBins = meanNNMeanArr.size
+        var normal = NormalDistribution(0.0, 1.0)
+        for (i in 0 until numBins){
+            normal = NormalDistribution(meanNNMeanArr[i], meanNNStdArr[i])
+            val meanNNProb = normal.density(meanNN)
+
+            normal = NormalDistribution(rmssdMeanArr[i], rmssdStdArr[i])
+            val rmssdProb = normal.density(rmssd)
+
+            output.add(meanNNProb * rmssdProb)
+        }
+        output = output.map{it/output.sum()}.toMutableList()
+        Timber.i("Active-Sedantry Posterior: ${Arrays.toString(output.toDoubleArray())}")
+        return output
+    }
+
+    fun stressPrediction(meanNN: Double, sdnn: Double, rmssd: Double): MutableList<Double>{
+        val hr = (60.0*1000)/meanNN
+
+        // 1st and 2nd index correspond to low and high stress stats, respectively
+
+        val hrMeanArr = listOf<Double>(83.0, 88.0)
+        val hrStdArr = listOf<Double>(14.0, 13.0)
+
+        val sdnnMeanArr = listOf<Double>(64.0, 42.0)
+        val sdnnStdArr = listOf<Double>(25.0, 19.0)
+
+        val rmssdMeanArr = listOf<Double>(25.0, 14.0)
+        val rmssdStdArr = listOf<Double>(17.0, 9.0)
+
+        var output = mutableListOf<Double>()
+
+        val numBins = sdnnMeanArr.size
+        var normal = NormalDistribution(0.0, 1.0)
+        for (i in 0 until numBins){
+            normal = NormalDistribution(hrMeanArr[i], hrStdArr[i])
+            val hrProb = normal.density(hr)
+
+            normal = NormalDistribution(sdnnMeanArr[i], sdnnStdArr[i])
+            val sdnnProb = normal.density(sdnn)
+
+            normal = NormalDistribution(rmssdMeanArr[i], rmssdStdArr[i])
+            val rmssdProb = normal.density(rmssd)
+
+            output.add(hrProb * sdnnProb * rmssdProb)
+            Timber.i("Stress Probs: $hrProb, $sdnnProb, $rmssdProb")
+        }
+        Timber.i("Low-High Stress unnormalized Posterior: ${Arrays.toString(output.toDoubleArray())}")
+        output = output.map{it/output.sum()}.toMutableList()
+        Timber.i("Low-High Stress Posterior: ${Arrays.toString(output.toDoubleArray())}")
+        return output
+    }
+
     fun bAgePrediction(cAge: Double, gender: Int, meanNN: Double, sdnn: Double, rmssd: Double, pnn50: Double): List<Double> {
-        Timber.i("Testing")
         val priorProb = gaussianAgePrior(cAge)
         val postProb = gaussianPosterior(meanNN, sdnn, rmssd, pnn50, gender)
         var binProbsMAP = priorProb.zip(postProb){ a, b -> a * b }

@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.data
 
 import ai.heart.classickbeats.BuildConfig
+import ai.heart.classickbeats.data.model.entity.PPGEntity
 import ai.heart.classickbeats.data.model.request.LoginRequest
 import ai.heart.classickbeats.data.model.request.RefreshTokenRequest
 import ai.heart.classickbeats.data.model.request.RegisterRequest
@@ -48,6 +49,9 @@ class LoginRepository @Inject constructor(
             }
             loggedInUser?.phoneNumber?.let {
                 sharedPreferenceStorage.userNumber = it
+            }
+            loggedInUser?.id?.let {
+                sharedPreferenceStorage.userId = it
             }
             val accessToken = response.data.accessToken
             val refreshToken = response.data.refreshToken
@@ -104,4 +108,7 @@ class LoginRepository @Inject constructor(
         }
         return Result.Error(response.error)
     }
+
+    suspend fun recordPPG(ppgEntity: PPGEntity): Result<Boolean> =
+        loginRemoteDataSource.recordPPG(ppgEntity)
 }

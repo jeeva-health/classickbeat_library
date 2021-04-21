@@ -6,4 +6,5 @@ interface PreferenceStorage {
     var userName: String
     var userNumber: String
     var userEmail: String
+    var userId: Long
 }

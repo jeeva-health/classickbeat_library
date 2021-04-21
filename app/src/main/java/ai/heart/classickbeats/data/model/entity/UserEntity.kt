@@ -6,5 +6,5 @@ data class UserEntity(
     @Json(name = "phone") val phoneNumber: String,
     val name: String?,
     val email: String?,
-    val id: Int
+    val id: Long
 )
