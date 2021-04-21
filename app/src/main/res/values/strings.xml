@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">Classick Beats</string>
+    <string name="app_name">Jeeva</string>
+    <string name="app_name_small_case">jeeva</string>
+    <string name="app_tagline">Health. Longevity. Vitality</string>
+
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <!-- TODO: Remove or change this placeholder text -->

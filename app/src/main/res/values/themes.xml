@@ -2,18 +2,30 @@
     <!-- Base application theme. -->
     <style name="Base.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimary">@color/dark_violet</item>
         <item name="colorPrimaryVariant">@color/orange</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="materialButtonStyle">@style/Widget.App.Button</item>
-        <item name="switchStyle">@style/Widget.App.Switch</item>
+        <item name="materialButtonStyle">@style/Widget.Jeeva.Button</item>
+        <item name="switchStyle">@style/Widget.Jeeva.Switch</item>
+
+
+        <!-- Window decor -->
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+        <item name="android:navigationBarColor">@color/nav_bar_scrim</item>
+
+        <!-- Widget styles -->
+        <item name="toolbarStyle">@style/Widget.Jeeva.Toolbar</item>
+
+        <!-- Text appearances -->
+        <item name="textAppearanceBody2">@style/TextAppearance.Jeeva.Body2</item>
+        <item name="textAppearanceButton">@style/TextAppearance.Jeeva.Button</item>
     </style>
 
     <style name="Base.AppTheme.Login">
@@ -21,19 +33,20 @@
         <item name="colorPrimaryDark">@color/very_dark_blue</item>
         <item name="android:colorPrimaryDark">@color/very_dark_blue</item>
         <item name="android:background">@color/very_dark_blue</item>
+        <item name="android:navigationBarColor">@color/very_dark_blue</item>
     </style>
 
-    <style name="ThemeOverlay.App.Button" parent="">
+    <style name="ThemeOverlay.Jeeva.Button" parent="">
         <item name="colorPrimary">@color/bright_blue</item>
         <item name="colorOnPrimary">@color/very_pale_red</item>
     </style>
 
-    <style name="ThemeOverlay.App.ButtonSecondary" parent="">
+    <style name="ThemeOverlay.Jeeva.ButtonSecondary" parent="">
         <item name="colorPrimary">@color/white</item>
         <item name="colorOnPrimary">@color/vivid_blue</item>
     </style>
 
-    <style name="ThemeOverlay.App.Switch" parent="">
+    <style name="ThemeOverlay.Jeeva.Switch" parent="">
         <item name="colorOnSurface">@color/very_soft_orange</item>
         <item name="colorSecondary">@color/very_soft_orange</item>
     </style>

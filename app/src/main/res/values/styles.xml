@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="result_label">
         <item name="android:layout_width">0dp</item>
@@ -11,29 +11,83 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button</item>
-        <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
-        <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+    <!-- Widget styles -->
+
+    <style name="Widget.Jeeva" parent="@android:style/Widget.Material" />
+
+    <style name="Widget.Jeeva.Button" parent="Widget.MaterialComponents.Button">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Jeeva.Button</item>
+        <item name="android:textAppearance">@style/TextAppearance.Jeeva.Button</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Jeeva.SmallComponent</item>
     </style>
 
-    <style name="Widget.App.ButtonSecondary" parent="Widget.MaterialComponents.Button">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.App.ButtonSecondary</item>
-        <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
-        <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+    <style name="Widget.Jeeva.ButtonSecondary" parent="Widget.MaterialComponents.Button">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Jeeva.ButtonSecondary</item>
+        <item name="android:textAppearance">@style/TextAppearance.Jeeva.Button</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Jeeva.SmallComponent</item>
     </style>
 
-    <style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button">
+    <style name="TextAppearance.Jeeva.H1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="android:textSize">@dimen/text_size_h1</item>
+    </style>
+
+    <style name="TextAppearance.Jeeva.H2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="android:textSize">@dimen/text_size_h2</item>
+    </style>
+
+    <style name="TextAppearance.Jeeva.H3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="android:textSize">@dimen/text_size_h3</item>
+    </style>
+
+    <style name="TextAppearance.Jeeva.H4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:textSize">@dimen/text_size_h4</item>
+    </style>
+
+    <style name="TextAppearance.Jeeva.H5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textSize">@dimen/text_size_h5</item>
+    </style>
+
+    <style name="TextAppearance.Jeeva.Body1" parent="TextAppearance.MaterialComponents.Body1" />
+
+    <style name="TextAppearance.Jeeva.Body2" parent="TextAppearance.MaterialComponents.Body2" />
+
+    <style name="TextAppearance.Jeeva.Button" parent="TextAppearance.MaterialComponents.Button">
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+    <style name="TextAppearance.Jeeva.AppName" parent="TextAppearance.Jeeva.H1">
+        <item name="android:textSize" tools:ignore="SpUsage">60dp</item>
+    </style>
+
+    <style name="TextAppearance.Jeeva.AppName.Light">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextAppearance.Jeeva.TnC" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextAppearance.Jeeva.Tagline" parent="TextAppearance.Jeeva.H4">
+        <item name="android:textSize" tools:ignore="SpUsage">16dp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextAppearance.Jeeva.ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
+    </style>
+
+    <style name="Widget.Jeeva.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:paddingEnd">8dp</item>
+        <item name="titleTextAppearance">@style/TextAppearance.Jeeva.ToolbarTitle</item>
+    </style>
+
+    <style name="ShapeAppearance.Jeeva.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">10dp</item>
     </style>
 
-    <style name="Widget.App.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Switch</item>
+    <style name="Widget.Jeeva.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Jeeva.Switch</item>
     </style>
 
 </resources>

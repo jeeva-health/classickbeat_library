@@ -20,7 +20,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/big_guideline_margin" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/heading"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/sub_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toBottomOf="@id/heading" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/continue_btn"
         android:layout_width="0dp"
         android:layout_height="@dimen/button_height"

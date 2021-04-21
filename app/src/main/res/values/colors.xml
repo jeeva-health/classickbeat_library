@@ -13,6 +13,8 @@
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
 
+    <color name="transparent">#0fff</color>
+
     <color name="orange">#FF4500</color>
 
 
@@ -44,6 +46,8 @@
     <color name="dark_blue_5">#137daa</color>
     <color name="dark_blue_6">#092d86</color>
     <color name="very_dark_blue">#1C1662</color>
+
+    <color name="dark_violet">#412296</color>
 
     <color name="moderate_green">#7ac943</color>
 
@@ -80,5 +84,14 @@
     <color name="progressNegative">#f8f4f4</color>
 
     <color name="dim_background">#2F000000</color>
+
+    <!-- Scrim colors -->
+    <color name="system_ui_scrim_light">#B3FFFFFF</color> <!-- 70% white -->
+    <color name="system_ui_scrim_black">#40000000</color> <!-- 25% black -->
+
+    <!-- We use a dark scrim by default since light status is API 23+ -->
+    <color name="status_bar_scrim">@color/system_ui_scrim_black</color>
+    <!-- We use a dark scrim by default since light nav bar is API 27+ -->
+    <color name="nav_bar_scrim">@color/system_ui_scrim_black</color>
 
 </resources>
