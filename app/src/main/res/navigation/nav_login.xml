@@ -30,9 +30,27 @@
             android:id="@+id/action_signUpModeSelectionFragment_to_phoneSignUpFragment"
             app:destination="@id/phoneSignUpFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/phoneSignUpFragment"
         android:name="ai.heart.classickbeats.ui.login.fragment.PhoneSignUpFragment"
         android:label="fragment_phone_sign_up"
-        tools:layout="@layout/fragment_phone_sign_up" />
+        tools:layout="@layout/fragment_phone_sign_up">
+        <action
+            android:id="@+id/action_phoneSignUpFragment_to_personalDetailsFragment"
+            app:destination="@id/personalDetailsFragment" />
+        <action
+            android:id="@+id/action_phoneSignUpFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/personalDetailsFragment"
+        android:name="ai.heart.classickbeats.ui.login.fragment.PersonalDetailsFragment"
+        android:label="fragment_personal_details"
+        tools:layout="@layout/fragment_personal_details">
+        <action
+            android:id="@+id/action_personalDetailsFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
 </navigation>

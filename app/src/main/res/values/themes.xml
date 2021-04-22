@@ -9,10 +9,6 @@
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Customize your theme here. -->
-        <item name="materialButtonStyle">@style/Widget.Jeeva.Button</item>
-        <item name="switchStyle">@style/Widget.Jeeva.Switch</item>
-
 
         <!-- Window decor -->
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
@@ -22,6 +18,9 @@
 
         <!-- Widget styles -->
         <item name="toolbarStyle">@style/Widget.Jeeva.Toolbar</item>
+        <item name="textInputStyle">@style/Widget.Jeeva.TextInputLayout</item>
+        <item name="materialButtonStyle">@style/Widget.Jeeva.Button</item>
+        <item name="switchStyle">@style/Widget.Jeeva.Switch</item>
 
         <!-- Text appearances -->
         <item name="textAppearanceBody2">@style/TextAppearance.Jeeva.Body2</item>
@@ -36,6 +35,7 @@
         <item name="android:navigationBarColor">@color/very_dark_blue</item>
     </style>
 
+    <!--  Button-->
     <style name="ThemeOverlay.Jeeva.Button" parent="">
         <item name="colorPrimary">@color/bright_blue</item>
         <item name="colorOnPrimary">@color/very_pale_red</item>
@@ -46,9 +46,17 @@
         <item name="colorOnPrimary">@color/vivid_blue</item>
     </style>
 
+    <!--  Material Switch-->
     <style name="ThemeOverlay.Jeeva.Switch" parent="">
         <item name="colorOnSurface">@color/very_soft_orange</item>
         <item name="colorSecondary">@color/very_soft_orange</item>
+    </style>
+
+    <style name="ThemeOverlay.Jeeva.TextInputLayout" parent="">
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.Jeeva.Subtitle1</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.Jeeva.Caption</item>
+        <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox
+        </item>
     </style>
 
 </resources>

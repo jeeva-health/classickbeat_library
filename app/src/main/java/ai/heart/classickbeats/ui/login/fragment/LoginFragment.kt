@@ -9,7 +9,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
@@ -122,43 +121,34 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 //        )
     }
 
-    private fun navigateToSelectionFragment() {
-        val action = LoginFragmentDirections.actionLoginFragmentToSelectionFragment()
-        navController.navigate(action)
-    }
-
-    private fun navigateToRegisterFragment() {
-        val action = LoginFragmentDirections.actionLoginFragmentToRegistrationFragment()
-        navController.navigate(action)
-    }
-
     private fun observeAuthenticationState() {
 
         logInViewModel.apply {
 
-            firebaseAuthenticationState.observe(
-                viewLifecycleOwner,
-                EventObserver { authState ->
-                    when (authState) {
-                        LoginViewModel.AuthenticationState.INVALID_AUTHENTICATION -> {
-                            Toast.makeText(activity, "Login Failed", Toast.LENGTH_LONG).show()
-                        }
-                        LoginViewModel.AuthenticationState.AUTHENTICATED -> {
-                            Toast.makeText(activity, "Login Successfully", Toast.LENGTH_LONG).show()
-                            loginUser()
-                        }
-                    }
-                })
+//            firebaseAuthenticationState.observe(
+//                viewLifecycleOwner,
+//                EventObserver { authState ->
+//                    when (authState) {
+//                        LoginViewModel.AuthenticationState.INVALID_AUTHENTICATION -> {
+//                            Toast.makeText(activity, "Login Failed", Toast.LENGTH_LONG).show()
+//                        }
+//                        LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+//                            Toast.makeText(activity, "Login Successfully", Toast.LENGTH_LONG).show()
+//                            val firebaseToken = currentFirebaseUser?.getIdToken(false)?.result?.token
+//                            loginUser(firebaseToken)
+//                        }
+//                    }
+//                })
 
-            loginState.observe(viewLifecycleOwner, EventObserver { isUserLoggedIn ->
-                if (isUserLoggedIn) {
-                    if (isUserRegistered) {
-                        navigateToSelectionFragment()
-                    } else {
-                        navigateToRegisterFragment()
-                    }
-                }
-            })
+//            loginState.observe(viewLifecycleOwner, EventObserver { isUserLoggedIn ->
+//                if (isUserLoggedIn) {
+//                    if (isUserRegistered) {
+//                        navigateToSelectionFragment()
+//                    } else {
+//                        navigateToRegisterFragment()
+//                    }
+//                }
+//            })
 
             showLoading.observe(
                 viewLifecycleOwner, { showLoading ->

@@ -2,13 +2,13 @@ package ai.heart.classickbeats.ui.login.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentPhoneSignUpBinding
-import ai.heart.classickbeats.utils.StringUtils
-import ai.heart.classickbeats.utils.setSafeOnClickListener
-import ai.heart.classickbeats.utils.showShortToast
-import ai.heart.classickbeats.utils.viewBinding
+import ai.heart.classickbeats.ui.login.LoginViewModel
+import ai.heart.classickbeats.utils.*
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
@@ -21,6 +21,8 @@ import java.util.concurrent.TimeUnit
 class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
 
     private val binding by viewBinding(FragmentPhoneSignUpBinding::bind)
+
+    private val logInViewModel by activityViewModels<LoginViewModel>()
 
     private lateinit var auth: FirebaseAuth
     private var storedVerificationId: String? = ""
@@ -40,7 +42,7 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
 
             override fun onVerificationFailed(e: FirebaseException) {
                 Timber.w("onVerificationFailed: $e")
-
+                showShortToast("Error occurred!!!")
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     // Invalid request
                 } else if (e is FirebaseTooManyRequestsException) {
@@ -81,6 +83,18 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
             val otp = binding.otpLayout.editText?.text?.toString()!!
             verifyPhoneNumberWithCode(storedVerificationId, otp)
         }
+
+        logInViewModel.apply {
+            loginState.observe(viewLifecycleOwner, EventObserver { isUserLoggedIn ->
+                if (isUserLoggedIn) {
+                    if (isUserRegistered) {
+                        navigateToHomeFragment()
+                    } else {
+                        navigateToRegisterFragment()
+                    }
+                }
+            })
+        }
     }
 
     private fun startPhoneNumberVerification(phoneNumber: String) {
@@ -119,14 +133,27 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
                 if (task.isSuccessful) {
                     Timber.d("signInWithCredential:success")
                     val user = task.result?.user
+                    val firebaseToken = user?.getIdToken(false)?.result?.token
+                    logInViewModel.loginUser(firebaseToken!!)
                 } else {
-                    // Sign in failed, display a message and update the UI
                     Timber.w("signInWithCredential:failure ${task.exception}")
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        // The verification code entered was invalid
+                        showLongToast("Incorrect OTP")
+                    } else {
+                        showLongToast("Error occurred!!!")
                     }
-                    // Update UI
                 }
             }
+    }
+
+    private fun navigateToRegisterFragment() {
+        val action =
+            PhoneSignUpFragmentDirections.actionPhoneSignUpFragmentToPersonalDetailsFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToHomeFragment() {
+        val action = PhoneSignUpFragmentDirections.actionPhoneSignUpFragmentToNavHome()
+        findNavController().navigate(action)
     }
 }

@@ -10,7 +10,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -68,18 +67,12 @@ class LoginViewModel @Inject constructor(
         sessionManager.saveRefreshTokenStatus(true)
     }
 
-    fun loginUser() {
+    fun loginUser(firebaseToken: String) {
         showLoading.postValue(true)
         viewModelScope.launch {
-            val firebaseToken = currentFirebaseUser?.getIdToken(false)?.result?.token
-            Timber.i("FirebaseToken: $firebaseToken")
-            if (firebaseToken == null) {
-                // TODO:: handle this case
-            } else {
-                val (loginResponse, isUserRegistered) = loginRepository.loginUser(firebaseToken)
-                this@LoginViewModel.isUserRegistered = isUserRegistered
-                loginState.postValue(Event(loginResponse))
-            }
+            val (loginResponse, isUserRegistered) = loginRepository.loginUser(firebaseToken)
+            this@LoginViewModel.isUserRegistered = isUserRegistered
+            loginState.postValue(Event(loginResponse))
             showLoading.postValue(false)
         }
     }

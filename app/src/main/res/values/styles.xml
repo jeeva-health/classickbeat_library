@@ -29,6 +29,7 @@
 
     <style name="TextAppearance.Jeeva.H1" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="android:textSize">@dimen/text_size_h1</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextAppearance.Jeeva.H2" parent="TextAppearance.MaterialComponents.Headline2">
@@ -50,6 +51,10 @@
     <style name="TextAppearance.Jeeva.Body1" parent="TextAppearance.MaterialComponents.Body1" />
 
     <style name="TextAppearance.Jeeva.Body2" parent="TextAppearance.MaterialComponents.Body2" />
+
+    <style name="TextAppearance.Jeeva.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1" />
+
+    <style name="TextAppearance.Jeeva.Caption" parent="TextAppearance.MaterialComponents.Caption" />
 
     <style name="TextAppearance.Jeeva.Button" parent="TextAppearance.MaterialComponents.Button">
         <item name="android:textSize">14sp</item>
@@ -88,6 +93,11 @@
 
     <style name="Widget.Jeeva.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
         <item name="materialThemeOverlay">@style/ThemeOverlay.Jeeva.Switch</item>
+    </style>
+
+    <style name="Widget.Jeeva.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Jeeva.TextInputLayout</item>
+        <item name="hintTextColor">?attr/colorOnSurface</item>
     </style>
 
 </resources>
