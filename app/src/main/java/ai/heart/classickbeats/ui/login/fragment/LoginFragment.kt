@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.firebase.ui.auth.AuthUI
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -105,22 +104,22 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun launchSignInFlow() {
-        // Give users the option to sign in / register with their email
-        // If users choose to register with their email,
-        // they will need to create a password as well
-        val providers = arrayListOf(
-            AuthUI.IdpConfig.PhoneBuilder().setDefaultCountryIso("IN")
-                .setWhitelistedCountries(listOf("IN", "US")).build()
-        )
-
-        // Create and launch sign-in intent.
-        // We listen to the response of this activity with the
-        // SIGN_IN_RESULT_CODE code
-        startActivityForResult(
-            AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(
-                providers
-            ).build(), RC_SIGN_IN
-        )
+//        // Give users the option to sign in / register with their email
+//        // If users choose to register with their email,
+//        // they will need to create a password as well
+//        val providers = arrayListOf(
+//            AuthUI.IdpConfig.PhoneBuilder().setDefaultCountryIso("IN")
+//                .setWhitelistedCountries(listOf("IN", "US")).build()
+//        )
+//
+//        // Create and launch sign-in intent.
+//        // We listen to the response of this activity with the
+//        // SIGN_IN_RESULT_CODE code
+//        startActivityForResult(
+//            AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(
+//                providers
+//            ).build(), RC_SIGN_IN
+//        )
     }
 
     private fun navigateToSelectionFragment() {

@@ -90,7 +90,6 @@
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toBottomOf="@id/number_layout"
-        app:prefixText="+91"
         tools:visibility="visible">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -105,6 +104,19 @@
         android:layout_height="@dimen/button_height"
         android:layout_marginBottom="40dp"
         android:text="Send OTP"
+        app:layout_constraintBottom_toTopOf="@id/tnc"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/otp_layout"
+        app:layout_constraintVertical_bias="1" />
+
+    <Button
+        android:id="@+id/verify_otp_btn"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginBottom="40dp"
+        android:text="Verify OTP"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/tnc"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
