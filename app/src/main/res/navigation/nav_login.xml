@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_loginModeSelectionFragment_to_phoneSignUpFragment"
             app:destination="@id/phoneSignUpFragment" />
+        <action
+            android:id="@+id/action_loginModeSelectionFragment_to_googleSignUpFragment"
+            app:destination="@id/googleSignUpFragment" />
     </fragment>
 
     <fragment
@@ -29,6 +32,9 @@
         <action
             android:id="@+id/action_signUpModeSelectionFragment_to_phoneSignUpFragment"
             app:destination="@id/phoneSignUpFragment" />
+        <action
+            android:id="@+id/action_signUpModeSelectionFragment_to_googleSignUpFragment"
+            app:destination="@id/googleSignUpFragment" />
     </fragment>
 
     <fragment
@@ -51,6 +57,19 @@
         tools:layout="@layout/fragment_personal_details">
         <action
             android:id="@+id/action_personalDetailsFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/googleSignUpFragment"
+        android:name="ai.heart.classickbeats.ui.login.fragment.GoogleSignUpFragment"
+        android:label="fragment_google_sign_up"
+        tools:layout="@layout/fragment_google_sign_up">
+        <action
+            android:id="@+id/action_googleSignUpFragment_to_personalDetailsFragment"
+            app:destination="@id/personalDetailsFragment" />
+        <action
+            android:id="@+id/action_googleSignUpFragment_to_nav_home"
             app:destination="@id/nav_home" />
     </fragment>
 </navigation>

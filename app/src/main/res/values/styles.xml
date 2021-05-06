@@ -21,11 +21,7 @@
         <item name="shapeAppearance">@style/ShapeAppearance.Jeeva.SmallComponent</item>
     </style>
 
-    <style name="Widget.Jeeva.ButtonSecondary" parent="Widget.MaterialComponents.Button">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.Jeeva.ButtonSecondary</item>
-        <item name="android:textAppearance">@style/TextAppearance.Jeeva.Button</item>
-        <item name="shapeAppearance">@style/ShapeAppearance.Jeeva.SmallComponent</item>
-    </style>
+    <style name="Widget.Jeeva.TextButton" parent="Widget.MaterialComponents.Button.TextButton" />
 
     <style name="TextAppearance.Jeeva.H1" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="android:textSize">@dimen/text_size_h1</item>
