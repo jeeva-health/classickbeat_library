@@ -17,7 +17,6 @@
 
     <color name="orange">#FF4500</color>
 
-
     <color name="yellow">#ffff00</color>
 
     <color name="bright_orange">#f8a142</color>
@@ -28,8 +27,10 @@
     <color name="light_grayish_red_4">#f1efef</color>
     <color name="grayish_red_2">#c7c5c5</color>
     <color name="dark_grayish_red">#918d8d</color>
+    <color name="very_soft_red">#ccf9b49f</color>
     <color name="soft_red">#f98a7a</color>
     <color name="bright_red">#ed4545</color>
+    <color name="bright_red_2">#f46a41</color>
 
     <color name="light_grayish_orange">#F2E7DE</color>
     <color name="very_soft_orange">#FEB395</color>

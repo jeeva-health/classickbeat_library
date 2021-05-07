@@ -12,7 +12,7 @@ buildscript {
         lifecycle_version = '2.3.1'
         recyclerViewVersion = "1.1.0"
         work_version = "2.4.0"
-        hilt_version = '2.33-beta'
+        hilt_version = '2.35'
         hilt_jetpack_version = '1.0.0'
         nav_version = "2.3.1"
         camerax_version = '1.1.0-alpha04'
@@ -36,7 +36,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven { url 'https://jitpack.io' }
     }
 }

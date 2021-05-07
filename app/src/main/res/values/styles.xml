@@ -77,6 +77,10 @@
         <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
     </style>
 
+    <style name="TextAppearance.Jeeva.OnBoardingMessage" parent="TextAppearance.Jeeva.H1">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="Widget.Jeeva.Toolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:paddingEnd">8dp</item>
         <item name="titleTextAppearance">@style/TextAppearance.Jeeva.ToolbarTitle</item>

@@ -111,10 +111,9 @@ dependencies {
 
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_jetpack_version"
-    implementation "androidx.hilt:hilt-work:1.0.0"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-    kapt "androidx.hilt:hilt-compiler:$hilt_jetpack_version"
+    implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
 
     // Circle ImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'

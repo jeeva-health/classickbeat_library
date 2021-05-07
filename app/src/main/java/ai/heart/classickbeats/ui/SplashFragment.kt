@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.login.fragment
+package ai.heart.classickbeats.ui
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.ui.login.LoginViewModel

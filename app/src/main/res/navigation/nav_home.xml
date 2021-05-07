@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_home"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/onBoardingFragment">
 
     <fragment
         android:id="@+id/heartResultFragment"
@@ -44,7 +44,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="ai.heart.classickbeats.ui.login.fragment.SplashFragment"
+        android:name="ai.heart.classickbeats.ui.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash">
         <action
@@ -53,6 +53,9 @@
         <action
             android:id="@+id/action_splashFragment_to_nav_login"
             app:destination="@id/nav_login" />
+        <action
+            android:id="@+id/action_splashFragment_to_onBoardingFragment"
+            app:destination="@id/onBoardingFragment" />
     </fragment>
 
     <fragment
@@ -74,5 +77,10 @@
     </fragment>
 
     <include app:graph="@navigation/nav_login" />
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="ai.heart.classickbeats.ui.onboarding.OnBoardingFragment"
+        android:label="fragment_onboarding"
+        tools:layout="@layout/fragment_onboarding" />
 
 </navigation>
