@@ -3,19 +3,24 @@ package ai.heart.classickbeats.ui.onboarding
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentOnboardingBinding
 import ai.heart.classickbeats.model.OnBoardingModel
-import ai.heart.classickbeats.utils.viewBinding
+import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.utils.setSafeOnClickListener
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.*
 
 class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
 
-    private val binding by viewBinding(FragmentOnboardingBinding::bind)
+    private var binding: FragmentOnboardingBinding? = null
 
     private val sliderData = mutableListOf<OnBoardingModel>()
+
+    private val onBoardingViewModel: OnBoardingViewModel by activityViewModels()
 
     private var shouldAutoScroll = true
 
@@ -53,7 +58,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
             OnBoardingModel(
                 R.drawable.ic_three_bars,
                 R.drawable.ic_gradient_rect_pink,
-                "Get a detailed anaylsis of your stress levels"
+                "Get a detailed analysis of your stress levels"
             )
         )
         sliderData.add(
@@ -68,18 +73,35 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.apply {
+        binding = FragmentOnboardingBinding.bind(view)
+
+        requireActivity().window.statusBarColor =
+            ContextCompat.getColor(requireActivity(), R.color.very_dark_blue)
+
+        binding?.apply {
             illustrationVp.adapter = SlidingPagerAdapter(requireContext(), sliderData)
             illustrationVp.registerOnPageChangeCallback(onPageChangeCallback)
 
             TabLayoutMediator(sliderIndicator, illustrationVp) { _, _ ->
             }.attach()
+
+            nextBtn.setSafeOnClickListener {
+                onBoardingViewModel.getStartedClick()
+            }
         }
+
+        onBoardingViewModel.navigateToSignUpFragment.observe(viewLifecycleOwner, EventObserver {
+
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         timer = Timer()
         timer.schedule(object : TimerTask() {
             override fun run() {
-                binding.illustrationVp.apply {
+                binding?.illustrationVp?.apply {
                     if (!shouldAutoScroll) {
                         shouldAutoScroll = true
                         return
@@ -93,4 +115,19 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
         }, 3000L, 3000L)
     }
 
+    private fun navigateToSignUpFragment() {
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        timer.cancel()
+    }
+
+    override fun onDestroyView() {
+        timer.cancel()
+        binding?.illustrationVp?.unregisterOnPageChangeCallback(onPageChangeCallback)
+        binding = null
+        super.onDestroyView()
+    }
 }

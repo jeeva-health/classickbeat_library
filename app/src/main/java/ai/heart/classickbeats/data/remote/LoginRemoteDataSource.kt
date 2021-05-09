@@ -9,10 +9,10 @@ import ai.heart.classickbeats.data.model.request.RegisterRequest
 import ai.heart.classickbeats.data.model.response.LoginResponse
 import ai.heart.classickbeats.data.model.response.RegisterResponse
 import ai.heart.classickbeats.network.SessionManager
-import ai.heart.classickbeats.utils.Result
-import ai.heart.classickbeats.utils.data
-import ai.heart.classickbeats.utils.error
-import ai.heart.classickbeats.utils.succeeded
+import ai.heart.classickbeats.shared.result.Result
+import ai.heart.classickbeats.shared.result.data
+import ai.heart.classickbeats.shared.result.error
+import ai.heart.classickbeats.shared.result.succeeded
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

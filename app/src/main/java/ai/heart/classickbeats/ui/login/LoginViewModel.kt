@@ -2,8 +2,8 @@ package ai.heart.classickbeats.ui.login
 
 import ai.heart.classickbeats.data.LoginRepository
 import ai.heart.classickbeats.network.SessionManager
-import ai.heart.classickbeats.storage.SharedPreferenceStorage
-import ai.heart.classickbeats.utils.Event
+import ai.heart.classickbeats.shared.data.prefs.PreferenceStorage
+import ai.heart.classickbeats.shared.result.Event
 import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
     private val sessionManager: SessionManager,
-    private val sharedPreferenceStorage: SharedPreferenceStorage,
+    private val preferenceStorage: PreferenceStorage,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -56,7 +56,7 @@ class LoginViewModel @Inject constructor(
     fun logoutUser() {
         Firebase.auth.signOut()
         sessionManager.removeAuthToken()
-        sharedPreferenceStorage.removeAllUserProps()
+        preferenceStorage.removeAllUserProps()
     }
 
     fun isUserLoggedIn(): Boolean {

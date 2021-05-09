@@ -4,6 +4,7 @@
     <bytecodeTargetLevel target="1.7">
       <module name="Classick_Beats.app" target="11" />
       <module name="Classick_Beats.media" target="11" />
+      <module name="Classick_Beats.shared" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

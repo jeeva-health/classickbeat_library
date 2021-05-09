@@ -3,8 +3,6 @@ package ai.heart.classickbeats.data.model.entity
 import com.squareup.moshi.Json
 
 data class PPGEntity(
-    @Json(name = "user")
-    val userId: Long,
     @Json(name = "r_means")
     val rMeans: List<Float>? = null,
     @Json(name = "g_means")

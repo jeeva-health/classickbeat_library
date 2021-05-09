@@ -3,7 +3,6 @@ package ai.heart.classickbeats
 import ai.heart.classickbeats.databinding.ActivityMainBinding
 import ai.heart.classickbeats.model.Constants
 import ai.heart.classickbeats.network.SessionManager
-import ai.heart.classickbeats.storage.SharedPreferenceStorage
 import ai.heart.classickbeats.ui.login.LoginViewModel
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -28,9 +27,6 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
-
-    @Inject
-    lateinit var sharedPreferenceStorage: SharedPreferenceStorage
 
     @Inject
     lateinit var sessionManager: SessionManager

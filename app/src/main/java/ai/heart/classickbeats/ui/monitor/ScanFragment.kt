@@ -7,7 +7,7 @@ import ai.heart.classickbeats.domain.CameraReading
 import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.graph.RunningGraph
 import ai.heart.classickbeats.ui.widgets.CircleProgressBar
-import ai.heart.classickbeats.utils.EventObserver
+import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.utils.postOnMainLooper
 import ai.heart.classickbeats.utils.showLongToast
 import ai.heart.classickbeats.utils.viewBinding

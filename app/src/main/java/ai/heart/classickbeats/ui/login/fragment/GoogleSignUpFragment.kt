@@ -3,7 +3,7 @@ package ai.heart.classickbeats.ui.login.fragment
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.ui.login.FirebaseGoogleSignIn
 import ai.heart.classickbeats.ui.login.LoginViewModel
-import ai.heart.classickbeats.utils.EventObserver
+import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.utils.showLongToast
 import android.os.Bundle
 import android.view.View

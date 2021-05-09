@@ -2,6 +2,7 @@ package ai.heart.classickbeats.ui.login.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentPersonalDetailsBinding
+import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.login.LoginViewModel
 import ai.heart.classickbeats.utils.*
 import android.os.Bundle

@@ -81,6 +81,10 @@
         android:id="@+id/onBoardingFragment"
         android:name="ai.heart.classickbeats.ui.onboarding.OnBoardingFragment"
         android:label="fragment_onboarding"
-        tools:layout="@layout/fragment_onboarding" />
+        tools:layout="@layout/fragment_onboarding" >
+        <action
+            android:id="@+id/action_onBoardingFragment_to_nav_login"
+            app:destination="@id/nav_login" />
+    </fragment>
 
 </navigation>

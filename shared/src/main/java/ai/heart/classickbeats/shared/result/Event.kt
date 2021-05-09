@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.utils
+package ai.heart.classickbeats.shared.result
 
 import androidx.lifecycle.Observer
 

@@ -2,7 +2,7 @@ package ai.heart.classickbeats.data
 
 import ai.heart.classickbeats.domain.model.ErrorJsonAdapter
 import ai.heart.classickbeats.network.SessionManager
-import ai.heart.classickbeats.utils.Result
+import ai.heart.classickbeats.shared.result.Result
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Response

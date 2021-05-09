@@ -31,7 +31,9 @@
         <item name="android:statusBarColor">@color/very_dark_blue</item>
         <item name="colorPrimaryDark">@color/very_dark_blue</item>
         <item name="android:colorPrimaryDark">@color/very_dark_blue</item>
-        <item name="android:background">@color/very_dark_blue</item>
+        <item name="backgroundColor">@color/very_dark_blue</item>
+        <item name="android:colorBackground">@color/very_dark_blue</item>
+        <item name="android:windowBackground">@color/very_dark_blue</item>
         <item name="android:navigationBarColor">@color/very_dark_blue</item>
     </style>
 

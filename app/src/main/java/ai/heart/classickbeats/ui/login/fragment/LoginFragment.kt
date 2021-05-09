@@ -2,7 +2,6 @@ package ai.heart.classickbeats.ui.login.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentLoginBinding
-import ai.heart.classickbeats.storage.SharedPreferenceStorage
 import ai.heart.classickbeats.ui.login.LoginViewModel
 import ai.heart.classickbeats.utils.*
 import android.Manifest
@@ -18,9 +17,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-
-const val RC_SIGN_IN = 1005
 
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -28,9 +24,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private val binding by viewBinding(FragmentLoginBinding::bind)
 
     private val logInViewModel by activityViewModels<LoginViewModel>()
-
-    @Inject
-    lateinit var sharedPreferenceStorage: SharedPreferenceStorage
 
     private lateinit var loginButton: AppCompatButton
 

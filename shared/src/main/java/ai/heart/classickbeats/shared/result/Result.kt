@@ -1,5 +1,6 @@
-package ai.heart.classickbeats.utils
+package ai.heart.classickbeats.shared.result
 
+import ai.heart.classickbeats.shared.result.Result.Success
 import androidx.lifecycle.MutableLiveData
 
 /**

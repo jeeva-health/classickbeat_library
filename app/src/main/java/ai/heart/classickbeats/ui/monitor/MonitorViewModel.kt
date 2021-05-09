@@ -6,8 +6,7 @@ import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.data.LoginRepository
 import ai.heart.classickbeats.data.model.entity.PPGEntity
 import ai.heart.classickbeats.domain.TestType
-import ai.heart.classickbeats.storage.SharedPreferenceStorage
-import ai.heart.classickbeats.utils.Event
+import ai.heart.classickbeats.shared.result.Event
 import android.os.CountDownTimer
 import android.text.format.DateUtils
 import androidx.lifecycle.MutableLiveData
@@ -25,7 +24,6 @@ const val SCAN_DURATION = 33
 
 @HiltViewModel
 class MonitorViewModel @Inject constructor(
-    private val sharedPreferenceStorage: SharedPreferenceStorage,
     private val loginRepository: LoginRepository
 ) :
     ViewModel() {
@@ -166,7 +164,6 @@ class MonitorViewModel @Inject constructor(
 
             val timeStamp0 = timeList[0]
             val ppgEntity = PPGEntity(
-                userId = sharedPreferenceStorage.userId,
                 rMeans = mean1List.toList().map { String.format("%.4f", it).toFloat() },
                 gMeans = mean2List.toList().map { String.format("%.4f", it).toFloat() },
                 filteredRMeans = leveledSignal?.map { String.format("%.4f", it).toFloat() },

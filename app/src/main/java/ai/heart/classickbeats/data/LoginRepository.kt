@@ -10,9 +10,9 @@ import ai.heart.classickbeats.domain.model.User
 import ai.heart.classickbeats.mapper.UserDataMapper
 import ai.heart.classickbeats.network.LoginRepositoryHolder
 import ai.heart.classickbeats.network.SessionManager
-import ai.heart.classickbeats.storage.SharedPreferenceStorage
-import ai.heart.classickbeats.utils.Result
-import ai.heart.classickbeats.utils.error
+import ai.heart.classickbeats.shared.data.prefs.PreferenceStorage
+import ai.heart.classickbeats.shared.result.Result
+import ai.heart.classickbeats.shared.result.error
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import timber.log.Timber
 import javax.inject.Inject
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class LoginRepository @Inject constructor(
     private val loginRemoteDataSource: LoginRemoteDataSource,
     private val sessionManager: SessionManager,
-    private val sharedPreferenceStorage: SharedPreferenceStorage,
+    private val preferenceStorage: PreferenceStorage,
     private val userDataMapper: UserDataMapper,
     loginRepositoryHolder: LoginRepositoryHolder
 ) {
@@ -45,13 +45,10 @@ class LoginRepository @Inject constructor(
             loggedInUser = userDataMapper.map(response.data.user!!)
             val isUserRegistered = response.data.isRegistered ?: false
             loggedInUser?.name?.let {
-                sharedPreferenceStorage.userName = it
+                preferenceStorage.userName = it
             }
             loggedInUser?.phoneNumber?.let {
-                sharedPreferenceStorage.userNumber = it
-            }
-            loggedInUser?.id?.let {
-                sharedPreferenceStorage.userId = it
+                preferenceStorage.userNumber = it
             }
             val accessToken = response.data.accessToken
             val refreshToken = response.data.refreshToken

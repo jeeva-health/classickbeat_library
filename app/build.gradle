@@ -95,13 +95,12 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation project(path: ':media')
     implementation project(path: ':model')
+    implementation project(path: ':shared')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation "androidx.recyclerview:recyclerview:1.2.0"
-
-    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     // lifecycle -- (used for ViewBinding delegate)
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
@@ -161,8 +160,6 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
     implementation "com.squareup.okhttp3:okhttp:$version_okhttp"
     implementation "com.squareup.okhttp3:logging-interceptor:$version_okhttp"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
     implementation 'org.conscrypt:conscrypt-android:2.5.1'
 }

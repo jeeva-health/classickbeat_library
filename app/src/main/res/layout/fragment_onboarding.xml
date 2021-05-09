@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/very_dark_blue"
+    android:theme="@style/Base.AppTheme.Login"
     tools:context=".ui.onboarding.OnBoardingFragment">
 
     <androidx.constraintlayout.widget.Guideline
@@ -27,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:text="Skip"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,6 +37,7 @@
         android:id="@+id/illustration_vp"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="36dp"
         app:layout_constraintBottom_toTopOf="@id/slider_indicator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,11 +48,11 @@
         android:id="@+id/slider_indicator"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="64dp"
+        android:background="@color/transparent"
         app:layout_constraintBottom_toTopOf="@id/next_btn"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
-        app:layout_constraintTop_toBottomOf="@id/illustration_vp"
         app:tabBackground="@drawable/bg_unselected_dot"
         app:tabGravity="center"
         app:tabIndicator="@drawable/bg_tab_indicator"
@@ -63,7 +67,6 @@
         android:layout_height="@dimen/button_height"
         android:layout_marginBottom="46dp"
         android:text="Next"
-        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline" />
