@@ -35,8 +35,6 @@ class LoginViewModel @Inject constructor(
 
     val showLoading = MutableLiveData<Boolean>(false)
 
-    val refreshTokenStatusLiveData = RefreshTokenStatusLiveData(sessionManager.sharedPreferences)
-
     val firebaseAuthenticationState: LiveData<Event<AuthenticationState>> =
         Transformations.map(FirebaseUserLiveData()) { user ->
             currentFirebaseUser = user
@@ -54,9 +52,11 @@ class LoginViewModel @Inject constructor(
     var apiError: String? = null
 
     fun logoutUser() {
-        Firebase.auth.signOut()
-        sessionManager.removeAuthToken()
-        preferenceStorage.removeAllUserProps()
+        viewModelScope.launch {
+            Firebase.auth.signOut()
+            sessionManager.removeAuthToken()
+            preferenceStorage.removeAllUserProps()
+        }
     }
 
     fun isUserLoggedIn(): Boolean {

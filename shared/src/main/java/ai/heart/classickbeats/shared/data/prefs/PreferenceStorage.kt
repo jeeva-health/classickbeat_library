@@ -16,6 +16,12 @@ interface PreferenceStorage {
     var userName: String
     var userNumber: String
     var userEmail: String
+    var accessToken: String
+    var refreshToken: String
+    var refreshTokenExpired: Boolean
+    var observableRefreshTokenExpired: LiveData<Boolean>
+    var networkConnected: Boolean
+    var observableNetworkConnected: LiveData<Boolean>
 
     fun removeAllUserProps()
 }

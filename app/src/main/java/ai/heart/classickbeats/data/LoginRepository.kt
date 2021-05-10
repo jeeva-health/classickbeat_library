@@ -50,14 +50,9 @@ class LoginRepository @Inject constructor(
             loggedInUser?.phoneNumber?.let {
                 preferenceStorage.userNumber = it
             }
-            val accessToken = response.data.accessToken
-            val refreshToken = response.data.refreshToken
-            if (accessToken != null) {
-                sessionManager.saveAccessToken(accessToken)
-            }
-            if (refreshToken != null) {
-                sessionManager.saveRefreshToken(refreshToken)
-            }
+            val accessToken = response.data.accessToken ?: ""
+            val refreshToken = response.data.refreshToken ?: ""
+            sessionManager.saveAuthToken(accessToken, refreshToken)
             return Pair(true, isUserRegistered)
         }
         loginError = (response as Result.Error).exception!!
@@ -73,14 +68,9 @@ class LoginRepository @Inject constructor(
         )
         when (val response = loginRemoteDataSource.refreshToken(refreshTokenRequest)) {
             is Result.Success -> {
-                val updatedAccessToken = response.data.accessToken
-                val updatedRefreshToken = response.data.refreshToken
-                if (updatedAccessToken != null) {
-                    sessionManager.saveAccessToken(updatedAccessToken)
-                }
-                if (updatedRefreshToken != null) {
-                    sessionManager.saveRefreshToken(updatedRefreshToken)
-                }
+                val updatedAccessToken = response.data.accessToken ?: ""
+                val updatedRefreshToken = response.data.refreshToken ?: ""
+                sessionManager.saveAuthToken(updatedAccessToken, updatedRefreshToken)
                 return true
             }
             is Result.Error -> Timber.e(response.exception)

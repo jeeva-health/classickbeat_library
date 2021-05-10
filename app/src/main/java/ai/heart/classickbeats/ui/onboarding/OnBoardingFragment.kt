@@ -10,6 +10,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.*
@@ -85,13 +86,17 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
             TabLayoutMediator(sliderIndicator, illustrationVp) { _, _ ->
             }.attach()
 
+            skip.setSafeOnClickListener {
+                onBoardingViewModel.getStartedClick()
+            }
+
             nextBtn.setSafeOnClickListener {
                 onBoardingViewModel.getStartedClick()
             }
         }
 
         onBoardingViewModel.navigateToSignUpFragment.observe(viewLifecycleOwner, EventObserver {
-
+            navigateToSignUpFragment()
         })
     }
 
@@ -116,7 +121,8 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
     }
 
     private fun navigateToSignUpFragment() {
-
+        val action = OnBoardingFragmentDirections.actionOnBoardingFragmentToNavLogin()
+        findNavController().navigate(action)
     }
 
     override fun onPause() {

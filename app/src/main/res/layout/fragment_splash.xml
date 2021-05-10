@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/very_dark_blue"
     android:theme="@style/Base.AppTheme.Login"
-    tools:context=".ui.SplashFragment">
+    tools:context=".ui.splash.SplashFragment">
 
     <TextView
         android:id="@+id/app_name"

@@ -1,59 +1,62 @@
 package ai.heart.classickbeats.network
 
-import android.content.SharedPreferences
+import ai.heart.classickbeats.model.AuthToken
+import ai.heart.classickbeats.shared.domain.prefs.AuthTokenActionUseCase
+import ai.heart.classickbeats.shared.domain.prefs.AuthTokenUseCase
+import ai.heart.classickbeats.shared.result.data
 import dagger.hilt.android.scopes.ActivityRetainedScoped
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @ActivityRetainedScoped
-class SessionManager @Inject constructor(val sharedPreferences: SharedPreferences) {
+class SessionManager @Inject constructor(
+    val authTokenActionUseCase: AuthTokenActionUseCase,
+    val authTokenUseCase: AuthTokenUseCase
+) {
 
-    companion object {
-        const val ACCESS_TOKEN = "accessToken"
-        const val REFRESH_TOKEN = "refreshToken"
-        const val REFRESH_TOKEN_EXPIRED = "refreshTokenExpired"
-        const val NETWORK_CONNECTED = "networkConnected"
-    }
-
-    fun saveAccessToken(token: String) {
-        val editor = sharedPreferences.edit()
-        editor.putString(ACCESS_TOKEN, token)
-        editor.apply()
-    }
-
-    fun saveRefreshToken(token: String) {
-        val editor = sharedPreferences.edit()
-        editor.putString(REFRESH_TOKEN, token)
-        editor.apply()
+    suspend fun saveAuthToken(accessToken: String, refreshToken: String) {
+        authTokenActionUseCase(AuthToken(accessToken, refreshToken))
     }
 
     fun fetchAccessToken(): String? {
-        return sharedPreferences.getString(ACCESS_TOKEN, null)
+        var accessToken: String? = null
+        //TODO: replace runBlocking with appropriate coroutine
+        runBlocking {
+            val result = authTokenUseCase(Unit)
+            accessToken = result.data?.accessToken
+        }
+        return accessToken
     }
 
     fun fetchRefreshToken(): String? {
-        return sharedPreferences.getString(REFRESH_TOKEN, null)
+        var refreshToken: String? = null
+        //TODO: replace runBlocking with appropriate coroutine
+        runBlocking {
+            val result = authTokenUseCase(Unit)
+            refreshToken = result.data?.refreshToken
+        }
+        return refreshToken
     }
 
-    fun removeAuthToken() {
-        val editor = sharedPreferences.edit()
-        editor.remove(ACCESS_TOKEN)
-        editor.remove(REFRESH_TOKEN)
-        editor.apply()
+    suspend fun removeAuthToken() {
+        authTokenActionUseCase(AuthToken())
     }
 
+    // TODO: fix the below code
     fun saveRefreshTokenStatus(isValid: Boolean) {
-        val editor = sharedPreferences.edit()
-        editor.putBoolean(REFRESH_TOKEN_EXPIRED, isValid)
-        editor.apply()
+//        val editor = sharedPreferences.edit()
+//        editor.putBoolean(REFRESH_TOKEN_EXPIRED, isValid)
+//        editor.apply()
     }
 
     fun updateNetworkIssueStatus(isConnected: Boolean) {
-        val editor = sharedPreferences.edit()
-        editor.putBoolean(NETWORK_CONNECTED, isConnected)
-        editor.apply()
+//        val editor = sharedPreferences.edit()
+//        editor.putBoolean(NETWORK_CONNECTED, isConnected)
+//        editor.apply()
     }
 
     fun fetchRefreshTokenStatus(): Boolean {
-        return sharedPreferences.getBoolean(REFRESH_TOKEN_EXPIRED, false)
+//        return sharedPreferences.getBoolean(REFRESH_TOKEN_EXPIRED, false)
+        return true
     }
 }

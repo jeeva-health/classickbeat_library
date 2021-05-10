@@ -42,20 +42,21 @@ class MainActivity : AppCompatActivity() {
 
         createNotificationChannel()
 
-        sessionManager.updateNetworkIssueStatus(true)
-
-        loginViewModel.refreshTokenStatusLiveData.observe(this, { isTokenValid ->
-            if (!isTokenValid) {
-                loginViewModel.logoutUser()
-                Toast.makeText(this, "Session expired. Please login again", Toast.LENGTH_SHORT)
-                    .show()
-                GlobalScope.launch {
-                    delay(1000)
-                    startActivity(Intent(this@MainActivity, MainActivity::class.java))
-                }
-            }
-        })
-        loginViewModel.resetRefreshTokenStatus()
+        // TODO: fix below code
+//        sessionManager.updateNetworkIssueStatus(true)
+//
+//        loginViewModel.refreshTokenStatusLiveData.observe(this, { isTokenValid ->
+//            if (!isTokenValid) {
+//                loginViewModel.logoutUser()
+//                Toast.makeText(this, "Session expired. Please login again", Toast.LENGTH_SHORT)
+//                    .show()
+//                GlobalScope.launch {
+//                    delay(1000)
+//                    startActivity(Intent(this@MainActivity, MainActivity::class.java))
+//                }
+//            }
+//        })
+//        loginViewModel.resetRefreshTokenStatus()
     }
 
     override fun onResume() {
