@@ -82,6 +82,16 @@
         <item name="android:textSize" tools:ignore="SpUsage">36dp</item>
     </style>
 
+    <style name="TextAppearance.Jeeva.HeartRate" parent="TextAppearance.Jeeva.H1">
+        <item name="android:textSize" tools:ignore="SpUsage">60dp</item>
+        <item name="android:textColor">@color/bright_red_2</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextAppearance.Jeeva.ScanMessage" parent="TextAppearance.Jeeva.H4">
+        <item name="android:textColor">@color/very_dark_violet</item>
+    </style>
+
     <style name="Widget.Jeeva.Toolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:paddingEnd">8dp</item>
         <item name="titleTextAppearance">@style/TextAppearance.Jeeva.ToolbarTitle</item>

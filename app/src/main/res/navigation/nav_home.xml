@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/heartResultFragment"
-        android:name="ai.heart.classickbeats.ui.monitor.HeartResultFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.HeartResultFragment"
         android:label="fragment_heart_result"
         tools:layout="@layout/fragment_heart_result">
         <action
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/scanFragment"
-        android:name="ai.heart.classickbeats.ui.monitor.ScanFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.ScanFragment"
         android:label="ScanFragment"
         tools:layout="@layout/fragment_scan">
         <argument
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/calculatingFragment"
-        android:name="ai.heart.classickbeats.ui.monitor.CalculatingFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.CalculatingFragment"
         android:label="fragment_calculating"
         tools:layout="@layout/fragment_calculating">
         <action

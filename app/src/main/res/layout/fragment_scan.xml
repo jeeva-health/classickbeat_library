@@ -6,93 +6,90 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:keepScreenOn="true"
-    tools:context=".ui.monitor.ScanFragment">
+    tools:context=".ui.ppg.ScanFragment">
 
-    <TextureView
-        android:id="@+id/view_finder"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <TextView
+        android:id="@+id/heart_rate_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="42dp"
+        android:text="HEART RATE"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/scan_message"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="64dp"
-        android:gravity="center"
-        android:letterSpacing="0.04"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Please cover the flash and camera with your finger gently."
-        tools:textColor="@color/black" />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/countdown_animation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35"
-        app:lottie_autoPlay="false"
-        app:lottie_loop="false"
-        app:lottie_rawRes="@raw/countdown_2" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/camera_capture_button"
-        android:layout_width="92dp"
-        android:layout_height="92dp"
-        android:layout_marginBottom="80dp"
-        android:background="@drawable/ic_shutter"
-        android:elevation="4dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <ai.heart.classickbeats.ui.widgets.CircleProgressBar
-        android:id="@+id/circular_progress_bar"
-        android:layout_width="92dp"
-        android:layout_height="92dp"
-        android:layout_marginBottom="80dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:progress="0"
-        app:progressBarThickness="14dp" />
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/line_chart"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginVertical="24dp"
-        app:layout_constraintBottom_toTopOf="@id/circular_progress_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/scan_message" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/heart_rate"
-        style="@style/TextAppearance.MaterialComponents.Headline4"
+    <ImageButton
+        android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:textColor="@color/white"
+        android:layout_marginEnd="12dp"
+        android:backgroundTint="@color/transparent"
+        android:src="@drawable/ic_cross"
+        app:layout_constraintBottom_toBottomOf="@id/heart_rate_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/heart_rate_tv" />
+
+    <TextView
+        android:id="@+id/heart_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="- -"
+        android:textAppearance="@style/TextAppearance.Jeeva.HeartRate"
+        app:layout_constraintStart_toStartOf="@id/heart_rate_tv"
+        app:layout_constraintTop_toBottomOf="@id/heart_rate_tv" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="BPM"
+        android:textAppearance="@style/TextAppearance.Jeeva.HeartRate"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/heart_rate"
+        app:layout_constraintStart_toEndOf="@id/heart_rate"
+        app:layout_constraintTop_toTopOf="@id/heart_rate" />
+
+    <FrameLayout
+        android:id="@+id/view_finder_layout"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:background="@drawable/bg_circle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/scan_message"
-        tools:text="69 bpm" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextureView
+            android:id="@+id/view_finder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.Jeeva.ScanMessage"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_finder_layout"
+        app:layout_constraintVertical_bias="0.3"
+        tools:text="Gently cover the back camera and the flash with your index finger" />
+
+
+    <!--    <com.github.mikephil.charting.charts.LineChart-->
+    <!--        android:id="@+id/line_chart"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_marginVertical="24dp"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/circular_progress_bar"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/scan_message" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

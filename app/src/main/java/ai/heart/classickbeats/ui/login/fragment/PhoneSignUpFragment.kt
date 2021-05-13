@@ -10,6 +10,8 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.format.DateUtils
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
@@ -22,6 +24,8 @@ import com.google.firebase.ktx.Firebase
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
+const val OTP_RETRY_DURATION = 40L
+const val OTP_VALID_DURATION = 120L
 
 class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
 
@@ -34,7 +38,7 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
     var isTimerRunning: Boolean = false
         private set
 
-    val timerProgress = MutableLiveData(Event(60))
+    val timerProgress = MutableLiveData(Event(OTP_RETRY_DURATION))
 
     private lateinit var auth: FirebaseAuth
     private var storedVerificationId: String? = ""
@@ -56,6 +60,7 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
             override fun onVerificationFailed(e: FirebaseException) {
                 Timber.w("onVerificationFailed: $e")
                 endTimer()
+                hideLoadingBar()
                 showShortToast("Error occurred!!!")
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     // Invalid request
@@ -69,6 +74,7 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
                 token: PhoneAuthProvider.ForceResendingToken
             ) {
                 Timber.d("onCodeSent:$verificationId")
+                updateViewForCodeSent()
                 storedVerificationId = verificationId
                 resendToken = token
                 startTimer()
@@ -78,6 +84,9 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().window.statusBarColor =
+            ContextCompat.getColor(requireActivity(), R.color.white)
 
         StringUtils.setTextViewHTML(
             binding.tnc,
@@ -89,24 +98,19 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
         binding.sendOtpBtn.setSafeOnClickListener {
             val phoneNumber = "+91" + binding.numberLayout.editText?.text?.toString()!!
             startPhoneNumberVerification(phoneNumber)
-            it.visibility = View.GONE
-            binding.verifyOtpBtn.visibility = View.VISIBLE
-            binding.otpLayout.visibility = View.VISIBLE
-            binding.resendTxt.visibility = View.VISIBLE
-            binding.resend.visibility = View.VISIBLE
-            binding.numberLayout.isEnabled = false
-            binding.otpLayout.requestFocus()
+            showLoadingBar()
         }
 
         binding.verifyOtpBtn.setSafeOnClickListener {
             val otp = binding.otpLayout.editText?.text?.toString()!!
             verifyPhoneNumberWithCode(storedVerificationId, otp)
+            showLoadingBar()
         }
 
         binding.resend.setSafeOnClickListener {
             val phoneNumber = "+91" + binding.numberLayout.editText?.text?.toString()!!
             resendVerificationCode(phoneNumber, resendToken)
-            binding.otpLayout.requestFocus()
+            showLoadingBar()
         }
 
         logInViewModel.apply {
@@ -119,17 +123,31 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
                     }
                 }
             })
+
+            showLoading.observe(viewLifecycleOwner, {
+                if (it) {
+                    showLoadingBar()
+                } else {
+                    hideLoadingBar()
+                }
+            })
         }
 
         timerProgress.observe(viewLifecycleOwner, EventObserver {
-            binding.resendTxt.text = "Didn't receive the OTP? Retry in $it seconds."
+            if (it <= 30) {
+                binding.resendTxt.isVisible = true
+                binding.resendTxt.text = "Didn't receive OTP? Retry in $it seconds."
+            }
+            if (it < 1) {
+                updateViewForRetryTimeout()
+            }
         })
     }
 
     private fun startPhoneNumberVerification(phoneNumber: String) {
         val options = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phoneNumber)
-            .setTimeout(60L, TimeUnit.SECONDS)
+            .setTimeout(OTP_VALID_DURATION, TimeUnit.SECONDS)
             .setActivity(requireActivity())
             .setCallbacks(callbacks)
             .build()
@@ -147,7 +165,7 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
     ) {
         val optionsBuilder = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phoneNumber)
-            .setTimeout(60L, TimeUnit.SECONDS)
+            .setTimeout(OTP_VALID_DURATION, TimeUnit.SECONDS)
             .setActivity(requireActivity())
             .setCallbacks(callbacks)
         if (token != null) {
@@ -171,8 +189,25 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
                     } else {
                         showLongToast("Error occurred!!!")
                     }
+                    hideLoadingBar()
                 }
+            }.addOnCanceledListener {
+                hideLoadingBar()
             }
+    }
+
+    private fun updateViewForCodeSent() {
+        binding.sendOtpBtn.visibility = View.GONE
+        binding.verifyOtpBtn.visibility = View.VISIBLE
+        binding.otpLayout.visibility = View.VISIBLE
+        binding.numberLayout.isEnabled = false
+        binding.otpLayout.requestFocus()
+        hideLoadingBar()
+    }
+
+    private fun updateViewForRetryTimeout() {
+        binding.resend.isVisible = true
+        binding.resendTxt.isVisible = false
     }
 
     private fun navigateToRegisterFragment() {
@@ -186,7 +221,7 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
         findNavController().navigate(action)
     }
 
-    fun startTimer(timeLeftInMillis: Long = 60 * DateUtils.SECOND_IN_MILLIS) {
+    fun startTimer(timeLeftInMillis: Long = OTP_RETRY_DURATION * DateUtils.SECOND_IN_MILLIS) {
         timer?.cancel()
         timer = object : CountDownTimer(timeLeftInMillis, TimeUnit.SECONDS.toMillis(1)) {
             override fun onFinish() {
@@ -195,8 +230,7 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
             }
 
             override fun onTick(millisUntilFinished: Long) {
-                timerProgress.postValue(Event((millisUntilFinished / DateUtils.SECOND_IN_MILLIS).toInt()))
-                binding.resend.isEnabled = millisUntilFinished <= 1000
+                timerProgress.postValue(Event((millisUntilFinished / DateUtils.SECOND_IN_MILLIS)))
             }
         }
         timer?.start()

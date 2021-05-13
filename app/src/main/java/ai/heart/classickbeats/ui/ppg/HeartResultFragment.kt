@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.monitor
+package ai.heart.classickbeats.ui.ppg
 
 import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R

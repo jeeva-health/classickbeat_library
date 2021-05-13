@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.monitor
+package ai.heart.classickbeats.ui.ppg
 
 import ai.heart.classickbeats.domain.CameraReading
 import android.content.Context

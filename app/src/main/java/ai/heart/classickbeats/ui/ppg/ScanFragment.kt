@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.monitor
+package ai.heart.classickbeats.ui.ppg
 
 import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
@@ -6,12 +6,10 @@ import ai.heart.classickbeats.databinding.FragmentScanBinding
 import ai.heart.classickbeats.domain.CameraReading
 import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.graph.RunningGraph
-import ai.heart.classickbeats.ui.widgets.CircleProgressBar
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.utils.postOnMainLooper
 import ai.heart.classickbeats.utils.showLongToast
 import ai.heart.classickbeats.utils.viewBinding
-import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.CAMERA_SERVICE
@@ -28,7 +26,6 @@ import android.util.Range
 import android.view.Surface
 import android.view.TextureView
 import android.view.View
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -67,8 +64,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private var pixelAnalyzer: PixelAnalyzer? = null
 
     private lateinit var textureView: TextureView
-    private lateinit var cameraCaptureButton: AppCompatImageButton
-    private lateinit var circularProgressBar: CircleProgressBar
 
     private var width: Int = 0
     private var height: Int = 0
@@ -103,55 +98,24 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
         monitorViewModel.testType = navArgs.testType
 
-        val scanMessage = when (navArgs.testType) {
-            TestType.HEART_RATE -> "Please cover the flash and camera with your finger gently."
-            TestType.OXYGEN_SATURATION -> "Please align the add-on with the front camera and place your figure gently inside the add-on."
-        }
-        binding.scanMessage.text = scanMessage
         updateDynamicHeartRate(-1)
 
-        chart = binding.lineChart.apply {
-            setDrawGridBackground(false)
-            description.isEnabled = false
-            axisRight.isEnabled = false
-            axisLeft.isEnabled = false
-            xAxis.isEnabled = false
-            legend.isEnabled = false
-            setNoDataText("")
-            invalidate()
-        }
+//        chart = binding.lineChart.apply {
+//            setDrawGridBackground(false)
+//            description.isEnabled = false
+//            axisRight.isEnabled = false
+//            axisLeft.isEnabled = false
+//            xAxis.isEnabled = false
+//            legend.isEnabled = false
+//            setNoDataText("")
+//            invalidate()
+//        }
 
         navController = findNavController()
 
         textureView = binding.viewFinder
-        cameraCaptureButton = binding.cameraCaptureButton
-        circularProgressBar = binding.circularProgressBar
 
         textureView.surfaceTextureListener = surfaceTextureListener
-
-        cameraCaptureButton.setOnLongClickListener {
-            it.visibility = View.GONE
-            binding.countdownAnimation.visibility = View.VISIBLE
-            binding.countdownAnimation.playAnimation()
-            binding.countdownAnimation.addAnimatorListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(p0: Animator?) {
-                }
-
-                override fun onAnimationEnd(p0: Animator?) {
-                    binding.countdownAnimation.visibility = View.GONE
-                    circularProgressBar.visibility = View.VISIBLE
-                    startScanning()
-                }
-
-                override fun onAnimationCancel(p0: Animator?) {
-                }
-
-                override fun onAnimationRepeat(p0: Animator?) {
-                }
-
-            })
-            true
-        }
 
         startBackgroundThread()
 
@@ -159,14 +123,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             Timber.i("Timer: $it")
             if (it == 0) {
                 if (monitorViewModel.isProcessing) {
-                    circularProgressBar.visibility = View.GONE
-                    cameraCaptureButton.visibility = View.VISIBLE
                     endScanning()
                 }
             } else {
                 val progress = ((SCAN_DURATION - it) * 100 / SCAN_DURATION).toFloat()
-                circularProgressBar.setProgress(progress)
-                circularProgressBar.invalidate()
+//                circularProgressBar.setProgress(progress)
+//                circularProgressBar.invalidate()
             }
         })
     }
@@ -251,10 +213,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             if (monitorViewModel.isProcessing) {
                 imageCounter++
                 if (imageCounter >= fps * 1) {
-                    val cameraReading: CameraReading? = when (navArgs.testType) {
-                        TestType.HEART_RATE -> pixelAnalyzer?.processImageRenderScript(img)
-                        TestType.OXYGEN_SATURATION -> pixelAnalyzer?.processImageRenderScript(img)
-                    }
+                    val cameraReading: CameraReading? = pixelAnalyzer?.processImageRenderScript(img)
                     cameraReading?.apply {
                         if (green / red > 0.5 || blue / red > 0.5) {
                             badImageCounter++
@@ -276,9 +235,11 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         val totalTimeElapsed = timeStamp - monitorViewModel.timeList[0]
                         val localTimeElapsed = timeStamp - localTimeLast
                         Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
-                        if (totalTimeElapsed >= 6000 && localTimeElapsed >= 2000){
-                            val dynamicBPM = calculateDynamicBPM(monitorViewModel.mean1List.takeLast(150),
-                                monitorViewModel.timeList.takeLast(150))
+                        if (totalTimeElapsed >= 6000 && localTimeElapsed >= 2000) {
+                            val dynamicBPM = calculateDynamicBPM(
+                                monitorViewModel.mean1List.takeLast(150),
+                                monitorViewModel.timeList.takeLast(150)
+                            )
                             updateDynamicHeartRate(dynamicBPM)
                             localTimeLast = monitorViewModel.timeList.last()
                         }
@@ -292,10 +253,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     @SuppressLint("MissingPermission")
     private fun openCamera() {
         try {
-            val cameraFacing = when (navArgs.testType) {
-                TestType.HEART_RATE -> CameraCharacteristics.LENS_FACING_BACK
-                TestType.OXYGEN_SATURATION -> CameraCharacteristics.LENS_FACING_FRONT
-            }
+            val cameraFacing = CameraCharacteristics.LENS_FACING_BACK
             val cameraManager =
                 requireActivity().getSystemService(CAMERA_SERVICE) as CameraManager
             val cameraID: String = getCamera(cameraManager, cameraFacing)!!
@@ -429,9 +387,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private fun restartReading() {
         monitorViewModel.resetTimer()
         badImageCounter = 0
-        circularProgressBar.setProgress(0.0f)
-        circularProgressBar.visibility = View.GONE
-        cameraCaptureButton.visibility = View.VISIBLE
         chart.data?.clearValues()
     }
 
@@ -443,18 +398,24 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
     }
 
-    fun calculateDynamicBPM(meanList: List<Double>, timeStamp: List<Int>): Int{
+    fun calculateDynamicBPM(meanList: List<Double>, timeStamp: List<Int>): Int {
         val fp = FindPeak(meanList.toDoubleArray())
         val out = fp.detectPeaks()
 
         val peaks = out.peaks
         Timber.i("Size, Dynamic Peaks: ${peaks.size}, ${Arrays.toString(peaks)}")
         var filteredPeaks = out.filterByProminence(peaks, 0.4, null)
-        Timber.i("Size, Dynamic Prominent Peaks: ${filteredPeaks.size}, ${Arrays.toString(filteredPeaks)}")
+        Timber.i(
+            "Size, Dynamic Prominent Peaks: ${filteredPeaks.size}, ${
+                Arrays.toString(
+                    filteredPeaks
+                )
+            }"
+        )
 
         val ibiList = mutableListOf<Double>() //Time in milliseconds
         for (i in 0 until filteredPeaks.size - 1) {
-            ibiList.add((timeStamp[filteredPeaks[i + 1]] - timeStamp[filteredPeaks[i]])*1.0)
+            ibiList.add((timeStamp[filteredPeaks[i + 1]] - timeStamp[filteredPeaks[i]]) * 1.0)
         }
         val ibiAvg = ibiList.average()
         Timber.i("Size, Average, ibiList: ${ibiList.size}, $ibiAvg, ${Arrays.toString(ibiList.toDoubleArray())}")
@@ -464,7 +425,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     fun updateDynamicHeartRate(bpm: Int) {
         postOnMainLooper {
             var heartRateStr = "-- bpm"
-            if (bpm >= 0){
+            if (bpm >= 0) {
                 heartRateStr = "$bpm bpm"
             }
             binding.heartRate.text = heartRateStr
