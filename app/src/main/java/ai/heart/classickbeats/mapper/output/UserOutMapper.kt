@@ -1,31 +1,28 @@
-package ai.heart.classickbeats.mapper.`in`
+package ai.heart.classickbeats.mapper.output
 
 import ai.heart.classickbeats.mapper.Mapper
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.model.entity.UserEntity
 import javax.inject.Inject
 
-class UserInMapper @Inject constructor() : Mapper<UserEntity, User> {
-    override fun map(input: UserEntity): User {
+class UserOutMapper @Inject constructor() : Mapper<User, UserEntity> {
+    override fun map(input: User): UserEntity {
         val fullName = input.fullName
-        val email = input.emailAddress ?: ""
-        val phoneNumber = input.phoneNumber
         val gender = input.gender
-        val weight = input.weight
-        val isWeightKgs = input.isWeightKgs
         val height = input.height
         val isHeightInches = input.isHeightInches
+        val weight = input.weight
+        val isWeightInKgs = input.isWeightKgs
         val dob = input.dob
 
-        return User(
+        return UserEntity(
             fullName = fullName,
             gender = gender,
-            weight = weight,
-            isWeightKgs = isWeightKgs,
             height = height,
             isHeightInches = isHeightInches,
-            dob = dob,
-            emailAddress = email
+            weight = weight,
+            isWeightKgs = isWeightInKgs,
+            dob = dob
         )
     }
 }
