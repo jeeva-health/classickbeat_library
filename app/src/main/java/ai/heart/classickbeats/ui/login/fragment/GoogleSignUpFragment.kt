@@ -83,7 +83,7 @@ class GoogleSignUpFragment : Fragment(R.layout.fragment_google_sign_up) {
                     val firebaseToken = user?.getIdToken(false)?.result?.token
                     logInViewModel.loginUser(firebaseToken!!)
                 } else {
-                    Timber.w("signInWithCredential:failure ${task.exception}")
+                    Timber.e("signInWithCredential:failure ${task.exception}")
                     showLongToast("Google login failed")
                     navController.navigateUp()
                 }

@@ -4,8 +4,8 @@ import ai.heart.classickbeats.compute.Filter
 import ai.heart.classickbeats.compute.MAPmodeling
 import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.data.LoginRepository
-import ai.heart.classickbeats.data.model.entity.PPGEntity
 import ai.heart.classickbeats.domain.TestType
+import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.result.Event
 import android.os.CountDownTimer
 import android.text.format.DateUtils

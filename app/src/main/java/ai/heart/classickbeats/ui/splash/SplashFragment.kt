@@ -30,13 +30,13 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
             when (it) {
                 LaunchDestination.ONBOARDING -> navigateToOnBoardingFragment()
                 LaunchDestination.SIGNUP -> navigateToLoginFragment()
-                LaunchDestination.HOME_SCREEN -> navigateToSelectionFragment()
+                LaunchDestination.HOME_SCREEN -> navigateToScanFragment()
             }
         })
     }
 
-    private fun navigateToSelectionFragment() {
-        val action = SplashFragmentDirections.actionSplashFragmentToSelectionFragment()
+    private fun navigateToScanFragment() {
+        val action = SplashFragmentDirections.actionSplashFragmentToScanFragment()
         navController.navigate(action)
     }
 

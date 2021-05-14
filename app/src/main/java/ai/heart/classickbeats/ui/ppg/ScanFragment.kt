@@ -10,9 +10,11 @@ import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.utils.postOnMainLooper
 import ai.heart.classickbeats.utils.showLongToast
 import ai.heart.classickbeats.utils.viewBinding
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.CAMERA_SERVICE
+import android.content.pm.PackageManager
 import android.graphics.ImageFormat
 import android.graphics.SurfaceTexture
 import android.hardware.Sensor
@@ -26,6 +28,8 @@ import android.util.Range
 import android.view.Surface
 import android.view.TextureView
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -60,6 +64,47 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private var imageReader: ImageReader? = null
     private var mBackgroundHandler: Handler? = null
     private var mBackgroundThread: HandlerThread? = null
+
+    private val requiredPermissions = listOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+
+    private val permissionToRequest = mutableListOf<String>()
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionResult ->
+
+            requiredPermissions.forEach { permission ->
+                if (permissionResult[permission] == true) {
+                    permissionToRequest.remove(permission)
+                }
+            }
+            if (ifAllMustPermissionsAreGranted()) {
+
+            }
+        }
+
+    private fun ifAllMustPermissionsAreGranted() = permissionToRequest.isEmpty()
+
+    private fun requestForPermissions() {
+        if (ifAllMustPermissionsAreGranted()) {
+
+        } else {
+            requestPermissionLauncher.launch(permissionToRequest.toTypedArray())
+        }
+    }
+
+    private fun checkPermission(permission: String) {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                permission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionToRequest.add(permission)
+        }
+    }
 
     private var pixelAnalyzer: PixelAnalyzer? = null
 
@@ -99,6 +144,11 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         monitorViewModel.testType = navArgs.testType
 
         updateDynamicHeartRate(-1)
+
+        checkPermission(Manifest.permission.CAMERA)
+        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+        checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        requestForPermissions()
 
 //        chart = binding.lineChart.apply {
 //            setDrawGridBackground(false)

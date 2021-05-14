@@ -1,13 +1,13 @@
 package ai.heart.classickbeats.data
 
 import ai.heart.classickbeats.BuildConfig
-import ai.heart.classickbeats.data.model.entity.PPGEntity
 import ai.heart.classickbeats.data.model.request.LoginRequest
 import ai.heart.classickbeats.data.model.request.RefreshTokenRequest
-import ai.heart.classickbeats.data.model.request.RegisterRequest
 import ai.heart.classickbeats.data.remote.LoginRemoteDataSource
-import ai.heart.classickbeats.domain.model.User
-import ai.heart.classickbeats.mapper.UserDataMapper
+import ai.heart.classickbeats.mapper.`in`.UserInMapper
+import ai.heart.classickbeats.mapper.out.UserOutMapper
+import ai.heart.classickbeats.model.User
+import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.network.LoginRepositoryHolder
 import ai.heart.classickbeats.network.SessionManager
 import ai.heart.classickbeats.shared.data.prefs.PreferenceStorage
@@ -22,7 +22,8 @@ class LoginRepository @Inject constructor(
     private val loginRemoteDataSource: LoginRemoteDataSource,
     private val sessionManager: SessionManager,
     private val preferenceStorage: PreferenceStorage,
-    private val userDataMapper: UserDataMapper,
+    private val userOutMapper: UserOutMapper,
+    private val userInMapper: UserInMapper,
     loginRepositoryHolder: LoginRepositoryHolder
 ) {
 
@@ -42,14 +43,8 @@ class LoginRepository @Inject constructor(
         )
         val response = loginRemoteDataSource.login(loginRequest)
         if (response is Result.Success) {
-            loggedInUser = userDataMapper.map(response.data.user!!)
+            loggedInUser = userInMapper.map(response.data.user!!)
             val isUserRegistered = response.data.isRegistered ?: false
-            loggedInUser?.name?.let {
-                preferenceStorage.userName = it
-            }
-            loggedInUser?.phoneNumber?.let {
-                preferenceStorage.userNumber = it
-            }
             val accessToken = response.data.accessToken ?: ""
             val refreshToken = response.data.refreshToken ?: ""
             sessionManager.saveAuthToken(accessToken, refreshToken)
@@ -79,14 +74,12 @@ class LoginRepository @Inject constructor(
         return false
     }
 
-    suspend fun registerUser(fullName: String): Result<User> {
-        val registerRequest = RegisterRequest(
-            fullName = fullName
-        )
-        val response = loginRemoteDataSource.registerUser(registerRequest)
+    suspend fun registerUser(user: User): Result<User> {
+        val userEntity = userOutMapper.map(user)
+        val response = loginRemoteDataSource.registerUser(userEntity)
         when (response) {
             is Result.Success -> {
-                val user = userDataMapper.map(response.data.user!!)
+                val user = userInMapper.map(response.data.user!!)
                 loggedInUser = user
                 return Result.Success(user)
             }

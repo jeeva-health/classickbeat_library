@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.data.model.entity
+package ai.heart.classickbeats.model.entity
 
 import com.squareup.moshi.Json
 

@@ -68,7 +68,6 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
         }
 
         backButton.setSafeOnClickListener {
-            navigateToSelectionFragment()
         }
 
         Glide.with(this).load(File("/storage/emulated/0/Pictures/ppg.jpg")).diskCacheStrategy(
@@ -132,11 +131,6 @@ class HeartResultFragment : Fragment(R.layout.fragment_heart_result) {
     private fun navigateToScanFragment() {
         val action =
             HeartResultFragmentDirections.actionHeartResultFragmentToScanFragment(testType = TestType.HEART_RATE)
-        navController.navigate(action)
-    }
-
-    private fun navigateToSelectionFragment() {
-        val action = HeartResultFragmentDirections.actionHeartResultFragmentToSelectionFragment()
         navController.navigate(action)
     }
 }

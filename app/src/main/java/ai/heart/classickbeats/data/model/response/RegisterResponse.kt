@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.data.model.response
 
-import ai.heart.classickbeats.data.model.entity.UserEntity
+import ai.heart.classickbeats.model.entity.UserEntity
 import com.squareup.moshi.Json
 
 data class RegisterResponse(@Json(name = "data") val responseData: Data) {

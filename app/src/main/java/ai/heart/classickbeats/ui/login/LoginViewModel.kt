@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.ui.login
 
 import ai.heart.classickbeats.data.LoginRepository
+import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.network.SessionManager
 import ai.heart.classickbeats.shared.data.prefs.PreferenceStorage
 import ai.heart.classickbeats.shared.result.Event
@@ -77,10 +78,10 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun registerUser(fullName: String) {
+    fun registerUser(user: User) {
         showLoading.postValue(true)
         viewModelScope.launch {
-            val response = loginRepository.registerUser(fullName)
+            val response = loginRepository.registerUser(user)
             apiResponse.postValue(Event(RequestType.REGISTER))
             showLoading.postValue(false)
         }

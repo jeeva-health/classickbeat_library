@@ -46,12 +46,20 @@ class SignUpModeSelectionFragment : Fragment(R.layout.fragment_sign_up_mode_sele
             navigateToPhoneSignUpFragment()
         }
 
-        googleModeButton.setSafeOnClickListener { }
+        googleModeButton.setSafeOnClickListener {
+            navigateGoogleSignUpFragment()
+        }
     }
 
     private fun navigateToPhoneSignUpFragment() {
         val action =
             SignUpModeSelectionFragmentDirections.actionSignUpModeSelectionFragmentToPhoneSignUpFragment()
+        navController.navigate(action)
+    }
+
+    private fun navigateGoogleSignUpFragment() {
+        val action =
+            SignUpModeSelectionFragmentDirections.actionSignUpModeSelectionFragmentToGoogleSignUpFragment()
         navController.navigate(action)
     }
 

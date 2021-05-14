@@ -13,9 +13,6 @@
         <action
             android:id="@+id/action_heartResultFragment_to_scanFragment"
             app:destination="@id/scanFragment" />
-        <action
-            android:id="@+id/action_heartResultFragment_to_selectionFragment"
-            app:destination="@id/selectionFragment" />
     </fragment>
 
     <fragment
@@ -48,14 +45,14 @@
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash">
         <action
-            android:id="@+id/action_splashFragment_to_selectionFragment"
-            app:destination="@id/selectionFragment" />
-        <action
             android:id="@+id/action_splashFragment_to_nav_login"
             app:destination="@id/nav_login" />
         <action
             android:id="@+id/action_splashFragment_to_onBoardingFragment"
             app:destination="@id/onBoardingFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
     </fragment>
 
     <fragment
@@ -63,18 +60,6 @@
         android:name="ai.heart.classickbeats.ui.logging.LogBpFragment"
         android:label="fragment_log_bp"
         tools:layout="@layout/fragment_log_bp" />
-    <fragment
-        android:id="@+id/selectionFragment"
-        android:name="ai.heart.classickbeats.ui.home.SelectionFragment"
-        android:label="fragment_selection"
-        tools:layout="@layout/fragment_selection">
-        <action
-            android:id="@+id/action_selectionFragment_to_scanFragment"
-            app:destination="@id/scanFragment" />
-        <action
-            android:id="@+id/action_selectionFragment_to_logBpFragment"
-            app:destination="@id/logBpFragment" />
-    </fragment>
 
     <include app:graph="@navigation/nav_login" />
     <fragment
