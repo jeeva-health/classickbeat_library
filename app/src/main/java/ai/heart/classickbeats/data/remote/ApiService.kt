@@ -3,13 +3,13 @@ package ai.heart.classickbeats.data.remote
 import ai.heart.classickbeats.BuildConfig
 import ai.heart.classickbeats.data.model.request.LoginRequest
 import ai.heart.classickbeats.data.model.request.RefreshTokenRequest
-import ai.heart.classickbeats.data.model.request.RegisterRequest
 import ai.heart.classickbeats.data.model.response.LoginResponse
 import ai.heart.classickbeats.data.model.response.RegisterResponse
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.model.entity.UserEntity
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 
 interface ApiService {
@@ -24,7 +24,7 @@ interface ApiService {
     @POST("api/v1/refresh-token/")
     suspend fun refreshToken(@Body refreshTokenRequest: RefreshTokenRequest): Response<LoginResponse>
 
-    @POST("api/v1/register/")
+    @PATCH("/user/users/")
     suspend fun register(@Body userEntity: UserEntity): Response<RegisterResponse>
 
     @POST("ppg/add/")
