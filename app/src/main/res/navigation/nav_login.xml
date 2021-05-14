@@ -72,4 +72,5 @@
             android:id="@+id/action_googleSignUpFragment_to_nav_home"
             app:destination="@id/nav_home" />
     </fragment>
+
 </navigation>

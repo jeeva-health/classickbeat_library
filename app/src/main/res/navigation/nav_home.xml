@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_home"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/scanFragment">
 
     <fragment
         android:id="@+id/heartResultFragment"
@@ -40,36 +40,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/splashFragment"
-        android:name="ai.heart.classickbeats.ui.splash.SplashFragment"
-        android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash">
-        <action
-            android:id="@+id/action_splashFragment_to_nav_login"
-            app:destination="@id/nav_login" />
-        <action
-            android:id="@+id/action_splashFragment_to_onBoardingFragment"
-            app:destination="@id/onBoardingFragment" />
-        <action
-            android:id="@+id/action_splashFragment_to_scanFragment"
-            app:destination="@id/scanFragment" />
-    </fragment>
-
-    <fragment
         android:id="@+id/logBpFragment"
         android:name="ai.heart.classickbeats.ui.logging.LogBpFragment"
         android:label="fragment_log_bp"
         tools:layout="@layout/fragment_log_bp" />
-
-    <include app:graph="@navigation/nav_login" />
-    <fragment
-        android:id="@+id/onBoardingFragment"
-        android:name="ai.heart.classickbeats.ui.onboarding.OnBoardingFragment"
-        android:label="fragment_onboarding"
-        tools:layout="@layout/fragment_onboarding" >
-        <action
-            android:id="@+id/action_onBoardingFragment_to_nav_login"
-            app:destination="@id/nav_login" />
-    </fragment>
 
 </navigation>

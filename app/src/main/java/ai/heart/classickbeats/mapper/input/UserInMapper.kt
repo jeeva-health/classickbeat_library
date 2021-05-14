@@ -7,15 +7,15 @@ import javax.inject.Inject
 
 class UserInMapper @Inject constructor() : Mapper<UserEntity, User> {
     override fun map(input: UserEntity): User {
-        val fullName = input.fullName
+        val fullName = input.fullName ?: ""
         val email = input.emailAddress ?: ""
         val phoneNumber = input.phoneNumber
-        val gender = input.gender
-        val weight = input.weight
-        val isWeightKgs = input.isWeightKgs
-        val height = input.height
-        val isHeightInches = input.isHeightInches
-        val dob = input.dob
+        val gender = input.gender ?: "M"
+        val weight = input.weight ?: 70.0
+        val isWeightKgs = input.isWeightKgs ?: true
+        val height = input.height ?: 70.0
+        val isHeightInches = input.isHeightInches ?: true
+        val dob = input.dob ?: ""
 
         return User(
             fullName = fullName,
