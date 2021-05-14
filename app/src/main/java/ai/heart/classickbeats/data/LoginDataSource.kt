@@ -1,11 +1,11 @@
 package ai.heart.classickbeats.data
 
-import ai.heart.classickbeats.data.model.request.LoginRequest
-import ai.heart.classickbeats.data.model.request.RefreshTokenRequest
-import ai.heart.classickbeats.data.model.response.LoginResponse
-import ai.heart.classickbeats.data.model.response.RegisterResponse
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.model.entity.UserEntity
+import ai.heart.classickbeats.model.request.LoginRequest
+import ai.heart.classickbeats.model.request.RefreshTokenRequest
+import ai.heart.classickbeats.model.response.LoginResponse
+import ai.heart.classickbeats.model.response.RegisterResponse
 import ai.heart.classickbeats.shared.result.Result
 
 interface LoginDataSource {

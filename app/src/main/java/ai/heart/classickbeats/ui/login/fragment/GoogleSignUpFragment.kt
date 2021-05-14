@@ -1,9 +1,11 @@
 package ai.heart.classickbeats.ui.login.fragment
 
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.login.FirebaseGoogleSignIn
 import ai.heart.classickbeats.ui.login.LoginViewModel
-import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.utils.hideLoadingBar
+import ai.heart.classickbeats.utils.showLoadingBar
 import ai.heart.classickbeats.utils.showLongToast
 import android.os.Bundle
 import android.view.View
@@ -68,6 +70,14 @@ class GoogleSignUpFragment : Fragment(R.layout.fragment_google_sign_up) {
                     } else {
                         navigateToRegisterFragment()
                     }
+                }
+            })
+
+            showLoading.observe(viewLifecycleOwner, {
+                if (it) {
+                    showLoadingBar()
+                } else {
+                    hideLoadingBar()
                 }
             })
         }

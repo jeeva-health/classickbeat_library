@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.data.model.response
+package ai.heart.classickbeats.model.response
 
 import ai.heart.classickbeats.model.entity.UserEntity
 import com.squareup.moshi.Json
