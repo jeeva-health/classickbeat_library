@@ -12,6 +12,7 @@ import android.text.format.DateUtils
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.psambit9791.jdsp.misc.UtilMethods.argmax
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -143,14 +144,23 @@ class MonitorViewModel @Inject constructor(
             val bpm = (60 * 1000.0) / meanNN
 
             val mapModeling = MAPmodeling()
-            val binProbsMAP = mapModeling.bAgePrediction(27.0, 0, meanNN, sdnn, rmssd, pnn50)
+
+            //@RITESH: In cAge parameter in lines 150 and 153, input the age of the user (instead of 27)
+
+            val binProbsMAP = mapModeling.bAgePrediction(27.0, 0, meanNN, sdnn, rmssd, pnn50).toDoubleArray()
+            val bAgeBin = argmax(binProbsMAP, false)
+
             val activeSedantryProb = mapModeling.activeSedantryPrediction(27.0, meanNN, rmssd)
-            val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
+            var sedantry = true
+            if (activeSedantryProb[1] > activeSedantryProb[0]){
+                sedantry = false
+            }
+//            val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
 
             Timber.i("BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
-            Timber.i("binProbsMAP: ${Arrays.toString(binProbsMAP.toDoubleArray())}")
+            Timber.i("binProbsMAP: ${Arrays.toString(binProbsMAP)}")
             Timber.i("Sedantry and Active Probs: ${Arrays.toString(activeSedantryProb.toDoubleArray())}")
-            Timber.i("Stress Probs: ${Arrays.toString(stressProb.toDoubleArray())}")
+//            Timber.i("Stress Probs: ${Arrays.toString(stressProb.toDoubleArray())}")
 
             val qualityStr = when {
                 quality <= 1e-5 -> "PERFECT Quality Recording, Good job!"
@@ -174,6 +184,10 @@ class MonitorViewModel @Inject constructor(
                 pnn50 = String.format("%.4f", pnn50).toFloat(),
                 ln = String.format("%.4f", ln).toFloat(),
                 quality = String.format("%.8f", quality).toFloat(),
+                binProbsMAP = binProbsMAP.toList().map { String.format("%.8f", it).toFloat() },
+                bAgeBin = bAgeBin,
+                activeSedantryProb = activeSedantryProb.toList().map { String.format("%.8f", it).toFloat() },
+                sedantry = sedantry,
             )
             loginRepository.recordPPG(ppgEntity)
 

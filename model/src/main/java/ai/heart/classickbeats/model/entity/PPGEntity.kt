@@ -20,5 +20,9 @@ data class PPGEntity(
     val rmssd: Float = 0.0f,
     val pnn50: Float = 0.0f,
     val ln: Float = 0.0f,
-    val quality: Float = 0.0f
+    val quality: Float = 0.0f,
+    val binProbsMAP: List<Float>? = null,
+    val bAgeBin: Int = 0,
+    val activeSedantryProb: List<Float>? = null,
+    val sedantry: Boolean = true,
 )
