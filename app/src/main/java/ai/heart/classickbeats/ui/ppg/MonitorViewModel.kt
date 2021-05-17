@@ -145,16 +145,33 @@ class MonitorViewModel @Inject constructor(
 
             val mapModeling = MAPmodeling()
 
-            //@RITESH: In cAge parameter in lines 150 and 153, input the age of the user (instead of 27)
+            //@RITESH: In cAge and gender parameters in lines 152 and 155,
+            // input the age and gender of the user, respectively
+            // gender = 0 is male and 1 is female
 
             val binProbsMAP = mapModeling.bAgePrediction(27.0, 0, meanNN, sdnn, rmssd, pnn50).toDoubleArray()
             val bAgeBin = argmax(binProbsMAP, false)
 
             val activeSedantryProb = mapModeling.activeSedantryPrediction(27.0, meanNN, rmssd)
-            var sedantry = true
-            if (activeSedantryProb[1] > activeSedantryProb[0]){
-                sedantry = false
-            }
+            val sedRatioLog = kotlin.math.log10(activeSedantryProb[0] / activeSedantryProb[1])
+            // sedStars = 0 implies the person is fully active and the sedRatioLog is small
+            // sedStars =  6 implies all stars related to sedantry lifestyle be highlighted
+            // (sedRatioLog, sedStars) = (-1,0); (-0.7,1); (-0.3,2); (0,3); (0.3,4); (0.7, 5); (1, 6)
+            val sedStars = if (sedRatioLog < -1.0)
+                0
+            else if (sedRatioLog >= -1.0 && sedRatioLog < 0.5)
+                1
+            else if (sedRatioLog >= -0.5 && sedRatioLog < -0.15)
+                2
+            else if (sedRatioLog >= -0.15 && sedRatioLog < 0.15)
+                3
+            else if (sedRatioLog >= 0.15 && sedRatioLog < 0.5)
+                4
+            else if (sedRatioLog >= 0.5 && sedRatioLog < 1)
+                5
+            else
+                6
+
 //            val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
 
             Timber.i("BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
@@ -187,7 +204,8 @@ class MonitorViewModel @Inject constructor(
                 binProbsMAP = binProbsMAP.toList().map { String.format("%.8f", it).toFloat() },
                 bAgeBin = bAgeBin,
                 activeSedantryProb = activeSedantryProb.toList().map { String.format("%.8f", it).toFloat() },
-                sedantry = sedantry,
+                sedRatioLog = String.format("%.8f", quality).toFloat(),
+                sedStars = sedStars,
             )
             loginRepository.recordPPG(ppgEntity)
 

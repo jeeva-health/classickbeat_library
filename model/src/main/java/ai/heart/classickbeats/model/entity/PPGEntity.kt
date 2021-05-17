@@ -24,5 +24,6 @@ data class PPGEntity(
     val binProbsMAP: List<Float>? = null,
     val bAgeBin: Int = 0,
     val activeSedantryProb: List<Float>? = null,
-    val sedantry: Boolean = true,
+    val sedRatioLog: Float = 0.0f,
+    val sedStars: Int = 0,
 )
