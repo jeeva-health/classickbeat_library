@@ -89,7 +89,10 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:cursorVisible="false"
+                android:focusableInTouchMode="false"
+                android:inputType="none" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,9 +107,10 @@
             app:layout_constraintTop_toBottomOf="@id/gender_layout"
             app:suffixText="ft in">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <ai.heart.classickbeats.shared.formattedinput.MaskedEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:maskType="height" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -137,9 +141,10 @@
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/weight_layout">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <ai.heart.classickbeats.shared.formattedinput.MaskedEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:maskType="date" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

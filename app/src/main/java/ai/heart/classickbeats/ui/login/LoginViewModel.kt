@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.ui.login
 
 import ai.heart.classickbeats.data.LoginRepository
+import ai.heart.classickbeats.model.Gender
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.network.SessionManager
 import ai.heart.classickbeats.shared.data.prefs.PreferenceStorage
@@ -29,6 +30,10 @@ class LoginViewModel @Inject constructor(
     enum class AuthenticationState {
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
     }
+
+    val genderList = Gender.values().toList()
+
+    val genderListStr = genderList.map { it.displayStr }
 
     var currentFirebaseUser: FirebaseUser? = null
 

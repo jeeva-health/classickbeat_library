@@ -7,18 +7,15 @@ import ai.heart.classickbeats.ui.login.LoginViewModel
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -31,6 +28,10 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var sessionManager: SessionManager
 
+    private var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
+
+    private lateinit var bottomSheetCallback: BottomSheetBehavior.BottomSheetCallback
+
     private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +42,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         createNotificationChannel()
+
+        bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+        }
+
+        binding?.bottomSheet?.let {
+            bottomSheetBehavior = BottomSheetBehavior.from(it)
+            bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
+        }
 
         // TODO: fix below code
 //        sessionManager.updateNetworkIssueStatus(true)
@@ -61,11 +78,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
     fun hideSystemUI() {
         supportActionBar?.hide()
-        @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility = (
                 View.SYSTEM_UI_FLAG_IMMERSIVE
                         or View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -113,4 +131,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun showBottomDialog(
+        title: String,
+        items: List<String>,
+        itemClickListener: (Int) -> Unit = {},
+        textSize: Float = 24.0f
+    ) {
+        val bottomSheetStringAdapter =
+            BottomSheetStringAdapter(itemClickListener = itemClickListener)
+        binding?.bottomSheetTitle?.text = title
+        bottomSheetStringAdapter.updateTextSize(textSize)
+        binding?.bottomSheetListItem?.adapter = bottomSheetStringAdapter
+        bottomSheetStringAdapter.submitList(items)
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    fun hideBottomDialog() {
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
+    }
+
+    override fun onDestroy() {
+        bottomSheetBehavior?.removeBottomSheetCallback(bottomSheetCallback)
+        super.onDestroy()
+    }
 }
