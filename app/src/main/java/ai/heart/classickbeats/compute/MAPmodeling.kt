@@ -10,7 +10,7 @@ class MAPmodeling {
         val bAgeMean = cAge + meanDelta
         val normal = NormalDistribution(bAgeMean, std)
         var binProb = mutableListOf<Double>()
-        val seqAges = listOf<Double>(25.0, 35.0, 45.0, 55.0, 65.0, 75.0)
+        val seqAges = listOf<Double>(15.0, 25.0, 35.0, 45.0, 55.0, 65.0, 75.0)
         for (i in 0 until seqAges.size-1){
             binProb.add(normal.probability(seqAges[i], seqAges[i+1]))
         }
@@ -30,30 +30,31 @@ class MAPmodeling {
         var pnnMeanArr = listOf<Double>()
         var pnnStdArr = listOf<Double>()
 
+        // Repeating stats for Age group 15-25
         if (gender == 0){
-            meanNNMeanArr = listOf<Double>(939.0, 925.0, 923.0, 904.0, 906.0)
-            meanNNStdArr = listOf<Double>(129.0, 138.0, 134.0, 123.0, 123.0)
+            meanNNMeanArr = listOf<Double>(939.0, 939.0, 925.0, 923.0, 904.0, 906.0)
+            meanNNStdArr = listOf<Double>(129.0, 129.0, 138.0, 134.0, 123.0, 123.0)
 
-            sdnnMeanArr = listOf<Double>(50.0, 44.6, 36.8, 32.8, 29.6)
-            sdnnStdArr = listOf<Double>(20.9, 16.8, 14.6, 14.7, 13.2)
+            sdnnMeanArr = listOf<Double>(50.0, 50.0, 44.6, 36.8, 32.8, 29.6)
+            sdnnStdArr = listOf<Double>(20.9, 20.9, 16.8, 14.6, 14.7, 13.2)
 
-            rmssdMeanArr = listOf<Double>(39.7, 32.0, 23.0, 19.9, 19.1)
-            rmssdStdArr = listOf<Double>(19.9, 16.5, 10.9, 11.1, 10.7)
+            rmssdMeanArr = listOf<Double>(39.7, 39.7, 32.0, 23.0, 19.9, 19.1)
+            rmssdStdArr = listOf<Double>(19.9, 19.9, 16.5, 10.9, 11.1, 10.7)
 
-            pnnMeanArr = listOf<Double>(20.0, 13.0, 6.0, 4.0, 4.0)
-            pnnStdArr = listOf<Double>(17.0, 15.0, 8.0, 7.0, 7.0)
+            pnnMeanArr = listOf<Double>(20.0, 20.0, 13.0, 6.0, 4.0, 4.0)
+            pnnStdArr = listOf<Double>(17.0, 17.0, 15.0, 8.0, 7.0, 7.0)
         } else {
-            meanNNMeanArr = listOf<Double>(900.0, 903.0, 903.0, 868.0, 873.0)
-            meanNNStdArr = listOf<Double>(116.0, 122.0, 109.0, 118.0, 110.0)
+            meanNNMeanArr = listOf<Double>(900.0, 900.0, 903.0, 903.0, 868.0, 873.0)
+            meanNNStdArr = listOf<Double>(116.0, 116.0, 122.0, 109.0, 118.0, 110.0)
 
-            sdnnMeanArr = listOf<Double>(48.7, 45.4, 36.9, 30.6, 27.8)
-            sdnnStdArr = listOf<Double>(19.0, 20.5, 13.8, 12.4, 11.8)
+            sdnnMeanArr = listOf<Double>(48.7, 48.7, 45.4, 36.9, 30.6, 27.8)
+            sdnnStdArr = listOf<Double>(19.0, 19.0, 20.5, 13.8, 12.4, 11.8)
 
-            rmssdMeanArr = listOf<Double>(42.9, 35.4, 26.3, 21.4, 19.1)
-            rmssdStdArr = listOf<Double>(22.8, 18.5, 13.6, 11.9, 11.8)
+            rmssdMeanArr = listOf<Double>(42.9, 42.9, 35.4, 26.3, 21.4, 19.1)
+            rmssdStdArr = listOf<Double>(22.8, 22.8, 18.5, 13.6, 11.9, 11.8)
 
-            pnnMeanArr = listOf<Double>(23.0, 16.0, 8.0, 5.0, 4.0)
-            pnnStdArr = listOf<Double>(20.0, 17.0, 12.0, 8.0, 6.0)
+            pnnMeanArr = listOf<Double>(23.0, 23.0, 16.0, 8.0, 5.0, 4.0)
+            pnnStdArr = listOf<Double>(20.0, 20.0, 17.0, 12.0, 8.0, 6.0)
         }
 
         val output = mutableListOf<Double>()

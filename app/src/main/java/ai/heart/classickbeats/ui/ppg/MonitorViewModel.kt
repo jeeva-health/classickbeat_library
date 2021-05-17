@@ -12,6 +12,7 @@ import android.text.format.DateUtils
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.psambit9791.jdsp.misc.UtilMethods.argmax
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -143,14 +144,40 @@ class MonitorViewModel @Inject constructor(
             val bpm = (60 * 1000.0) / meanNN
 
             val mapModeling = MAPmodeling()
-            val binProbsMAP = mapModeling.bAgePrediction(27.0, 0, meanNN, sdnn, rmssd, pnn50)
+
+            //@RITESH: In cAge and gender parameters in lines 152 and 155,
+            // input the age and gender of the user, respectively
+            // gender = 0 is male and 1 is female
+
+            val binProbsMAP = mapModeling.bAgePrediction(27.0, 0, meanNN, sdnn, rmssd, pnn50).toDoubleArray()
+            val bAgeBin = argmax(binProbsMAP, false)
+
             val activeSedantryProb = mapModeling.activeSedantryPrediction(27.0, meanNN, rmssd)
-            val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
+            val sedRatioLog = kotlin.math.log10(activeSedantryProb[0] / activeSedantryProb[1])
+            // sedStars = 0 implies the person is fully active and the sedRatioLog is small
+            // sedStars =  6 implies all stars related to sedantry lifestyle be highlighted
+            // (sedRatioLog, sedStars) = (-1,0); (-0.7,1); (-0.3,2); (0,3); (0.3,4); (0.7, 5); (1, 6)
+            val sedStars = if (sedRatioLog < -1.0)
+                0
+            else if (sedRatioLog >= -1.0 && sedRatioLog < 0.5)
+                1
+            else if (sedRatioLog >= -0.5 && sedRatioLog < -0.15)
+                2
+            else if (sedRatioLog >= -0.15 && sedRatioLog < 0.15)
+                3
+            else if (sedRatioLog >= 0.15 && sedRatioLog < 0.5)
+                4
+            else if (sedRatioLog >= 0.5 && sedRatioLog < 1)
+                5
+            else
+                6
+
+//            val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
 
             Timber.i("BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
-            Timber.i("binProbsMAP: ${Arrays.toString(binProbsMAP.toDoubleArray())}")
+            Timber.i("binProbsMAP: ${Arrays.toString(binProbsMAP)}")
             Timber.i("Sedantry and Active Probs: ${Arrays.toString(activeSedantryProb.toDoubleArray())}")
-            Timber.i("Stress Probs: ${Arrays.toString(stressProb.toDoubleArray())}")
+//            Timber.i("Stress Probs: ${Arrays.toString(stressProb.toDoubleArray())}")
 
             val qualityStr = when {
                 quality <= 1e-5 -> "PERFECT Quality Recording, Good job!"
@@ -174,6 +201,11 @@ class MonitorViewModel @Inject constructor(
                 pnn50 = String.format("%.4f", pnn50).toFloat(),
                 ln = String.format("%.4f", ln).toFloat(),
                 quality = String.format("%.8f", quality).toFloat(),
+                binProbsMAP = binProbsMAP.toList().map { String.format("%.8f", it).toFloat() },
+                bAgeBin = bAgeBin,
+                activeSedantryProb = activeSedantryProb.toList().map { String.format("%.8f", it).toFloat() },
+                sedRatioLog = String.format("%.8f", quality).toFloat(),
+                sedStars = sedStars,
             )
             loginRepository.recordPPG(ppgEntity)
 
