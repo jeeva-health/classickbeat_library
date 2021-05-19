@@ -2,7 +2,7 @@ package ai.heart.classickbeats.model
 
 data class User(
     val fullName: String,
-    val gender: String,
+    val gender: Gender,
     val height: Double,
     val isHeightInches: Boolean = true,
     val weight: Double,

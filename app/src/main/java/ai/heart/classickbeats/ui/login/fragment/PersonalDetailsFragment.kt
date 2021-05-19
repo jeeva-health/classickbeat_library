@@ -5,6 +5,7 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentPersonalDetailsBinding
 import ai.heart.classickbeats.model.Gender
 import ai.heart.classickbeats.model.User
+import ai.heart.classickbeats.shared.formattedinput.MaskedEditText
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.login.LoginViewModel
 import ai.heart.classickbeats.utils.*
@@ -24,7 +25,6 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
 
     private lateinit var navController: NavController
 
-    private var fullName: String? = null
     private var selectedGender: Gender? = null
     private var heightInches: Int = 0
     private var weightInKgs: Int = 0
@@ -42,20 +42,53 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
 
         binding.continueBtn.setSafeOnClickListener {
             val name = binding.nameLayout.editText?.text?.toString() ?: ""
-            val gender = binding.genderLayout.editText?.text?.toString() ?: ""
-            val weight = binding.weightLayout.editText?.text?.toString()?.toDouble() ?: 0.0
-            val height = binding.heightLayout.editText?.text?.toString()?.toDouble() ?: 0.0
-            val dob = binding.dobLayout.editText?.text?.toString() ?: ""
-            val user = User(
-                fullName = name,
-                gender = gender,
-                weight = weight,
-                height = height,
-                dob = dob
-            )
-            if (name.isNullOrBlank()) {
-                showLongToast("Enter valid name")
+            val gender = selectedGender
+            val weight = binding.weightLayout.editText?.text?.toString()?.toDoubleOrNull()
+            val isHeightValid =
+                (binding.heightLayout.editText as MaskedEditText?)?.isValid() ?: false
+            val isDobValid = (binding.dobLayout.editText as MaskedEditText?)?.isValid() ?: false
+
+            var isError = false
+            if (name.isBlank()) {
+                binding.nameLayout.error = "Enter valid name"
+                isError = true
+            }
+
+            if (gender == null) {
+                binding.genderLayout.error = "Gender not selected"
+                isError = true
+            }
+
+            if (weight == null) {
+                binding.weightLayout.error = "Enter valid weight"
+                isError = true
+            }
+
+            if (!isHeightValid) {
+                binding.heightLayout.error = "Enter valid height"
+                isError = true
+            }
+
+            if (!isDobValid) {
+                binding.dobLayout.error = "Enter valid dob"
+                isError = true
+            }
+
+            if (isError) {
+                showLongToast("Invalid details")
             } else {
+                val height =
+                    (binding.heightLayout.editText as MaskedEditText?)?.getParsedText()
+                        ?.toDoubleOrNull()
+                val dob = (binding.dobLayout.editText as MaskedEditText?)?.getParsedText()
+
+                val user = User(
+                    fullName = name,
+                    gender = gender!!,
+                    weight = weight!!,
+                    height = height!!,
+                    dob = dob!!
+                )
                 logInViewModel.registerUser(user)
             }
         }

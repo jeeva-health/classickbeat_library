@@ -8,7 +8,7 @@ import javax.inject.Inject
 class UserOutMapper @Inject constructor() : Mapper<User, UserEntity> {
     override fun map(input: User): UserEntity {
         val fullName = input.fullName
-        val gender = input.gender
+        val gender = input.gender.valStr
         val height = input.height
         val isHeightInches = input.isHeightInches
         val weight = input.weight

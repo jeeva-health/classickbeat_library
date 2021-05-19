@@ -1,7 +1,7 @@
 package ai.heart.classickbeats.model
 
-enum class Gender(val displayStr: String) {
-    MALE("Male"),
-    FEMALE("Female"),
-    OTHERS("Others")
+enum class Gender(val displayStr: String, val valStr: String) {
+    MALE("Male", "M"),
+    FEMALE("Female", "F"),
+    OTHERS("Others", "O")
 }

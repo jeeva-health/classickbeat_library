@@ -79,9 +79,9 @@ class LoginRepository @Inject constructor(
         val response = loginRemoteDataSource.registerUser(userEntity)
         when (response) {
             is Result.Success -> {
-                val user = userInMapper.map(response.data.user!!)
-                loggedInUser = user
-                return Result.Success(user)
+                val outputUser = userInMapper.map(response.data.user!!)
+                loggedInUser = outputUser
+                return Result.Success(outputUser)
             }
             is Result.Error -> Timber.e(response.exception)
             Result.Loading -> throw IllegalStateException("registerUser response invalid state")

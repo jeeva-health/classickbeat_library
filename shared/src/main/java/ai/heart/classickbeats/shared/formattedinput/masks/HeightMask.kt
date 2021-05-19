@@ -24,7 +24,7 @@ class HeightMask : Mask() {
             char.toString().takeIf {
                 maskPattern[index] == POUND
             }.orEmpty()
-        }
+        }.filter { it.isNotEmpty() }
         val heightInches =
             extractedList[0].toInt() * 12 + extractedList[1].toInt() * 10 + extractedList[2].toInt()
         return heightInches.toString()

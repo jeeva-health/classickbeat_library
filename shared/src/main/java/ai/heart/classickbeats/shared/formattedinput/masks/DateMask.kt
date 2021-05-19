@@ -43,7 +43,7 @@ class DateMask : Mask() {
     }
 
     companion object {
-        private const val INPUT_DATE_FORMAT = "MM / dd / yyyy"
+        private const val INPUT_DATE_FORMAT = "dd / MM / yyyy"
         private const val OUTPUT_DATE_FORMAT = "yyyy-MM-dd"
     }
 }
