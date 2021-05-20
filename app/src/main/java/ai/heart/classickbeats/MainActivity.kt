@@ -14,6 +14,11 @@ import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -24,6 +29,10 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     private var binding: ActivityMainBinding? = null
+
+    private lateinit var navController: NavController
+
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     @Inject
     lateinit var sessionManager: SessionManager
@@ -40,6 +49,26 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding?.root
         setContentView(view)
+
+        navController = this.findNavController(R.id.nav_host_fragment)
+        appBarConfiguration =
+            AppBarConfiguration(
+                setOf(
+                    R.id.scanFragment,
+                    R.id.historyHomeFragment,
+                    R.id.loggingHomeFragment,
+                    R.id.wellnessHomeFragment,
+                    R.id.profileHomeFragment
+                )
+            )
+//        setupActionBarWithNavController(
+//            navController,
+//            appBarConfiguration
+//        )
+
+        binding?.bottomNavigation?.setOnNavigationItemReselectedListener { menuItem ->
+            menuItem.onNavDestinationSelected(navController)
+        }
 
         createNotificationChannel()
 

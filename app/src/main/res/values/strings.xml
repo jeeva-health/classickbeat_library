@@ -25,5 +25,10 @@
 
     <string name="playback_channel_name">Playback</string>
     <string name="playback_channel_description">Playback channel</string>
+    <string name="history">History</string>
+    <string name="logging">Logging</string>
+    <string name="heart_rate">Heart Rate</string>
+    <string name="wellness">Wellness</string>
+    <string name="profile">Profile</string>
 
 </resources>

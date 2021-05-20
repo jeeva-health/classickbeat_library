@@ -472,12 +472,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         return ((60 * 1000.0) / ibiAvg).toInt()
     }
 
-    fun updateDynamicHeartRate(bpm: Int) {
+    private fun updateDynamicHeartRate(bpm: Int) {
+        var heartRateStr = "- -"
+        if (bpm >= 0) {
+            heartRateStr = "$bpm"
+        }
         postOnMainLooper {
-            var heartRateStr = "-- bpm"
-            if (bpm >= 0) {
-                heartRateStr = "$bpm bpm"
-            }
             binding.heartRate.text = heartRateStr
         }
     }
