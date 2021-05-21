@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
         android:backgroundTint="@color/transparent"
-        android:src="@drawable/ic_cross"
+        android:src="@drawable/ic_info"
         app:layout_constraintBottom_toBottomOf="@id/heart_rate_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/heart_rate_tv" />
@@ -52,13 +52,16 @@
 
     <FrameLayout
         android:id="@+id/view_finder_layout"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
         android:background="@drawable/bg_circle"
+        android:outlineProvider="background"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45">
 
         <TextureView
             android:id="@+id/view_finder"
@@ -67,20 +70,58 @@
 
     </FrameLayout>
 
+    <ai.heart.classickbeats.ui.widgets.CircleProgressBar
+        android:id="@+id/circular_progress_bar"
+        android:layout_width="284dp"
+        android:layout_height="284dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/view_finder_layout"
+        app:layout_constraintEnd_toEndOf="@id/view_finder_layout"
+        app:layout_constraintStart_toStartOf="@id/view_finder_layout"
+        app:layout_constraintTop_toTopOf="@id/view_finder_layout"
+        app:progress="0"
+        app:progressBarThickness="8dp" />
+
+    <Button
+        android:id="@+id/start_btn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_circle"
+        android:backgroundTint="@color/red"
+        android:text="Start"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/view_finder_layout"
+        app:layout_constraintEnd_toEndOf="@id/view_finder_layout"
+        app:layout_constraintStart_toStartOf="@id/view_finder_layout"
+        app:layout_constraintTop_toTopOf="@id/view_finder_layout" />
+
+    <TextView
+        android:id="@+id/countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="72sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/view_finder_layout"
+        app:layout_constraintEnd_toEndOf="@id/view_finder_layout"
+        app:layout_constraintStart_toStartOf="@id/view_finder_layout"
+        app:layout_constraintTop_toTopOf="@id/view_finder_layout"
+        tools:text="5" />
+
     <TextView
         android:id="@+id/message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="42dp"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.Jeeva.ScanMessage"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view_finder_layout"
-        app:layout_constraintVertical_bias="0.3"
         tools:text="Gently cover the back camera and the flash with your index finger" />
-
 
     <!--    <com.github.mikephil.charting.charts.LineChart-->
     <!--        android:id="@+id/line_chart"-->

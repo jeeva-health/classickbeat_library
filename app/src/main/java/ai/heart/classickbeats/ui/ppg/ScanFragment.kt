@@ -7,7 +7,9 @@ import ai.heart.classickbeats.domain.CameraReading
 import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.graph.RunningGraph
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.ui.widgets.CircleProgressBar
 import ai.heart.classickbeats.utils.postOnMainLooper
+import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.showLongToast
 import ai.heart.classickbeats.utils.viewBinding
 import android.Manifest
@@ -24,6 +26,7 @@ import android.media.ImageReader
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
+import android.text.format.DateUtils
 import android.util.Range
 import android.view.Surface
 import android.view.TextureView
@@ -53,11 +56,13 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private lateinit var navController: NavController
 
-    private lateinit var chart: LineChart
+    private var chart: LineChart? = null
 
     private lateinit var sensorManager: SensorManager
 
     private var mAccelerometer: Sensor? = null
+
+    private var countdownType: Int = 0
 
     private var camera: CameraDevice? = null
     private var session: CameraCaptureSession? = null
@@ -109,6 +114,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private var pixelAnalyzer: PixelAnalyzer? = null
 
     private lateinit var textureView: TextureView
+
+    private lateinit var circularProgressBar: CircleProgressBar
 
     private var width: Int = 0
     private var height: Int = 0
@@ -164,23 +171,48 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         navController = findNavController()
 
         textureView = binding.viewFinder
+        binding.viewFinderLayout.clipToOutline = true
+
+        circularProgressBar = binding.circularProgressBar
 
         textureView.surfaceTextureListener = surfaceTextureListener
 
         startBackgroundThread()
 
+        binding.startBtn.setSafeOnClickListener {
+            it.visibility = View.GONE
+            binding.countdown.visibility = View.VISIBLE
+            binding.viewFinderLayout.visibility = View.VISIBLE
+            circularProgressBar.visibility = View.VISIBLE
+            startInitialCountdown()
+        }
+
         monitorViewModel.timerProgress.observe(viewLifecycleOwner, EventObserver {
             Timber.i("Timer: $it")
             if (it == 0) {
-                if (monitorViewModel.isProcessing) {
-                    endScanning()
+                if (countdownType == 0) {
+                    binding.countdown.visibility = View.GONE
+                    startScanning()
+                } else {
+                    if (monitorViewModel.isProcessing) {
+                        endScanning()
+                    }
                 }
             } else {
-                val progress = ((SCAN_DURATION - it) * 100 / SCAN_DURATION).toFloat()
-//                circularProgressBar.setProgress(progress)
-//                circularProgressBar.invalidate()
+                if (countdownType == 0) {
+                    binding.countdown.text = it.toString()
+                } else {
+                    val progress = ((SCAN_DURATION - it) * 100 / SCAN_DURATION).toFloat()
+                    circularProgressBar.setProgressWithAnimation(progress)
+                    circularProgressBar.invalidate()
+                }
             }
         })
+    }
+
+    private fun startInitialCountdown() {
+        countdownType = 0
+        monitorViewModel.startTimer(5 * DateUtils.SECOND_IN_MILLIS)
     }
 
     private val surfaceTextureListener = object : TextureView.SurfaceTextureListener {
@@ -293,7 +325,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                             updateDynamicHeartRate(dynamicBPM)
                             localTimeLast = monitorViewModel.timeList.last()
                         }
-                        RunningGraph.addEntry(chart, monitorViewModel.mean1List.size, red)
+                        chart?.let {
+                            RunningGraph.addEntry(it, monitorViewModel.mean1List.size, red)
+                        }
                     }
                 }
             }
@@ -382,6 +416,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         if (monitorViewModel.isProcessing) {
             Timber.e("scanning already running")
         } else {
+            countdownType = 1
             monitorViewModel.isProcessing = true
             monitorViewModel.startTimer()
         }
@@ -435,9 +470,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     }
 
     private fun restartReading() {
-        monitorViewModel.resetTimer()
+        monitorViewModel.resetReadings()
         badImageCounter = 0
-        chart.data?.clearValues()
+        chart?.data?.clearValues()
     }
 
     private val handleAcceleration = fun() {

@@ -26,8 +26,7 @@ const val SCAN_DURATION = 33
 @HiltViewModel
 class MonitorViewModel @Inject constructor(
     private val loginRepository: LoginRepository
-) :
-    ViewModel() {
+) : ViewModel() {
 
     var hearRateResult: HeartRateResult? = null
 
@@ -70,15 +69,13 @@ class MonitorViewModel @Inject constructor(
     fun endTimer() {
         timer?.cancel()
         timer = null
+        isTimerRunning = false
     }
 
-    fun resetTimer() {
-        timer?.cancel()
-        timer = null
+    fun resetReadings() {
         mean1List.clear()
         mean2List.clear()
         timeList.clear()
-        isTimerRunning = false
         isProcessing = false
     }
 
@@ -149,7 +146,8 @@ class MonitorViewModel @Inject constructor(
             // input the age and gender of the user, respectively
             // gender = 0 is male and 1 is female
 
-            val binProbsMAP = mapModeling.bAgePrediction(27.0, 0, meanNN, sdnn, rmssd, pnn50).toDoubleArray()
+            val binProbsMAP =
+                mapModeling.bAgePrediction(27.0, 0, meanNN, sdnn, rmssd, pnn50).toDoubleArray()
             val bAgeBin = argmax(binProbsMAP, false)
 
             val activeSedantryProb = mapModeling.activeSedantryPrediction(27.0, meanNN, rmssd)
@@ -203,7 +201,8 @@ class MonitorViewModel @Inject constructor(
                 quality = String.format("%.8f", quality).toFloat(),
                 binProbsMAP = binProbsMAP.toList().map { String.format("%.8f", it).toFloat() },
                 bAgeBin = bAgeBin,
-                activeSedantryProb = activeSedantryProb.toList().map { String.format("%.8f", it).toFloat() },
+                activeSedantryProb = activeSedantryProb.toList()
+                    .map { String.format("%.8f", it).toFloat() },
                 sedRatioLog = String.format("%.8f", quality).toFloat(),
                 sedStars = sedStars,
             )
