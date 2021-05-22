@@ -11,5 +11,6 @@ data class UserEntity(
     @Json(name = "height_inches") val isHeightInches: Boolean?,
     @Json(name = "weight") val weight: Double?,
     @Json(name = "weight_kgs") val isWeightKgs: Boolean?,
-    @Json(name = "dob") val dob: String?
+    @Json(name = "dob") val dob: String?,
+    @Json(name = "is_info_added") val isRegistered: Boolean? = null
 )

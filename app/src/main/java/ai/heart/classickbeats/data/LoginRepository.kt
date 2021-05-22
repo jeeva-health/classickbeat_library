@@ -44,7 +44,7 @@ class LoginRepository @Inject constructor(
         val response = loginRemoteDataSource.login(loginRequest)
         if (response is Result.Success) {
             loggedInUser = userInMapper.map(response.data.user!!)
-            val isUserRegistered = response.data.isRegistered ?: false
+            val isUserRegistered = loggedInUser?.isRegistered ?: false
             val accessToken = response.data.accessToken ?: ""
             val refreshToken = response.data.refreshToken ?: ""
             sessionManager.saveAuthToken(accessToken, refreshToken)

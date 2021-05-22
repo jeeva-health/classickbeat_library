@@ -187,6 +187,11 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             startInitialCountdown()
         }
 
+        binding.info.setSafeOnClickListener {
+            val action = ScanFragmentDirections.actionScanFragmentToHrvInfoBottomSheetFragment()
+            navController.navigate(action)
+        }
+
         monitorViewModel.timerProgress.observe(viewLifecycleOwner, EventObserver {
             Timber.i("Timer: $it")
             if (it == 0) {

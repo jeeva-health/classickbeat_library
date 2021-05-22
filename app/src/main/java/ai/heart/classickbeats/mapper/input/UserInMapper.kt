@@ -17,6 +17,7 @@ class UserInMapper @Inject constructor() : Mapper<UserEntity, User> {
         val height = input.height ?: 70.0
         val isHeightInches = input.isHeightInches ?: true
         val dob = input.dob ?: ""
+        val isRegistered = input.isRegistered ?: false
 
         return User(
             fullName = fullName,
@@ -26,7 +27,8 @@ class UserInMapper @Inject constructor() : Mapper<UserEntity, User> {
             height = height,
             isHeightInches = isHeightInches,
             dob = dob,
-            emailAddress = email
+            emailAddress = email,
+            isRegistered = isRegistered
         )
     }
 }

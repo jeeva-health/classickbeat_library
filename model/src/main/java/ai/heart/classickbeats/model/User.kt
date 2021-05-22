@@ -8,5 +8,6 @@ data class User(
     val weight: Double,
     val isWeightKgs: Boolean = true,
     val dob: String,
-    val emailAddress: String? = null
+    val emailAddress: String? = null,
+    val isRegistered: Boolean = false
 )

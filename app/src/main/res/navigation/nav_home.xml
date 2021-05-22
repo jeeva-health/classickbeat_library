@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_scanFragment_to_calculatingFragment"
             app:destination="@id/calculatingFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_hrvInfoBottomSheetFragment"
+            app:destination="@id/hrvInfoBottomSheetFragment" />
     </fragment>
 
     <fragment
@@ -44,25 +47,36 @@
         android:name="ai.heart.classickbeats.ui.logging.LogBpFragment"
         android:label="fragment_log_bp"
         tools:layout="@layout/fragment_log_bp" />
+
     <fragment
         android:id="@+id/historyHomeFragment"
         android:name="ai.heart.classickbeats.ui.history.HistoryHomeFragment"
         android:label="fragment_history_home"
         tools:layout="@layout/fragment_history_home" />
+
     <fragment
         android:id="@+id/loggingHomeFragment"
         android:name="ai.heart.classickbeats.ui.logging.LoggingHomeFragment"
         android:label="fragment_logging_home"
         tools:layout="@layout/fragment_logging_home" />
+
     <fragment
         android:id="@+id/profileHomeFragment"
         android:name="ai.heart.classickbeats.ui.profile.ProfileHomeFragment"
         android:label="fragment_profile_home"
         tools:layout="@layout/fragment_profile_home" />
+
     <fragment
         android:id="@+id/wellnessHomeFragment"
         android:name="ai.heart.classickbeats.ui.wellness.WellnessHomeFragment"
         android:label="fragment_wellness_home"
         tools:layout="@layout/fragment_wellness_home" />
+
+    <dialog
+        android:id="@+id/hrvInfoBottomSheetFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.HrvInfoBottomSheetFragment"
+        android:label="fragment_hrv_info_bottom_sheet"
+        tools:layout="@layout/fragment_hrv_info_bottom_sheet" />
+
 
 </navigation>
