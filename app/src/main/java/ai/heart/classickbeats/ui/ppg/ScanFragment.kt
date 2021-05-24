@@ -146,9 +146,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as MainActivity).hideSystemUI()
-
         monitorViewModel.testType = navArgs.testType
+
+        (requireActivity() as MainActivity).navigateToHeartRateFragment()
 
         updateDynamicHeartRate(-1)
 
@@ -327,7 +327,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                                 monitorViewModel.mean1List.takeLast(150),
                                 monitorViewModel.timeList.takeLast(150)
                             )
-                            updateDynamicHeartRate(dynamicBPM)
+                            postOnMainLooper {
+                                updateDynamicHeartRate(dynamicBPM)
+                            }
                             localTimeLast = monitorViewModel.timeList.last()
                         }
                         chart?.let {
@@ -517,8 +519,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         if (bpm >= 0) {
             heartRateStr = "$bpm"
         }
-        postOnMainLooper {
-            binding.heartRate.text = heartRateStr
-        }
+        binding.heartRate.text = heartRateStr
     }
 }

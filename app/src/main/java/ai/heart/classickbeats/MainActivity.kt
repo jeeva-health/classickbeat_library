@@ -9,6 +9,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -18,7 +19,6 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -88,6 +88,34 @@ class MainActivity : AppCompatActivity() {
             bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
         }
 
+        binding?.bottomNavigation?.setOnNavigationItemSelectedListener { item: MenuItem ->
+            when (item.itemId) {
+                R.id.historyHomeFragment -> {
+                    navController.navigate(R.id.historyHomeFragment)
+                    true
+                }
+                R.id.loggingHomeFragment -> {
+                    navController.navigate(R.id.loggingHomeFragment)
+                    true
+                }
+                R.id.scanFragment -> {
+                    navController.navigate(R.id.scanFragment)
+                    true
+                }
+                R.id.wellnessHomeFragment -> {
+                    navController.navigate(R.id.wellnessHomeFragment)
+                    true
+                }
+                R.id.profileHomeFragment -> {
+                    navController.navigate(R.id.profileHomeFragment)
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+
         // TODO: fix below code
 //        sessionManager.updateNetworkIssueStatus(true)
 //
@@ -127,6 +155,36 @@ class MainActivity : AppCompatActivity() {
 
     fun setPageTitle() {
 
+    }
+
+    fun navigateToHistoryFragment() {
+        if (binding?.bottomNavigation?.selectedItemId != R.id.historyHomeFragment) {
+            binding?.bottomNavigation?.selectedItemId = R.id.historyHomeFragment
+        }
+    }
+
+    fun navigateToLoggingFragment() {
+        if (binding?.bottomNavigation?.selectedItemId != R.id.loggingHomeFragment) {
+            binding?.bottomNavigation?.selectedItemId = R.id.loggingHomeFragment
+        }
+    }
+
+    fun navigateToHeartRateFragment() {
+        if (binding?.bottomNavigation?.selectedItemId != R.id.scanFragment) {
+            binding?.bottomNavigation?.selectedItemId = R.id.scanFragment
+        }
+    }
+
+    fun navigateToWellnessFragment() {
+        if (binding?.bottomNavigation?.selectedItemId != R.id.wellnessHomeFragment) {
+            binding?.bottomNavigation?.selectedItemId = R.id.wellnessHomeFragment
+        }
+    }
+
+    fun navigateToProfileFragment() {
+        if (binding?.bottomNavigation?.selectedItemId != R.id.profileHomeFragment) {
+            binding?.bottomNavigation?.selectedItemId = R.id.profileHomeFragment
+        }
     }
 
     fun showLoadingBar() {
