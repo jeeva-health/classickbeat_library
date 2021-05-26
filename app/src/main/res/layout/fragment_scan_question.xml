@@ -36,13 +36,187 @@
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--        <TextView-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            app:layout_constraintStart_toStartOf="@id/start_guideline"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/title"-->
-        <!--            android:text="How well did you sleep today?"-->
-        <!--            android:layout_marginTop="24dp"-->
+        <TextView
+            android:id="@+id/sleep_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="How well did you sleep today?"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/sleep_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="4"
+            app:haloRadius="0dp"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/sleep_question"
+            app:thumbColor="@color/white"
+            app:thumbRadius="12dp"
+            app:tickColor="@color/white"
+            app:trackColorInactive="@color/light_grayish_red"
+            app:trackHeight="22dp" />
+
+        <TextView
+            android:id="@+id/mood_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="How is your mood today?"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/sleep_slider" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/mood_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="4"
+            app:haloRadius="0dp"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/mood_question"
+            app:thumbColor="@color/white"
+            app:thumbRadius="12dp"
+            app:tickColor="@color/white"
+            app:trackColorInactive="@color/light_grayish_red"
+            app:trackHeight="22dp" />
+
+        <TextView
+            android:id="@+id/health_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="Do you feel healthy today?"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/mood_slider" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/health_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="4"
+            app:haloRadius="0dp"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/health_question"
+            app:thumbColor="@color/white"
+            app:thumbRadius="12dp"
+            app:tickColor="@color/white"
+            app:trackColorInactive="@color/light_grayish_red"
+            app:trackHeight="22dp" />
+
+        <TextView
+            android:id="@+id/before_scan_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="What were you upto before scanning? "
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/health_slider" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/before_scan_chip_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:chipSpacingHorizontal="16dp"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/before_scan_question"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_eating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:minWidth="96dp"
+                android:text="Eating"
+                android:textAlignment="center"
+                app:checkedIconVisible="true"
+                app:chipCornerRadius="4dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_napping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:minWidth="96dp"
+                android:text="Napping"
+                android:textAlignment="center"
+                app:checkedIconVisible="true"
+                app:chipCornerRadius="4dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_chilling"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:minWidth="96dp"
+                android:text="Chilling"
+                android:textAlignment="center"
+                app:checkedIconVisible="true"
+                app:chipCornerRadius="4dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_woke_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:minWidth="96dp"
+                android:text="Just woke up"
+                android:textAlignment="center"
+                app:checkedIconVisible="true"
+                app:chipCornerRadius="4dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_workout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:minWidth="96dp"
+                android:text="Workout"
+                android:textAlignment="center"
+                app:checkedIconVisible="true"
+                app:chipCornerRadius="4dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:minWidth="96dp"
+                android:text="Other"
+                android:textAlignment="center"
+                app:checkedIconVisible="true"
+                app:chipCornerRadius="4dp" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <Button
+            android:id="@+id/save_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_semi_rounded_rectangle"
+            android:text="Save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/before_scan_chip_group"
+            app:layout_constraintVertical_bias="1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

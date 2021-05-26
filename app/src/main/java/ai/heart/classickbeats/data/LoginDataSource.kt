@@ -17,5 +17,8 @@ interface LoginDataSource {
     suspend fun registerUser(userEntity: UserEntity): Result<RegisterResponse.Data>
 
     // temporary will move out to separate class
-    suspend fun recordPPG(ppgEntity: PPGEntity): Result<Boolean>
+    suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long>
+
+    // temporary will move out to separate class
+    suspend fun updatePPG(ppgId: Long, ppgEntity: PPGEntity): Result<Boolean>
 }

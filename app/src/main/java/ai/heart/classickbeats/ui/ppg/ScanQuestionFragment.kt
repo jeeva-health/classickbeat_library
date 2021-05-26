@@ -18,6 +18,5 @@ class ScanQuestionFragment : Fragment(R.layout.fragment_scan_question) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
     }
 }

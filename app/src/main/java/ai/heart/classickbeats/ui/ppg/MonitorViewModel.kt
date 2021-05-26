@@ -4,9 +4,9 @@ import ai.heart.classickbeats.compute.Filter
 import ai.heart.classickbeats.compute.MAPmodeling
 import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.data.LoginRepository
-import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.result.Event
+import ai.heart.classickbeats.shared.result.data
 import android.os.CountDownTimer
 import android.text.format.DateUtils
 import androidx.lifecycle.MutableLiveData
@@ -36,9 +36,11 @@ class MonitorViewModel @Inject constructor(
 
     val mean2List = mutableListOf<Double>()
 
+    val mean3List = mutableListOf<Double>()
+
     val timeList = mutableListOf<Int>()
 
-    var testType: TestType = TestType.HEART_RATE
+    var ppgId: Long = -1
 
     val outputComputed = MutableLiveData(Event(false))
 
@@ -75,6 +77,7 @@ class MonitorViewModel @Inject constructor(
     fun resetReadings() {
         mean1List.clear()
         mean2List.clear()
+        mean3List.clear()
         timeList.clear()
         isProcessing = false
     }
@@ -88,6 +91,20 @@ class MonitorViewModel @Inject constructor(
     var envelope: List<Double>? = null
     var interpolatedList: List<Double>? = null
     var withoutSpikes: List<Double>? = null
+
+    fun uploadRawData() {
+        viewModelScope.launch {
+            val timeStamp0 = timeList[0]
+            val ppgEntity = PPGEntity(
+                rMeans = mean1List.toList().map { String.format("%.4f", it).toFloat() },
+                gMeans = mean2List.toList().map { String.format("%.4f", it).toFloat() },
+                bMeans = mean3List.toList().map { String.format("%.4f", it).toFloat() },
+                cameraTimeStamps = timeList.toList().map { it.toLong() - timeStamp0.toLong() },
+            )
+            val result = loginRepository.recordPPG(ppgEntity)
+            ppgId = result.data ?: -1
+        }
+    }
 
     fun calculateResult() {
         viewModelScope.launch(Dispatchers.Default) {
@@ -187,12 +204,8 @@ class MonitorViewModel @Inject constructor(
             hearRateResult =
                 HeartRateResult(bpm = bpm, hrv = sdnn, aFib = "Not Detected", quality = qualityStr)
 
-            val timeStamp0 = timeList[0]
             val ppgEntity = PPGEntity(
-                rMeans = mean1List.toList().map { String.format("%.4f", it).toFloat() },
-                gMeans = mean2List.toList().map { String.format("%.4f", it).toFloat() },
                 filteredRMeans = leveledSignal?.map { String.format("%.4f", it).toFloat() },
-                cameraTimeStamps = timeList.toList().map { it.toLong() - timeStamp0.toLong() },
                 hr = String.format("%.4f", bpm).toFloat(),
                 meanNN = String.format("%.4f", meanNN).toFloat(),
                 sdnn = String.format("%.4f", sdnn).toFloat(),
@@ -206,10 +219,11 @@ class MonitorViewModel @Inject constructor(
                 sedRatioLog = String.format("%.8f", quality).toFloat(),
                 sedStars = sedStars,
             )
-            loginRepository.recordPPG(ppgEntity)
+            loginRepository.updatePPG(ppgId, ppgEntity)
 
             mean1List.clear()
             mean2List.clear()
+            mean3List.clear()
             timeList.clear()
             outputComputed.postValue(Event(true))
         }

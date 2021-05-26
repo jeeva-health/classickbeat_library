@@ -4,7 +4,6 @@ import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanBinding
 import ai.heart.classickbeats.domain.CameraReading
-import ai.heart.classickbeats.domain.TestType
 import ai.heart.classickbeats.graph.RunningGraph
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.widgets.CircleProgressBar
@@ -37,7 +36,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.github.mikephil.charting.charts.LineChart
 import com.github.psambit9791.jdsp.signal.peaks.FindPeak
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,8 +49,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private val binding by viewBinding(FragmentScanBinding::bind)
 
     private val monitorViewModel: MonitorViewModel by activityViewModels()
-
-    private val navArgs: ScanFragmentArgs by navArgs()
 
     private lateinit var navController: NavController
 
@@ -145,8 +141,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        monitorViewModel.testType = navArgs.testType
 
         (requireActivity() as MainActivity).navigateToHeartRateFragment()
 
@@ -316,6 +310,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         Timber.i("badImageCounter: $badImageCounter")
                         monitorViewModel.mean1List.add(red)
                         monitorViewModel.mean2List.add(green)
+                        monitorViewModel.mean3List.add(blue)
                         monitorViewModel.timeList.add(timeStamp)
 
                         // Calculating dynamic heart rate
@@ -381,9 +376,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private fun createCaptureRequest(): CaptureRequest? {
         return try {
             val builder = camera!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-            if (navArgs.testType == TestType.HEART_RATE) {
-                builder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH)
-            }
+            builder.set(CaptureRequest.FLASH_MODE, CameraMetadata.FLASH_MODE_TORCH)
             val texture = textureView.surfaceTexture
             texture?.setDefaultBufferSize(width, height)
             builder.set(CaptureRequest.CONTROL_AE_MODE, CameraMetadata.CONTROL_AE_MODE_ON)
@@ -435,17 +428,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         camera?.close()
         stopBackgroundThread()
         monitorViewModel.endTimer()
+        monitorViewModel.uploadRawData()
         monitorViewModel.calculateResult()
-
-        navigateToCalculationFragment()
-
         imageCounter = 0
-    }
-
-    private fun navigateToCalculationFragment() {
-        val action =
-            ScanFragmentDirections.actionScanFragmentToCalculatingFragment()
-        navController.navigate(action)
     }
 
     override fun onDestroy() {

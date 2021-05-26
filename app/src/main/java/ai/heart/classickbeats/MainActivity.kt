@@ -135,8 +135,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding?.apply {
+                when (destination.id) {
+                    R.id.scanFragment, R.id.historyHomeFragment, R.id.loggingHomeFragment, R.id.wellnessHomeFragment, R.id.profileHomeFragment -> {
+                        bottomNavigation.visibility = View.VISIBLE
+                    }
+                    R.id.scanQuestionFragment -> {
+                        bottomNavigation.visibility = View.GONE
+                    }
+                }
+            }
+        }
+
     }
 
     fun hideSystemUI() {

@@ -6,40 +6,22 @@
     app:startDestination="@id/scanFragment">
 
     <fragment
-        android:id="@+id/heartResultFragment"
-        android:name="ai.heart.classickbeats.ui.ppg.HeartResultFragment"
+        android:id="@+id/scanResultFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.ScanResultFragment"
         android:label="fragment_heart_result"
-        tools:layout="@layout/fragment_heart_result">
-        <action
-            android:id="@+id/action_heartResultFragment_to_scanFragment"
-            app:destination="@id/scanFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_scan_result" />
 
     <fragment
         android:id="@+id/scanFragment"
         android:name="ai.heart.classickbeats.ui.ppg.ScanFragment"
         android:label="ScanFragment"
         tools:layout="@layout/fragment_scan">
-        <argument
-            android:name="test_type"
-            android:defaultValue="HEART_RATE"
-            app:argType="ai.heart.classickbeats.domain.TestType" />
-        <action
-            android:id="@+id/action_scanFragment_to_calculatingFragment"
-            app:destination="@id/calculatingFragment" />
         <action
             android:id="@+id/action_scanFragment_to_hrvInfoBottomSheetFragment"
             app:destination="@id/hrvInfoBottomSheetFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/calculatingFragment"
-        android:name="ai.heart.classickbeats.ui.ppg.CalculatingFragment"
-        android:label="fragment_calculating"
-        tools:layout="@layout/fragment_calculating">
         <action
-            android:id="@+id/action_calculatingFragment_to_heartResultFragment"
-            app:destination="@id/heartResultFragment" />
+            android:id="@+id/action_scanFragment_to_scanQuestionFragment"
+            app:destination="@id/scanQuestionFragment" />
     </fragment>
 
     <fragment
@@ -77,6 +59,16 @@
         android:name="ai.heart.classickbeats.ui.ppg.HrvInfoBottomSheetFragment"
         android:label="fragment_hrv_info_bottom_sheet"
         tools:layout="@layout/fragment_hrv_info_bottom_sheet" />
+
+    <fragment
+        android:id="@+id/scanQuestionFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.ScanQuestionFragment"
+        android:label="fragment_scan_question"
+        tools:layout="@layout/fragment_scan_question">
+        <action
+            android:id="@+id/action_scanQuestionFragment_to_scanResultFragment"
+            app:destination="@id/scanResultFragment" />
+    </fragment>
 
 
 </navigation>

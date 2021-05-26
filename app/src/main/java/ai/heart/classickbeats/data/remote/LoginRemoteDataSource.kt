@@ -50,9 +50,19 @@ class LoginRemoteDataSource internal constructor(
             return@withContext Result.Error(registerResponse.error!!)
         }
 
-    override suspend fun recordPPG(ppgEntity: PPGEntity): Result<Boolean> =
+    override suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long> =
         withContext(ioDispatcher) {
             val response = safeApiCall { apiService.recordPPG(ppgEntity) }
+            if (response.succeeded) {
+                val ppgId = response.data?.id ?: -1
+                return@withContext Result.Success(ppgId)
+            }
+            return@withContext Result.Error(response.error)
+        }
+
+    override suspend fun updatePPG(ppgId: Long, ppgEntity: PPGEntity): Result<Boolean> =
+        withContext(ioDispatcher) {
+            val response = safeApiCall { apiService.updatePPG(ppgId, ppgEntity) }
             if (response.succeeded) {
                 return@withContext Result.Success(true)
             }
