@@ -96,9 +96,9 @@ class Masker(
     }
 
     private fun addUpcomingMasks(start: Int) {
-        if (start == 0 && text.isEmpty().not()) {
-            return
-        }
+//        if (start == 0 && text.isEmpty().not()) {
+//            return
+//        }
         var index = text.length
         with(mask) {
             while (index in maskPattern.indices && maskPattern[index] != POUND) {
