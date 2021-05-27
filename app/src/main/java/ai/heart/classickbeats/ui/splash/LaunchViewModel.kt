@@ -7,6 +7,7 @@ import ai.heart.classickbeats.shared.result.data
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,6 +17,7 @@ class LaunchViewModel @Inject constructor(
 ) : ViewModel() {
 
     val launchDestination = liveData {
+        delay(2000)
         val result = onBoardingCompletedUseCase(Unit)
         if (result.data == false) {
             emit(Event(LaunchDestination.ONBOARDING))

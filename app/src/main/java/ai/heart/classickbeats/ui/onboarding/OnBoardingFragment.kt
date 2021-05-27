@@ -4,6 +4,7 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentOnboardingBinding
 import ai.heart.classickbeats.model.OnBoardingModel
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.utils.postOnMainLooper
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import android.os.Bundle
 import android.view.View
@@ -24,6 +25,8 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
     private val onBoardingViewModel: OnBoardingViewModel by activityViewModels()
 
     private var shouldAutoScroll = true
+
+    private var autoScrollCancelled = false
 
     private lateinit var timer: Timer
 
@@ -91,7 +94,16 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
             }
 
             nextBtn.setSafeOnClickListener {
-                onBoardingViewModel.getStartedClick()
+                illustrationVp.apply {
+                    val nextPosition = (currentItem + 1) % 4
+                    if (nextPosition == 0 || autoScrollCancelled) {
+                        onBoardingViewModel.getStartedClick()
+                    } else {
+                        post {
+                            setCurrentItem(nextPosition, true)
+                        }
+                    }
+                }
             }
         }
 
@@ -114,6 +126,15 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
                     val nextPosition = (currentItem + 1) % 4
                     post {
                         setCurrentItem(nextPosition, true)
+                    }
+                    if (nextPosition == 3) {
+                        postOnMainLooper {
+                            autoScrollCancelled = true
+                            binding?.skip?.visibility = View.INVISIBLE
+                            binding?.nextBtn?.text = "Get Started"
+                        }
+                        timer.cancel()
+                        return
                     }
                 }
             }

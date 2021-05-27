@@ -11,7 +11,7 @@
         <item name="colorOnSecondary">@color/black</item>
 
         <!-- Window decor -->
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="android:navigationBarColor">@color/nav_bar_scrim</item>
@@ -25,17 +25,6 @@
         <!-- Text appearances -->
         <item name="textAppearanceBody2">@style/TextAppearance.Jeeva.Body2</item>
         <item name="textAppearanceButton">@style/TextAppearance.Jeeva.Button</item>
-    </style>
-
-    <style name="Base.AppTheme.Login">
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="android:statusBarColor">@color/very_dark_blue</item>
-        <item name="colorPrimaryDark">@color/very_dark_blue</item>
-        <item name="android:colorPrimaryDark">@color/very_dark_blue</item>
-        <item name="backgroundColor">@color/very_dark_blue</item>
-        <item name="android:colorBackground">@color/very_dark_blue</item>
-        <item name="android:windowBackground">@color/very_dark_blue</item>
-        <item name="android:navigationBarColor">@color/very_dark_blue</item>
     </style>
 
     <!--  Button-->

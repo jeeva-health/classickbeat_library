@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/very_dark_blue"
-    android:theme="@style/Base.AppTheme.Login"
     tools:context=".ui.login.fragment.SignUpModeSelectionFragment">
 
     <androidx.constraintlayout.widget.Guideline
