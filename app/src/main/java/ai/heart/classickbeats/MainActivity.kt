@@ -143,10 +143,10 @@ class MainActivity : AppCompatActivity() {
             binding?.apply {
                 when (destination.id) {
                     R.id.scanFragment, R.id.historyHomeFragment, R.id.loggingHomeFragment, R.id.wellnessHomeFragment, R.id.profileHomeFragment -> {
-                        bottomNavigation.visibility = View.VISIBLE
+                        showBottomNavigation()
                     }
                     else -> {
-                        bottomNavigation.visibility = View.GONE
+                        hideBottomNavigation()
                     }
                 }
             }
@@ -165,6 +165,14 @@ class MainActivity : AppCompatActivity() {
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+    }
+
+    fun showBottomNavigation() {
+        binding?.bottomNavigation?.visibility = View.VISIBLE
+    }
+
+    fun hideBottomNavigation() {
+        binding?.bottomNavigation?.visibility = View.GONE
     }
 
     fun setPageTitle() {

@@ -4,6 +4,7 @@ import ai.heart.classickbeats.compute.Filter
 import ai.heart.classickbeats.compute.MAPmodeling
 import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.data.LoginRepository
+import ai.heart.classickbeats.model.HeartRateResult
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
@@ -108,7 +109,6 @@ class MonitorViewModel @Inject constructor(
 
     fun calculateResult() {
         viewModelScope.launch(Dispatchers.Default) {
-
             val windowSize = 101
             val processData = ProcessingData()
             outputList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray())
@@ -226,6 +226,18 @@ class MonitorViewModel @Inject constructor(
             mean3List.clear()
             timeList.clear()
             outputComputed.postValue(Event(true))
+        }
+    }
+
+    fun uploadScanSurvey(sleepRating: Int, moodRating: Int, healthRating: Int, scanState: String) {
+        viewModelScope.launch {
+            val ppgEntity = PPGEntity(
+                sleepRating = sleepRating,
+                moodRating = moodRating,
+                healthRating = healthRating,
+                scanState = scanState
+            )
+            loginRepository.updatePPG(ppgId, ppgEntity)
         }
     }
 }

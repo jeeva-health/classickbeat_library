@@ -44,7 +44,402 @@
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             tools:text="15th April, 2020" />
 
+        <TextView
+            android:id="@+id/heart_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="_ _"
+            android:textAppearance="@style/TextAppearance.Jeeva.HeartRate"
+            app:layout_constraintStart_toStartOf="@id/heart_rate_tv"
+            app:layout_constraintTop_toBottomOf="@id/heart_rate_tv" />
 
+        <TextView
+            android:id="@+id/bpm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="BPM"
+            android:textAppearance="@style/TextAppearance.Jeeva.HeartRate"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/heart_rate"
+            app:layout_constraintStart_toEndOf="@id/heart_rate" />
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:scrollbars="none"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/heart_rate">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/age_card"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="2dp"
+                    android:layout_marginStart="12dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/internal_start_guideline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_begin="18dp" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/internal_end_guideline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_end="18dp" />
+
+                        <TextView
+                            android:id="@+id/age_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:text="Biological Age"
+                            android:textAllCaps="true"
+                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/age_range"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBaseline_toBaselineOf="@id/age_tv"
+                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="35 - 45 years" />
+
+                        <ImageView
+                            android:id="@+id/age_clock_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_clock"
+                            app:layout_constraintEnd_toStartOf="@id/age_clock_2"
+                            app:layout_constraintHorizontal_chainStyle="spread_inside"
+                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/age_tv" />
+
+                        <ImageView
+                            android:id="@+id/age_clock_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_clock"
+                            app:layout_constraintEnd_toStartOf="@id/age_clock_3"
+                            app:layout_constraintHorizontal_chainStyle="spread_inside"
+                            app:layout_constraintStart_toEndOf="@id/age_clock_1"
+                            app:layout_constraintTop_toBottomOf="@id/age_tv" />
+
+                        <ImageView
+                            android:id="@+id/age_clock_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_clock"
+                            app:layout_constraintEnd_toStartOf="@id/age_clock_4"
+                            app:layout_constraintStart_toEndOf="@id/age_clock_2"
+                            app:layout_constraintTop_toBottomOf="@id/age_tv" />
+
+                        <ImageView
+                            android:id="@+id/age_clock_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_clock"
+                            app:layout_constraintEnd_toStartOf="@id/age_clock_5"
+                            app:layout_constraintStart_toEndOf="@id/age_clock_3"
+                            app:layout_constraintTop_toBottomOf="@id/age_tv" />
+
+                        <ImageView
+                            android:id="@+id/age_clock_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_clock"
+                            app:layout_constraintEnd_toStartOf="@id/age_clock_6"
+                            app:layout_constraintStart_toEndOf="@id/age_clock_4"
+                            app:layout_constraintTop_toBottomOf="@id/age_tv" />
+
+                        <ImageView
+                            android:id="@+id/age_clock_6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_clock"
+                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline"
+                            app:layout_constraintStart_toEndOf="@id/age_clock_5"
+                            app:layout_constraintTop_toBottomOf="@id/age_tv" />
+
+                        <TextView
+                            android:id="@+id/younger_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="Younger"
+                            android:textAllCaps="true"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/age_clock_1" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:src="@drawable/ic_line_arrow"
+                            app:layout_constraintBottom_toBottomOf="@id/younger_tv"
+                            app:layout_constraintEnd_toStartOf="@id/older_tv"
+                            app:layout_constraintStart_toEndOf="@id/younger_tv"
+                            app:layout_constraintTop_toTopOf="@id/younger_tv" />
+
+                        <TextView
+                            android:id="@+id/older_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="Older"
+                            android:textAllCaps="true"
+                            android:textSize="12sp"
+                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/age_clock_6" />
+
+                        <TextView
+                            android:id="@+id/age_info"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline"
+                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/younger_tv"
+                            tools:text="You are currently older compared to the world population of your age" />
+
+                        <ImageView
+                            android:id="@+id/more_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="8dp"
+                            android:src="@drawable/ic_info"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/age_info"
+                            app:tint="@color/soft_blue" />
+
+                        <ImageView
+                            android:id="@+id/share"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/ic_share"
+                            app:layout_constraintStart_toEndOf="@id/more_info"
+                            app:layout_constraintTop_toBottomOf="@id/age_info" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/lifestyle_card"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/age_card"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/internal_start_guideline_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_begin="18dp" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/internal_end_guideline_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_end="18dp" />
+
+                        <TextView
+                            android:id="@+id/lifestyle_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:text="Lifestyle"
+                            android:textAllCaps="true"
+                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline_2"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/lifestyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBaseline_toBaselineOf="@id/lifestyle_tv"
+                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline_2"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Sedentary" />
+
+                        <ImageView
+                            android:id="@+id/lifestyle_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_lifestyle"
+                            app:layout_constraintEnd_toStartOf="@id/lifestyle_2"
+                            app:layout_constraintHorizontal_chainStyle="spread_inside"
+                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline_2"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv" />
+
+                        <ImageView
+                            android:id="@+id/lifestyle_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_lifestyle"
+                            app:layout_constraintEnd_toStartOf="@id/lifestyle_3"
+                            app:layout_constraintHorizontal_chainStyle="spread_inside"
+                            app:layout_constraintStart_toEndOf="@id/lifestyle_1"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv" />
+
+                        <ImageView
+                            android:id="@+id/lifestyle_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_lifestyle"
+                            app:layout_constraintEnd_toStartOf="@id/lifestyle_4"
+                            app:layout_constraintStart_toEndOf="@id/lifestyle_2"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv" />
+
+                        <ImageView
+                            android:id="@+id/lifestyle_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_lifestyle"
+                            app:layout_constraintEnd_toStartOf="@id/lifestyle_5"
+                            app:layout_constraintStart_toEndOf="@id/lifestyle_3"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv" />
+
+                        <ImageView
+                            android:id="@+id/lifestyle_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_lifestyle"
+                            app:layout_constraintEnd_toStartOf="@id/lifestyle_6"
+                            app:layout_constraintStart_toEndOf="@id/lifestyle_4"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv" />
+
+                        <ImageView
+                            android:id="@+id/lifestyle_6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_lifestyle"
+                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline_2"
+                            app:layout_constraintStart_toEndOf="@id/lifestyle_5"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv" />
+
+                        <TextView
+                            android:id="@+id/undesirable_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="Undesirable"
+                            android:textAllCaps="true"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline_2"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_1" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:src="@drawable/ic_line_arrow"
+                            app:layout_constraintBottom_toBottomOf="@id/undesirable_tv"
+                            app:layout_constraintEnd_toStartOf="@id/desirable_tv"
+                            app:layout_constraintStart_toEndOf="@id/undesirable_tv"
+                            app:layout_constraintTop_toTopOf="@id/undesirable_tv" />
+
+                        <TextView
+                            android:id="@+id/desirable_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="Desirable"
+                            android:textAllCaps="true"
+                            android:textSize="12sp"
+                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline_2"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_6" />
+
+                        <TextView
+                            android:id="@+id/lifestyle_info"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline_2"
+                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline_2"
+                            app:layout_constraintTop_toBottomOf="@id/undesirable_tv"
+                            tools:text="You have a higher sedentary lifestyle compared to the world population of your age" />
+
+                        <ImageView
+                            android:id="@+id/more_info_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="8dp"
+                            android:src="@drawable/ic_info"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline_2"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_info"
+                            app:tint="@color/soft_blue" />
+
+                        <ImageView
+                            android:id="@+id/share_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/ic_share"
+                            app:layout_constraintStart_toEndOf="@id/more_info_2"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_info" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </HorizontalScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

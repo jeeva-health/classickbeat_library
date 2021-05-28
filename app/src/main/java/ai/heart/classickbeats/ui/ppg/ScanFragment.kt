@@ -7,10 +7,7 @@ import ai.heart.classickbeats.domain.CameraReading
 import ai.heart.classickbeats.graph.RunningGraph
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.widgets.CircleProgressBar
-import ai.heart.classickbeats.utils.postOnMainLooper
-import ai.heart.classickbeats.utils.setSafeOnClickListener
-import ai.heart.classickbeats.utils.showLongToast
-import ai.heart.classickbeats.utils.viewBinding
+import ai.heart.classickbeats.utils.*
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
@@ -151,16 +148,16 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         requestForPermissions()
 
-//        chart = binding.lineChart.apply {
-//            setDrawGridBackground(false)
-//            description.isEnabled = false
-//            axisRight.isEnabled = false
-//            axisLeft.isEnabled = false
-//            xAxis.isEnabled = false
-//            legend.isEnabled = false
-//            setNoDataText("")
-//            invalidate()
-//        }
+        chart = binding.lineChart.apply {
+            setDrawGridBackground(false)
+            description.isEnabled = false
+            axisRight.isEnabled = false
+            axisLeft.isEnabled = false
+            xAxis.isEnabled = false
+            legend.isEnabled = false
+            setNoDataText("")
+            invalidate()
+        }
 
         navController = findNavController()
 
@@ -177,8 +174,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             it.visibility = View.GONE
             binding.countdown.visibility = View.VISIBLE
             binding.viewFinderLayout.visibility = View.VISIBLE
-            circularProgressBar.visibility = View.VISIBLE
             startInitialCountdown()
+            hideBottomNavigation()
         }
 
         binding.info.setSafeOnClickListener {
@@ -431,6 +428,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         monitorViewModel.uploadRawData()
         monitorViewModel.calculateResult()
         imageCounter = 0
+        navigateToScanQuestionFragment()
     }
 
     override fun onDestroy() {
@@ -505,5 +503,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             heartRateStr = "$bpm"
         }
         binding.heartRate.text = heartRateStr
+    }
+
+    private fun navigateToScanQuestionFragment() {
+        val action = ScanFragmentDirections.actionScanFragmentToScanQuestionFragment()
+        navController.navigate(action)
     }
 }

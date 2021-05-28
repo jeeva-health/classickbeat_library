@@ -25,8 +25,6 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as MainActivity).showSystemUI()
-
         navController = findNavController()
     }
 }

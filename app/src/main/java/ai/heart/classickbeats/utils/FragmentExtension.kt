@@ -29,6 +29,14 @@ fun Fragment.postOnMainLooper(call: () -> Unit) {
     }
 }
 
+fun Fragment.showBottomNavigation() {
+    (requireActivity() as MainActivity).showBottomNavigation()
+}
+
+fun Fragment.hideBottomNavigation() {
+    (requireActivity() as MainActivity).hideBottomNavigation()
+}
+
 fun Fragment.showLoadingBar() {
     (requireActivity() as MainActivity).showLoadingBar()
 }

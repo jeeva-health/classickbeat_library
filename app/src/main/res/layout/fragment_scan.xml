@@ -34,7 +34,7 @@
         android:id="@+id/heart_rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="- -"
+        android:text="_ _"
         android:textAppearance="@style/TextAppearance.Jeeva.HeartRate"
         app:layout_constraintStart_toStartOf="@id/heart_rate_tv"
         app:layout_constraintTop_toBottomOf="@id/heart_rate_tv" />
@@ -47,21 +47,20 @@
         android:textAppearance="@style/TextAppearance.Jeeva.HeartRate"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@id/heart_rate"
-        app:layout_constraintStart_toEndOf="@id/heart_rate"
-        app:layout_constraintTop_toTopOf="@id/heart_rate" />
+        app:layout_constraintStart_toEndOf="@id/heart_rate" />
 
     <FrameLayout
         android:id="@+id/view_finder_layout"
-        android:layout_width="240dp"
-        android:layout_height="240dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
         android:background="@drawable/bg_circle"
         android:outlineProvider="background"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45">
+        app:layout_constraintBottom_toBottomOf="@id/circular_progress_bar"
+        app:layout_constraintEnd_toEndOf="@id/circular_progress_bar"
+        app:layout_constraintStart_toStartOf="@id/circular_progress_bar"
+        app:layout_constraintTop_toTopOf="@id/circular_progress_bar">
 
         <TextureView
             android:id="@+id/view_finder"
@@ -72,30 +71,30 @@
 
     <ai.heart.classickbeats.ui.widgets.CircleProgressBar
         android:id="@+id/circular_progress_bar"
-        android:layout_width="284dp"
-        android:layout_height="284dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/view_finder_layout"
-        app:layout_constraintEnd_toEndOf="@id/view_finder_layout"
-        app:layout_constraintStart_toStartOf="@id/view_finder_layout"
-        app:layout_constraintTop_toTopOf="@id/view_finder_layout"
+        android:layout_width="248dp"
+        android:layout_height="248dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45"
         app:progress="0"
         app:progressBarThickness="8dp" />
 
-    <Button
+    <TextView
         android:id="@+id/start_btn"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/bg_circle"
-        android:backgroundTint="@color/red"
+        android:gravity="center"
         android:text="Start"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:textColor="@color/bright_blue_2"
+        android:textSize="60dp"
         app:layout_constraintBottom_toBottomOf="@id/view_finder_layout"
         app:layout_constraintEnd_toEndOf="@id/view_finder_layout"
         app:layout_constraintStart_toStartOf="@id/view_finder_layout"
-        app:layout_constraintTop_toTopOf="@id/view_finder_layout" />
+        app:layout_constraintTop_toTopOf="@id/view_finder_layout"
+        tools:ignore="SpUsage" />
 
     <TextView
         android:id="@+id/countdown"
@@ -104,6 +103,7 @@
         android:textColor="@color/white"
         android:textSize="72sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/view_finder_layout"
         app:layout_constraintEnd_toEndOf="@id/view_finder_layout"
         app:layout_constraintStart_toStartOf="@id/view_finder_layout"
@@ -123,14 +123,13 @@
         app:layout_constraintTop_toBottomOf="@id/view_finder_layout"
         tools:text="Gently cover the back camera and the flash with your index finger" />
 
-    <!--    <com.github.mikephil.charting.charts.LineChart-->
-    <!--        android:id="@+id/line_chart"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_marginVertical="24dp"-->
-    <!--        app:layout_constraintBottom_toTopOf="@id/circular_progress_bar"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/scan_message" />-->
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/line_chart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/view_finder_layout"
+        app:layout_constraintEnd_toEndOf="@id/view_finder_layout"
+        app:layout_constraintStart_toStartOf="@id/view_finder_layout"
+        app:layout_constraintTop_toTopOf="@id/view_finder_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
