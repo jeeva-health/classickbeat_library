@@ -1,6 +1,5 @@
 package ai.heart.classickbeats.ui.ppg
 
-import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanResultBinding
 import ai.heart.classickbeats.utils.viewBinding
@@ -26,5 +25,10 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
+
+        binding.apply {
+            heartRate.text = monitorViewModel.scanResult?.hrv?.toInt().toString()
+
+        }
     }
 }

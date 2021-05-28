@@ -4,7 +4,7 @@ import ai.heart.classickbeats.compute.Filter
 import ai.heart.classickbeats.compute.MAPmodeling
 import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.data.LoginRepository
-import ai.heart.classickbeats.model.HeartRateResult
+import ai.heart.classickbeats.model.ScanResult
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
@@ -29,7 +29,7 @@ class MonitorViewModel @Inject constructor(
     private val loginRepository: LoginRepository
 ) : ViewModel() {
 
-    var hearRateResult: HeartRateResult? = null
+    var scanResult: ScanResult? = null
 
     private var timer: CountDownTimer? = null
 
@@ -201,8 +201,9 @@ class MonitorViewModel @Inject constructor(
                 quality <= 1e-2 -> "Poor Quality Recording. Please record again!"
                 else -> "Extremely poor signal quality. Please record again!"
             }
-            hearRateResult =
-                HeartRateResult(bpm = bpm, hrv = sdnn, aFib = "Not Detected", quality = qualityStr)
+
+            scanResult =
+                ScanResult(bpm = bpm, hrv = sdnn, aFib = "Not Detected", quality = qualityStr)
 
             val ppgEntity = PPGEntity(
                 filteredRMeans = leveledSignal?.map { String.format("%.4f", it).toFloat() },

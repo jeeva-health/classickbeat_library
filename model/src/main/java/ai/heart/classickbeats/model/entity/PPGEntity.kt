@@ -27,11 +27,11 @@ data class PPGEntity(
     val sedRatioLog: Float = 0.0f,
     val sedStars: Int = 0,
     @Json(name = "surveySleep")
-    val sleepRating: Int = -1,
+    val sleepRating: Int? = null,
     @Json(name = "surveyMood")
-    val moodRating: Int = -1,
+    val moodRating: Int? = null,
     @Json(name = "surveyHealthy")
-    val healthRating: Int = -1,
+    val healthRating: Int? = null,
     @Json(name = "surveyState")
-    val scanState: String = ""
+    val scanState: String? = null
 )
