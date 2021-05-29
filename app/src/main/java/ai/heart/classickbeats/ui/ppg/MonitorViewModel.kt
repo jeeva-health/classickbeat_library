@@ -121,8 +121,12 @@ class MonitorViewModel @Inject constructor(
             )
 
             val filt = Filter()
-            withoutSpikes = processData.spikeRemover(centeredSignal!!.toTypedArray())
-            envelope = filt.hilbert(withoutSpikes!!.toTypedArray())
+
+            // Uncomment to use spike remover
+//            withoutSpikes = processData.spikeRemover(centeredSignal!!.toTypedArray())
+//            envelope = filt.hilbert(withoutSpikes!!.toTypedArray())
+
+            envelope = filt.hilbert(centeredSignal!!.toTypedArray())
             val windowSize2 = 101
             envelopeAverage = processData.movAvg(envelope!!.toTypedArray(), windowSize2)
             leveledSignal = processData.leveling(
@@ -165,8 +169,10 @@ class MonitorViewModel @Inject constructor(
 
             val binProbsMAP =
                 mapModeling.bAgePrediction(27.0, 0, meanNN, sdnn, rmssd, pnn50).toDoubleArray()
+            // bAgeBin goes from 0 to 5
             val bAgeBin = argmax(binProbsMAP, false)
 
+            // First and second indices is for sedantry and active probabilities, respectively.
             val activeSedantryProb = mapModeling.activeSedantryPrediction(27.0, meanNN, rmssd)
             val sedRatioLog = kotlin.math.log10(activeSedantryProb[0] / activeSedantryProb[1])
             // sedStars = 0 implies the person is fully active and the sedRatioLog is small
@@ -182,10 +188,14 @@ class MonitorViewModel @Inject constructor(
                 3
             else if (sedRatioLog >= 0.15 && sedRatioLog < 0.5)
                 4
-            else if (sedRatioLog >= 0.5 && sedRatioLog < 1)
-                5
             else
-                6
+                5
+//            else if (sedRatioLog >= 0.5 && sedRatioLog < 1)
+//                5
+//            else
+//                6
+
+            val activeStars = 6 - sedStars
 
 //            val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
 
