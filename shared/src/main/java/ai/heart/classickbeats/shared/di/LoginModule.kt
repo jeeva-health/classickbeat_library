@@ -1,8 +1,8 @@
-package ai.heart.classickbeats.di
+package ai.heart.classickbeats.shared.di
 
-import ai.heart.classickbeats.data.login.LoginApiService
-import ai.heart.classickbeats.data.login.LoginRemoteDataSource
-import ai.heart.classickbeats.network.SessionManager
+import ai.heart.classickbeats.shared.data.login.LoginApiService
+import ai.heart.classickbeats.shared.data.login.LoginRemoteDataSource
+import ai.heart.classickbeats.shared.network.SessionManager
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides

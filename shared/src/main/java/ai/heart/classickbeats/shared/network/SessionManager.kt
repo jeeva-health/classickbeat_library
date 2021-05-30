@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.network
+package ai.heart.classickbeats.shared.network
 
 import ai.heart.classickbeats.model.AuthToken
 import ai.heart.classickbeats.shared.domain.prefs.AuthTokenActionUseCase

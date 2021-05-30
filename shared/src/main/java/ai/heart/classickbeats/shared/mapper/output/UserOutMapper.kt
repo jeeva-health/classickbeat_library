@@ -1,6 +1,6 @@
-package ai.heart.classickbeats.mapper.output
+package ai.heart.classickbeats.shared.mapper.output
 
-import ai.heart.classickbeats.mapper.Mapper
+import ai.heart.classickbeats.shared.mapper.Mapper
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.model.entity.UserEntity
 import javax.inject.Inject

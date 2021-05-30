@@ -2,7 +2,7 @@ package ai.heart.classickbeats
 
 import ai.heart.classickbeats.databinding.ActivityMainBinding
 import ai.heart.classickbeats.model.Constants
-import ai.heart.classickbeats.network.SessionManager
+import ai.heart.classickbeats.shared.network.SessionManager
 import ai.heart.classickbeats.ui.login.LoginViewModel
 import android.app.NotificationChannel
 import android.app.NotificationManager

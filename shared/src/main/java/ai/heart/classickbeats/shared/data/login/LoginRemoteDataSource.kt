@@ -1,12 +1,12 @@
-package ai.heart.classickbeats.data.login
+package ai.heart.classickbeats.shared.data.login
 
-import ai.heart.classickbeats.data.BaseRemoteDataSource
 import ai.heart.classickbeats.model.entity.UserEntity
 import ai.heart.classickbeats.model.request.LoginRequest
 import ai.heart.classickbeats.model.request.RefreshTokenRequest
 import ai.heart.classickbeats.model.response.LoginResponse
 import ai.heart.classickbeats.model.response.RegisterResponse
-import ai.heart.classickbeats.network.SessionManager
+import ai.heart.classickbeats.shared.data.BaseRemoteDataSource
+import ai.heart.classickbeats.shared.network.SessionManager
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.error

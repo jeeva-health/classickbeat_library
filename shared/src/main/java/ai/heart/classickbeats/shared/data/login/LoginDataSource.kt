@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.data.login
+package ai.heart.classickbeats.shared.data.login
 
 import ai.heart.classickbeats.model.entity.UserEntity
 import ai.heart.classickbeats.model.request.LoginRequest

@@ -1,14 +1,14 @@
-package ai.heart.classickbeats.data.login
+package ai.heart.classickbeats.shared.data.login
 
-import ai.heart.classickbeats.BuildConfig
-import ai.heart.classickbeats.mapper.input.UserInMapper
-import ai.heart.classickbeats.mapper.output.UserOutMapper
+import ai.heart.classickbeats.shared.mapper.input.UserInMapper
+import ai.heart.classickbeats.shared.mapper.output.UserOutMapper
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.model.request.LoginRequest
 import ai.heart.classickbeats.model.request.RefreshTokenRequest
-import ai.heart.classickbeats.network.LoginRepositoryHolder
-import ai.heart.classickbeats.network.SessionManager
+import ai.heart.classickbeats.shared.BuildConfig
 import ai.heart.classickbeats.shared.data.prefs.PreferenceStorage
+import ai.heart.classickbeats.shared.network.LoginRepositoryHolder
+import ai.heart.classickbeats.shared.network.SessionManager
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
 import dagger.hilt.android.scopes.ActivityRetainedScoped

@@ -1,6 +1,6 @@
-package ai.heart.classickbeats.network
+package ai.heart.classickbeats.shared.network
 
-import ai.heart.classickbeats.data.login.LoginRepository
+import ai.heart.classickbeats.shared.data.login.LoginRepository
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import javax.inject.Inject
 

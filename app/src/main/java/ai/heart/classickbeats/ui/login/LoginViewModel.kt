@@ -1,10 +1,10 @@
 package ai.heart.classickbeats.ui.login
 
-import ai.heart.classickbeats.data.login.LoginRepository
 import ai.heart.classickbeats.model.Gender
 import ai.heart.classickbeats.model.User
-import ai.heart.classickbeats.network.SessionManager
+import ai.heart.classickbeats.shared.data.login.LoginRepository
 import ai.heart.classickbeats.shared.data.prefs.PreferenceStorage
+import ai.heart.classickbeats.shared.network.SessionManager
 import ai.heart.classickbeats.shared.result.Event
 import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseUser

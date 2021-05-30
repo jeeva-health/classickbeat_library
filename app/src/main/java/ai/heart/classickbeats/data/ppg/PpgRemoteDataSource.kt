@@ -1,8 +1,8 @@
 package ai.heart.classickbeats.data.ppg
 
-import ai.heart.classickbeats.data.BaseRemoteDataSource
 import ai.heart.classickbeats.model.entity.PPGEntity
-import ai.heart.classickbeats.network.SessionManager
+import ai.heart.classickbeats.shared.data.BaseRemoteDataSource
+import ai.heart.classickbeats.shared.network.SessionManager
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.error

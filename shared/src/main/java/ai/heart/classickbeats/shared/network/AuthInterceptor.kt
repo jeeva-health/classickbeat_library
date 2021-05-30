@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.network
+package ai.heart.classickbeats.shared.network
 
 import okhttp3.Interceptor
 import okhttp3.Response

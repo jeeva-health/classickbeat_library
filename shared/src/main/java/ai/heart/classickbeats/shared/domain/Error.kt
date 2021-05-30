@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.domain.model
+package ai.heart.classickbeats.shared.domain
 
 
 import com.squareup.moshi.Json

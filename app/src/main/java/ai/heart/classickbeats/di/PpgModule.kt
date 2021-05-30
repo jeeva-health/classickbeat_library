@@ -2,7 +2,7 @@ package ai.heart.classickbeats.di
 
 import ai.heart.classickbeats.data.ppg.PpgApiService
 import ai.heart.classickbeats.data.ppg.PpgRemoteDataSource
-import ai.heart.classickbeats.network.SessionManager
+import ai.heart.classickbeats.shared.network.SessionManager
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides

@@ -1,8 +1,8 @@
 package ai.heart.classickbeats.di
 
 import ai.heart.classickbeats.BuildConfig
-import ai.heart.classickbeats.network.AccessTokenAuthenticator
-import ai.heart.classickbeats.network.AuthInterceptor
+import ai.heart.classickbeats.shared.network.AccessTokenAuthenticator
+import ai.heart.classickbeats.shared.network.AuthInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

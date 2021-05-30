@@ -1,11 +1,11 @@
-package ai.heart.classickbeats.data.login
+package ai.heart.classickbeats.shared.data.login
 
-import ai.heart.classickbeats.BuildConfig
 import ai.heart.classickbeats.model.entity.UserEntity
 import ai.heart.classickbeats.model.request.LoginRequest
 import ai.heart.classickbeats.model.request.RefreshTokenRequest
 import ai.heart.classickbeats.model.response.LoginResponse
 import ai.heart.classickbeats.model.response.RegisterResponse
+import ai.heart.classickbeats.shared.BuildConfig
 import retrofit2.Response
 import retrofit2.http.*
 

@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.network
+package ai.heart.classickbeats.shared.network
 
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator

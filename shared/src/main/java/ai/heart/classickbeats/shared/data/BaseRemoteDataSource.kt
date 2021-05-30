@@ -1,7 +1,7 @@
-package ai.heart.classickbeats.data
+package ai.heart.classickbeats.shared.data
 
-import ai.heart.classickbeats.domain.model.ErrorJsonAdapter
-import ai.heart.classickbeats.network.SessionManager
+import ai.heart.classickbeats.shared.domain.ErrorJsonAdapter
+import ai.heart.classickbeats.shared.network.SessionManager
 import ai.heart.classickbeats.shared.result.Result
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
