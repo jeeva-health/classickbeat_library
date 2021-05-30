@@ -1,20 +1,15 @@
-package ai.heart.classickbeats.data.remote
+package ai.heart.classickbeats.data.login
 
 import ai.heart.classickbeats.BuildConfig
-import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.model.entity.UserEntity
 import ai.heart.classickbeats.model.request.LoginRequest
 import ai.heart.classickbeats.model.request.RefreshTokenRequest
-import ai.heart.classickbeats.model.response.ApiResponse
 import ai.heart.classickbeats.model.response.LoginResponse
 import ai.heart.classickbeats.model.response.RegisterResponse
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.PATCH
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
-interface ApiService {
+interface LoginApiService {
 
     companion object {
         const val ENDPOINT = BuildConfig.BASE_URL
@@ -28,13 +23,4 @@ interface ApiService {
 
     @PATCH("/user/users/")
     suspend fun register(@Body userEntity: UserEntity): Response<RegisterResponse>
-
-    @POST("record/ppg/add/")
-    suspend fun recordPPG(@Body ppgEntity: PPGEntity): Response<ApiResponse>
-
-    @PATCH("record/ppg/update/{ppgId}")
-    suspend fun updatePPG(
-        @Path("ppgId") ppgId: Long,
-        @Body ppgEntity: PPGEntity
-    ): Response<ApiResponse>
 }

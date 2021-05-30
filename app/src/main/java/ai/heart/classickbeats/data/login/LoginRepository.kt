@@ -1,11 +1,9 @@
-package ai.heart.classickbeats.data
+package ai.heart.classickbeats.data.login
 
 import ai.heart.classickbeats.BuildConfig
-import ai.heart.classickbeats.data.remote.LoginRemoteDataSource
 import ai.heart.classickbeats.mapper.input.UserInMapper
 import ai.heart.classickbeats.mapper.output.UserOutMapper
 import ai.heart.classickbeats.model.User
-import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.model.request.LoginRequest
 import ai.heart.classickbeats.model.request.RefreshTokenRequest
 import ai.heart.classickbeats.network.LoginRepositoryHolder
@@ -88,10 +86,4 @@ class LoginRepository @Inject constructor(
         }
         return Result.Error(response.error)
     }
-
-    suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long> =
-        loginRemoteDataSource.recordPPG(ppgEntity)
-
-    suspend fun updatePPG(ppgId: Long, ppgEntity: PPGEntity): Result<Boolean> =
-        loginRemoteDataSource.updatePPG(ppgId, ppgEntity)
 }

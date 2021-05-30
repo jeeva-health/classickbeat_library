@@ -3,7 +3,7 @@ package ai.heart.classickbeats.ui.ppg
 import ai.heart.classickbeats.compute.Filter
 import ai.heart.classickbeats.compute.MAPmodeling
 import ai.heart.classickbeats.compute.ProcessingData
-import ai.heart.classickbeats.data.LoginRepository
+import ai.heart.classickbeats.data.ppg.PpgRepository
 import ai.heart.classickbeats.model.ScanResult
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.result.Event
@@ -26,7 +26,7 @@ const val SCAN_DURATION = 33
 
 @HiltViewModel
 class MonitorViewModel @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val ppgRepository: PpgRepository
 ) : ViewModel() {
 
     var scanResult: ScanResult? = null
@@ -102,7 +102,7 @@ class MonitorViewModel @Inject constructor(
                 bMeans = mean3List.toList().map { String.format("%.4f", it).toFloat() },
                 cameraTimeStamps = timeList.toList().map { it.toLong() - timeStamp0.toLong() },
             )
-            val result = loginRepository.recordPPG(ppgEntity)
+            val result = ppgRepository.recordPPG(ppgEntity)
             ppgId = result.data ?: -1
         }
     }
@@ -180,7 +180,7 @@ class MonitorViewModel @Inject constructor(
             // (sedRatioLog, sedStars) = (-1,0); (-0.7,1); (-0.3,2); (0,3); (0.3,4); (0.7, 5); (1, 6)
             val sedStars = if (sedRatioLog < -1.0)
                 0
-            else if (sedRatioLog >= -1.0 && sedRatioLog < 0.5)
+            else if (sedRatioLog >= -1.0 && sedRatioLog < -0.5)
                 1
             else if (sedRatioLog >= -0.5 && sedRatioLog < -0.15)
                 2
@@ -196,6 +196,7 @@ class MonitorViewModel @Inject constructor(
 //                6
 
             val activeStars = 6 - sedStars
+            val isActive = sedRatioLog > 0
 
 //            val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
 
@@ -213,7 +214,15 @@ class MonitorViewModel @Inject constructor(
             }
 
             scanResult =
-                ScanResult(bpm = bpm, hrv = sdnn, aFib = "Not Detected", quality = qualityStr)
+                ScanResult(
+                    bpm = bpm,
+                    hrv = sdnn,
+                    aFib = "Not Detected",
+                    quality = qualityStr,
+                    ageBin = bAgeBin,
+                    activeStar = activeStars,
+                    isActive = isActive,
+                )
 
             val ppgEntity = PPGEntity(
                 filteredRMeans = leveledSignal?.map { String.format("%.4f", it).toFloat() },
@@ -230,7 +239,7 @@ class MonitorViewModel @Inject constructor(
                 sedRatioLog = String.format("%.8f", quality).toFloat(),
                 sedStars = sedStars,
             )
-            loginRepository.updatePPG(ppgId, ppgEntity)
+            ppgRepository.updatePPG(ppgId, ppgEntity)
 
             mean1List.clear()
             mean2List.clear()
@@ -248,7 +257,7 @@ class MonitorViewModel @Inject constructor(
                 healthRating = healthRating,
                 scanState = scanState
             )
-            loginRepository.updatePPG(ppgId, ppgEntity)
+            ppgRepository.updatePPG(ppgId, ppgEntity)
         }
     }
 }

@@ -2,6 +2,7 @@ package ai.heart.classickbeats.ui.ppg
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanResultBinding
+import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
 import android.view.View
@@ -26,8 +27,12 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
         navController = findNavController()
 
+        val scanResult = monitorViewModel.scanResult ?: throw Exception("Scan result null")
+        val bioAge = BioAge.values()[scanResult.ageBin].displayStr
+
         binding.apply {
-            heartRate.text = monitorViewModel.scanResult?.hrv?.toInt().toString()
+            heartRate.text = scanResult.hrv.toInt().toString()
+            ageRange.text = bioAge
 
         }
     }

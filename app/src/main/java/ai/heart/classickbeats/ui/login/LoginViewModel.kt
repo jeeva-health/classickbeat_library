@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.ui.login
 
-import ai.heart.classickbeats.data.LoginRepository
+import ai.heart.classickbeats.data.login.LoginRepository
 import ai.heart.classickbeats.model.Gender
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.network.SessionManager

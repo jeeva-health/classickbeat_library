@@ -1,8 +1,6 @@
-package ai.heart.classickbeats.data.remote
+package ai.heart.classickbeats.data.login
 
 import ai.heart.classickbeats.data.BaseRemoteDataSource
-import ai.heart.classickbeats.data.LoginDataSource
-import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.model.entity.UserEntity
 import ai.heart.classickbeats.model.request.LoginRequest
 import ai.heart.classickbeats.model.request.RefreshTokenRequest
@@ -18,14 +16,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class LoginRemoteDataSource internal constructor(
-    private val apiService: ApiService,
+    private val loginApiService: LoginApiService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     sessionManager: SessionManager
 ) : BaseRemoteDataSource(sessionManager), LoginDataSource {
 
     override suspend fun login(loginRequest: LoginRequest): Result<LoginResponse.Data> =
         withContext(ioDispatcher) {
-            val loginResponse = safeApiCall { apiService.login(loginRequest) }
+            val loginResponse = safeApiCall { loginApiService.login(loginRequest) }
             if (loginResponse.succeeded) {
                 return@withContext Result.Success(loginResponse.data!!.responseData!!)
             }
@@ -34,7 +32,8 @@ class LoginRemoteDataSource internal constructor(
 
     override suspend fun refreshToken(refreshTokenRequest: RefreshTokenRequest): Result<LoginResponse.Data> =
         withContext(ioDispatcher) {
-            val refreshTokenResponse = safeApiCall { apiService.refreshToken(refreshTokenRequest) }
+            val refreshTokenResponse =
+                safeApiCall { loginApiService.refreshToken(refreshTokenRequest) }
             if (refreshTokenResponse.succeeded) {
                 return@withContext Result.Success(refreshTokenResponse.data!!.responseData!!)
             }
@@ -43,29 +42,10 @@ class LoginRemoteDataSource internal constructor(
 
     override suspend fun registerUser(userEntity: UserEntity): Result<RegisterResponse.Data> =
         withContext(ioDispatcher) {
-            val registerResponse = safeApiCall { apiService.register(userEntity) }
+            val registerResponse = safeApiCall { loginApiService.register(userEntity) }
             if (registerResponse.succeeded) {
                 return@withContext Result.Success(registerResponse.data!!.responseData)
             }
             return@withContext Result.Error(registerResponse.error!!)
-        }
-
-    override suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long> =
-        withContext(ioDispatcher) {
-            val response = safeApiCall { apiService.recordPPG(ppgEntity) }
-            if (response.succeeded) {
-                val ppgId = response.data?.id ?: -1
-                return@withContext Result.Success(ppgId)
-            }
-            return@withContext Result.Error(response.error)
-        }
-
-    override suspend fun updatePPG(ppgId: Long, ppgEntity: PPGEntity): Result<Boolean> =
-        withContext(ioDispatcher) {
-            val response = safeApiCall { apiService.updatePPG(ppgId, ppgEntity) }
-            if (response.succeeded) {
-                return@withContext Result.Success(true)
-            }
-            return@withContext Result.Error(response.error)
         }
 }

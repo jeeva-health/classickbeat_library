@@ -1,6 +1,5 @@
-package ai.heart.classickbeats.data
+package ai.heart.classickbeats.data.login
 
-import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.model.entity.UserEntity
 import ai.heart.classickbeats.model.request.LoginRequest
 import ai.heart.classickbeats.model.request.RefreshTokenRequest
@@ -15,10 +14,4 @@ interface LoginDataSource {
     suspend fun refreshToken(refreshTokenRequest: RefreshTokenRequest): Result<LoginResponse.Data>
 
     suspend fun registerUser(userEntity: UserEntity): Result<RegisterResponse.Data>
-
-    // temporary will move out to separate class
-    suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long>
-
-    // temporary will move out to separate class
-    suspend fun updatePPG(ppgId: Long, ppgEntity: PPGEntity): Result<Boolean>
 }
