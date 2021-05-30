@@ -1,12 +1,12 @@
 package ai.heart.classickbeats.shared.data.login
 
-import ai.heart.classickbeats.shared.mapper.input.UserInMapper
-import ai.heart.classickbeats.shared.mapper.output.UserOutMapper
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.model.request.LoginRequest
 import ai.heart.classickbeats.model.request.RefreshTokenRequest
 import ai.heart.classickbeats.shared.BuildConfig
 import ai.heart.classickbeats.shared.data.prefs.PreferenceStorage
+import ai.heart.classickbeats.shared.mapper.input.UserInMapper
+import ai.heart.classickbeats.shared.mapper.output.UserOutMapper
 import ai.heart.classickbeats.shared.network.LoginRepositoryHolder
 import ai.heart.classickbeats.shared.network.SessionManager
 import ai.heart.classickbeats.shared.result.Result
@@ -83,6 +83,23 @@ class LoginRepository @Inject constructor(
             }
             is Result.Error -> Timber.e(response.exception)
             Result.Loading -> throw IllegalStateException("registerUser response invalid state")
+        }
+        return Result.Error(response.error)
+    }
+
+    suspend fun getUser(): Result<User> {
+        if (loggedInUser != null) {
+            return Result.Success(loggedInUser!!)
+        }
+        val response = loginRemoteDataSource.getUser()
+        when (response) {
+            is Result.Success -> {
+                val outputUser = userInMapper.map(response.data.user!!)
+                loggedInUser = outputUser
+                return Result.Success(outputUser)
+            }
+            is Result.Error -> Timber.e(response.exception)
+            Result.Loading -> throw IllegalStateException("getUser response invalid state")
         }
         return Result.Error(response.error)
     }

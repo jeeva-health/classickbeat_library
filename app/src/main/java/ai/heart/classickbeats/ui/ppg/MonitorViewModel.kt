@@ -4,10 +4,14 @@ import ai.heart.classickbeats.compute.Filter
 import ai.heart.classickbeats.compute.MAPmodeling
 import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.data.ppg.PpgRepository
+import ai.heart.classickbeats.model.Gender
 import ai.heart.classickbeats.model.ScanResult
 import ai.heart.classickbeats.model.entity.PPGEntity
+import ai.heart.classickbeats.shared.data.login.LoginRepository
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
+import ai.heart.classickbeats.shared.util.computeAge
+import ai.heart.classickbeats.shared.util.toDate
 import android.os.CountDownTimer
 import android.text.format.DateUtils
 import androidx.lifecycle.MutableLiveData
@@ -26,6 +30,7 @@ const val SCAN_DURATION = 33
 
 @HiltViewModel
 class MonitorViewModel @Inject constructor(
+    private val loginRepository: LoginRepository,
     private val ppgRepository: PpgRepository
 ) : ViewModel() {
 
@@ -109,6 +114,11 @@ class MonitorViewModel @Inject constructor(
 
     fun calculateResult() {
         viewModelScope.launch(Dispatchers.Default) {
+
+            val user = loginRepository.getUser().data ?: throw Exception("User data is null")
+            val age = user.dob.toDate()?.computeAge() ?: throw Exception("Unable to compute age")
+            val gender = if (user.gender == Gender.MALE) 0 else 1
+
             val windowSize = 101
             val processData = ProcessingData()
             outputList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray())
@@ -168,7 +178,8 @@ class MonitorViewModel @Inject constructor(
             // gender = 0 is male and 1 is female
 
             val binProbsMAP =
-                mapModeling.bAgePrediction(27.0, 0, meanNN, sdnn, rmssd, pnn50).toDoubleArray()
+                mapModeling.bAgePrediction(age.toDouble(), gender, meanNN, sdnn, rmssd, pnn50)
+                    .toDoubleArray()
             // bAgeBin goes from 0 to 5
             val bAgeBin = argmax(binProbsMAP, false)
 

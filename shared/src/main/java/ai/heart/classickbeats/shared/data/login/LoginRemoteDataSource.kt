@@ -3,6 +3,7 @@ package ai.heart.classickbeats.shared.data.login
 import ai.heart.classickbeats.model.entity.UserEntity
 import ai.heart.classickbeats.model.request.LoginRequest
 import ai.heart.classickbeats.model.request.RefreshTokenRequest
+import ai.heart.classickbeats.model.response.GetUserResponse
 import ai.heart.classickbeats.model.response.LoginResponse
 import ai.heart.classickbeats.model.response.RegisterResponse
 import ai.heart.classickbeats.shared.data.BaseRemoteDataSource
@@ -47,5 +48,14 @@ class LoginRemoteDataSource internal constructor(
                 return@withContext Result.Success(registerResponse.data!!.responseData)
             }
             return@withContext Result.Error(registerResponse.error!!)
+        }
+
+    override suspend fun getUser(): Result<GetUserResponse.Data> =
+        withContext(ioDispatcher) {
+            val response = safeApiCall { loginApiService.fetchUser() }
+            if (response.succeeded) {
+                return@withContext Result.Success(response.data!!.responseData)
+            }
+            return@withContext Result.Error(response.error!!)
         }
 }
