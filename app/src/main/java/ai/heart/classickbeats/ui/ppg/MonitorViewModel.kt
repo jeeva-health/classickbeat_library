@@ -212,7 +212,7 @@ class MonitorViewModel @Inject constructor(
 //                6
 
             val activeStars = 6 - sedStars
-            val isActive = sedRatioLog > 0
+            val isActive = sedRatioLog < 0
 
 //            val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
 
