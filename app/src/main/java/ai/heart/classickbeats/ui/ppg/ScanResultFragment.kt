@@ -3,9 +3,12 @@ package ai.heart.classickbeats.ui.ppg
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanResultBinding
 import ai.heart.classickbeats.model.BioAge
+import ai.heart.classickbeats.model.displayString
 import ai.heart.classickbeats.utils.viewBinding
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -28,12 +31,49 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         navController = findNavController()
 
         val scanResult = monitorViewModel.scanResult ?: throw Exception("Scan result null")
-        val bioAge = BioAge.values()[scanResult.ageBin].displayStr
+        val bioAgeIndex = scanResult.ageBin
+        val bioAge = BioAge.values()[bioAgeIndex]
+        val bioAgeInt = monitorViewModel.userAge ?: bioAge.startRange
+        val bioAgeInfo = when {
+            bioAgeInt < bioAge.startRange -> "You are currently older compared to the world population of your age"
+            bioAgeInt > bioAge.endRange -> "You are currently younger compared to the world population of your age"
+            else -> "You are currently same aged compared to the world population of your age"
+        }
+
+        val activeStarCount = scanResult.activeStar
+        val lifeStyleText = if (scanResult.isActive) "Active" else "Sedentary"
+        val lifeStyleInfoText =
+            "You have a higher sedentary lifestyle compared to the world population of your age"
 
         binding.apply {
-            heartRate.text = scanResult.hrv.toInt().toString()
-            ageRange.text = bioAge
+            val ageClockList =
+                listOf(ageClock1, ageClock2, ageClock3, ageClock4, ageClock5, ageClock6)
+            val lifeStyleList =
+                listOf(lifestyle1, lifestyle2, lifestyle3, lifestyle4, lifestyle5, lifestyle6)
 
+            heartRate.text = scanResult.hrv.toInt().toString()
+
+            ageRange.text = bioAge.displayString()
+            ageInfo.text = bioAgeInfo
+            for (i in 1 until (bioAgeIndex + 1)) {
+                ageClockList[i].setColorFilter(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.bright_blue
+                    ), PorterDuff.Mode.SRC_IN
+                )
+            }
+
+            lifestyle.text = lifeStyleText
+            lifestyleInfo.text = lifeStyleInfoText
+            for (i in 1 until activeStarCount) {
+                lifeStyleList[i].setColorFilter(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.bright_red_2
+                    ), PorterDuff.Mode.SRC_IN
+                )
+            }
         }
     }
 }

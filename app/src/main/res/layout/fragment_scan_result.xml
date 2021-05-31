@@ -147,7 +147,8 @@
                             app:layout_constraintEnd_toStartOf="@id/age_clock_3"
                             app:layout_constraintHorizontal_chainStyle="spread_inside"
                             app:layout_constraintStart_toEndOf="@id/age_clock_1"
-                            app:layout_constraintTop_toBottomOf="@id/age_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/age_tv"
+                            app:tint="@color/very_soft_blue" />
 
                         <ImageView
                             android:id="@+id/age_clock_3"
@@ -157,7 +158,8 @@
                             android:src="@drawable/ic_clock"
                             app:layout_constraintEnd_toStartOf="@id/age_clock_4"
                             app:layout_constraintStart_toEndOf="@id/age_clock_2"
-                            app:layout_constraintTop_toBottomOf="@id/age_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/age_tv"
+                            app:tint="@color/very_soft_blue" />
 
                         <ImageView
                             android:id="@+id/age_clock_4"
@@ -167,7 +169,8 @@
                             android:src="@drawable/ic_clock"
                             app:layout_constraintEnd_toStartOf="@id/age_clock_5"
                             app:layout_constraintStart_toEndOf="@id/age_clock_3"
-                            app:layout_constraintTop_toBottomOf="@id/age_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/age_tv"
+                            app:tint="@color/very_soft_blue" />
 
                         <ImageView
                             android:id="@+id/age_clock_5"
@@ -177,7 +180,8 @@
                             android:src="@drawable/ic_clock"
                             app:layout_constraintEnd_toStartOf="@id/age_clock_6"
                             app:layout_constraintStart_toEndOf="@id/age_clock_4"
-                            app:layout_constraintTop_toBottomOf="@id/age_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/age_tv"
+                            app:tint="@color/very_soft_blue" />
 
                         <ImageView
                             android:id="@+id/age_clock_6"
@@ -187,7 +191,8 @@
                             android:src="@drawable/ic_clock"
                             app:layout_constraintEnd_toEndOf="@id/internal_end_guideline"
                             app:layout_constraintStart_toEndOf="@id/age_clock_5"
-                            app:layout_constraintTop_toBottomOf="@id/age_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/age_tv"
+                            app:tint="@color/very_soft_blue" />
 
                         <TextView
                             android:id="@+id/younger_tv"
@@ -328,7 +333,8 @@
                             app:layout_constraintEnd_toStartOf="@id/lifestyle_3"
                             app:layout_constraintHorizontal_chainStyle="spread_inside"
                             app:layout_constraintStart_toEndOf="@id/lifestyle_1"
-                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv"
+                            app:tint="@color/very_soft_red_2" />
 
                         <ImageView
                             android:id="@+id/lifestyle_3"
@@ -338,7 +344,8 @@
                             android:src="@drawable/ic_lifestyle"
                             app:layout_constraintEnd_toStartOf="@id/lifestyle_4"
                             app:layout_constraintStart_toEndOf="@id/lifestyle_2"
-                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv"
+                            app:tint="@color/very_soft_red_2" />
 
                         <ImageView
                             android:id="@+id/lifestyle_4"
@@ -348,7 +355,8 @@
                             android:src="@drawable/ic_lifestyle"
                             app:layout_constraintEnd_toStartOf="@id/lifestyle_5"
                             app:layout_constraintStart_toEndOf="@id/lifestyle_3"
-                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv"
+                            app:tint="@color/very_soft_red_2" />
 
                         <ImageView
                             android:id="@+id/lifestyle_5"
@@ -358,7 +366,8 @@
                             android:src="@drawable/ic_lifestyle"
                             app:layout_constraintEnd_toStartOf="@id/lifestyle_6"
                             app:layout_constraintStart_toEndOf="@id/lifestyle_4"
-                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv"
+                            app:tint="@color/very_soft_red_2" />
 
                         <ImageView
                             android:id="@+id/lifestyle_6"
@@ -368,7 +377,8 @@
                             android:src="@drawable/ic_lifestyle"
                             app:layout_constraintEnd_toEndOf="@id/internal_end_guideline_2"
                             app:layout_constraintStart_toEndOf="@id/lifestyle_5"
-                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv" />
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv"
+                            app:tint="@color/very_soft_red_2" />
 
                         <TextView
                             android:id="@+id/undesirable_tv"

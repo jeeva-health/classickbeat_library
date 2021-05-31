@@ -48,6 +48,8 @@ class MonitorViewModel @Inject constructor(
 
     var ppgId: Long = -1
 
+    var userAge: Int? = null
+
     val outputComputed = MutableLiveData(Event(false))
 
     var isTimerRunning: Boolean = false
@@ -117,6 +119,7 @@ class MonitorViewModel @Inject constructor(
 
             val user = loginRepository.getUser().data ?: throw Exception("User data is null")
             val age = user.dob.toDate()?.computeAge() ?: throw Exception("Unable to compute age")
+            userAge = age
             val gender = if (user.gender == Gender.MALE) 0 else 1
 
             val windowSize = 101

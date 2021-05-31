@@ -5,3 +5,9 @@ enum class Gender(val displayStr: String, val valStr: String) {
     FEMALE("Female", "F"),
     OTHERS("Others", "O")
 }
+
+fun String.stringToGender() = when (this) {
+    "M" -> Gender.MALE
+    "F" -> Gender.FEMALE
+    else -> Gender.OTHERS
+}

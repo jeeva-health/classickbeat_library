@@ -3,9 +3,11 @@ package ai.heart.classickbeats.data.ppg
 import ai.heart.classickbeats.BuildConfig
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.model.response.ApiResponse
-import ai.heart.classickbeats.model.response.GetAgeResponse
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.PATCH
+import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface PpgApiService {
 
@@ -21,7 +23,4 @@ interface PpgApiService {
         @Path("ppgId") ppgId: Long,
         @Body ppgEntity: PPGEntity
     ): Response<ApiResponse>
-
-    @GET("/user/age")
-    suspend fun getUserAge(): Response<GetAgeResponse>
 }

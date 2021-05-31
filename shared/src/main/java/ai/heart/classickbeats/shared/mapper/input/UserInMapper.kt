@@ -1,9 +1,10 @@
 package ai.heart.classickbeats.shared.mapper.input
 
-import ai.heart.classickbeats.shared.mapper.Mapper
 import ai.heart.classickbeats.model.Gender
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.model.entity.UserEntity
+import ai.heart.classickbeats.model.stringToGender
+import ai.heart.classickbeats.shared.mapper.Mapper
 import javax.inject.Inject
 
 class UserInMapper @Inject constructor() : Mapper<UserEntity, User> {
@@ -11,7 +12,7 @@ class UserInMapper @Inject constructor() : Mapper<UserEntity, User> {
         val fullName = input.fullName ?: ""
         val email = input.emailAddress ?: ""
         val phoneNumber = input.phoneNumber
-        val gender = input.gender?.let { Gender.valueOf(it) } ?: Gender.MALE
+        val gender = input.gender?.stringToGender() ?: Gender.MALE
         val weight = input.weight ?: 70.0
         val isWeightKgs = input.isWeightKgs ?: true
         val height = input.height ?: 70.0
