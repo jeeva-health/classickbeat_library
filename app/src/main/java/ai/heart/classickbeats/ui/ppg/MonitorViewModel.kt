@@ -142,8 +142,10 @@ class MonitorViewModel @Inject constructor(
             envelope = filt.hilbert(centeredSignal!!.toTypedArray())
             val windowSize2 = 101
             envelopeAverage = processData.movAvg(envelope!!.toTypedArray(), windowSize2)
+
+            // Change centeredSignal to withoutSpikes for spike removal
             leveledSignal = processData.leveling(
-                withoutSpikes!!.toTypedArray(),
+                centeredSignal!!.toTypedArray(),
                 envelopeAverage!!.toTypedArray(),
                 windowSize2
             )
