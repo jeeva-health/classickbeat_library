@@ -163,4 +163,36 @@ class MAPmodeling {
         binProbsMAP = binProbsMAP.map{it/binProbsMAP.sum()}
         return binProbsMAP
     }
+
+    fun stressLevelPrediction(sdnnArray: DoubleArray, sdnn: Double): Int {
+        val numEntries = sdnnArray.size
+        if (numEntries < 10){
+            // This means the baseline is not set
+            return 0
+        }
+        var sum = 0.0
+        var sqauredSum = 0.0
+
+        for (sdnn in sdnnArray) {
+            sum += sdnn
+        }
+
+        val mean = sum / numEntries
+
+        for (sdnn in sdnnArray) {
+            sqauredSum += Math.pow(sdnn - mean, 2.0)
+        }
+        val std = Math.sqrt(sqauredSum / numEntries)
+        //Using 0.25 for 40th percentile of the Gaussian
+        val out = if ((sdnn - mean)/std < -0.25)
+            // More than usual stress
+            3
+        else if ((sdnn - mean)/std > 0.25)
+            // Less than usual stress
+            1
+        else
+            // Usual Stress
+            2
+        return out
+    }
 }
