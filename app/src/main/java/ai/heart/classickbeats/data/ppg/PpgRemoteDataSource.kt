@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.data.ppg
 
 import ai.heart.classickbeats.model.entity.PPGEntity
+import ai.heart.classickbeats.model.response.SdnnListResponse
 import ai.heart.classickbeats.shared.data.BaseRemoteDataSource
 import ai.heart.classickbeats.shared.network.SessionManager
 import ai.heart.classickbeats.shared.result.Result
@@ -36,4 +37,13 @@ class PpgRemoteDataSource internal constructor(
             return@withContext Result.Error(response.error)
         }
 
+    override suspend fun getSdnnList(): Result<SdnnListResponse.Data> =
+        withContext(ioDispatcher) {
+            val response = safeApiCall { ppgApiService.getSdnnList() }
+            if (response.succeeded) {
+                val data = response.data!!.responseData
+                return@withContext Result.Success(data)
+            }
+            return@withContext Result.Error(response.error)
+        }
 }

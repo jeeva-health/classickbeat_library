@@ -257,6 +257,8 @@ class MonitorViewModel @Inject constructor(
             )
             ppgRepository.updatePPG(ppgId, ppgEntity)
 
+            val sdnnList = ppgRepository.getSdnnList()
+
             mean1List.clear()
             mean2List.clear()
             mean3List.clear()

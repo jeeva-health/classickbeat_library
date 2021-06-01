@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.data.ppg
 
 import ai.heart.classickbeats.model.entity.PPGEntity
+import ai.heart.classickbeats.model.response.SdnnListResponse
 import ai.heart.classickbeats.shared.result.Result
 
 interface PpgDataSource {
@@ -9,4 +10,5 @@ interface PpgDataSource {
 
     suspend fun updatePPG(ppgId: Long, ppgEntity: PPGEntity): Result<Boolean>
 
+    suspend fun getSdnnList(): Result<SdnnListResponse.Data>
 }

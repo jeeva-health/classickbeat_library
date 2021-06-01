@@ -3,11 +3,9 @@ package ai.heart.classickbeats.data.ppg
 import ai.heart.classickbeats.BuildConfig
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.model.response.ApiResponse
+import ai.heart.classickbeats.model.response.SdnnListResponse
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.PATCH
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface PpgApiService {
 
@@ -23,4 +21,7 @@ interface PpgApiService {
         @Path("ppgId") ppgId: Long,
         @Body ppgEntity: PPGEntity
     ): Response<ApiResponse>
+
+    @GET("sdnn/list")
+    suspend fun getSdnnList(): Response<SdnnListResponse>
 }
