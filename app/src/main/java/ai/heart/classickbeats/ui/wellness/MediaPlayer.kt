@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.media
+package ai.heart.classickbeats.ui.wellness
 
 import android.content.Context
 import android.media.AudioAttributes

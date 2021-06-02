@@ -31,4 +31,8 @@
     <string name="wellness">Wellness</string>
     <string name="profile">Profile</string>
 
+    <string name="meditation_notification_title">Jeeva</string>
+    <string name="meditation_notification_message">Meditation</string>
+    <string name="meditation_ticker_text">Ticker</string>
+
 </resources>

@@ -1,5 +1,7 @@
-package ai.heart.classickbeats.media
+package ai.heart.classickbeats.ui.wellness
 
+import ai.heart.classickbeats.MainActivity
+import ai.heart.classickbeats.R
 import ai.heart.classickbeats.model.Constants
 import android.app.Notification
 import android.app.PendingIntent
@@ -50,7 +52,7 @@ class MediaPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
         super.onCreate()
 
         val pendingIntent: PendingIntent =
-            Intent(this, MeditationActivity::class.java).let { notificationIntent ->
+            Intent(this, MainActivity::class.java).let { notificationIntent ->
                 PendingIntent.getActivity(this, 0, notificationIntent, 0)
             }
         val notification: Notification =
