@@ -18,8 +18,8 @@ import timber.log.Timber
 
 class MediaPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
 
-    var mediaPlayer: MediaPlayer? = null
-    var wifiLock: WifiManager.WifiLock? = null
+    private var mediaPlayer: MediaPlayer? = null
+    private var wifiLock: WifiManager.WifiLock? = null
 
     private fun initMediaPlayer() {
         mediaPlayer = MediaPlayer().apply {
