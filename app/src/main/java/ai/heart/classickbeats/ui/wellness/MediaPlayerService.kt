@@ -11,6 +11,7 @@ import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.wifi.WifiManager
+import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
 import androidx.core.app.NotificationCompat
@@ -20,6 +21,12 @@ class MediaPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
 
     private var mediaPlayer: MediaPlayer? = null
     private var wifiLock: WifiManager.WifiLock? = null
+
+    private val binder: IBinder = MediaPlayerBinder()
+
+    inner class MediaPlayerBinder : Binder() {
+        fun getService(): MediaPlayerService = this@MediaPlayerService
+    }
 
     private fun initMediaPlayer() {
         mediaPlayer = MediaPlayer().apply {
@@ -33,6 +40,13 @@ class MediaPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
             setOnPreparedListener(this@MediaPlayerService)
             setOnErrorListener(this@MediaPlayerService)
             setDataSource("https://public-sound.s3.ap-south-1.amazonaws.com/public.mp3")
+            prepareAsync()
+        }
+    }
+
+    fun setSource(sourceUri: String) {
+        mediaPlayer?.apply {
+            setDataSource(sourceUri)
             prepareAsync()
         }
     }
@@ -68,24 +82,30 @@ class MediaPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
         Timber.i("startForeground called")
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        super.onStartCommand(intent, flags, startId)
-
-        Timber.i("onStartCommand() called")
-
+    fun init() {
         initMediaPlayer()
         acquireWifiLock(applicationContext)
+    }
 
-        return START_NOT_STICKY
+    fun getDuration() = mediaPlayer?.duration
+
+    fun play() {
+        Timber.i("play() called")
+        mediaPlayer?.start()
+    }
+
+    fun pause() {
+        Timber.i("pause() called")
+        mediaPlayer?.pause()
     }
 
     override fun onBind(intent: Intent): IBinder {
-        TODO("Return the communication channel to the service.")
+        return binder
     }
 
     override fun onPrepared(p0: MediaPlayer?) {
         Timber.i("onPrepared() called")
-        mediaPlayer?.start()
+        //mediaPlayer?.start()
     }
 
     override fun onError(p0: MediaPlayer?, p1: Int, p2: Int): Boolean {

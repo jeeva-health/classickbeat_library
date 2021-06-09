@@ -4,6 +4,7 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentWellnessCategoryBinding
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -57,14 +58,16 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
     }
 
     private fun playShortMeditation() {
-        val action =
-            WellnessCategoryFragmentDirections.actionWellnessCategoryFragmentToMediaPlayerFragment()
-        navController.navigate(action)
+        startActivity(Intent(requireActivity(), MediaPlayerActivity::class.java))
+//        val action =
+//            WellnessCategoryFragmentDirections.actionWellnessCategoryFragmentToMediaPlayerFragment()
+//        navController.navigate(action)
     }
 
     private fun playLongMeditation() {
-        val action =
-            WellnessCategoryFragmentDirections.actionWellnessCategoryFragmentToMediaPlayerFragment()
-        navController.navigate(action)
+        startActivity(Intent(requireActivity(), MediaPlayerActivity::class.java))
+//        val action =
+//            WellnessCategoryFragmentDirections.actionWellnessCategoryFragmentToMediaPlayerFragment()
+//        navController.navigate(action)
     }
 }

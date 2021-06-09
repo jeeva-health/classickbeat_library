@@ -3,9 +3,6 @@
     <string name="app_name_small_case">jeeva</string>
     <string name="app_tagline">Health. Longevity. Vitality</string>
 
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main_borrowed">MainActivityBorrowed</string>
     <!--
@@ -23,16 +20,29 @@
     <string name="login_mobile">Login with Mobile</string>
     <string name="login_google">Login with Google</string>
 
+    <!--    Notification-->
     <string name="playback_channel_name">Playback</string>
     <string name="playback_channel_description">Playback channel</string>
+
+    <!--    Navigation menu-->
     <string name="history">History</string>
     <string name="logging">Logging</string>
     <string name="heart_rate">Heart Rate</string>
     <string name="wellness">Wellness</string>
     <string name="profile">Profile</string>
 
+    <!--    Meditation -->
     <string name="meditation_notification_title">Jeeva</string>
     <string name="meditation_notification_message">Meditation</string>
     <string name="meditation_ticker_text">Ticker</string>
+    <string name="listen_to_meditations">Listen to meditations and relax your mind and body</string>
+    <string name="sleep">Sleep</string>
+    <string name="blood_pressure">Blood Pressure</string>
+    <string name="anger">Anger</string>
+    <string name="stress">Stress</string>
+    <string name="immunity">Immunity</string>
+    <string name="listen_short_meditation">Listen to short meditation</string>
+    <string name="listen_long_meditation">Listen to long meditation</string>
+    <string name="press_play">Press play to start</string>
 
 </resources>

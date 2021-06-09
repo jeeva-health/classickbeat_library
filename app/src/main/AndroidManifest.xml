@@ -3,9 +3,7 @@
     package="ai.heart.classickbeats">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -21,6 +19,13 @@
         android:supportsRtl="true"
         android:theme="@style/Base.AppTheme"
         android:usesCleartextTraffic="true">
+
+        <activity android:name=".ui.wellness.MediaPlayerActivity" />
+
+        <service
+            android:name=".ui.wellness.MediaService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity
             android:name=".MainActivity"

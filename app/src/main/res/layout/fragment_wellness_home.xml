@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:fillViewport="true"
     tools:context=".ui.wellness.WellnessHomeFragment">
 
@@ -37,7 +37,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="44dp"
-            android:text="Wellness"
+            android:text="@string/wellness"
             android:textAllCaps="true"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
@@ -49,7 +49,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Listen to meditations and relax your mind and body"
+            android:text="@string/listen_to_meditations"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="20dp"
-                android:text="Sleep"
+                android:text="@string/sleep"
                 android:textColor="@color/white" />
 
         </androidx.cardview.widget.CardView>
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="20dp"
-                android:text="Blood Pressure"
+                android:text="@string/blood_pressure"
                 android:textColor="@color/white" />
 
         </androidx.cardview.widget.CardView>
@@ -139,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="20dp"
-                android:text="Anger"
+                android:text="@string/anger"
                 android:textColor="@color/white" />
 
         </androidx.cardview.widget.CardView>
@@ -166,7 +166,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="20dp"
-                android:text="Stress"
+                android:text="@string/stress"
                 android:textColor="@color/white" />
 
         </androidx.cardview.widget.CardView>
@@ -175,13 +175,16 @@
             android:id="@+id/immunity_card"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/page_navigation_bottom_margin"
             app:cardBackgroundColor="@color/very_dark_blue"
             app:cardCornerRadius="12dp"
             app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="2.9"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/anger_card">
+            app:layout_constraintTop_toBottomOf="@id/anger_card"
+            app:layout_constraintVertical_bias="0">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -195,7 +198,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="16dp"
-                android:text="Immunity"
+                android:text="@string/immunity"
                 android:textColor="@color/white" />
 
         </androidx.cardview.widget.CardView>
