@@ -17,7 +17,7 @@ class LaunchViewModel @Inject constructor(
 ) : ViewModel() {
 
     val launchDestination = liveData {
-        delay(2000)
+        delay(3000)
         val result = onBoardingCompletedUseCase(Unit)
         if (result.data == false) {
             emit(Event(LaunchDestination.ONBOARDING))

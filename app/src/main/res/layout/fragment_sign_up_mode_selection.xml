@@ -21,42 +21,85 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/big_guideline_margin" />
 
-    <include layout="@layout/layout_name_tagline" />
+    <ImageView
+        android:id="@+id/name_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/ic_name_logo"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/phone_sign_in"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/button_height"
-        android:layout_marginBottom="22dp"
-        android:text="@string/sign_up_mobile"
-        android:visibility="gone"
+    <TextView
+        android:id="@+id/tag_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/app_tagline"
+        android:textColor="@color/white"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/name_logo"
+        tools:ignore="SpUsage" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/language_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/google_sign_in"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
-        app:layout_constraintStart_toStartOf="@id/start_guideline" />
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/tag_line"
+        app:layout_constraintVertical_bias="0.43" />
+
+    <TextView
+        android:id="@+id/eng_lang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="EN"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/language_switch"
+        app:layout_constraintEnd_toStartOf="@id/language_switch"
+        app:layout_constraintTop_toTopOf="@id/language_switch" />
+
+    <TextView
+        android:id="@+id/hin_lang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="हि"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/language_switch"
+        app:layout_constraintStart_toEndOf="@id/language_switch"
+        app:layout_constraintTop_toTopOf="@id/language_switch" />
 
     <Button
         android:id="@+id/google_sign_in"
         android:layout_width="0dp"
         android:layout_height="@dimen/button_height"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="42dp"
         android:text="@string/sign_up_google"
         android:theme="@style/ThemeOverlay.Jeeva.ButtonSecondary"
-        app:layout_constraintBottom_toTopOf="@id/sign_in"
+        app:layout_constraintBottom_toTopOf="@id/tnc"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline" />
 
     <TextView
-        android:id="@+id/sign_in"
+        android:id="@+id/tnc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="52dp"
+        android:layout_marginBottom="24dp"
         android:gravity="center"
+        android:text="@string/terms_and_condition"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         android:textColor="@color/white"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
-        app:layout_constraintStart_toStartOf="@id/start_guideline"
-        tools:text="Already have an account? SIGN IN" />
+        app:layout_constraintStart_toStartOf="@id/start_guideline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

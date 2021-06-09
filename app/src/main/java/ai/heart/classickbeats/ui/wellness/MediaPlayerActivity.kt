@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import timber.log.Timber
 
 class MediaPlayerActivity : AppCompatActivity() {
@@ -52,6 +53,9 @@ class MediaPlayerActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Timber.i("onResume() called")
+
+        window.statusBarColor = ContextCompat.getColor(this, R.color.very_dark_blue)
+
         val playButton = findViewById<ImageView>(R.id.play_pause_btn)
         playButton.setSafeOnClickListener(400) {
             if (isPlaying) {

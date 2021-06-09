@@ -93,7 +93,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
                 onBoardingViewModel.getStartedClick()
             }
 
-            nextBtn.setSafeOnClickListener {
+            nextBtn.setOnClickListener {
                 illustrationVp.apply {
                     val nextPosition = (currentItem + 1) % 4
                     if (nextPosition == 0 || autoScrollCancelled) {

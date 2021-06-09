@@ -6,29 +6,10 @@
     app:startDestination="@id/signUpModeSelectionFragment">
 
     <fragment
-        android:id="@+id/loginModeSelectionFragment"
-        android:name="ai.heart.classickbeats.ui.login.fragment.LoginModeSelectionFragment"
-        android:label="fragment_login_mode_selection"
-        tools:layout="@layout/fragment_login_mode_selection">
-        <action
-            android:id="@+id/action_loginModeSelectionFragment_to_signUpModeSelectionFragment"
-            app:destination="@id/signUpModeSelectionFragment" />
-        <action
-            android:id="@+id/action_loginModeSelectionFragment_to_phoneSignUpFragment"
-            app:destination="@id/phoneSignUpFragment" />
-        <action
-            android:id="@+id/action_loginModeSelectionFragment_to_googleSignUpFragment"
-            app:destination="@id/googleSignUpFragment" />
-    </fragment>
-
-    <fragment
         android:id="@+id/signUpModeSelectionFragment"
         android:name="ai.heart.classickbeats.ui.login.fragment.SignUpModeSelectionFragment"
         android:label="fragment_sign_up_mode_selection"
         tools:layout="@layout/fragment_sign_up_mode_selection">
-        <action
-            android:id="@+id/action_signUpModeSelectionFragment_to_loginModeSelectionFragment"
-            app:destination="@id/loginModeSelectionFragment" />
         <action
             android:id="@+id/action_signUpModeSelectionFragment_to_phoneSignUpFragment"
             app:destination="@id/phoneSignUpFragment" />
