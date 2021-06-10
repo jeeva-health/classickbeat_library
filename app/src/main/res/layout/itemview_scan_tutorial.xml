@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="@dimen/big_guideline_margin"
-    tools:background="@drawable/ic_gradient_rect_blue">
+    tools:background="@color/very_dark_blue">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start_guideline"
@@ -22,26 +21,25 @@
         app:layout_constraintGuide_end="@dimen/small_guideline_marin" />
 
     <ImageView
-        android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="86dp"
-        android:layout_marginTop="34dp"
+        android:id="@+id/image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:adjustViewBounds="true"
-        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintBottom_toTopOf="@id/message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_heart_with_beat" />
+        tools:src="@drawable/tutorial_animation_1" />
 
     <TextView
         android:id="@+id/message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:textAppearance="@style/TextAppearance.Jeeva.OnBoardingMessage"
+        android:layout_marginBottom="120dp"
+        android:textAppearance="@style/TextAppearance.Jeeva.ScanTutorialMessage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
-        app:layout_constraintTop_toBottomOf="@id/icon"
-        app:layout_constraintVertical_bias="0"
         tools:text="Scan your pulse with your phone camera" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

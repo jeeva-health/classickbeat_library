@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface PreferenceStorage {
     var onBoardingCompleted: Boolean
+    var firstTimeScanCompleted: Boolean
     var scheduleUiHintsShown: Boolean
     var notificationsPreferenceShown: Boolean
     var preferToReceiveNotifications: Boolean

@@ -47,6 +47,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private val monitorViewModel: MonitorViewModel by activityViewModels()
 
+    private val scanViewModel: ScanViewModel by activityViewModels()
+
     private lateinit var navController: NavController
 
     private var chart: LineChart? = null
@@ -140,6 +142,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         super.onViewCreated(view, savedInstanceState)
 
         (requireActivity() as MainActivity).navigateToHeartRateFragment()
+
+        scanViewModel.isFirstTimeScanCompleted.observe(viewLifecycleOwner, EventObserver {
+            if (!it) {
+                navigateToScanTutorialFragment()
+            }
+        })
 
         updateDynamicHeartRate(-1)
 
@@ -429,6 +437,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         monitorViewModel.calculateResult()
         imageCounter = 0
         navigateToScanQuestionFragment()
+        scanViewModel.setFirstScanCompleted()
     }
 
     override fun onDestroy() {
@@ -507,6 +516,11 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private fun navigateToScanQuestionFragment() {
         val action = ScanFragmentDirections.actionScanFragmentToScanQuestionFragment()
+        navController.navigate(action)
+    }
+
+    private fun navigateToScanTutorialFragment() {
+        val action = ScanFragmentDirections.actionScanFragmentToScanTutorialFragment()
         navController.navigate(action)
     }
 }

@@ -49,6 +49,12 @@ class SharedPreferenceStorage @Inject constructor(
 
     override var onBoardingCompleted by BooleanPreference(prefs, PREF_ONBOARDING, false)
 
+    override var firstTimeScanCompleted by BooleanPreference(
+        prefs,
+        PREF_FIRST_SCAN_COMPLETED,
+        false
+    )
+
     override var scheduleUiHintsShown by BooleanPreference(prefs, PREF_UI_HINTS_SHOWN, false)
 
     override var notificationsPreferenceShown
@@ -111,6 +117,7 @@ class SharedPreferenceStorage @Inject constructor(
         const val PREF_SNACKBAR_IS_STOPPED = "pref_snackbar_is_stopped"
         const val PREF_SEND_USAGE_STATISTICS = "pref_send_usage_statistics"
         const val PREF_DARK_MODE_ENABLED = "pref_dark_mode"
+        const val PREF_FIRST_SCAN_COMPLETED = "pref_first_scan_completed"
         const val USER_NAME = "user_name"
         const val USER_PHONE_NUMBER = "user_number"
         const val USER_EMAIL_ADDRESS = "user_email"

@@ -4,7 +4,6 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentOnboardingBinding
 import ai.heart.classickbeats.model.OnBoardingModel
 import ai.heart.classickbeats.shared.result.EventObserver
-import ai.heart.classickbeats.utils.postOnMainLooper
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import android.os.Bundle
 import android.view.View
@@ -17,6 +16,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import java.util.*
 
 class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
+
+    private val PAGE_COUNT = 4
 
     private var binding: FragmentOnboardingBinding? = null
 
@@ -37,6 +38,13 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
                 if (state == ViewPager2.SCROLL_STATE_DRAGGING) {
                     shouldAutoScroll = false
                 }
+                val currentPosition = binding?.illustrationVp?.currentItem
+                if (currentPosition == PAGE_COUNT - 1) {
+                    autoScrollCancelled = true
+                    binding?.skip?.visibility = View.INVISIBLE
+                    binding?.nextBtn?.text = getString(R.string.get_started)
+                    timer.cancel()
+                }
             }
         }
     }
@@ -48,28 +56,28 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
             OnBoardingModel(
                 R.drawable.ic_heart_with_beat,
                 R.drawable.ic_gradient_rect_blue,
-                "Scan your pulse with your phone camera."
+                getString(R.string.onboarding_message_1)
             )
         )
         sliderData.add(
             OnBoardingModel(
                 R.drawable.ic_plus_bars,
                 R.drawable.ic_gradient_rect_green,
-                "Track and log your daily health vitals"
+                getString(R.string.onboarding_message_2)
             )
         )
         sliderData.add(
             OnBoardingModel(
                 R.drawable.ic_three_bars,
                 R.drawable.ic_gradient_rect_pink,
-                "Get a detailed analysis of your stress levels"
+                getString(R.string.onboarding_message_3)
             )
         )
         sliderData.add(
             OnBoardingModel(
                 R.drawable.ic_flower_design,
                 R.drawable.ic_gradient_rect_orange,
-                "Meditate and stay calm with curated sounds"
+                getString(R.string.onboarding_message_4)
             )
         )
     }
@@ -83,7 +91,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
             ContextCompat.getColor(requireActivity(), R.color.very_dark_blue)
 
         binding?.apply {
-            illustrationVp.adapter = SlidingPagerAdapter(requireContext(), sliderData)
+            illustrationVp.adapter = OnBoardingSlidingPagerAdapter(requireContext(), sliderData)
             illustrationVp.registerOnPageChangeCallback(onPageChangeCallback)
 
             TabLayoutMediator(sliderIndicator, illustrationVp) { _, _ ->
@@ -95,7 +103,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
 
             nextBtn.setOnClickListener {
                 illustrationVp.apply {
-                    val nextPosition = (currentItem + 1) % 4
+                    val nextPosition = (currentItem + 1) % PAGE_COUNT
                     if (nextPosition == 0 || autoScrollCancelled) {
                         onBoardingViewModel.getStartedClick()
                     } else {
@@ -123,18 +131,9 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
                         shouldAutoScroll = true
                         return
                     }
-                    val nextPosition = (currentItem + 1) % 4
+                    val nextPosition = (currentItem + 1) % PAGE_COUNT
                     post {
                         setCurrentItem(nextPosition, true)
-                    }
-                    if (nextPosition == 3) {
-                        postOnMainLooper {
-                            autoScrollCancelled = true
-                            binding?.skip?.visibility = View.INVISIBLE
-                            binding?.nextBtn?.text = "Get Started"
-                        }
-                        timer.cancel()
-                        return
                     }
                 }
             }

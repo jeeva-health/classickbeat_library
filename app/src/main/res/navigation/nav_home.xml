@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_scanFragment_to_scanQuestionFragment"
             app:destination="@id/scanQuestionFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_scanTutorialFragment"
+            app:destination="@id/scanTutorialFragment" />
     </fragment>
 
     <fragment
@@ -94,5 +97,11 @@
         android:name="ai.heart.classickbeats.ui.wellness.MediaPlayerFragment"
         android:label="fragment_media_player"
         tools:layout="@layout/fragment_media_player" />
+
+    <fragment
+        android:id="@+id/scanTutorialFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.ScanTutorialFragment"
+        android:label="fragment_scan_tutorial"
+        tools:layout="@layout/fragment_scan_tutorial" />
 
 </navigation>

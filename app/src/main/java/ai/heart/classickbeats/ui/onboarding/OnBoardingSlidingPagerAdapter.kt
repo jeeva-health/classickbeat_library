@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class SlidingPagerAdapter(
+class OnBoardingSlidingPagerAdapter(
     private val context: Context,
     private val dataList: List<OnBoardingModel>
 ) :
-    RecyclerView.Adapter<SlidingPagerAdapter.ItemViewHolder>() {
+    RecyclerView.Adapter<OnBoardingSlidingPagerAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder.from(parent)

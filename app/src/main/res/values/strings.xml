@@ -17,6 +17,15 @@
     <string name="register">Register</string>
     <string name="sign_up_google">Connect with Google</string>
 
+    <!--    OnBoarding-->
+    <string name="onboarding_message_1">Scan your pulse with your phone camera</string>
+    <string name="onboarding_message_2">Track and log your daily health vitals</string>
+    <string name="onboarding_message_3">Get a detailed analysis of your stress levels</string>
+    <string name="onboarding_message_4">Meditate and stay calm with curated sounds</string>
+    <string name="get_started">Get Started</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+
     <!--    Notification-->
     <string name="playback_channel_name">Playback</string>
     <string name="playback_channel_description">Playback channel</string>
@@ -27,6 +36,14 @@
     <string name="heart_rate">Heart Rate</string>
     <string name="wellness">Wellness</string>
     <string name="profile">Profile</string>
+
+    <!--    Scan tutorial-->
+    <string name="scan_tutorial_1">Place the tip of your finger on the camera and the flash, completely covering them.</string>
+    <string name="scan_tutorial_2"> Apply gentle pressure in order to stabilize the finger.</string>
+    <string name="scan_tutorial_3">If the smartphone is large to hold it in one hand comfortably, use one hand to hold the phone and the other to take the reading.</string>
+    <string name="scan_tutorial_4">Preferably, sit down on a chair and place your arm on a table at roughly the same level as the chest.</string>
+    <string name="scan_tutorial_5">Do not move or talk. Make sure to follow all instructions for accurate results.</string>
+    <string name="start_scan">Start Scanning</string>
 
     <!--    Meditation -->
     <string name="meditation_notification_title">Jeeva</string>
