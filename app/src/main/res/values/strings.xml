@@ -45,6 +45,14 @@
     <string name="scan_tutorial_5">Do not move or talk. Make sure to follow all instructions for accurate results.</string>
     <string name="start_scan">Start Scanning</string>
 
+    <!--    HRV help screen-->
+    <string name="how_to_scan_your_hrv">How to scan your HRV?</string>
+    <string name="hrv_message_1">1. Place the tip of your finger on the camera and the flash, completely covering them.</string>
+    <string name="hrv_message_2">2. Apply gentle pressure in order to stabilize the finger.</string>
+    <string name="hrv_message_3">3. If the smartphone is large to hold it in one hand comfortably, use one hand to hold the phone and the other to take the reading.</string>
+    <string name="hrv_message_4">4. Preferably, sit down on a chair and place your arm on a table at roughly the same level as the chest.</string>
+    <string name="hrv_message_5">5. Do not move or talk. Make sure to follow all instructions for accurate results.</string>
+
     <!--    Meditation -->
     <string name="meditation_notification_title">Jeeva</string>
     <string name="meditation_notification_message">Meditation</string>

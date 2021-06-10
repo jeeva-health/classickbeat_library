@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="12dp"
-            android:text="How to scan your HRV?"
+            android:text="@string/how_to_scan_your_hrv"
             android:textAppearance="@style/TextAppearance.Jeeva.H1"
             app:layout_constraintEnd_toStartOf="@id/close"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
@@ -48,67 +48,109 @@
             app:layout_constraintTop_toTopOf="@id/title" />
 
         <TextView
-            android:id="@+id/index_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="42dp"
-            android:text="1"
-            android:textAppearance="@style/TextAppearance.Jeeva.H1"
-            app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/title" />
-
-        <TextView
             android:id="@+id/message_1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="Place your index finger over the back camera and the flash of your phone"
+            android:layout_marginTop="52dp"
+            android:text="@string/hrv_message_1"
             android:textAppearance="@style/TextAppearance.Jeeva.Body1"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/index_1" />
+            app:layout_constraintTop_toBottomOf="@id/title" />
 
         <ImageView
-            android:id="@+id/image_1_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:src="@drawable/ic_mobile_cover"
-            app:layout_constraintEnd_toEndOf="@id/end_guideline"
-            app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/message_1" />
-
-        <ImageView
-            android:id="@+id/image_1_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_hand_finger"
-            android:translationY="12dp"
-            app:layout_constraintEnd_toEndOf="@id/image_1_1"
-            app:layout_constraintHorizontal_bias="0.4"
-            app:layout_constraintStart_toStartOf="@id/image_1_1"
-            app:layout_constraintTop_toTopOf="@id/image_1_1" />
-
-        <TextView
-            android:id="@+id/index_2"
+            android:id="@+id/image_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="2"
-            android:textAppearance="@style/TextAppearance.Jeeva.H1"
+            android:src="@drawable/ic_hrv_help_1"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/image_1_2" />
+            app:layout_constraintTop_toBottomOf="@id/message_1" />
 
         <TextView
             android:id="@+id/message_2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="Do not move your finger or apply pressure on the camera during the scan"
+            android:layout_marginTop="32dp"
+            android:text="@string/hrv_message_2"
             android:textAppearance="@style/TextAppearance.Jeeva.Body1"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/index_2" />
+            app:layout_constraintTop_toBottomOf="@id/image_1" />
+
+        <ImageView
+            android:id="@+id/image_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/ic_hrv_help_2"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/message_2" />
+
+        <TextView
+            android:id="@+id/message_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/hrv_message_3"
+            android:textAppearance="@style/TextAppearance.Jeeva.Body1"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/image_2" />
+
+        <ImageView
+            android:id="@+id/image_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/ic_hrv_help_3"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/message_3" />
+
+        <TextView
+            android:id="@+id/message_4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/hrv_message_4"
+            android:textAppearance="@style/TextAppearance.Jeeva.Body1"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/image_3" />
+
+        <ImageView
+            android:id="@+id/image_4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/ic_hrv_help_4"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/message_4" />
+
+        <TextView
+            android:id="@+id/message_5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/hrv_message_5"
+            android:textAppearance="@style/TextAppearance.Jeeva.Body1"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/image_4" />
+
+        <ImageView
+            android:id="@+id/image_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/ic_hrv_help_5"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/message_5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
