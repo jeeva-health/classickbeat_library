@@ -109,7 +109,8 @@ class MediaPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
     }
 
     override fun onError(p0: MediaPlayer?, p1: Int, p2: Int): Boolean {
-        TODO("Not yet implemented")
+        Timber.e("onError() WHAT: $p1 EXTRA: $p2");
+        return false;
     }
 
     override fun onDestroy() {

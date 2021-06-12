@@ -59,15 +59,9 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
 
     private fun playShortMeditation() {
         startActivity(Intent(requireActivity(), MediaPlayerActivity::class.java))
-//        val action =
-//            WellnessCategoryFragmentDirections.actionWellnessCategoryFragmentToMediaPlayerFragment()
-//        navController.navigate(action)
     }
 
     private fun playLongMeditation() {
         startActivity(Intent(requireActivity(), MediaPlayerActivity::class.java))
-//        val action =
-//            WellnessCategoryFragmentDirections.actionWellnessCategoryFragmentToMediaPlayerFragment()
-//        navController.navigate(action)
     }
 }

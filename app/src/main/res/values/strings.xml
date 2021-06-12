@@ -16,6 +16,7 @@
     <string name="enter_height">Enter your height</string>
     <string name="register">Register</string>
     <string name="sign_up_google">Connect with Google</string>
+    <string name="terms_and_condition">By continuing you agree to our Terms &amp; Conditions</string>
 
     <!--    OnBoarding-->
     <string name="onboarding_message_1">Scan your pulse with your phone camera</string>
@@ -66,6 +67,15 @@
     <string name="listen_short_meditation">Listen to short meditation</string>
     <string name="listen_long_meditation">Listen to long meditation</string>
     <string name="press_play">Press play to start</string>
-    <string name="terms_and_condition"><![CDATA[By continuing you agree to our Terms & Conditions]]></string>
+    <string name="sleep_meditation_title">Sleep Well</string>
+    <string name="bp_meditation_title">Rest your Heart</string>
+    <string name="anger_meditation_title">Stay Calm</string>
+    <string name="stress_meditation_title">Ease your Mind</string>
+    <string name="immunity_meditation_title">Feel Good</string>
+    <string name="sleep_meditation_message">Nothing feels more frustrating than not getting sleep when you are tired and exhausted. Relax your mind and body with a meditation exercise that puts you into a place of complete rest.</string>
+    <string name="bp_meditation_message">dummy text</string>
+    <string name="anger_meditation_message">dummy text</string>
+    <string name="stress_meditation_message">dummy text</string>
+    <string name="immunity_meditation_message">dummy text</string>
 
 </resources>

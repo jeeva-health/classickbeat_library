@@ -15,10 +15,10 @@
 
     <ImageView
         android:id="@+id/back_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:padding="16dp"
         android:src="@drawable/ic_left_arrow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +27,6 @@
         android:id="@+id/page_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="12sp"
@@ -70,7 +69,7 @@
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toBottomOf="@id/page_title"
-        tools:text="Nothing feels more frustrating than not getting sleep when you are tired and exhausted. Relax your mind and body with  a meditation exercise that puts you into  a place of complete rest." />
+        tools:text="Nothing feels more frustrating than not getting sleep when you are tired and exhausted. Relax your mind and body with a meditation exercise that puts you into a place of complete rest." />
 
     <ImageView
         android:id="@+id/clock"
