@@ -1,0 +1,81 @@
+<resources>
+    <string name="app_name">Jeeva</string>
+    <string name="app_name_small_case">jeeva</string>
+    <string name="app_tagline">Health. Vitality. Longevity</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main_borrowed">MainActivityBorrowed</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="enter_name">Enter your name</string>
+    <string name="enter_age">Enter your age</string>
+    <string name="enter_weight">Enter your weight</string>
+    <string name="enter_height">Enter your height</string>
+    <string name="register">Register</string>
+    <string name="sign_up_google">Connect with Google</string>
+    <string name="terms_and_condition">By continuing you agree to our Terms &amp; Conditions</string>
+
+    <!--    OnBoarding-->
+    <string name="onboarding_message_1">Scan your pulse with your phone camera</string>
+    <string name="onboarding_message_2">Track and log your daily health vitals</string>
+    <string name="onboarding_message_3">Get a detailed analysis of your stress levels</string>
+    <string name="onboarding_message_4">Meditate and stay calm with curated sounds</string>
+    <string name="get_started">Get Started</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+
+    <!--    Notification-->
+    <string name="playback_channel_name">Playback</string>
+    <string name="playback_channel_description">Playback channel</string>
+
+    <!--    Navigation menu-->
+    <string name="history">History</string>
+    <string name="logging">Logging</string>
+    <string name="heart_rate">Heart Rate</string>
+    <string name="wellness">Wellness</string>
+    <string name="profile">Profile</string>
+
+    <!--    Scan tutorial-->
+    <string name="scan_tutorial_1">Place the tip of your finger on the camera and the flash, completely covering them.</string>
+    <string name="scan_tutorial_2"> Apply gentle pressure in order to stabilize the finger.</string>
+    <string name="scan_tutorial_3">If the smartphone is large to hold it in one hand comfortably, use one hand to hold the phone and the other to take the reading.</string>
+    <string name="scan_tutorial_4">Preferably, sit down on a chair and place your arm on a table at roughly the same level as the chest.</string>
+    <string name="scan_tutorial_5">Do not move or talk. Make sure to follow all instructions for accurate results.</string>
+    <string name="start_scan">Start Scanning</string>
+
+    <!--    HRV help screen-->
+    <string name="how_to_scan_your_hrv">How to scan your HRV?</string>
+    <string name="hrv_message_1">1. Place the tip of your finger on the camera and the flash, completely covering them.</string>
+    <string name="hrv_message_2">2. Apply gentle pressure in order to stabilize the finger.</string>
+    <string name="hrv_message_3">3. If the smartphone is large to hold it in one hand comfortably, use one hand to hold the phone and the other to take the reading.</string>
+    <string name="hrv_message_4">4. Preferably, sit down on a chair and place your arm on a table at roughly the same level as the chest.</string>
+    <string name="hrv_message_5">5. Do not move or talk. Make sure to follow all instructions for accurate results.</string>
+
+    <!--    Meditation -->
+    <string name="meditation_notification_title">Jeeva</string>
+    <string name="meditation_notification_message">Meditation</string>
+    <string name="meditation_ticker_text">Ticker</string>
+    <string name="listen_to_meditations">Listen to meditations and relax your mind and body</string>
+    <string name="sleep">Sleep</string>
+    <string name="blood_pressure">Blood Pressure</string>
+    <string name="anger">Anger</string>
+    <string name="stress">Stress</string>
+    <string name="immunity">Immunity</string>
+    <string name="listen_short_meditation">Listen to short meditation</string>
+    <string name="listen_long_meditation">Listen to long meditation</string>
+    <string name="press_play">Press play to start</string>
+    <string name="sleep_meditation_title">Sleep Well</string>
+    <string name="bp_meditation_title">Rest your Heart</string>
+    <string name="anger_meditation_title">Stay Calm</string>
+    <string name="stress_meditation_title">Ease your Mind</string>
+    <string name="immunity_meditation_title">Feel Good</string>
+    <string name="sleep_meditation_message">Nothing feels more frustrating than not getting sleep when you are tired and exhausted. Relax your mind and body with a meditation exercise that puts you into a place of complete rest.</string>
+    <string name="bp_meditation_message">dummy text</string>
+    <string name="anger_meditation_message">dummy text</string>
+    <string name="stress_meditation_message">dummy text</string>
+    <string name="immunity_meditation_message">dummy text</string>
+
+</resources>
