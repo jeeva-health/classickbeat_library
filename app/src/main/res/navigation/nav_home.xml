@@ -43,7 +43,11 @@
         android:id="@+id/loggingHomeFragment"
         android:name="ai.heart.classickbeats.ui.logging.LoggingHomeFragment"
         android:label="fragment_logging_home"
-        tools:layout="@layout/fragment_logging_home" />
+        tools:layout="@layout/fragment_logging_home" >
+        <action
+            android:id="@+id/action_loggingHomeFragment_to_logBpFragment"
+            app:destination="@id/logBpFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/profileHomeFragment"

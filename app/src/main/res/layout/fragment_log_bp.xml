@@ -6,58 +6,67 @@
     android:layout_height="match_parent"
     tools:context=".ui.logging.LogBpFragment">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/bp_enter_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="48dp"
-        android:text="Input your Blood Pressure values:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/bp_systolic"
-        android:layout_width="96dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:hint="mm Hg"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bp_enter_tv" />
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/bp_diastolic"
-        android:layout_width="96dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:hint="mm Hg"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bp_systolic" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/camera"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginEnd="48dp"
-        app:layout_constraintBottom_toBottomOf="@id/bp_diastolic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toEndOf="@id/bp_systolic"
-        app:layout_constraintTop_toTopOf="@id/bp_systolic"
-        app:srcCompat="@drawable/ic_switch_camera" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/submit_btn"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:text="Submit"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/big_guideline_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/big_guideline_margin" />
+
+    <ImageView
+        android:id="@+id/back_arrow"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:padding="16dp"
+        android:src="@drawable/ic_left_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black" />
+
+    <TextView
+        android:id="@+id/page_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Blood Pressure"
+        android:textAllCaps="true"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/back_arrow"
+        app:layout_constraintStart_toEndOf="@id/back_arrow"
+        app:layout_constraintTop_toTopOf="@id/back_arrow" />
+
+    <ImageView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_info"
+        app:layout_constraintBottom_toBottomOf="@id/page_category"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/page_category" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/systolic_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:hint="Full Name"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/page_category">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

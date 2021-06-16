@@ -55,28 +55,28 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
         sliderData.add(
             OnBoardingModel(
                 R.drawable.ic_heart_with_beat,
-                R.drawable.ic_gradient_rect_blue,
+                R.drawable.bg_gradient_rect_blue,
                 getString(R.string.onboarding_message_1)
             )
         )
         sliderData.add(
             OnBoardingModel(
                 R.drawable.ic_plus_bars,
-                R.drawable.ic_gradient_rect_green,
+                R.drawable.bg_gradient_rect_green,
                 getString(R.string.onboarding_message_2)
             )
         )
         sliderData.add(
             OnBoardingModel(
                 R.drawable.ic_three_bars,
-                R.drawable.ic_gradient_rect_pink,
+                R.drawable.bg_gradient_rect_pink,
                 getString(R.string.onboarding_message_3)
             )
         )
         sliderData.add(
             OnBoardingModel(
                 R.drawable.ic_flower_design,
-                R.drawable.ic_gradient_rect_orange,
+                R.drawable.bg_gradient_rect_orange,
                 getString(R.string.onboarding_message_4)
             )
         )
