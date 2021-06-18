@@ -43,10 +43,22 @@
         android:id="@+id/loggingHomeFragment"
         android:name="ai.heart.classickbeats.ui.logging.LoggingHomeFragment"
         android:label="fragment_logging_home"
-        tools:layout="@layout/fragment_logging_home" >
+        tools:layout="@layout/fragment_logging_home">
         <action
             android:id="@+id/action_loggingHomeFragment_to_logBpFragment"
             app:destination="@id/logBpFragment" />
+        <action
+            android:id="@+id/action_loggingHomeFragment_to_logWeightFragment"
+            app:destination="@id/logWeightFragment" />
+        <action
+            android:id="@+id/action_loggingHomeFragment_to_logGlucoseFragment"
+            app:destination="@id/logGlucoseFragment" />
+        <action
+            android:id="@+id/action_loggingHomeFragment_to_logMedicationFragment"
+            app:destination="@id/logMedicationFragment" />
+        <action
+            android:id="@+id/action_loggingHomeFragment_to_logWaterIntakeFragment"
+            app:destination="@id/logWaterIntakeFragment" />
     </fragment>
 
     <fragment
@@ -107,5 +119,47 @@
         android:name="ai.heart.classickbeats.ui.ppg.ScanTutorialFragment"
         android:label="fragment_scan_tutorial"
         tools:layout="@layout/fragment_scan_tutorial" />
+
+    <fragment
+        android:id="@+id/logWeightFragment"
+        android:name="ai.heart.classickbeats.ui.logging.LogWeightFragment"
+        android:label="fragment_log_weight"
+        tools:layout="@layout/fragment_log_weight" />
+
+    <fragment
+        android:id="@+id/logGlucoseFragment"
+        android:name="ai.heart.classickbeats.ui.logging.LogGlucoseFragment"
+        android:label="fragment_log_glucose"
+        tools:layout="@layout/fragment_log_glucose" />
+
+    <fragment
+        android:id="@+id/logMedicationFragment"
+        android:name="ai.heart.classickbeats.ui.logging.LogMedicationFragment"
+        android:label="fragment_log_medication"
+        tools:layout="@layout/fragment_log_medication" />
+
+    <fragment
+        android:id="@+id/logWaterIntakeFragment"
+        android:name="ai.heart.classickbeats.ui.logging.LogWaterIntakeFragment"
+        android:label="fragment_log_water_intake"
+        tools:layout="@layout/fragment_log_water_intake" />
+
+    <dialog
+        android:id="@+id/timePickerFragment"
+        android:name="ai.heart.classickbeats.ui.widgets.TimePickerFragment"
+        android:label="fragment_time_picker_dialog" />
+
+    <dialog
+        android:id="@+id/datePickerFragment"
+        android:name="ai.heart.classickbeats.ui.widgets.DatePickerFragment"
+        android:label="fragment_date_picker_dialog" />
+
+    <action
+        android:id="@+id/action_global_timePickerFragment"
+        app:destination="@id/timePickerFragment" />
+
+    <action
+        android:id="@+id/action_global_datePickerFragment"
+        app:destination="@id/datePickerFragment" />
 
 </navigation>

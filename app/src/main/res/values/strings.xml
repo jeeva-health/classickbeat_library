@@ -78,4 +78,7 @@
     <string name="stress_meditation_message">dummy text</string>
     <string name="immunity_meditation_message">dummy text</string>
 
+    <!--    Logging-->
+    <string name="hint_add_a_comment">Add note about this measurement</string>
+
 </resources>

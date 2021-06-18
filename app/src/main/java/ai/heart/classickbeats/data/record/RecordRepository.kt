@@ -1,6 +1,6 @@
-package ai.heart.classickbeats.data.ppg
+package ai.heart.classickbeats.data.record
 
-import ai.heart.classickbeats.model.entity.PPGEntity
+import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
 import dagger.hilt.android.scopes.ActivityRetainedScoped
@@ -8,8 +8,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @ActivityRetainedScoped
-class PpgRepository @Inject constructor(
-    private val ppgRemoteDataSource: PpgRemoteDataSource,
+class RecordRepository @Inject constructor(
+    private val ppgRemoteDataSource: RecordRemoteDataSource,
 ) {
     suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long> =
         ppgRemoteDataSource.recordPPG(ppgEntity)
@@ -29,4 +29,16 @@ class PpgRepository @Inject constructor(
         }
         return Result.Error(response.error)
     }
+
+    suspend fun recordBloodPressure(bpLogEntity: BpLogEntity): Result<Long> =
+        ppgRemoteDataSource.recordBloodPressure(bpLogEntity)
+
+    suspend fun recordGlucoseLevel(glucoseLogEntity: GlucoseLogEntity): Result<Long> =
+        ppgRemoteDataSource.recordGlucoseLevel(glucoseLogEntity)
+
+    suspend fun recordWaterIntake(waterLogEntity: WaterLogEntity): Result<Long> =
+        ppgRemoteDataSource.recordWaterIntake(waterLogEntity)
+
+    suspend fun recordWeight(weightLogEntity: WeightLogEntity): Result<Long> =
+        ppgRemoteDataSource.recordWeight(weightLogEntity)
 }

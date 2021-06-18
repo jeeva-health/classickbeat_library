@@ -3,7 +3,7 @@ package ai.heart.classickbeats.ui.ppg
 import ai.heart.classickbeats.compute.Filter
 import ai.heart.classickbeats.compute.MAPmodeling
 import ai.heart.classickbeats.compute.ProcessingData
-import ai.heart.classickbeats.data.ppg.PpgRepository
+import ai.heart.classickbeats.data.record.RecordRepository
 import ai.heart.classickbeats.model.Gender
 import ai.heart.classickbeats.model.ScanResult
 import ai.heart.classickbeats.model.entity.PPGEntity
@@ -31,7 +31,7 @@ const val SCAN_DURATION = 33
 @HiltViewModel
 class MonitorViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
-    private val ppgRepository: PpgRepository
+    private val recordRepository: RecordRepository
 ) : ViewModel() {
 
     var scanResult: ScanResult? = null
@@ -109,7 +109,7 @@ class MonitorViewModel @Inject constructor(
                 bMeans = mean3List.toList().map { String.format("%.4f", it).toFloat() },
                 cameraTimeStamps = timeList.toList().map { it.toLong() - timeStamp0.toLong() },
             )
-            val result = ppgRepository.recordPPG(ppgEntity)
+            val result = recordRepository.recordPPG(ppgEntity)
             ppgId = result.data ?: -1
         }
     }
@@ -255,9 +255,9 @@ class MonitorViewModel @Inject constructor(
                 sedRatioLog = String.format("%.8f", quality).toFloat(),
                 sedStars = sedStars,
             )
-            ppgRepository.updatePPG(ppgId, ppgEntity)
+            recordRepository.updatePPG(ppgId, ppgEntity)
 
-            val sdnnList = ppgRepository.getSdnnList()
+            val sdnnList = recordRepository.getSdnnList()
 
             mean1List.clear()
             mean2List.clear()
@@ -275,7 +275,7 @@ class MonitorViewModel @Inject constructor(
                 healthRating = healthRating,
                 scanState = scanState
             )
-            ppgRepository.updatePPG(ppgId, ppgEntity)
+            recordRepository.updatePPG(ppgId, ppgEntity)
         }
     }
 }

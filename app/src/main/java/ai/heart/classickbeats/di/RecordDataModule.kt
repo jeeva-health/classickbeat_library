@@ -1,7 +1,7 @@
 package ai.heart.classickbeats.di
 
-import ai.heart.classickbeats.data.ppg.PpgApiService
-import ai.heart.classickbeats.data.ppg.PpgRemoteDataSource
+import ai.heart.classickbeats.data.record.RecordApiService
+import ai.heart.classickbeats.data.record.RecordRemoteDataSource
 import ai.heart.classickbeats.shared.network.SessionManager
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
@@ -13,31 +13,35 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+
 @InstallIn(ActivityRetainedComponent::class)
 @Module
-object PpgModule {
+object RecordDataModule {
 
     @ActivityRetainedScoped
     @Provides
-    fun providePpgApiService(
+    fun provideRecordApiService(
         moshiConverterFactory: MoshiConverterFactory,
         okHttpClient: OkHttpClient
-    ): PpgApiService {
+    ): RecordApiService {
         return Retrofit.Builder()
             .addConverterFactory(moshiConverterFactory)
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .baseUrl(PpgApiService.ENDPOINT)
+            .baseUrl(RecordApiService.ENDPOINT)
             .client(okHttpClient)
             .build()
-            .create(PpgApiService::class.java)
+            .create(RecordApiService::class.java)
     }
 
     @ActivityRetainedScoped
     @Provides
-    fun providePpgRemoteDataSource(
-        ppgApiService: PpgApiService,
+    fun provideRecordRemoteDataSource(
+        recordApiService: RecordApiService,
         sessionManager: SessionManager
-    ): PpgRemoteDataSource {
-        return PpgRemoteDataSource(ppgApiService = ppgApiService, sessionManager = sessionManager)
+    ): RecordRemoteDataSource {
+        return RecordRemoteDataSource(
+            recordApiService = recordApiService,
+            sessionManager = sessionManager
+        )
     }
 }
