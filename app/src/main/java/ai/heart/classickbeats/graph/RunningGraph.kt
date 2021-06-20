@@ -37,16 +37,16 @@ object RunningGraph {
             data.addDataSet(set)
         }
 
-        val yValue = if (movingList.size < movingAvgWindow) {
-            movingList.add(y)
-            y
-        } else {
-            movingList.removeAt(0)
-            movingList.add(y)
-            movingList.average()
-        }
+//        val yValue = if (movingList.size < movingAvgWindow) {
+//            movingList.add(y)
+//            y
+//        } else {
+//            movingList.removeAt(0)
+//            movingList.add(y)
+//            movingList.average()
+//        }
 
-        data.addEntry(Entry(x.toFloat(), yValue.toFloat()), 0)
+        data.addEntry(Entry(x.toFloat(), y.toFloat()), 0)
         data.notifyDataChanged()
 
         chart.notifyDataSetChanged()

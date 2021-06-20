@@ -14,16 +14,17 @@ class ProcessingData {
     fun median(l: List<Double>) = l.sorted().let { (it[it.size / 2] + it[(it.size - 1) / 2]) / 2 }
 
     fun interpolate(xArray: Array<Int>, yArray: Array<Double>): List<Double> {
+        Timber.i("Sizes X, Y in interpolator $xArray.size, $yArray.size")
         val akimaSplineInterpolator = AkimaSplineInterpolator()
         val x0 = xArray[0]
         val pXDouble = xArray.map { (it - x0).toDouble() }
+        val xMax = pXDouble.maxOrNull()!!
+        Timber.i("Max time recorded: $xMax")
+        val size = (xMax / 10).toInt()
 
         val polynomialFunction =
             akimaSplineInterpolator.interpolate(pXDouble.toDoubleArray(), yArray.toDoubleArray())
-        val xMax = pXDouble.maxOrNull()!!
-        val size = (xMax / 10).toInt()
 
-        Timber.i("Max time recorded: $xMax")
         val inputList = (0 until size).map { it * 10.0 }
         val outputList = mutableListOf<Double>()
         for (i in inputList) {
@@ -88,21 +89,32 @@ class ProcessingData {
 //        }
     }
 
+    fun runningMovAvg(value: Double, windowSize: Int, movingWindow: MutableList<Double>, movingAvg: MutableList<Double>){
+        if (movingWindow.size < windowSize-1) {
+            movingWindow.add(value)
+        } else {
+            movingWindow.add(value)
+            movingAvg.add(movingWindow.average())
+            movingWindow.removeAt(0)
+        }
+    }
+
+    fun runningCentering(X: MutableList<Double>, movAvg: MutableList<Double>, output: MutableList<Double>, windowSize: Int){
+        val offset = (windowSize - 1) / 2
+        if (X.size > offset && output.size == movAvg.size-1){
+            output.add(X.last() - movAvg.last())
+        }
+    }
+
     fun centering(X: Array<Double>, movAvg: Array<Double>, window_size: Int): List<Double> {
         val offset = (window_size - 1) / 2
-        val X_reqd = X.copyOfRange(offset, X.size - offset)
-        val Xlist = X_reqd.toMutableList()
-        assert(Xlist.size == movAvg.size)
-        val differ = Xlist.zip(movAvg, Double::minus)
+        val differ = X.toMutableList().subList(offset, X.size - offset).zip(movAvg, Double::minus)
         return differ
     }
 
     fun leveling(X: Array<Double>, movAvg: Array<Double>, window_size: Int): List<Double> {
         val offset = (window_size - 1) / 2
-        val X_reqd = X.copyOfRange(offset, X.size - offset)
-        val Xlist = X_reqd.toMutableList()
-        assert(Xlist.size == movAvg.size)
-        val differ = Xlist.zip(movAvg, Double::div)
+        val differ = X.toMutableList().subList(offset, X.size - offset).zip(movAvg, Double::div)
         return differ
     }
 
@@ -123,8 +135,30 @@ class ProcessingData {
         for (i in 0 until peaks.size - 1) {
             ibiList.add((time[peaks[i + 1]] - time[peaks[i]]) * 10.0)
         }
-        val ibiMedian = median(ibiList)
+        var ibiMedian = median(ibiList)
         Timber.i("Size, Median, ibiList: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
+        var i = 0
+        while (i < ibiList.size-1){
+            if (ibiList[i] + ibiList[i+1] < 1.5 * ibiMedian){
+                ibiList[i] = ibiList[i] + ibiList[i+1]
+                ibiList.removeAt(i+1)
+            }
+            i++
+        }
+        ibiMedian = median(ibiList)
+        Timber.i("Size, Median, ibiList2: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
+
+        i = 0
+        while (i < ibiList.size-1){
+            if (ibiList[i] + ibiList[i+1] < 1.5 * ibiMedian){
+                ibiList[i] = ibiList[i] + ibiList[i+1]
+                ibiList.removeAt(i+1)
+            }
+            i++
+        }
+        ibiMedian = median(ibiList)
+        Timber.i("Size, Median, ibiList3: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
+
         val filteredIbiList = ibiList.filter { it > 0.8 * ibiMedian && it < 1.2 * ibiMedian }
         val ibiAvg2 = filteredIbiList.average()
         Timber.i(

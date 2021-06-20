@@ -117,15 +117,26 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private lateinit var accelerometerListener: AccelerometerListener
 
-    private val fps = 30
+    private var fps = 30
     private var localTimeLast = 0
 
     private var badImageCounter = 0
+
+    val movAvgSmall = mutableListOf<Double>()
+    val movAvgLarge = mutableListOf<Double>()
+    val movWindowSmall = mutableListOf<Double>()
+    val movWindowLarge = mutableListOf<Double>()
+
+    // Keep window sizes odd
+    val smallWindow = fps / 10
+    val largeWindow = fps + 1
+    val offset = (largeWindow - 1) / 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         pixelAnalyzer = PixelAnalyzer(requireContext(), monitorViewModel)
+        fps = monitorViewModel.fps
 
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
@@ -318,13 +329,41 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         monitorViewModel.mean3List.add(blue)
                         monitorViewModel.timeList.add(timeStamp)
 
-                        // Calculating dynamic heart rate
+                        // Calculating running moving averages and centered signal
+                        monitorViewModel.processData.runningMovAvg(
+                            red,
+                            smallWindow,
+                            movWindowSmall,
+                            movAvgSmall
+                        )
+                        if (movAvgSmall.size > 0) {
+                            monitorViewModel.processData.runningMovAvg(
+                                movAvgSmall.last(),
+                                largeWindow,
+                                movWindowLarge,
+                                movAvgLarge
+                            )
+                            if (movAvgSmall.size >= largeWindow) {
+                                val x =
+                                    -1.0 * (movAvgSmall[movAvgSmall.size - offset] - movAvgLarge.last())
+                                monitorViewModel.centeredSignal.add(x)
+                                RunningGraph.addEntry(
+                                    chart!!,
+                                    monitorViewModel.centeredSignal.size,
+                                    x
+                                )
+                            }
+                        }
+                        // Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
+                        Timber.i("Size Mov Avgs: ${movAvgSmall.size}, ${movAvgLarge.size}, ${monitorViewModel.centeredSignal.size}")
+
+                        //Calculating dynamic BPM
                         val totalTimeElapsed = timeStamp - monitorViewModel.timeList[0]
                         val localTimeElapsed = timeStamp - localTimeLast
                         Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
                         if (totalTimeElapsed >= 6000 && localTimeElapsed >= 2000) {
                             val dynamicBPM = calculateDynamicBPM(
-                                monitorViewModel.mean1List.takeLast(150),
+                                monitorViewModel.centeredSignal.takeLast(150),
                                 monitorViewModel.timeList.takeLast(150)
                             )
                             postOnMainLooper {
@@ -482,8 +521,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
     }
 
-    fun calculateDynamicBPM(meanList: List<Double>, timeStamp: List<Int>): Int {
-        val fp = FindPeak(meanList.toDoubleArray())
+    fun calculateDynamicBPM(centeredSignal: List<Double>, timeStamp: List<Int>): Int {
+        val fp = FindPeak(centeredSignal.toDoubleArray())
         val out = fp.detectPeaks()
 
         val peaks = out.peaks
