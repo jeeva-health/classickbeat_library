@@ -371,9 +371,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                             }
                             localTimeLast = monitorViewModel.timeList.last()
                         }
-                        chart?.let {
-                            RunningGraph.addEntry(it, monitorViewModel.mean1List.size, red)
-                        }
+//                        chart?.let {
+//                            RunningGraph.addEntry(it, monitorViewModel.mean1List.size, red)
+//                        }
                     }
                 }
             }
