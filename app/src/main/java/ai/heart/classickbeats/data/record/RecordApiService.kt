@@ -3,6 +3,7 @@ package ai.heart.classickbeats.data.record
 import ai.heart.classickbeats.BuildConfig
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.model.response.ApiResponse
+import ai.heart.classickbeats.model.response.LoggingListResponse
 import ai.heart.classickbeats.model.response.SdnnListResponse
 import retrofit2.Response
 import retrofit2.http.*
@@ -21,6 +22,9 @@ interface RecordApiService {
         @Path("ppgId") ppgId: Long,
         @Body ppgEntity: PPGEntity
     ): Response<ApiResponse>
+
+    @GET("record/logging")
+    suspend fun getLoggingData(): Response<LoggingListResponse>
 
     @POST("record/bp/add/")
     suspend fun recordBloodPressure(@Body bpLogEntity: BpLogEntity): Response<ApiResponse>

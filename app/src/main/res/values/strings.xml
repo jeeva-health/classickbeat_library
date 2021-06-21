@@ -80,5 +80,28 @@
 
     <!--    Logging-->
     <string name="hint_add_a_comment">Add note about this measurement</string>
+    <string name="water_intake">Water Intake</string>
+    <string name="weight">Weight</string>
+    <string name="date">Date</string>
+    <string name="notes">Notes</string>
+    <string name="save">Save</string>
+    <string name="systolic">Systolic</string>
+    <string name="diastolic">Diastolic</string>
+    <string name="time">Time</string>
+    <string name="amount">Amount</string>
+    <string name="blood_glucose_level">Blood Glucose Level</string>
+    <string name="add_a_tag">Add a tag</string>
+    <string name="fasting">Fasting</string>
+    <string name="before_meal">Before meal</string>
+    <string name="_1_2_hours_after_eating">1-2 hours after eating</string>
+    <string name="bedtime">Bedtime</string>
+    <string name="blood_glucose">Blood Glucose</string>
+    <string name="measure">Measure</string>
+    <string name="record_question">What would you like to record today?</string>
+    <string name="medication">Medication</string>
+    <string name="kg">kg</string>
+    <string name="ltrs">ltrs</string>
+    <string name="mg_dl">mg/dl</string>
+    <string name="mmhg">mmHg</string>
 
 </resources>

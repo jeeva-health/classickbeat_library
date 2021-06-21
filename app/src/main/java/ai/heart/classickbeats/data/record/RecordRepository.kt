@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.data.record
 
+import ai.heart.classickbeats.mapper.input.LoggingListMapper
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
@@ -9,16 +10,17 @@ import javax.inject.Inject
 
 @ActivityRetainedScoped
 class RecordRepository @Inject constructor(
-    private val ppgRemoteDataSource: RecordRemoteDataSource,
+    private val recordRemoteDataSource: RecordRemoteDataSource,
+    private val loggingListMapper: LoggingListMapper
 ) {
     suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long> =
-        ppgRemoteDataSource.recordPPG(ppgEntity)
+        recordRemoteDataSource.recordPPG(ppgEntity)
 
     suspend fun updatePPG(ppgId: Long, ppgEntity: PPGEntity): Result<Boolean> =
-        ppgRemoteDataSource.updatePPG(ppgId, ppgEntity)
+        recordRemoteDataSource.updatePPG(ppgId, ppgEntity)
 
     suspend fun getSdnnList(): Result<List<Double>> {
-        val response = ppgRemoteDataSource.getSdnnList()
+        val response = recordRemoteDataSource.getSdnnList()
         when (response) {
             is Result.Success -> {
                 val doubleList = response.data.sdnn_list.map { it.toDouble() }
@@ -30,15 +32,28 @@ class RecordRepository @Inject constructor(
         return Result.Error(response.error)
     }
 
+    suspend fun getLoggingData(): Result<List<BaseLogEntity>> {
+        val response = recordRemoteDataSource.getLoggingData()
+        when (response) {
+            is Result.Success -> {
+                val logEntityList = loggingListMapper.map(response.data)
+                return Result.Success(logEntityList)
+            }
+            is Result.Error -> Timber.e(response.exception)
+            Result.Loading -> throw IllegalStateException("getLoggingData response invalid state")
+        }
+        return Result.Error(response.error)
+    }
+
     suspend fun recordBloodPressure(bpLogEntity: BpLogEntity): Result<Long> =
-        ppgRemoteDataSource.recordBloodPressure(bpLogEntity)
+        recordRemoteDataSource.recordBloodPressure(bpLogEntity)
 
     suspend fun recordGlucoseLevel(glucoseLogEntity: GlucoseLogEntity): Result<Long> =
-        ppgRemoteDataSource.recordGlucoseLevel(glucoseLogEntity)
+        recordRemoteDataSource.recordGlucoseLevel(glucoseLogEntity)
 
     suspend fun recordWaterIntake(waterLogEntity: WaterLogEntity): Result<Long> =
-        ppgRemoteDataSource.recordWaterIntake(waterLogEntity)
+        recordRemoteDataSource.recordWaterIntake(waterLogEntity)
 
     suspend fun recordWeight(weightLogEntity: WeightLogEntity): Result<Long> =
-        ppgRemoteDataSource.recordWeight(weightLogEntity)
+        recordRemoteDataSource.recordWeight(weightLogEntity)
 }

@@ -4,7 +4,9 @@ import ai.heart.classickbeats.NavHomeDirections
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentLogBpBinding
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.utils.hideLoadingBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
+import ai.heart.classickbeats.utils.showLoadingBar
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -46,9 +48,22 @@ class LogBpFragment : Fragment(R.layout.fragment_log_bp) {
         loggingViewModel.selectedLogTime.observe(viewLifecycleOwner, EventObserver {
             binding?.timeLayout?.editText?.setText(it.toString())
         })
+
+        loggingViewModel.navigateToLoggingHome.observe(viewLifecycleOwner, EventObserver {
+            hideLoadingBar()
+            navController.navigateUp()
+        })
+
+        loggingViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {
+            if (it) {
+                showLoadingBar()
+            } else {
+                hideLoadingBar()
+            }
+        })
     }
 
-    val timerEditTextAttachListener = TextInputLayout.OnEditTextAttachedListener {
+    private val timerEditTextAttachListener = TextInputLayout.OnEditTextAttachedListener {
         it.editText?.setOnClickListener {
             openTimePickerDialog()
         }

@@ -2,7 +2,15 @@ package ai.heart.classickbeats.ui.logging
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentLoggingHomeBinding
+import ai.heart.classickbeats.model.LogType
+import ai.heart.classickbeats.model.entity.BpLogEntity
+import ai.heart.classickbeats.model.entity.GlucoseLogEntity
+import ai.heart.classickbeats.model.entity.WaterLogEntity
+import ai.heart.classickbeats.model.entity.WeightLogEntity
+import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.utils.hideLoadingBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
+import ai.heart.classickbeats.utils.showLoadingBar
 import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
 import android.view.View
@@ -45,6 +53,52 @@ class LoggingHomeFragment : Fragment(R.layout.fragment_logging_home) {
 
         binding.medicationCard.setSafeOnClickListener {
             navigateToLogMedicationFragment()
+        }
+
+        loggingViewModel.reloadScreen.observe(viewLifecycleOwner, EventObserver {
+            reloadCards()
+        })
+
+        loggingViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {
+            if (it) {
+                showLoadingBar()
+            } else {
+                hideLoadingBar()
+            }
+        })
+
+        loggingViewModel.getLoggingData()
+    }
+
+    private fun reloadCards() {
+        binding.apply {
+            loggingViewModel.loggingData?.forEach { logEntity ->
+                when (logEntity.type) {
+                    LogType.BloodPressure -> {
+                        val bpLogEntity = logEntity as BpLogEntity
+                        val diastolic = bpLogEntity.diastolic
+                        val systolic = bpLogEntity.systolic
+                        val bpString = "$systolic/$diastolic"
+                        bpValue.text = bpString
+                    }
+                    LogType.GlucoseLevel -> {
+                        val glucoseEntity = logEntity as GlucoseLogEntity
+                        val glucoseLevel = glucoseEntity.glucoseLevel.toString()
+                        glucoseValue.text = glucoseLevel
+                    }
+                    LogType.WaterIntake -> {
+                        val waterEntity = logEntity as WaterLogEntity
+                        val waterQuantity = waterEntity.quantity.toString()
+                        waterValue.text = waterQuantity
+                    }
+                    LogType.Weight -> {
+                        val weightEntity = logEntity as WeightLogEntity
+                        val weight = weightEntity.weight.toString()
+                        weightValue.text = weight
+                    }
+                    LogType.Medicine -> TODO()
+                }
+            }
         }
     }
 
