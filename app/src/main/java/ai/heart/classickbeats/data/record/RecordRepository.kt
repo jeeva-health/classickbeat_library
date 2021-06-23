@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.data.record
 
+import ai.heart.classickbeats.mapper.input.HistoryListMapper
 import ai.heart.classickbeats.mapper.input.LoggingListMapper
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.result.Result
@@ -11,7 +12,8 @@ import javax.inject.Inject
 @ActivityRetainedScoped
 class RecordRepository @Inject constructor(
     private val recordRemoteDataSource: RecordRemoteDataSource,
-    private val loggingListMapper: LoggingListMapper
+    private val loggingListMapper: LoggingListMapper,
+    private val historyListMapper: HistoryListMapper
 ) {
     suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long> =
         recordRemoteDataSource.recordPPG(ppgEntity)
@@ -41,6 +43,19 @@ class RecordRepository @Inject constructor(
             }
             is Result.Error -> Timber.e(response.exception)
             Result.Loading -> throw IllegalStateException("getLoggingData response invalid state")
+        }
+        return Result.Error(response.error)
+    }
+
+    suspend fun getHistoryData(): Result<List<BaseLogEntity>> {
+        val response = recordRemoteDataSource.getHistoryData()
+        when (response) {
+            is Result.Success -> {
+                val logEntityList = historyListMapper.map(response.data)
+                return Result.Success(logEntityList)
+            }
+            is Result.Error -> Timber.e(response.exception)
+            Result.Loading -> throw IllegalStateException("getHistoryData response invalid state")
         }
         return Result.Error(response.error)
     }

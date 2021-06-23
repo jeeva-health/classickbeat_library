@@ -99,9 +99,16 @@
     <string name="measure">Measure</string>
     <string name="record_question">What would you like to record today?</string>
     <string name="medication">Medication</string>
+    <string name="bpm">BPM</string>
     <string name="kg">kg</string>
-    <string name="ltrs">ltrs</string>
+    <string name="ltrs">ltr</string>
     <string name="mg_dl">mg/dl</string>
     <string name="mmhg">mmHg</string>
 
+    <!--    Scan Result-->
+    <string name="bio_age_more">You are currently older compared to the world population of your age</string>
+    <string name="bio_age_less">You are currently younger compared to the world population of your age</string>
+    <string name="bio_age_same">You are currently same aged compared to the world population of your age</string>
+    <string name="sedentary_lifestyle">You have a higher sedentary lifestyle compared to the world population of your age</string>
+    <string name="active_lifestyle">You have a higher sedentary lifestyle compared to the world population of your age</string>
 </resources>

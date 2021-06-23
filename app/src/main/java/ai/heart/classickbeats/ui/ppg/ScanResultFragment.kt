@@ -35,15 +35,17 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         val bioAge = BioAge.values()[bioAgeIndex]
         val bioAgeInt = monitorViewModel.userAge ?: bioAge.startRange
         val bioAgeInfo = when {
-            bioAgeInt < bioAge.startRange -> "You are currently older compared to the world population of your age"
-            bioAgeInt > bioAge.endRange -> "You are currently younger compared to the world population of your age"
-            else -> "You are currently same aged compared to the world population of your age"
+            bioAgeInt < bioAge.startRange -> getString(R.string.bio_age_more)
+            bioAgeInt > bioAge.endRange -> getString(R.string.bio_age_less)
+            else -> getString(R.string.bio_age_same)
         }
 
         val activeStarCount = scanResult.activeStar
         val lifeStyleText = if (scanResult.isActive) "Active" else "Sedentary"
-        val lifeStyleInfoText =
-            "You have a higher sedentary lifestyle compared to the world population of your age"
+        val lifeStyleInfoText = if (scanResult.isActive)
+            getString(R.string.active_lifestyle)
+        else
+            getString(R.string.sedentary_lifestyle)
 
         binding.apply {
             val ageClockList =
@@ -51,7 +53,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             val lifeStyleList =
                 listOf(lifestyle1, lifestyle2, lifestyle3, lifestyle4, lifestyle5, lifestyle6)
 
-            heartRate.text = scanResult.hrv.toInt().toString()
+            heartRate.text = scanResult.bpm.toInt().toString()
 
             ageRange.text = bioAge.displayString()
             ageInfo.text = bioAgeInfo

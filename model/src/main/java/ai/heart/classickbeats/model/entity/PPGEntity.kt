@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.model.entity
 
+import ai.heart.classickbeats.model.LogType
 import com.squareup.moshi.Json
 
 data class PPGEntity(
@@ -26,6 +27,7 @@ data class PPGEntity(
     val activeSedantryProb: List<Float>? = null,
     val sedRatioLog: Float? = null,
     val sedStars: Int? = null,
+    val stressLevel: Int? = null,
     @Json(name = "surveySleep")
     val sleepRating: Int? = null,
     @Json(name = "surveyMood")
@@ -34,4 +36,4 @@ data class PPGEntity(
     val healthRating: Int? = null,
     @Json(name = "surveyState")
     val scanState: String? = null
-)
+) : BaseLogEntity(LogType.PPG)

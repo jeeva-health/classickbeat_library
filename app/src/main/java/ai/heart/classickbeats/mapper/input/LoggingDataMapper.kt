@@ -1,15 +1,15 @@
 package ai.heart.classickbeats.mapper.input
 
 import ai.heart.classickbeats.model.LogType
+import ai.heart.classickbeats.model.Logging
 import ai.heart.classickbeats.model.entity.*
-import ai.heart.classickbeats.model.response.LoggingListResponse
 import ai.heart.classickbeats.shared.mapper.Mapper
 import timber.log.Timber
 import javax.inject.Inject
 
 class LoggingDataMapper @Inject constructor() :
-    Mapper<LoggingListResponse.LoggingData.Logging, BaseLogEntity> {
-    override fun map(input: LoggingListResponse.LoggingData.Logging): BaseLogEntity {
+    Mapper<Logging, BaseLogEntity> {
+    override fun map(input: Logging): BaseLogEntity {
         val fields = input.fields
         return when (input.model) {
             "record_data.glucose" -> {
@@ -29,6 +29,11 @@ class LoggingDataMapper @Inject constructor() :
                 val diastolic = fields.diastolic ?: -1
                 val systolic = fields.systolic ?: -1
                 BpLogEntity(systolic, diastolic)
+            }
+            "record_data.ppg" -> {
+                val hr = fields.hr?.toFloat() ?: -1.0f
+                val stressLevel = fields.stressLevel ?: -1
+                PPGEntity(hr = hr, stressLevel = stressLevel)
             }
             else -> {
                 Timber.e("unhandled log entity type")

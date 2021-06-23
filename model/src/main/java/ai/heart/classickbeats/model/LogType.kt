@@ -5,5 +5,6 @@ enum class LogType {
     GlucoseLevel,
     WaterIntake,
     Weight,
-    Medicine
+    Medicine,
+    PPG
 }

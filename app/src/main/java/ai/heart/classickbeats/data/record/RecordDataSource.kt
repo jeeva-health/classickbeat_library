@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.model.entity.*
+import ai.heart.classickbeats.model.response.HistoryResponse
 import ai.heart.classickbeats.model.response.LoggingListResponse
 import ai.heart.classickbeats.model.response.SdnnListResponse
 import ai.heart.classickbeats.shared.result.Result
@@ -14,6 +15,8 @@ interface RecordDataSource {
     suspend fun getSdnnList(): Result<SdnnListResponse.Data>
 
     suspend fun getLoggingData(): Result<LoggingListResponse.LoggingData>
+
+    suspend fun getHistoryData(): Result<HistoryResponse.LoggingData>
 
     suspend fun recordBloodPressure(bpLogEntity: BpLogEntity): Result<Long>
 

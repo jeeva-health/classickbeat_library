@@ -51,9 +51,9 @@ class LoggingHomeFragment : Fragment(R.layout.fragment_logging_home) {
             navigateToLogWeightFragment()
         }
 
-        binding.medicationCard.setSafeOnClickListener {
-            navigateToLogMedicationFragment()
-        }
+//        binding.medicationCard.setSafeOnClickListener {
+//            navigateToLogMedicationFragment()
+//        }
 
         loggingViewModel.reloadScreen.observe(viewLifecycleOwner, EventObserver {
             reloadCards()
@@ -123,9 +123,9 @@ class LoggingHomeFragment : Fragment(R.layout.fragment_logging_home) {
         navController.navigate(action)
     }
 
-    private fun navigateToLogMedicationFragment() {
-        val action =
-            LoggingHomeFragmentDirections.actionLoggingHomeFragmentToLogMedicationFragment()
-        navController.navigate(action)
-    }
+//    private fun navigateToLogMedicationFragment() {
+//        val action =
+//            LoggingHomeFragmentDirections.actionLoggingHomeFragmentToLogMedicationFragment()
+//        navController.navigate(action)
+//    }
 }
