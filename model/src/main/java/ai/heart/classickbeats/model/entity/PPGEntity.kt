@@ -35,5 +35,6 @@ data class PPGEntity(
     @Json(name = "surveyHealthy")
     val healthRating: Int? = null,
     @Json(name = "surveyState")
-    val scanState: String? = null
+    val scanState: String? = null,
+    val timeStamp: String? = null
 ) : BaseLogEntity(LogType.PPG)

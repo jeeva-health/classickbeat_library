@@ -59,12 +59,12 @@ class HistoryAdapter constructor(private val context: Context) :
                 LogType.PPG -> {
                     val ppgEntity = itemData as PPGEntity
                     title = context.getString(R.string.heart_rate)
-                    value = ppgEntity.hr.toString()
+                    value = ppgEntity.hr?.toInt().toString()
                     unit = context.getString(R.string.bpm)
                 }
                 LogType.Medicine -> TODO()
             }
-            binding.time.text = title
+            binding.title.text = title
             binding.value.text = value
             binding.unit.text = unit
         }
