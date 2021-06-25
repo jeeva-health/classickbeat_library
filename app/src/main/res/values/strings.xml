@@ -111,5 +111,25 @@
     <string name="bio_age_same">You are currently same aged compared to the world population of your age</string>
     <string name="sedentary_lifestyle">You have a higher sedentary lifestyle compared to the world population of your age</string>
     <string name="active_lifestyle">You have a higher sedentary lifestyle compared to the world population of your age</string>
+    <string name="biological_age">Biological Age</string>
+    <string name="younger">Younger</string>
+    <string name="older">Older</string>
+    <string name="lifestyle">Lifestyle</string>
+    <string name="undesirable">Undesirable</string>
+    <string name="desirable">Desirable</string>
+    <string name="active">Active</string>
+    <string name="sedentary">Sedentary</string>
+    <string name="insufficient_heart_rate_data">Insufficient heart rate readings to calculate your baseline for stress analysis.</string>
+    <string name="collect_more_gems"><![CDATA[Collect 20 HRV gems to get a detailed stress anlyais report >]]></string>
+    <string name="hrv_metrics">HRV Metrics</string>
+    <string name="sdnn">Sdnn</string>
+    <string name="normal_range_sdnn">Normal range: 30-96 ms</string>
+    <string name="explanation_sdnn">SDNN depicts the standard deviation between two peaks in the pluse waveform. Higher value means your body is under high pressure.</string>
+    <string name="pnn50">pNN50</string>
+    <string name="normal_range_pnn">Normal range: 5-40%</string>
+    <string name="explanation_pnn">pNN50 depicts the standard deviation between two peaks in the pluse waveform. Balanced value means your body is coping well.</string>
+    <string name="rmssd">rMSSD</string>
+    <string name="normal_range_rmssd">Normal range: 30-96 ms</string>
+    <string name="explanation_rmssd">rMSSD calculates the root mean sqaures between two peaks in the pulse waveform. Lower value means your body is slow.</string>
 
 </resources>

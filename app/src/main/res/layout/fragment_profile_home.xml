@@ -60,7 +60,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profile_tv" />
 
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/details_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
 
         <ImageView
             android:id="@+id/gem_icon"
@@ -153,8 +153,6 @@
             app:layout_constraintBaseline_toBaselineOf="@id/gem_tv"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="20" />
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

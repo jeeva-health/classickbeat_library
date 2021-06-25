@@ -126,9 +126,11 @@ class MonitorViewModel @Inject constructor(
             Timber.i("Calculating PULSE STATS, offset $offset")
             val time = timeList.subList(offset, timeList.size - offset).toTypedArray()
             Timber.i("LIST sizes ${time.size}, ${mean1List.size}, ${centeredSignal.size}")
-            assert(time.size==centeredSignal.size)
-            interpolatedList = processData.interpolate(time,
-                centeredSignal.toTypedArray())
+            assert(time.size == centeredSignal.size)
+            interpolatedList = processData.interpolate(
+                time,
+                centeredSignal.toTypedArray()
+            )
 //            interpolatedList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray())
 
             Timber.i("Interpolated signal done")
@@ -225,6 +227,9 @@ class MonitorViewModel @Inject constructor(
                     ageBin = bAgeBin,
                     activeStar = activeStars,
                     isActive = isActive,
+                    sdnn = sdnn,
+                    pnn50 = pnn50,
+                    rmssd = rmssd
                 )
 
             val ppgEntity = PPGEntity(

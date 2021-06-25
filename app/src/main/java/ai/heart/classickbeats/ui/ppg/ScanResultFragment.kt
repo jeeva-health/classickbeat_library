@@ -41,7 +41,8 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         }
 
         val activeStarCount = scanResult.activeStar
-        val lifeStyleText = if (scanResult.isActive) "Active" else "Sedentary"
+        val lifeStyleText =
+            if (scanResult.isActive) getString(R.string.active) else getString(R.string.sedentary)
         val lifeStyleInfoText = if (scanResult.isActive)
             getString(R.string.active_lifestyle)
         else
@@ -76,6 +77,10 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
                     ), PorterDuff.Mode.SRC_IN
                 )
             }
+
+            sdnn.text = "${scanResult.sdnn.toInt()} ms"
+            pnn.text = "${scanResult.pnn50.toInt()} %"
+            mssd.text = "${scanResult.rmssd.toInt()} ms"
         }
     }
 }
