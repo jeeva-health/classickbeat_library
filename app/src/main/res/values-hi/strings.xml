@@ -131,4 +131,5 @@
     <string name="rmssd">rMSSD</string>
     <string name="normal_range_rmssd">Normal range: 30-96 ms</string>
     <string name="explanation_rmssd">rMSSD calculates the root mean sqaures between two peaks in the pulse waveform. Lower value means your body is slow.</string>
+    <string name="waveform_non_medical">The waveform is only for reference. It is not intended for medical use.</string>
 </resources>

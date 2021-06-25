@@ -2,6 +2,7 @@ package ai.heart.classickbeats.ui.ppg
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanResultBinding
+import ai.heart.classickbeats.graph.LineGraph
 import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.model.displayString
 import ai.heart.classickbeats.utils.viewBinding
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.github.mikephil.charting.charts.LineChart
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -25,10 +27,20 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
     private val monitorViewModel: MonitorViewModel by activityViewModels()
 
+    private lateinit var waveformChart: LineChart
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
+
+        waveformChart = binding.waveformChart.apply {
+            setDrawGridBackground(false)
+            description.isEnabled = false
+            legend.isEnabled = false
+            setNoDataText("")
+            invalidate()
+        }
 
         val scanResult = monitorViewModel.scanResult ?: throw Exception("Scan result null")
         val bioAgeIndex = scanResult.ageBin
@@ -77,6 +89,8 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
                     ), PorterDuff.Mode.SRC_IN
                 )
             }
+
+            LineGraph.drawLineGraph(waveformChart, monitorViewModel.leveledSignal!!.toList())
 
             sdnn.text = "${scanResult.sdnn.toInt()} ms"
             pnn.text = "${scanResult.pnn50.toInt()} %"
