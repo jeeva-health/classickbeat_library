@@ -60,7 +60,7 @@ class ScanTutorialFragment : Fragment(R.layout.fragment_scan_tutorial) {
         )
         sliderData.add(
             ScanTutorialModel(
-                R.drawable.tutorial_image_4,
+                R.drawable.tutorial_animation_4,
                 getString(R.string.scan_tutorial_4)
             )
         )
