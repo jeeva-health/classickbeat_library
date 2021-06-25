@@ -2,6 +2,7 @@ package ai.heart.classickbeats.ui.wellness
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentWellnessCategoryBinding
+import ai.heart.classickbeats.model.WellnessType
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
 import android.content.Intent
@@ -41,6 +42,30 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
                 navController.navigateUp()
             }
 
+            // To handle different background image for categories
+            when (wellnessCategory) {
+                WellnessType.SLEEP, WellnessType.BLOOD_PRESSURE -> {
+                    backgroundCircle1.visibility = View.GONE
+                    backgroundCircle2.visibility = View.GONE
+                    backgroundImage1.visibility = View.VISIBLE
+                    backgroundImage2.visibility = View.GONE
+                    backgroundImage1.setImageResource(getBackgroundImage(wellnessCategory))
+                }
+                WellnessType.ANGER -> {
+                    backgroundCircle1.visibility = View.VISIBLE
+                    backgroundCircle2.visibility = View.VISIBLE
+                    backgroundImage1.visibility = View.GONE
+                    backgroundImage2.visibility = View.GONE
+                }
+                WellnessType.STRESS, WellnessType.IMMUNITY -> {
+                    backgroundCircle1.visibility = View.GONE
+                    backgroundCircle2.visibility = View.GONE
+                    backgroundImage1.visibility = View.GONE
+                    backgroundImage2.visibility = View.VISIBLE
+                    backgroundImage2.setImageResource(getBackgroundImage(wellnessCategory))
+                }
+            }
+
             pageCategory.text = wellnessCategory.name
 
             pageTitle.text = wellnessModel.title
@@ -63,5 +88,13 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
 
     private fun playLongMeditation() {
         startActivity(Intent(requireActivity(), MediaPlayerActivity::class.java))
+    }
+
+    private fun getBackgroundImage(wellnessType: WellnessType) = when (wellnessType) {
+        WellnessType.SLEEP -> R.drawable.bg_star
+        WellnessType.BLOOD_PRESSURE -> R.drawable.bg_curved_lines_2
+        WellnessType.STRESS -> R.drawable.bg_contour_2
+        WellnessType.IMMUNITY -> R.drawable.bg_shade_2
+        else -> 0
     }
 }

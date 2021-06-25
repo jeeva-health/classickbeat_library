@@ -159,7 +159,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/bg_counter" />
+                android:src="@drawable/bg_contour" />
 
             <TextView
                 android:layout_width="wrap_content"
