@@ -5,6 +5,7 @@ import ai.heart.classickbeats.databinding.FragmentScanResultBinding
 import ai.heart.classickbeats.graph.LineGraph
 import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.model.displayString
+import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -95,6 +96,16 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             sdnn.text = "${scanResult.sdnn.toInt()} ms"
             pnn.text = "${scanResult.pnn50.toInt()} %"
             mssd.text = "${scanResult.rmssd.toInt()} ms"
+
+            saveBtn.setSafeOnClickListener {
+                navigateToHistoryFragment()
+            }
         }
+    }
+
+    private fun navigateToHistoryFragment() {
+        val action =
+            ScanResultFragmentDirections.actionScanResultFragmentToHistoryHomeFragment()
+        navController.navigate(action)
     }
 }

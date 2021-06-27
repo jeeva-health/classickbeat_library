@@ -459,72 +459,63 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
+            android:visibility="gone"
             app:cardCornerRadius="8dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/horizontal_scroll"
-            tools:visibility="visible">
+            app:layout_constraintTop_toBottomOf="@id/horizontal_scroll">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/stress_start_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="18dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/stress_end_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="18dp" />
+
                 <TextView
                     android:id="@+id/stress_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginTop="14dp"
-                    android:text="@string/stress"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/stress_levels"
                     android:textAllCaps="true"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/insufficient_data"
+                <ProgressBar
+                    android:id="@+id/stress_progress"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="4dp"
                     android:layout_marginTop="24dp"
-                    android:layout_marginEnd="12dp"
-                    android:text="@string/insufficient_heart_rate_data"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/stress_tv"
+                    android:progress="50"
+                    app:layout_constraintEnd_toEndOf="@id/stress_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/stress_start_guideline"
                     app:layout_constraintTop_toBottomOf="@id/stress_tv" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/insufficient_stress_data"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:background="@drawable/bg_rectangle_borderless"
-                    android:backgroundTint="@color/very_soft_blue"
+                    android:layout_marginVertical="16dp"
+                    android:text="@string/insufficient_heart_rate_data"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/insufficient_data">
-
-                    <ImageView
-                        android:id="@+id/gem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:src="@drawable/ic_gem"
-                        app:layout_constraintBottom_toBottomOf="@id/collect_more_gem"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/collect_more_gem" />
-
-                    <TextView
-                        android:id="@+id/collect_more_gem"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="18dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="8dp"
-                        android:text="@string/collect_more_gems"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/gem"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintEnd_toEndOf="@id/stress_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/stress_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/stress_progress" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -535,6 +526,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:cardCornerRadius="8dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
@@ -622,6 +614,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="36dp"
+            app:cardCornerRadius="8dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintBottom_toTopOf="@id/save_btn"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
