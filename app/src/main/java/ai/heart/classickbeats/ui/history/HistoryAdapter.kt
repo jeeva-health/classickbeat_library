@@ -126,9 +126,9 @@ class HistoryAdapter constructor(private val context: Context) :
 
 class HistoryItemDiffCallback : DiffUtil.ItemCallback<HistoryItem>() {
     override fun areItemsTheSame(oldItem: HistoryItem, newItem: HistoryItem): Boolean {
-        return if (oldItem is HistoryItem.LogItem) {
+        return if (oldItem is HistoryItem.LogItem && newItem is HistoryItem.LogItem) {
             val old = oldItem.logEntity
-            val new = (newItem as HistoryItem.LogItem).logEntity
+            val new = newItem.logEntity
             if (old.type == new.type) {
                 when (old.type) {
                     LogType.BloodPressure -> old as BpLogEntity == new as BpLogEntity
@@ -141,17 +141,19 @@ class HistoryItemDiffCallback : DiffUtil.ItemCallback<HistoryItem>() {
             } else {
                 false
             }
-        } else {
-            val old = (oldItem as HistoryItem.DateItem).date
-            val new = (newItem as HistoryItem.DateItem).date
+        } else if (oldItem is HistoryItem.DateItem && newItem is HistoryItem.DateItem) {
+            val old = oldItem.date
+            val new = newItem.date
             old == new
+        } else {
+            false
         }
     }
 
     override fun areContentsTheSame(oldItem: HistoryItem, newItem: HistoryItem): Boolean {
-        return if (oldItem is HistoryItem.LogItem) {
+        return if (oldItem is HistoryItem.LogItem && newItem is HistoryItem.LogItem) {
             val old = oldItem.logEntity
-            val new = (newItem as HistoryItem.LogItem).logEntity
+            val new = newItem.logEntity
             if (old.type == new.type) {
                 when (old.type) {
                     LogType.BloodPressure -> old as BpLogEntity == new as BpLogEntity
@@ -164,10 +166,12 @@ class HistoryItemDiffCallback : DiffUtil.ItemCallback<HistoryItem>() {
             } else {
                 false
             }
-        } else {
-            val old = (oldItem as HistoryItem.DateItem).date
-            val new = (newItem as HistoryItem.DateItem).date
+        } else if (oldItem is HistoryItem.DateItem && newItem is HistoryItem.DateItem) {
+            val old = oldItem.date
+            val new = newItem.date
             old == new
+        } else {
+            false
         }
     }
 }
