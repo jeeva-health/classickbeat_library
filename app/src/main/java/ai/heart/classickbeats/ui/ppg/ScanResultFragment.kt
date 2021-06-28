@@ -7,10 +7,16 @@ import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.model.displayString
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
+import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
 import android.view.View
-import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -38,6 +44,15 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         waveformChart = binding.waveformChart.apply {
             setDrawGridBackground(false)
             description.isEnabled = false
+            axisLeft.setDrawLabels(false)
+            axisLeft.setDrawAxisLine(false)
+            axisLeft.setDrawGridLines(false)
+            axisRight.setDrawLabels(false)
+            axisRight.setDrawAxisLine(false)
+            axisRight.setDrawGridLines(false)
+            xAxis.setDrawLabels(false)
+            xAxis.setDrawAxisLine(false)
+            xAxis.setDrawGridLines(false)
             legend.isEnabled = false
             setNoDataText("")
             invalidate()
@@ -73,7 +88,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             ageInfo.text = bioAgeInfo
             for (i in 1 until (bioAgeIndex + 1)) {
                 ageClockList[i].setColorFilter(
-                    ContextCompat.getColor(
+                    getColor(
                         requireContext(),
                         R.color.bright_blue
                     ), PorterDuff.Mode.SRC_IN
@@ -84,7 +99,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             lifestyleInfo.text = lifeStyleInfoText
             for (i in 1 until activeStarCount) {
                 lifeStyleList[i].setColorFilter(
-                    ContextCompat.getColor(
+                    getColor(
                         requireContext(),
                         R.color.bright_red_2
                     ), PorterDuff.Mode.SRC_IN
@@ -97,10 +112,64 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             pnn.text = "${scanResult.pnn50.toInt()} %"
             mssd.text = "${scanResult.rmssd.toInt()} ms"
 
+            var stressDrawableInt = 0
+            var stressSpannableString: SpannableString? = null
+
+            when (scanResult.stress.stressResult) {
+                1 -> {
+                    stressDrawableInt = R.drawable.graph_less_stress
+                    stressSpannableString = SpannableString("Your are LESS STRESSED than usual")
+                    setStressMessageSpan(stressSpannableString, 9, 22, Color.GREEN)
+                }
+                2 -> {
+                    stressDrawableInt = R.drawable.graph_medium_stress
+                    stressSpannableString = SpannableString("Your are STRESSED as usual")
+                    setStressMessageSpan(stressSpannableString, 9, 17, Color.YELLOW)
+                }
+                3 -> {
+                    stressDrawableInt = R.drawable.graph_high_stress
+                    stressSpannableString = SpannableString("Your are MORE STRESSED than usual")
+                    setStressMessageSpan(stressSpannableString, 9, 22, Color.RED)
+                }
+                else -> {
+                    stressGraphCard.visibility = View.GONE
+                    insufficientStressData.visibility = View.VISIBLE
+                }
+            }
+
+            stressGraph.setImageResource(stressDrawableInt)
+            stressMessage.setText(stressSpannableString)
+
             saveBtn.setSafeOnClickListener {
                 navigateToHistoryFragment()
             }
         }
+    }
+
+    private fun setStressMessageSpan(
+        stressSpannableString: SpannableString,
+        startPos: Int,
+        endPos: Int,
+        colorInt: Int
+    ) {
+        stressSpannableString.setSpan(
+            RelativeSizeSpan(1.2f),
+            startPos,
+            endPos,
+            SpannableString.SPAN_INCLUSIVE_INCLUSIVE
+        )
+        stressSpannableString.setSpan(
+            ForegroundColorSpan(colorInt),
+            startPos,
+            endPos,
+            SpannableString.SPAN_INCLUSIVE_INCLUSIVE
+        )
+        stressSpannableString.setSpan(
+            StyleSpan(Typeface.BOLD),
+            startPos,
+            endPos,
+            SpannableString.SPAN_INCLUSIVE_INCLUSIVE
+        )
     }
 
     private fun navigateToHistoryFragment() {

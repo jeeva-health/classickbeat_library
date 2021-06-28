@@ -42,6 +42,6 @@ interface RecordApiService {
     @POST("record/weight/add/")
     suspend fun recordWeight(@Body weightLogEntity: WeightLogEntity): Response<ApiResponse>
 
-    @GET("sdnn/list")
+    @GET("record/sdnn/list")
     suspend fun getSdnnList(): Response<SdnnListResponse>
 }

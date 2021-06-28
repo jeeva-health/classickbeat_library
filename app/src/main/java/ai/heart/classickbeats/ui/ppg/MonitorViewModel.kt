@@ -6,10 +6,12 @@ import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.data.record.RecordRepository
 import ai.heart.classickbeats.model.Gender
 import ai.heart.classickbeats.model.ScanResult
+import ai.heart.classickbeats.model.StressResult
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.data.login.LoginRepository
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
+import ai.heart.classickbeats.shared.result.succeeded
 import ai.heart.classickbeats.shared.util.computeAge
 import ai.heart.classickbeats.shared.util.toDate
 import android.os.CountDownTimer
@@ -218,20 +220,6 @@ class MonitorViewModel @Inject constructor(
                 else -> "Extremely poor signal quality. Please record again!"
             }
 
-            scanResult =
-                ScanResult(
-                    bpm = bpm,
-                    hrv = sdnn,
-                    aFib = "Not Detected",
-                    quality = qualityStr,
-                    ageBin = bAgeBin,
-                    activeStar = activeStars,
-                    isActive = isActive,
-                    sdnn = sdnn,
-                    pnn50 = pnn50,
-                    rmssd = rmssd
-                )
-
             val ppgEntity = PPGEntity(
                 filteredRMeans = leveledSignal?.map { String.format("%.4f", it).toFloat() },
                 hr = String.format("%.4f", bpm).toFloat(),
@@ -249,7 +237,33 @@ class MonitorViewModel @Inject constructor(
             )
             recordRepository.updatePPG(ppgId, ppgEntity)
 
-            val sdnnList = recordRepository.getSdnnList()
+            val sdnnDataCount: Int
+            val sdnnListResponse = recordRepository.getSdnnList()
+            val stressOutput = if (sdnnListResponse.succeeded) {
+                val dataArray = sdnnListResponse.data!!.toDoubleArray()
+                sdnnDataCount = dataArray.size
+                mapModeling.stressLevelPrediction(dataArray, sdnn)
+            } else {
+                sdnnDataCount = 0
+                0
+            }
+
+            val stressResult = StressResult(stressResult = stressOutput, dataCount = sdnnDataCount)
+
+            scanResult =
+                ScanResult(
+                    bpm = bpm,
+                    hrv = sdnn,
+                    aFib = "Not Detected",
+                    quality = qualityStr,
+                    ageBin = bAgeBin,
+                    activeStar = activeStars,
+                    isActive = isActive,
+                    sdnn = sdnn,
+                    pnn50 = pnn50,
+                    rmssd = rmssd,
+                    stress = stressResult
+                )
 
             mean1List.clear()
             mean2List.clear()

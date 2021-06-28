@@ -10,5 +10,6 @@ data class ScanResult(
     val sdnn: Double,
     val pnn50: Double,
     val rmssd: Double,
-    val isActive: Boolean
+    val isActive: Boolean,
+    val stress: StressResult
 )

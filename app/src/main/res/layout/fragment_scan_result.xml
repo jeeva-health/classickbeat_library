@@ -240,8 +240,8 @@
 
                         <ImageView
                             android:id="@+id/more_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="8dp"
                             android:src="@drawable/ic_info"
@@ -426,8 +426,8 @@
 
                         <ImageView
                             android:id="@+id/more_info_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="8dp"
                             android:src="@drawable/ic_info"
@@ -453,6 +453,129 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </HorizontalScrollView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/stress_graph_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/horizontal_scroll">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/graph_start_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="18dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/graph_end_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="18dp" />
+
+                <TextView
+                    android:id="@+id/stress_graph_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/stress_levels"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/stress_graph"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="12dp"
+                    android:scaleX="1.2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:src="@drawable/graph_less_stress" />
+
+                <TextView
+                    android:id="@+id/more_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/more"
+                    android:textAllCaps="true"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="@id/graph_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/graph_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/stress_graph_tv" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/dotted_line"
+                    app:layout_constraintBottom_toBottomOf="@id/normal_tv"
+                    app:layout_constraintEnd_toStartOf="@id/normal_tv"
+                    app:layout_constraintStart_toStartOf="@id/graph_start_guideline"
+                    app:layout_constraintTop_toTopOf="@id/normal_tv" />
+
+                <TextView
+                    android:id="@+id/normal_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/normal"
+                    android:textAllCaps="true"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toTopOf="@id/less_tv"
+                    app:layout_constraintEnd_toEndOf="@id/graph_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/graph_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/more_tv" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/dotted_line"
+                    app:layout_constraintBottom_toBottomOf="@id/normal_tv"
+                    app:layout_constraintEnd_toEndOf="@id/graph_end_guideline"
+                    app:layout_constraintStart_toEndOf="@id/normal_tv"
+                    app:layout_constraintTop_toTopOf="@id/normal_tv" />
+
+                <TextView
+                    android:id="@+id/less_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/less"
+                    android:textAllCaps="true"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toTopOf="@id/stress_message"
+                    app:layout_constraintEnd_toEndOf="@id/graph_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/graph_start_guideline" />
+
+                <TextView
+                    android:id="@+id/stress_message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/graph_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/graph_start_guideline"
+                    tools:text="Your are MORE STRESSED than usual" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/stress_insufficient_card"
@@ -521,6 +644,13 @@
 
         </androidx.cardview.widget.CardView>
 
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/stress_card_barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="stress_insufficient_card,stress_graph_card" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/waveform_card"
             android:layout_width="0dp"
@@ -530,7 +660,7 @@
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/stress_insufficient_card">
+            app:layout_constraintTop_toBottomOf="@id/stress_card_barrier">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

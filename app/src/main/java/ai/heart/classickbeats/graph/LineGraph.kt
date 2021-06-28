@@ -34,5 +34,6 @@ object LineGraph {
 
         val lineData = LineData(dataSets)
         chart.data = lineData
+        chart.data.isHighlightEnabled = false
     }
 }
