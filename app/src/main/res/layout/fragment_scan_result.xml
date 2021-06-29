@@ -52,7 +52,8 @@
             android:text="_ _"
             android:textAppearance="@style/TextAppearance.Jeeva.HeartRate"
             app:layout_constraintStart_toStartOf="@id/heart_rate_tv"
-            app:layout_constraintTop_toBottomOf="@id/heart_rate_tv" />
+            app:layout_constraintTop_toBottomOf="@id/heart_rate_tv"
+            tools:text="76" />
 
         <TextView
             android:id="@+id/bpm"
@@ -64,6 +65,23 @@
             android:textSize="16sp"
             app:layout_constraintBaseline_toBaselineOf="@id/heart_rate"
             app:layout_constraintStart_toEndOf="@id/heart_rate" />
+
+        <TextView
+            android:id="@+id/stress_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_rectangle_borderless_small"
+            android:gravity="center"
+            android:minWidth="96dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/bpm"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            tools:backgroundTint="@color/red"
+            tools:text="High Stress" />
 
         <HorizontalScrollView
             android:id="@+id/horizontal_scroll"
@@ -95,14 +113,14 @@
                         android:layout_height="wrap_content">
 
                         <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/internal_start_guideline"
+                            android:id="@+id/age_start_guideline"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             app:layout_constraintGuide_begin="18dp" />
 
                         <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/internal_end_guideline"
+                            android:id="@+id/age_end_guideline"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
@@ -115,7 +133,7 @@
                             android:layout_marginTop="18dp"
                             android:text="@string/biological_age"
                             android:textAllCaps="true"
-                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline"
+                            app:layout_constraintStart_toStartOf="@id/age_start_guideline"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
@@ -125,7 +143,7 @@
                             android:textSize="20sp"
                             android:textStyle="bold"
                             app:layout_constraintBaseline_toBaselineOf="@id/age_tv"
-                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline"
+                            app:layout_constraintEnd_toEndOf="@id/age_end_guideline"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="35 - 45 years" />
 
@@ -137,7 +155,7 @@
                             android:src="@drawable/ic_clock"
                             app:layout_constraintEnd_toStartOf="@id/age_clock_2"
                             app:layout_constraintHorizontal_chainStyle="spread_inside"
-                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline"
+                            app:layout_constraintStart_toStartOf="@id/age_start_guideline"
                             app:layout_constraintTop_toBottomOf="@id/age_tv" />
 
                         <ImageView
@@ -191,7 +209,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="24dp"
                             android:src="@drawable/ic_clock"
-                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline"
+                            app:layout_constraintEnd_toEndOf="@id/age_end_guideline"
                             app:layout_constraintStart_toEndOf="@id/age_clock_5"
                             app:layout_constraintTop_toBottomOf="@id/age_tv"
                             app:tint="@color/very_soft_blue" />
@@ -204,7 +222,7 @@
                             android:text="@string/younger"
                             android:textAllCaps="true"
                             android:textSize="12sp"
-                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline"
+                            app:layout_constraintStart_toStartOf="@id/age_start_guideline"
                             app:layout_constraintTop_toBottomOf="@id/age_clock_1" />
 
                         <ImageView
@@ -225,7 +243,7 @@
                             android:text="@string/older"
                             android:textAllCaps="true"
                             android:textSize="12sp"
-                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline"
+                            app:layout_constraintEnd_toEndOf="@id/age_end_guideline"
                             app:layout_constraintTop_toBottomOf="@id/age_clock_6" />
 
                         <TextView
@@ -233,31 +251,31 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline"
-                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline"
+                            app:layout_constraintEnd_toEndOf="@id/age_end_guideline"
+                            app:layout_constraintStart_toStartOf="@id/age_start_guideline"
                             app:layout_constraintTop_toBottomOf="@id/younger_tv"
                             tools:text="You are currently older compared to the world population of your age" />
 
                         <ImageView
-                            android:id="@+id/more_info"
+                            android:id="@+id/age_more_info"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="8dp"
                             android:src="@drawable/ic_info"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline"
+                            app:layout_constraintStart_toStartOf="@id/age_start_guideline"
                             app:layout_constraintTop_toBottomOf="@id/age_info"
                             app:tint="@color/soft_blue" />
 
                         <ImageView
-                            android:id="@+id/share"
+                            android:id="@+id/age_share"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="10dp"
                             android:src="@drawable/ic_share"
-                            app:layout_constraintStart_toEndOf="@id/more_info"
+                            app:layout_constraintStart_toEndOf="@id/age_more_info"
                             app:layout_constraintTop_toBottomOf="@id/age_info" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -281,14 +299,14 @@
                         android:layout_height="wrap_content">
 
                         <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/internal_start_guideline_2"
+                            android:id="@+id/lifestyle_start_guideline"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             app:layout_constraintGuide_begin="18dp" />
 
                         <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/internal_end_guideline_2"
+                            android:id="@+id/lifestyle_end_guideline"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
@@ -301,7 +319,7 @@
                             android:layout_marginTop="18dp"
                             android:text="@string/lifestyle"
                             android:textAllCaps="true"
-                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline_2"
+                            app:layout_constraintStart_toStartOf="@id/lifestyle_start_guideline"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
@@ -311,7 +329,7 @@
                             android:textSize="20sp"
                             android:textStyle="bold"
                             app:layout_constraintBaseline_toBaselineOf="@id/lifestyle_tv"
-                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline_2"
+                            app:layout_constraintEnd_toEndOf="@id/lifestyle_end_guideline"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="Sedentary" />
 
@@ -323,7 +341,7 @@
                             android:src="@drawable/ic_lifestyle"
                             app:layout_constraintEnd_toStartOf="@id/lifestyle_2"
                             app:layout_constraintHorizontal_chainStyle="spread_inside"
-                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline_2"
+                            app:layout_constraintStart_toStartOf="@id/lifestyle_start_guideline"
                             app:layout_constraintTop_toBottomOf="@id/lifestyle_tv" />
 
                         <ImageView
@@ -377,7 +395,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="24dp"
                             android:src="@drawable/ic_lifestyle"
-                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline_2"
+                            app:layout_constraintEnd_toEndOf="@id/lifestyle_end_guideline"
                             app:layout_constraintStart_toEndOf="@id/lifestyle_5"
                             app:layout_constraintTop_toBottomOf="@id/lifestyle_tv"
                             app:tint="@color/very_soft_red_2" />
@@ -390,7 +408,7 @@
                             android:text="@string/undesirable"
                             android:textAllCaps="true"
                             android:textSize="12sp"
-                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline_2"
+                            app:layout_constraintStart_toStartOf="@id/lifestyle_start_guideline"
                             app:layout_constraintTop_toBottomOf="@id/lifestyle_1" />
 
                         <ImageView
@@ -411,7 +429,7 @@
                             android:text="@string/desirable"
                             android:textAllCaps="true"
                             android:textSize="12sp"
-                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline_2"
+                            app:layout_constraintEnd_toEndOf="@id/lifestyle_end_guideline"
                             app:layout_constraintTop_toBottomOf="@id/lifestyle_6" />
 
                         <TextView
@@ -419,31 +437,31 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            app:layout_constraintEnd_toEndOf="@id/internal_end_guideline_2"
-                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline_2"
+                            app:layout_constraintEnd_toEndOf="@id/lifestyle_end_guideline"
+                            app:layout_constraintStart_toStartOf="@id/lifestyle_start_guideline"
                             app:layout_constraintTop_toBottomOf="@id/undesirable_tv"
                             tools:text="You have a higher sedentary lifestyle compared to the world population of your age" />
 
                         <ImageView
-                            android:id="@+id/more_info_2"
+                            android:id="@+id/lifestyle_more_info"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="8dp"
                             android:src="@drawable/ic_info"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="@id/internal_start_guideline_2"
+                            app:layout_constraintStart_toStartOf="@id/lifestyle_start_guideline"
                             app:layout_constraintTop_toBottomOf="@id/lifestyle_info"
                             app:tint="@color/soft_blue" />
 
                         <ImageView
-                            android:id="@+id/share_2"
+                            android:id="@+id/lifestyle_share"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="10dp"
                             android:src="@drawable/ic_share"
-                            app:layout_constraintStart_toEndOf="@id/more_info_2"
+                            app:layout_constraintStart_toEndOf="@id/lifestyle_more_info"
                             app:layout_constraintTop_toBottomOf="@id/lifestyle_info" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -706,9 +724,10 @@
                     android:id="@+id/waveform_chart"
                     android:layout_width="0dp"
                     android:layout_height="210dp"
+                    android:layout_marginHorizontal="2dp"
                     android:layout_marginVertical="12dp"
-                    app:layout_constraintEnd_toEndOf="@id/wave_end_guideline"
-                    app:layout_constraintStart_toStartOf="@id/wave_start_guideline"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/waveform_tv" />
 
                 <ImageView
@@ -962,7 +981,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_semi_rounded_rectangle"
-            android:text="@string/save"
+            android:text="@string/done"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
