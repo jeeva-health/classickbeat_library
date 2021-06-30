@@ -27,7 +27,7 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, day: Int) {
-        val selectedDate = Date(day, month, year)
+        val selectedDate = Date(day, month+1, year)
         loggingViewModel.setLogDate(selectedDate)
     }
 }
