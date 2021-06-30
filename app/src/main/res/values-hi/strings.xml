@@ -136,5 +136,11 @@
     <string name="more">More</string>
     <string name="normal">Normal</string>
     <string name="less">Less</string>
-
+    <string name="done">Done</string>
+    <string name="high_stress">High Stress</string>
+    <string name="normal_stress">Normal Stress</string>
+    <string name="low_stress">Low Stress</string>
+    <string name="less_stress_msg">Your are LESS STRESSED than usual</string>
+    <string name="normal_stress_msg">Your are STRESSED as usual</string>
+    <string name="high_stress_msg">Your are MORE STRESSED than usual</string>
 </resources>

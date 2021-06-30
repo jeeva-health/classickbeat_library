@@ -118,20 +118,27 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             when (scanResult.stress.stressResult) {
                 1 -> {
                     stressDrawableInt = R.drawable.graph_less_stress
-                    stressSpannableString = SpannableString("Your are LESS STRESSED than usual")
+                    stressSpannableString = SpannableString(getString(R.string.less_stress_msg))
                     setStressMessageSpan(stressSpannableString, 9, 22, Color.GREEN)
+                    stressTag.setBackgroundColor(getColor(requireContext(), R.color.moderate_green))
+                    stressTag.text = getString(R.string.low_stress)
                 }
                 2 -> {
                     stressDrawableInt = R.drawable.graph_medium_stress
-                    stressSpannableString = SpannableString("Your are STRESSED as usual")
+                    stressSpannableString = SpannableString(getString(R.string.normal_stress))
                     setStressMessageSpan(stressSpannableString, 9, 17, Color.YELLOW)
+                    stressTag.setBackgroundColor(getColor(requireContext(), R.color.yellow))
+                    stressTag.text = getString(R.string.normal_stress)
                 }
                 3 -> {
                     stressDrawableInt = R.drawable.graph_high_stress
-                    stressSpannableString = SpannableString("Your are MORE STRESSED than usual")
+                    stressSpannableString = SpannableString(getString(R.string.high_stress))
                     setStressMessageSpan(stressSpannableString, 9, 22, Color.RED)
+                    stressTag.setBackgroundColor(getColor(requireContext(), R.color.red))
+                    stressTag.text = getString(R.string.high_stress)
                 }
                 else -> {
+                    stressTag.visibility = View.GONE
                     stressGraphCard.visibility = View.GONE
                     insufficientStressData.visibility = View.VISIBLE
                 }
