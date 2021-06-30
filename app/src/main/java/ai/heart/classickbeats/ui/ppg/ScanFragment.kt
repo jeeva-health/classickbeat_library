@@ -363,8 +363,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
                         if (totalTimeElapsed >= 6000 && localTimeElapsed >= 2000) {
                             val dynamicBPM = calculateDynamicBPM(
-                                monitorViewModel.centeredSignal.takeLast(150),
-                                monitorViewModel.timeList.takeLast(150)
+//                                monitorViewModel.centeredSignal.takeLast(150),
+//                                monitorViewModel.timeList.takeLast(150)
+                                monitorViewModel.centeredSignal,
+                                monitorViewModel.timeList
                             )
                             postOnMainLooper {
                                 updateDynamicHeartRate(dynamicBPM)
