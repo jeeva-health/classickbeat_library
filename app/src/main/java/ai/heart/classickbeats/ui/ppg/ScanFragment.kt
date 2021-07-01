@@ -447,9 +447,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     }
 
     private fun stopBackgroundThread() {
-        mBackgroundThread!!.quitSafely()
+        mBackgroundThread?.quitSafely()
         try {
-            mBackgroundThread!!.join()
+            mBackgroundThread?.join()
             mBackgroundThread = null
             mBackgroundHandler = null
         } catch (e: InterruptedException) {

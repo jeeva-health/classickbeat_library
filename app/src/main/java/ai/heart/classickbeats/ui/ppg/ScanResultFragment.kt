@@ -125,14 +125,14 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
                 }
                 2 -> {
                     stressDrawableInt = R.drawable.graph_medium_stress
-                    stressSpannableString = SpannableString(getString(R.string.normal_stress))
+                    stressSpannableString = SpannableString(getString(R.string.normal_stress_msg))
                     setStressMessageSpan(stressSpannableString, 9, 17, Color.YELLOW)
                     stressTag.setBackgroundColor(getColor(requireContext(), R.color.yellow))
                     stressTag.text = getString(R.string.normal_stress)
                 }
                 3 -> {
                     stressDrawableInt = R.drawable.graph_high_stress
-                    stressSpannableString = SpannableString(getString(R.string.high_stress))
+                    stressSpannableString = SpannableString(getString(R.string.high_stress_msg))
                     setStressMessageSpan(stressSpannableString, 9, 22, Color.RED)
                     stressTag.setBackgroundColor(getColor(requireContext(), R.color.red))
                     stressTag.text = getString(R.string.high_stress)
