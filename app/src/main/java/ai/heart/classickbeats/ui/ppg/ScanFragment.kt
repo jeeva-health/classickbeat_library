@@ -82,7 +82,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 }
             }
             if (ifAllMustPermissionsAreGranted()) {
-
+                handleStartButtonClick()
             }
         }
 
@@ -90,7 +90,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private fun requestForPermissions() {
         if (ifAllMustPermissionsAreGranted()) {
-
+            handleStartButtonClick()
         } else {
             requestPermissionLauncher.launch(permissionToRequest.toTypedArray())
         }
@@ -165,7 +165,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         checkPermission(Manifest.permission.CAMERA)
         checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
         checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        requestForPermissions()
 
         chart = binding.lineChart.apply {
             setDrawGridBackground(false)
@@ -190,11 +189,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         startBackgroundThread()
 
         binding.startBtn.setSafeOnClickListener {
-            it.visibility = View.GONE
-            binding.countdown.visibility = View.VISIBLE
-            binding.viewFinderLayout.visibility = View.VISIBLE
-            startInitialCountdown()
-            hideBottomNavigation()
+            requestForPermissions()
         }
 
         binding.info.setSafeOnClickListener {
@@ -223,6 +218,14 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 }
             }
         })
+    }
+
+    private fun handleStartButtonClick() {
+        binding.startBtn.visibility = View.GONE
+        binding.countdown.visibility = View.VISIBLE
+        binding.viewFinderLayout.visibility = View.VISIBLE
+        startInitialCountdown()
+        hideBottomNavigation()
     }
 
     private fun startInitialCountdown() {
@@ -320,7 +323,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         if (badImageCounter >= 45) {
                             postOnMainLooper {
                                 showLongToast("Please keep finger properly")
-                                restartReading()
+                                endIncompleteScanning()
                             }
                         }
                         Timber.i("badImageCounter: $badImageCounter")
@@ -481,6 +484,26 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         scanViewModel.setFirstScanCompleted()
     }
 
+    private fun endIncompleteScanning() {
+        monitorViewModel.isProcessing = false
+        monitorViewModel.endTimer()
+        session?.abortCaptures()
+        camera?.close()
+        stopBackgroundThread()
+        imageCounter = 0
+        badImageCounter = 0
+        monitorViewModel.resetReadings()
+        chart?.data?.clearValues()
+
+//        binding.viewFinderLayout.visibility = View.GONE
+//        binding.startBtn.visibility = View.VISIBLE
+//        binding.circularProgressBar.setProgressWithAnimation(0.0f)
+//        binding.heartRate.text = "_ _"
+//        showBottomNavigation()
+
+        navController.navigate(R.id.scanFragment)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         try {
@@ -509,17 +532,11 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         sensorManager.unregisterListener(accelerometerListener)
     }
 
-    private fun restartReading() {
-        monitorViewModel.resetReadings()
-        badImageCounter = 0
-        chart?.data?.clearValues()
-    }
-
     private val handleAcceleration = fun() {
         if (monitorViewModel.isProcessing) {
             Timber.i("Moving too much!")
             showLongToast("Moving too much!")
-            restartReading()
+            endIncompleteScanning()
         }
     }
 

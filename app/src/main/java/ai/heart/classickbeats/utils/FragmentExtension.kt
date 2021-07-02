@@ -44,3 +44,7 @@ fun Fragment.showLoadingBar() {
 fun Fragment.hideLoadingBar() {
     (requireActivity() as MainActivity).hideLoadingBar()
 }
+
+fun Fragment.getContextColor(colorId: Int): Int {
+    return requireContext().getColor(colorId)
+}

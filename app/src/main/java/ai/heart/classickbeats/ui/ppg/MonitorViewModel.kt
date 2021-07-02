@@ -89,8 +89,8 @@ class MonitorViewModel @Inject constructor(
         mean1List.clear()
         mean2List.clear()
         mean3List.clear()
+        centeredSignal.clear()
         timeList.clear()
-        isProcessing = false
     }
 
     var leveledSignal: List<Double>? = null

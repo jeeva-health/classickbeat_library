@@ -7,6 +7,7 @@ import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.model.displayString
 import ai.heart.classickbeats.shared.util.toOrdinalFormattedDateString
 import ai.heart.classickbeats.shared.util.toTimeString
+import ai.heart.classickbeats.utils.getContextColor
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
 import android.content.res.ColorStateList
@@ -18,7 +19,6 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.View
-import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -95,10 +95,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             ageInfo.text = bioAgeInfo
             for (i in 1 until (bioAgeIndex + 1)) {
                 ageClockList[i].setColorFilter(
-                    getColor(
-                        requireContext(),
-                        R.color.bright_blue
-                    ), PorterDuff.Mode.SRC_IN
+                    getContextColor(R.color.bright_blue), PorterDuff.Mode.SRC_IN
                 )
             }
 
@@ -106,10 +103,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             lifestyleInfo.text = lifeStyleInfoText
             for (i in 1 until activeStarCount) {
                 lifeStyleList[i].setColorFilter(
-                    getColor(
-                        requireContext(),
-                        R.color.bright_red_2
-                    ), PorterDuff.Mode.SRC_IN
+                    getContextColor(R.color.bright_red_2), PorterDuff.Mode.SRC_IN
                 )
             }
 
@@ -126,26 +120,41 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
                 1 -> {
                     stressDrawableInt = R.drawable.graph_less_stress
                     stressSpannableString = SpannableString(getString(R.string.less_stress_msg))
-                    setStressMessageSpan(stressSpannableString, 9, 22, R.color.moderate_green_2)
+                    setStressMessageSpan(
+                        stressSpannableString,
+                        9,
+                        22,
+                        getContextColor(R.color.moderate_green_2)
+                    )
                     stressTag.text = getString(R.string.low_stress)
                     stressTag.backgroundTintList =
-                        ColorStateList.valueOf(getColor(requireContext(), R.color.moderate_green_2))
+                        ColorStateList.valueOf(getContextColor(R.color.moderate_green_2))
                 }
                 2 -> {
                     stressDrawableInt = R.drawable.graph_medium_stress
                     stressSpannableString = SpannableString(getString(R.string.normal_stress_msg))
-                    setStressMessageSpan(stressSpannableString, 9, 17, R.color.vivid_yellow)
+                    setStressMessageSpan(
+                        stressSpannableString,
+                        9,
+                        17,
+                        getContextColor(R.color.vivid_yellow)
+                    )
                     stressTag.text = getString(R.string.normal_stress)
                     stressTag.backgroundTintList =
-                        ColorStateList.valueOf(getColor(requireContext(), R.color.vivid_yellow))
+                        ColorStateList.valueOf(getContextColor(R.color.vivid_yellow))
                 }
                 3 -> {
                     stressDrawableInt = R.drawable.graph_high_stress
                     stressSpannableString = SpannableString(getString(R.string.high_stress_msg))
-                    setStressMessageSpan(stressSpannableString, 9, 22, R.color.bright_red_3)
+                    setStressMessageSpan(
+                        stressSpannableString,
+                        9,
+                        22,
+                        getContextColor(R.color.bright_red_3)
+                    )
                     stressTag.text = getString(R.string.high_stress)
                     stressTag.backgroundTintList =
-                        ColorStateList.valueOf(getColor(requireContext(), R.color.bright_red_3))
+                        ColorStateList.valueOf(getContextColor(R.color.bright_red_3))
                 }
                 else -> {
                     stressTag.visibility = View.GONE

@@ -85,15 +85,16 @@
         android:id="@+id/start_btn"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="20dp"
         android:background="@drawable/bg_circle"
         android:gravity="center"
         android:text="Start"
         android:textColor="@color/bright_blue_2"
         android:textSize="60dp"
-        app:layout_constraintBottom_toBottomOf="@id/view_finder_layout"
-        app:layout_constraintEnd_toEndOf="@id/view_finder_layout"
-        app:layout_constraintStart_toStartOf="@id/view_finder_layout"
-        app:layout_constraintTop_toTopOf="@id/view_finder_layout"
+        app:layout_constraintBottom_toBottomOf="@id/circular_progress_bar"
+        app:layout_constraintEnd_toEndOf="@id/circular_progress_bar"
+        app:layout_constraintStart_toStartOf="@id/circular_progress_bar"
+        app:layout_constraintTop_toTopOf="@id/circular_progress_bar"
         tools:ignore="SpUsage" />
 
     <TextView
