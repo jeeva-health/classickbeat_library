@@ -817,15 +817,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_rounded_rectangle_borderless_small"
-                    android:backgroundTint="@color/bright_red_3"
+                    android:backgroundTint="@color/moderate_green_2"
                     android:gravity="center"
                     android:minWidth="80dp"
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="6dp"
+                    android:textColor="@color/white"
                     app:layout_constraintBaseline_toBaselineOf="@id/sdnn_tv"
                     app:layout_constraintEnd_toEndOf="@id/hrv_end_guideline"
-                    tools:text="104 ms"
-                    tools:textColor="@color/white" />
+                    tools:text="104 ms" />
 
                 <TextView
                     android:id="@+id/sdnn_normal_range"
@@ -879,10 +879,10 @@
                     android:minWidth="80dp"
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="6dp"
+                    android:textColor="@color/white"
                     app:layout_constraintBaseline_toBaselineOf="@id/pnn_tv"
                     app:layout_constraintEnd_toEndOf="@id/hrv_end_guideline"
-                    tools:text="32 %"
-                    tools:textColor="@color/white" />
+                    tools:text="32 %" />
 
                 <TextView
                     android:id="@+id/pnn_normal_range"
@@ -931,15 +931,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_rounded_rectangle_borderless_small"
-                    android:backgroundTint="@color/vivid_yellow"
+                    android:backgroundTint="@color/moderate_green_2"
                     android:gravity="center"
                     android:minWidth="80dp"
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="6dp"
+                    android:textColor="@color/white"
                     app:layout_constraintBaseline_toBaselineOf="@id/mssd_tv"
                     app:layout_constraintEnd_toEndOf="@id/hrv_end_guideline"
-                    tools:text="29 ms"
-                    tools:textColor="@color/white" />
+                    tools:text="29 ms" />
 
                 <TextView
                     android:id="@+id/mssd_normal_range"

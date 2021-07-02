@@ -109,9 +109,26 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
             LineGraph.drawLineGraph(waveformChart, monitorViewModel.leveledSignal!!.toList())
 
-            sdnn.text = "${scanResult.sdnn.toInt()} ms"
-            pnn.text = "${scanResult.pnn50.toInt()} %"
-            mssd.text = "${scanResult.rmssd.toInt()} ms"
+            val sdnnVal = scanResult.sdnn.toInt()
+            sdnn.text = "$sdnnVal ms"
+            if (sdnnVal < 30 || sdnnVal > 96) {
+                sdnn.backgroundTintList =
+                    ColorStateList.valueOf(getContextColor(R.color.bright_red_3))
+            }
+
+            val pnnVal = scanResult.pnn50.toInt()
+            pnn.text = "$pnnVal %"
+            if (pnnVal < 5 || pnnVal > 40) {
+                pnn.backgroundTintList =
+                    ColorStateList.valueOf(getContextColor(R.color.bright_red_3))
+            }
+
+            val mssdVal = scanResult.rmssd.toInt()
+            mssd.text = "$mssdVal ms"
+            if (mssdVal < 30 || mssdVal > 96) {
+                mssd.backgroundTintList =
+                    ColorStateList.valueOf(getContextColor(R.color.bright_red_3))
+            }
 
             var stressDrawableInt = 0
             var stressSpannableString: SpannableString? = null
