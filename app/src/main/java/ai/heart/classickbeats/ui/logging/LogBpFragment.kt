@@ -41,6 +41,10 @@ class LogBpFragment : Fragment(R.layout.fragment_log_bp) {
             saveBpLog()
         }
 
+        binding?.backArrow?.setSafeOnClickListener {
+            navController.navigateUp()
+        }
+
         loggingViewModel.selectedLogDate.observe(viewLifecycleOwner, EventObserver {
             binding?.dateLayout?.editText?.setText(it.toString())
         })

@@ -41,6 +41,10 @@ class LogGlucoseFragment : Fragment(R.layout.fragment_log_glucose) {
             saveGlucoseLevelLog()
         }
 
+        binding?.backArrow?.setSafeOnClickListener {
+            navController.navigateUp()
+        }
+
         loggingViewModel.selectedLogDate.observe(viewLifecycleOwner, EventObserver {
             binding?.dateLayout?.editText?.setText(it.toString())
         })

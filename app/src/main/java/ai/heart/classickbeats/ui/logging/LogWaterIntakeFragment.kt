@@ -41,6 +41,10 @@ class LogWaterIntakeFragment : Fragment(R.layout.fragment_log_water_intake) {
             saveWaterIntakeLog()
         }
 
+        binding?.backArrow?.setSafeOnClickListener {
+            navController.navigateUp()
+        }
+
         loggingViewModel.selectedLogDate.observe(viewLifecycleOwner, EventObserver {
             binding?.dateLayout?.editText?.setText(it.toString())
         })
