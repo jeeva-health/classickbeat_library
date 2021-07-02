@@ -33,10 +33,10 @@
             app:layout_constraintGuide_percent="0.5" />
 
         <TextView
-            android:id="@+id/wellness_tv"
+            android:id="@+id/measure_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="@dimen/page_top_margin"
             android:text="@string/measure"
             android:textAllCaps="true"
             android:textSize="12sp"
@@ -53,7 +53,7 @@
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/wellness_tv" />
+            app:layout_constraintTop_toBottomOf="@id/measure_tv" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bp_card"

@@ -34,7 +34,7 @@
     <!--    Navigation menu-->
     <string name="history">History</string>
     <string name="logging">Logging</string>
-    <string name="heart_rate">Measure</string>
+    <string name="measure">Measure</string>
     <string name="wellness">Wellness</string>
     <string name="profile">Profile</string>
 
@@ -93,10 +93,10 @@
     <string name="add_a_tag">Add a tag</string>
     <string name="fasting">Fasting</string>
     <string name="before_meal">Before meal</string>
-    <string name="_1_2_hours_after_eating">1-2 hours after eating</string>
+    <string name="_1_2_hours_after_eating">1–2 hours after eating</string>
     <string name="bedtime">Bedtime</string>
     <string name="blood_glucose">Blood Glucose</string>
-    <string name="measure">Measure</string>
+    <string name="heart_rate">Heart Rate</string>
     <string name="record_question">What would you like to record today?</string>
     <string name="medication">Medication</string>
     <string name="bpm">BPM</string>
@@ -123,13 +123,13 @@
     <string name="collect_more_gems"><![CDATA[Collect 20 HRV gems to get a detailed stress anlyais report >]]></string>
     <string name="hrv_metrics">HRV Metrics</string>
     <string name="sdnn">Sdnn</string>
-    <string name="normal_range_sdnn">Normal range: 30-96 ms</string>
+    <string name="normal_range_sdnn">Normal range: 30–96 ms</string>
     <string name="explanation_sdnn">SDNN depicts the standard deviation between two peaks in the pluse waveform. Higher value means your body is under high pressure.</string>
     <string name="pnn50">pNN50</string>
-    <string name="normal_range_pnn">Normal range: 5-40%</string>
+    <string name="normal_range_pnn">Normal range: 5–40%</string>
     <string name="explanation_pnn">pNN50 depicts the standard deviation between two peaks in the pluse waveform. Balanced value means your body is coping well.</string>
     <string name="rmssd">rMSSD</string>
-    <string name="normal_range_rmssd">Normal range: 30-96 ms</string>
+    <string name="normal_range_rmssd">Normal range: 30–96 ms</string>
     <string name="explanation_rmssd">rMSSD calculates the root mean sqaures between two peaks in the pulse waveform. Lower value means your body is slow.</string>
     <string name="waveform_non_medical">The waveform is only for reference. It is not intended for medical use.</string>
     <string name="stress_levels">Stress Levels</string>
@@ -143,4 +143,19 @@
     <string name="less_stress_msg">Your are LESS STRESSED than usual</string>
     <string name="normal_stress_msg">Your are STRESSED as usual</string>
     <string name="high_stress_msg">Your are MORE STRESSED than usual</string>
+
+    <!--    Scan Question-->
+    <string name="scan_question_text">Scan successful! Give us a few moments till we process your detailed insights</string>
+    <string name="sleep_question">How well did you sleep today?</string>
+    <string name="mood_question">How is your mood today?</string>
+    <string name="healthy_question">Do you feel healthy today?</string>
+    <string name="before_scanning_question">What were you up to before scanning?</string>
+    <string name="eating">Eating</string>
+    <string name="napping">Napping</string>
+    <string name="working">Working</string>
+    <string name="chilling">Chilling</string>
+    <string name="just_woke_up">Just woke up</string>
+    <string name="workout">Workout</string>
+    <string name="other">Other</string>
+    <string name="gems">Gems</string>
 </resources>

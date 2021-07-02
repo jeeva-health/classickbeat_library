@@ -37,6 +37,7 @@ class ScanQuestionFragment : Fragment(R.layout.fragment_scan_question) {
                     R.id.chip_chilling -> "Chilling"
                     R.id.chip_woke_up -> "Woke up"
                     R.id.chip_workout -> "Workout"
+                    R.id.chip_working -> "Working"
                     else -> "Other"
                 }
                 monitorViewModel.uploadScanSurvey(sleepRating, moodRating, healthRating, scanState)

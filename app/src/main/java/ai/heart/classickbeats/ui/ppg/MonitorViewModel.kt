@@ -4,6 +4,7 @@ import ai.heart.classickbeats.compute.Filter
 import ai.heart.classickbeats.compute.MAPmodeling
 import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.data.record.RecordRepository
+import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.model.Gender
 import ai.heart.classickbeats.model.ScanResult
 import ai.heart.classickbeats.model.StressResult
@@ -51,8 +52,6 @@ class MonitorViewModel @Inject constructor(
     val timeList = mutableListOf<Int>()
 
     var ppgId: Long = -1
-
-    var userAge: Int? = null
 
     val outputComputed = MutableLiveData(Event(false))
 
@@ -121,7 +120,6 @@ class MonitorViewModel @Inject constructor(
 
             val user = loginRepository.getUser().data ?: throw Exception("User data is null")
             val age = user.dob.toDate()?.computeAge() ?: throw Exception("Unable to compute age")
-            userAge = age
             val gender = if (user.gender == Gender.MALE) 0 else 1
 
             val offset = 16
@@ -250,6 +248,15 @@ class MonitorViewModel @Inject constructor(
 
             val stressResult = StressResult(stressResult = stressOutput, dataCount = sdnnDataCount)
 
+            val bioAge = BioAge.values()[bAgeBin]
+            val bioAgeResult = when {
+                age < bioAge.startRange -> -1
+                age > bioAge.endRange -> 1
+                else -> 0
+            }
+
+            val currentTime = Date()
+
             scanResult =
                 ScanResult(
                     bpm = bpm,
@@ -257,12 +264,14 @@ class MonitorViewModel @Inject constructor(
                     aFib = "Not Detected",
                     quality = qualityStr,
                     ageBin = bAgeBin,
+                    bioAgeResult = bioAgeResult,
                     activeStar = activeStars,
                     isActive = isActive,
                     sdnn = sdnn,
                     pnn50 = pnn50,
                     rmssd = rmssd,
-                    stress = stressResult
+                    stress = stressResult,
+                    timeStamp = currentTime
                 )
 
             mean1List.clear()

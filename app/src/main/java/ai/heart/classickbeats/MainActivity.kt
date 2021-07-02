@@ -175,10 +175,6 @@ class MainActivity : AppCompatActivity() {
         binding?.bottomNavigation?.visibility = View.GONE
     }
 
-    fun setPageTitle() {
-
-    }
-
     fun navigateToHistoryFragment() {
         if (binding?.bottomNavigation?.selectedItemId != R.id.historyHomeFragment) {
             binding?.bottomNavigation?.selectedItemId = R.id.historyHomeFragment

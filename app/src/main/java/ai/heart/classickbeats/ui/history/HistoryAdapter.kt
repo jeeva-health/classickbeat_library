@@ -35,7 +35,7 @@ class HistoryAdapter constructor(private val context: Context) :
                     title = context.getString(R.string.blood_pressure)
                     val systolic = bpLogEntity.systolic
                     val diastolic = bpLogEntity.diastolic
-                    value = "$diastolic/$systolic"
+                    value = "$systolic/$diastolic"
                     unit = context.getString(R.string.mmhg)
                 }
                 LogType.GlucoseLevel -> {

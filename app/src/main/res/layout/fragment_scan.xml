@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:keepScreenOn="true"
     tools:context=".ui.ppg.ScanFragment">
 
@@ -12,8 +11,8 @@
         android:id="@+id/heart_rate_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="42dp"
+        android:layout_marginStart="@dimen/big_guideline_margin"
+        android:layout_marginTop="@dimen/page_top_margin"
         android:text="HEART RATE"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"

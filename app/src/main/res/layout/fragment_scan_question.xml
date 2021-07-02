@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="42dp"
-            android:text="Scan successful! Give us a few moments till we process your detailed insights"
+            android:text="@string/scan_question_text"
             android:textAppearance="@style/TextAppearance.Jeeva.H2"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
@@ -41,7 +41,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="How well did you sleep today?"
+            android:text="@string/sleep_question"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -68,7 +68,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
-            android:text="How is your mood today?"
+            android:text="@string/mood_question"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/sleep_slider" />
 
@@ -95,7 +95,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
-            android:text="Do you feel healthy today?"
+            android:text="@string/healthy_question"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/mood_slider" />
 
@@ -122,7 +122,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
-            android:text="What were you upto before scanning? "
+            android:text="@string/before_scanning_question"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/health_slider" />
 
@@ -144,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:minWidth="96dp"
-                android:text="Eating"
+                android:text="@string/eating"
                 android:textAlignment="center"
                 app:checkedIconVisible="true"
                 app:chipCornerRadius="4dp" />
@@ -155,7 +155,18 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:minWidth="96dp"
-                android:text="Napping"
+                android:text="@string/napping"
+                android:textAlignment="center"
+                app:checkedIconVisible="true"
+                app:chipCornerRadius="4dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_working"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:minWidth="96dp"
+                android:text="@string/working"
                 android:textAlignment="center"
                 app:checkedIconVisible="true"
                 app:chipCornerRadius="4dp" />
@@ -166,7 +177,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:minWidth="96dp"
-                android:text="Chilling"
+                android:text="@string/chilling"
                 android:textAlignment="center"
                 app:checkedIconVisible="true"
                 app:chipCornerRadius="4dp" />
@@ -177,7 +188,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:minWidth="96dp"
-                android:text="Just woke up"
+                android:text="@string/just_woke_up"
                 android:textAlignment="center"
                 app:checkedIconVisible="true"
                 app:chipCornerRadius="4dp" />
@@ -188,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:minWidth="96dp"
-                android:text="Workout"
+                android:text="@string/workout"
                 android:textAlignment="center"
                 app:checkedIconVisible="true"
                 app:chipCornerRadius="4dp" />
@@ -199,7 +210,7 @@
                 android:layout_height="wrap_content"
                 android:checkable="true"
                 android:minWidth="96dp"
-                android:text="Other"
+                android:text="@string/other"
                 android:textAlignment="center"
                 app:checkedIconVisible="true"
                 app:chipCornerRadius="4dp" />
@@ -211,7 +222,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_semi_rounded_rectangle"
-            android:text="Save"
+            android:text="@string/save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -36,7 +36,7 @@
             android:id="@+id/wellness_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="@dimen/page_top_margin"
             android:text="@string/wellness"
             android:textAllCaps="true"
             android:textSize="12sp"

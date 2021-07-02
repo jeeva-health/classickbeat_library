@@ -5,9 +5,11 @@ import ai.heart.classickbeats.databinding.FragmentScanResultBinding
 import ai.heart.classickbeats.graph.LineGraph
 import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.model.displayString
+import ai.heart.classickbeats.shared.util.toOrdinalFormattedDateString
+import ai.heart.classickbeats.shared.util.toTimeString
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
-import android.graphics.Color
+import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.os.Bundle
@@ -61,10 +63,9 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         val scanResult = monitorViewModel.scanResult ?: throw Exception("Scan result null")
         val bioAgeIndex = scanResult.ageBin
         val bioAge = BioAge.values()[bioAgeIndex]
-        val bioAgeInt = monitorViewModel.userAge ?: bioAge.startRange
-        val bioAgeInfo = when {
-            bioAgeInt < bioAge.startRange -> getString(R.string.bio_age_more)
-            bioAgeInt > bioAge.endRange -> getString(R.string.bio_age_less)
+        val bioAgeInfo = when (scanResult.bioAgeResult) {
+            1 -> getString(R.string.bio_age_more)
+            -1 -> getString(R.string.bio_age_less)
             else -> getString(R.string.bio_age_same)
         }
 
@@ -76,6 +77,9 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         else
             getString(R.string.sedentary_lifestyle)
 
+        val dateStr = scanResult.timeStamp.toOrdinalFormattedDateString()
+        val timeStr = scanResult.timeStamp.toTimeString()
+
         binding.apply {
             val ageClockList =
                 listOf(ageClock1, ageClock2, ageClock3, ageClock4, ageClock5, ageClock6)
@@ -83,6 +87,9 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
                 listOf(lifestyle1, lifestyle2, lifestyle3, lifestyle4, lifestyle5, lifestyle6)
 
             heartRate.text = scanResult.bpm.toInt().toString()
+
+            date.text = dateStr
+            time.text = timeStr
 
             ageRange.text = bioAge.displayString()
             ageInfo.text = bioAgeInfo
@@ -119,23 +126,26 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
                 1 -> {
                     stressDrawableInt = R.drawable.graph_less_stress
                     stressSpannableString = SpannableString(getString(R.string.less_stress_msg))
-                    setStressMessageSpan(stressSpannableString, 9, 22, Color.GREEN)
-                    stressTag.setBackgroundColor(getColor(requireContext(), R.color.moderate_green))
+                    setStressMessageSpan(stressSpannableString, 9, 22, R.color.moderate_green_2)
                     stressTag.text = getString(R.string.low_stress)
+                    stressTag.backgroundTintList =
+                        ColorStateList.valueOf(getColor(requireContext(), R.color.moderate_green_2))
                 }
                 2 -> {
                     stressDrawableInt = R.drawable.graph_medium_stress
                     stressSpannableString = SpannableString(getString(R.string.normal_stress_msg))
-                    setStressMessageSpan(stressSpannableString, 9, 17, Color.YELLOW)
-                    stressTag.setBackgroundColor(getColor(requireContext(), R.color.yellow))
+                    setStressMessageSpan(stressSpannableString, 9, 17, R.color.vivid_yellow)
                     stressTag.text = getString(R.string.normal_stress)
+                    stressTag.backgroundTintList =
+                        ColorStateList.valueOf(getColor(requireContext(), R.color.vivid_yellow))
                 }
                 3 -> {
                     stressDrawableInt = R.drawable.graph_high_stress
                     stressSpannableString = SpannableString(getString(R.string.high_stress_msg))
-                    setStressMessageSpan(stressSpannableString, 9, 22, Color.RED)
-                    stressTag.setBackgroundColor(getColor(requireContext(), R.color.red))
+                    setStressMessageSpan(stressSpannableString, 9, 22, R.color.bright_red_3)
                     stressTag.text = getString(R.string.high_stress)
+                    stressTag.backgroundTintList =
+                        ColorStateList.valueOf(getColor(requireContext(), R.color.bright_red_3))
                 }
                 else -> {
                     stressTag.visibility = View.GONE
@@ -145,7 +155,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             }
 
             stressGraph.setImageResource(stressDrawableInt)
-            stressMessage.setText(stressSpannableString)
+            stressMessage.text = stressSpannableString
 
             saveBtn.setSafeOnClickListener {
                 navigateToHistoryFragment()

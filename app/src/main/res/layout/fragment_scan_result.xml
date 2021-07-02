@@ -40,10 +40,20 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="10sp"
             app:layout_constraintBaseline_toBaselineOf="@id/heart_rate_tv"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             tools:text="15th April, 2020" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintTop_toBottomOf="@id/date"
+            tools:text="3:30 PM" />
 
         <TextView
             android:id="@+id/heart_rate"
@@ -71,8 +81,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_rounded_rectangle_borderless_small"
+            android:backgroundTint="@color/red"
             android:gravity="center"
-            android:minWidth="96dp"
+            android:minWidth="104dp"
             android:paddingHorizontal="12dp"
             android:paddingVertical="4dp"
             android:textAllCaps="true"
@@ -80,7 +91,6 @@
             android:textSize="12sp"
             app:layout_constraintBaseline_toBaselineOf="@id/bpm"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
-            tools:backgroundTint="@color/red"
             tools:text="High Stress" />
 
         <HorizontalScrollView
@@ -712,20 +722,10 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/beats_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAllCaps="true"
-                    android:textSize="12sp"
-                    app:layout_constraintBaseline_toBaselineOf="@id/waveform_tv"
-                    app:layout_constraintEnd_toEndOf="@id/wave_end_guideline"
-                    tools:text="Total Beats - 100" />
-
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/waveform_chart"
                     android:layout_width="0dp"
-                    android:layout_height="210dp"
+                    android:layout_height="200dp"
                     android:layout_marginHorizontal="2dp"
                     android:layout_marginVertical="12dp"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -548,7 +548,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     }
 
     private fun updateDynamicHeartRate(bpm: Int) {
-        var heartRateStr = "- -"
+        var heartRateStr = "_ _"
         if (bpm >= 0) {
             heartRateStr = "$bpm"
         }

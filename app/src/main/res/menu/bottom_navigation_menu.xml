@@ -14,7 +14,7 @@
     <item
         android:id="@+id/scanFragment"
         android:icon="@drawable/ic_heart_with_beat"
-        android:title="@string/heart_rate" />
+        android:title="@string/measure" />
 
     <item
         android:id="@+id/wellnessHomeFragment"

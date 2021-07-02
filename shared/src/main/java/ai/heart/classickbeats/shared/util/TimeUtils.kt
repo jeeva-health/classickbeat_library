@@ -26,9 +26,18 @@ fun Date.computeAge(): Int {
     return ((today.time - time) / (365 * DateUtils.DAY_IN_MILLIS)).toInt()
 }
 
-fun Date.toDateStringWithoutTime(): String {
+fun Date.toOrdinalFormattedDateString(): String {
     val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-    return dateFormat.format(this)
+    val dateString = dateFormat.format(this)
+    val (day, month, year) = dateString.split(" ")
+    val formattedDay = Utils.ordinalOf(day.toInt())
+    val formattedMonth = month[0] + month.substring(1).toLowerCase(Locale.ROOT)
+    return "$formattedDay $formattedMonth, $year"
+}
+
+fun Date.toTimeString(): String {
+    val timeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
+    return timeFormat.format(this)
 }
 
 fun String.toDate(): Date? {
