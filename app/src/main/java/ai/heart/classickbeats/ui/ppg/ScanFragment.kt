@@ -31,11 +31,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.charts.LineChart
 import com.github.psambit9791.jdsp.signal.peaks.FindPeak
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import timber.log.Timber
 import java.lang.Boolean
 import java.util.*
@@ -497,24 +499,14 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         monitorViewModel.resetReadings()
         chart?.data?.clearValues()
 
-//        binding.viewFinderLayout.visibility = View.GONE
-//        binding.startBtn.visibility = View.VISIBLE
-//        binding.circularProgressBar.setProgressWithAnimation(0.0f)
-//        binding.heartRate.text = "_ _"
-//        showBottomNavigation()
+        binding.circularProgressBar.setProgressWithAnimation(0.0f)
+        binding.heartRate.text = "_ _"
 
-        navController.navigate(R.id.scanFragment)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        try {
-            session?.abortCaptures()
-            camera?.close()
-            stopBackgroundThread()
-            monitorViewModel.endTimer()
-        } catch (e: CameraAccessException) {
-            Timber.e(e)
+        lifecycleScope.launchWhenResumed {
+            delay(2000)
+            postOnMainLooper {
+                navController.navigate(R.id.scanFragment)
+            }
         }
     }
 
@@ -534,6 +526,18 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         sensorManager.unregisterListener(accelerometerListener)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            session?.abortCaptures()
+            camera?.close()
+            stopBackgroundThread()
+            monitorViewModel.endTimer()
+        } catch (e: CameraAccessException) {
+            Timber.e(e)
+        }
+    }
+
     private val handleAcceleration = fun() {
         if (monitorViewModel.isProcessing) {
             Timber.i("Moving too much!")
@@ -542,7 +546,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
     }
 
-    fun calculateDynamicBPM(centeredSignal: List<Double>, timeStamp: List<Int>): Int {
+    private fun calculateDynamicBPM(centeredSignal: List<Double>, timeStamp: List<Int>): Int {
         val fp = FindPeak(centeredSignal.toDoubleArray())
         val out = fp.detectPeaks()
 

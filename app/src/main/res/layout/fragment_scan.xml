@@ -115,14 +115,14 @@
         android:id="@+id/message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
+        android:layout_marginHorizontal="24dp"
         android:layout_marginTop="42dp"
         android:gravity="center"
+        android:text="@string/gently_cover_camera"
         android:textAppearance="@style/TextAppearance.Jeeva.ScanMessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_finder_layout"
-        tools:text="Gently cover the back camera and the flash with your index finger" />
+        app:layout_constraintTop_toBottomOf="@id/circular_progress_bar" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"
