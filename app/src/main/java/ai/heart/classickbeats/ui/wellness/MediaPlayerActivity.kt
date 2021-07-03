@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.ui.wellness
 
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.databinding.ActivityMediaPlayerBinding
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import android.content.ComponentName
 import android.content.Context
@@ -8,12 +9,14 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import timber.log.Timber
+import java.util.*
 
 class MediaPlayerActivity : AppCompatActivity() {
+
+    private var binding: ActivityMediaPlayerBinding? = null
 
     private lateinit var mService: MediaPlayerService
 
@@ -39,7 +42,9 @@ class MediaPlayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_media_player)
+        binding = ActivityMediaPlayerBinding.inflate(layoutInflater)
+        val view = binding?.root
+        setContentView(view)
     }
 
     override fun onStart() {
@@ -56,7 +61,7 @@ class MediaPlayerActivity : AppCompatActivity() {
 
         window.statusBarColor = ContextCompat.getColor(this, R.color.very_dark_blue)
 
-        val playButton = findViewById<ImageView>(R.id.play_pause_btn)
+        val playButton = binding!!.playPauseBtn
         playButton.setSafeOnClickListener(400) {
             if (isPlaying) {
                 mService.pause()
@@ -66,8 +71,25 @@ class MediaPlayerActivity : AppCompatActivity() {
                 mService.play()
                 isPlaying = true
                 playButton.setImageResource(R.drawable.ic_pause)
+                startProgress()
             }
         }
+    }
+
+    private fun startProgress() {
+        val totalDuration = mService.getDuration()
+
+        val mTimer = Timer()
+        mTimer.schedule(object : TimerTask() {
+            override fun run() {
+                runOnUiThread {
+                    val currentPosition = mService.getProgress()
+                    val progress = ((currentPosition ?: 0) * 100) / (totalDuration ?: 1)
+                    Timber.i("totalDuration: $totalDuration, currentPosition: $currentPosition, progress: $progress")
+                    binding?.audioProgressBar?.setProgress(progress, true)
+                }
+            }
+        }, 0, 400)
     }
 
     override fun onStop() {

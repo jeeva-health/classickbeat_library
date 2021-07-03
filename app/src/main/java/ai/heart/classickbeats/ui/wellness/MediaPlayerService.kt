@@ -90,6 +90,8 @@ class MediaPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
 
     fun getDuration() = mediaPlayer?.duration
 
+    fun getProgress() = mediaPlayer?.currentPosition
+
     fun play() {
         Timber.i("play() called")
         mediaPlayer?.start()
@@ -106,7 +108,6 @@ class MediaPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
 
     override fun onPrepared(p0: MediaPlayer?) {
         Timber.i("onPrepared() called")
-        //mediaPlayer?.start()
     }
 
     override fun onError(p0: MediaPlayer?, p1: Int, p2: Int): Boolean {
