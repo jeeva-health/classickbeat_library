@@ -177,7 +177,11 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
                 else -> {
                     stressTag.visibility = View.GONE
                     stressGraphCard.visibility = View.GONE
-                    insufficientStressData.visibility = View.VISIBLE
+                    stressInsufficientCard.visibility = View.VISIBLE
+                    val completedScanCount = scanResult.stress.dataCount
+                    val scanTargetCount = scanResult.stress.targetDataCount
+                    progressText.text = "$completedScanCount/$scanTargetCount"
+                    stressProgress.setProgress(completedScanCount, true)
                 }
             }
 
