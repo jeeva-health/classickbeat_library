@@ -58,6 +58,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             legend.isEnabled = false
             setNoDataText("")
             invalidate()
+            requestLayout()
         }
 
         val scanResult = monitorViewModel.scanResult ?: throw Exception("Scan result null")

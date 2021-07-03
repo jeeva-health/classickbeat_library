@@ -42,6 +42,7 @@
             android:id="@+id/close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
             android:src="@drawable/ic_cross"
             app:layout_constraintBottom_toBottomOf="@id/title"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
@@ -60,10 +61,10 @@
 
         <ImageView
             android:id="@+id/image_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
             android:layout_marginTop="24dp"
-            android:src="@drawable/ic_hrv_help_1"
+            android:src="@drawable/tutorial_animation_1"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/message_1" />
@@ -81,10 +82,10 @@
 
         <ImageView
             android:id="@+id/image_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
             android:layout_marginTop="24dp"
-            android:src="@drawable/ic_hrv_help_2"
+            android:src="@drawable/tutorial_animation_2"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/message_2" />
@@ -102,10 +103,10 @@
 
         <ImageView
             android:id="@+id/image_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
             android:layout_marginTop="24dp"
-            android:src="@drawable/ic_hrv_help_3"
+            android:src="@drawable/tutorial_animation_3"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/message_3" />
@@ -123,10 +124,10 @@
 
         <ImageView
             android:id="@+id/image_4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
             android:layout_marginTop="24dp"
-            android:src="@drawable/ic_hrv_help_4"
+            android:src="@drawable/tutorial_animation_4"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/message_4" />
@@ -144,10 +145,12 @@
 
         <ImageView
             android:id="@+id/image_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
             android:layout_marginTop="24dp"
-            android:src="@drawable/ic_hrv_help_5"
+            android:layout_marginBottom="@dimen/page_bottom_margin"
+            android:src="@drawable/tutorial_animation_5"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/message_5" />

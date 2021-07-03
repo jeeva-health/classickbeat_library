@@ -45,6 +45,15 @@
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😖"
+            android:textSize="@dimen/emoji_size"
+            app:layout_constraintBottom_toBottomOf="@id/sleep_slider"
+            app:layout_constraintEnd_toStartOf="@id/sleep_slider"
+            app:layout_constraintTop_toTopOf="@id/sleep_slider" />
+
         <com.google.android.material.slider.Slider
             android:id="@+id/sleep_slider"
             android:layout_width="0dp"
@@ -64,6 +73,15 @@
             app:trackHeight="22dp" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😊"
+            android:textSize="@dimen/emoji_size"
+            app:layout_constraintBottom_toBottomOf="@id/sleep_slider"
+            app:layout_constraintStart_toEndOf="@id/sleep_slider"
+            app:layout_constraintTop_toTopOf="@id/sleep_slider" />
+
+        <TextView
             android:id="@+id/mood_question"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -71,6 +89,15 @@
             android:text="@string/mood_question"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/sleep_slider" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😖"
+            android:textSize="@dimen/emoji_size"
+            app:layout_constraintBottom_toBottomOf="@id/mood_slider"
+            app:layout_constraintEnd_toStartOf="@id/mood_slider"
+            app:layout_constraintTop_toTopOf="@id/mood_slider" />
 
         <com.google.android.material.slider.Slider
             android:id="@+id/mood_slider"
@@ -91,6 +118,15 @@
             app:trackHeight="22dp" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😊"
+            android:textSize="@dimen/emoji_size"
+            app:layout_constraintBottom_toBottomOf="@id/mood_slider"
+            app:layout_constraintStart_toEndOf="@id/mood_slider"
+            app:layout_constraintTop_toTopOf="@id/mood_slider" />
+
+        <TextView
             android:id="@+id/health_question"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -98,6 +134,15 @@
             android:text="@string/healthy_question"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/mood_slider" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🤒"
+            android:textSize="@dimen/emoji_size"
+            app:layout_constraintBottom_toBottomOf="@id/health_slider"
+            app:layout_constraintEnd_toStartOf="@id/health_slider"
+            app:layout_constraintTop_toTopOf="@id/health_slider" />
 
         <com.google.android.material.slider.Slider
             android:id="@+id/health_slider"
@@ -118,6 +163,15 @@
             app:trackHeight="22dp" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😊"
+            android:textSize="@dimen/emoji_size"
+            app:layout_constraintBottom_toBottomOf="@id/health_slider"
+            app:layout_constraintStart_toEndOf="@id/health_slider"
+            app:layout_constraintTop_toTopOf="@id/health_slider" />
+
+        <TextView
             android:id="@+id/before_scan_question"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -131,7 +185,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            app:chipSpacingHorizontal="16dp"
+            app:chipSpacingHorizontal="12dp"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/before_scan_question"
@@ -222,7 +276,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_semi_rounded_rectangle"
-            android:text="@string/save"
+            android:text="@string/view_result"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

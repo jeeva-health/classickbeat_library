@@ -175,6 +175,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             legend.isEnabled = false
             setNoDataText("")
             invalidate()
+            requestLayout()
         }
 
         navController = findNavController()
@@ -215,6 +216,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                     val progress = ((SCAN_DURATION - it) * 100 / SCAN_DURATION).toFloat()
                     circularProgressBar.setProgressWithAnimation(progress)
                     circularProgressBar.invalidate()
+                    circularProgressBar.requestLayout()
                 }
             }
         })

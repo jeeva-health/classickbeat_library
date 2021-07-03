@@ -41,6 +41,7 @@ class CircleProgressBar @JvmOverloads constructor(
     fun setProgress(progress: Float) {
         this.progress = progress
         invalidate()
+        requestLayout()
     }
 
     fun getMin(): Int {
@@ -50,6 +51,7 @@ class CircleProgressBar @JvmOverloads constructor(
     fun setMin(min: Int) {
         this.min = min
         invalidate()
+        requestLayout()
     }
 
     fun getMax(): Int {
@@ -59,6 +61,7 @@ class CircleProgressBar @JvmOverloads constructor(
     fun setMax(max: Int) {
         this.max = max
         invalidate()
+        requestLayout()
     }
 
     fun setColor(foregroundColor: Int, backgroundColor: Int) {
