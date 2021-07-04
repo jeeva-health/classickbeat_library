@@ -39,7 +39,9 @@ import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.charts.LineChart
 import com.github.psambit9791.jdsp.signal.peaks.FindPeak
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.lang.Boolean
 import java.util.*
@@ -375,24 +377,21 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         Timber.i("Size Mov Avgs: ${movAvgSmall.size}, ${movAvgLarge.size}, ${monitorViewModel.centeredSignal.size}")
 
                         //Calculating dynamic BPM
-                        val totalTimeElapsed = timeStamp - monitorViewModel.timeList[0]
-                        val localTimeElapsed = timeStamp - localTimeLast
-                        Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
-                        if (totalTimeElapsed >= 10000 && localTimeElapsed >= 10000) {
-                            val dynamicBPM = calculateEnvelopeDynamicBPM(
-//                                monitorViewModel.centeredSignal.takeLast(150),
-//                                monitorViewModel.timeList.takeLast(150)
-                                monitorViewModel.centeredSignal,
-                                monitorViewModel.timeList
-                            )
-                            postOnMainLooper {
-                                updateDynamicHeartRate(dynamicBPM)
+                        lifecycleScope.launch(Dispatchers.Default) {
+                            val totalTimeElapsed = timeStamp - monitorViewModel.timeList[0]
+                            val localTimeElapsed = timeStamp - localTimeLast
+                            Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
+                            if (totalTimeElapsed >= 10000 && localTimeElapsed >= 10000) {
+                                val dynamicBPM = calculateEnvelopeDynamicBPM(
+                                    monitorViewModel.centeredSignal,
+                                    monitorViewModel.timeList
+                                )
+                                postOnMainLooper {
+                                    updateDynamicHeartRate(dynamicBPM)
+                                }
+                                localTimeLast = monitorViewModel.timeList.last()
                             }
-                            localTimeLast = monitorViewModel.timeList.last()
                         }
-//                        chart?.let {
-//                            RunningGraph.addEntry(it, monitorViewModel.mean1List.size, red)
-//                        }
                     }
                 }
             }
@@ -580,7 +579,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         return ((60 * 1000.0) / ibiAvg).toInt()
     }
 
-    private fun calculateEnvelopeDynamicBPM(centeredSignal: List<Double>, timeStamp: List<Int>): Int {
+    private fun calculateEnvelopeDynamicBPM(
+        centeredSignal: List<Double>,
+        timeStamp: List<Int>
+    ): Int {
 
         val offset = 16
         val time = timeStamp.subList(offset, timeStamp.size - offset).toTypedArray()
