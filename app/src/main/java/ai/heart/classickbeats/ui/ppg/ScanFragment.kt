@@ -2,6 +2,8 @@ package ai.heart.classickbeats.ui.ppg
 
 import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.compute.Filter
+import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.databinding.FragmentScanBinding
 import ai.heart.classickbeats.domain.CameraReading
 import ai.heart.classickbeats.graph.RunningGraph
@@ -133,6 +135,14 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     val smallWindow = fps / 10
     val largeWindow = fps + 1
     val offset = (largeWindow - 1) / 2
+
+    val processData = ProcessingData()
+    val filt = Filter()
+    var interpolatedList: List<Double>? = null
+    var leveledSignal: List<Double>? = null
+    var envelopeAverage: List<Double>? = null
+    var envelope: List<Double>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -326,7 +336,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         }
                         if (badImageCounter >= 45) {
                             postOnMainLooper {
-                                showLongToast("Please keep finger properly")
+                                showLongToast("Please place the finger on the camera and flash completely")
                                 endIncompleteScanning()
                             }
                         }
@@ -368,8 +378,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         val totalTimeElapsed = timeStamp - monitorViewModel.timeList[0]
                         val localTimeElapsed = timeStamp - localTimeLast
                         Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
-                        if (totalTimeElapsed >= 6000 && localTimeElapsed >= 2000) {
-                            val dynamicBPM = calculateDynamicBPM(
+                        if (totalTimeElapsed >= 10000 && localTimeElapsed >= 10000) {
+                            val dynamicBPM = calculateEnvelopeDynamicBPM(
 //                                monitorViewModel.centeredSignal.takeLast(150),
 //                                monitorViewModel.timeList.takeLast(150)
                                 monitorViewModel.centeredSignal,
@@ -569,6 +579,32 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         Timber.i("Size, Average, ibiList: ${ibiList.size}, $ibiAvg, ${Arrays.toString(ibiList.toDoubleArray())}")
         return ((60 * 1000.0) / ibiAvg).toInt()
     }
+
+    private fun calculateEnvelopeDynamicBPM(centeredSignal: List<Double>, timeStamp: List<Int>): Int {
+
+        val offset = 16
+        val time = timeStamp.subList(offset, timeStamp.size - offset).toTypedArray()
+        assert(time.size == centeredSignal.size)
+        interpolatedList = processData.interpolate(
+            time,
+            centeredSignal.toTypedArray()
+        )
+        envelope = filt.hilbert(interpolatedList!!.toTypedArray())
+        val windowSize2 = 101
+        envelopeAverage = processData.movAvg(envelope!!.toTypedArray(), windowSize2)
+        leveledSignal = processData.leveling(
+            interpolatedList!!.toTypedArray(),
+            envelopeAverage!!.toTypedArray(),
+            windowSize2
+        )
+        val peaksQ = filt.peakDetection(leveledSignal!!.toTypedArray())
+        val peaks = peaksQ.first
+        val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION)
+        val meanNN = pulseStats[0]
+        val bpm = (60 * 1000.0) / meanNN
+        return bpm.toInt()
+    }
+
 
     private fun updateDynamicHeartRate(bpm: Int) {
         var heartRateStr = "_ _"
