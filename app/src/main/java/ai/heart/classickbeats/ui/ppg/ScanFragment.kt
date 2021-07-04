@@ -381,7 +381,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                             val totalTimeElapsed = timeStamp - monitorViewModel.timeList[0]
                             val localTimeElapsed = timeStamp - localTimeLast
                             Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
-                            if (totalTimeElapsed >= 10000 && localTimeElapsed >= 10000) {
+                            if (totalTimeElapsed >= 6000 && localTimeElapsed >= 5000) {
                                 val dynamicBPM = calculateEnvelopeDynamicBPM(
                                     monitorViewModel.centeredSignal,
                                     monitorViewModel.timeList

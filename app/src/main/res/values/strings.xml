@@ -106,11 +106,11 @@
     <string name="mmhg">mmHg</string>
 
     <!--    Scan Result-->
-    <string name="bio_age_more">The reading suggests that your fitness level is worse than the average person of your age.</string>
-    <string name="bio_age_less">The reading suggests that your fitness level is better than the average person of your age.</string>
-    <string name="bio_age_same">The reading suggests that your fitness level is similar to the average person of your age.</string>
-    <string name="sedentary_lifestyle">The reading suggests that your lifestyle is less active than the average person of your age.</string>
-    <string name="active_lifestyle">The reading suggests that your lifestyle is more active than the average person of your age.</string>
+    <string name="bio_age_more">The reading suggests that your fitness level is worse than the average person of your age. DISCLAIMER: Fitness level assessment is not meant for medical purposes. It might change with every reading until a baseline is set.</string>
+    <string name="bio_age_less">The reading suggests that your fitness level is better than the average person of your age. DISCLAIMER: Fitness level assessment is not meant for medical purposes. It might change with every reading until a baseline is set.</string>
+    <string name="bio_age_same">The reading suggests that your fitness level is similar to the average person of your age. DISCLAIMER: Fitness level assessment is not meant for medical purposes. It might change with every reading until a baseline is set.</string>
+    <string name="sedentary_lifestyle">The reading suggests that your lifestyle is less active than the average person of your age. DISCLAIMER: Lifestyle assessment is not meant for medical purposes. It might change with every reading until a baseline is set.</string>
+    <string name="active_lifestyle">The reading suggests that your lifestyle is more active than the average person of your age. DISCLAIMER: Lifestyle assessment is not meant for medical purposes. It might change with every reading until a baseline is set.</string>
     <string name="biological_age">Fitness-Adjusted Age</string>
     <string name="younger">Younger</string>
     <string name="older">Older</string>
@@ -122,15 +122,15 @@
     <string name="insufficient_heart_rate_data">Insufficient heart rate readings. Complete 10 HRV scans to set your baseline and get a detailed stress analysis report</string>
     <string name="collect_more_gems"><![CDATA[Collect 20 HRV gems to get a detailed stress analysis report >]]></string>
     <string name="hrv_metrics">HRV Metrics</string>
-    <string name="sdnn">Sdnn</string>
+    <string name="sdnn">SDNN</string>
     <string name="normal_range_sdnn">Normal range: 30–96 ms</string>
-    <string name="explanation_sdnn">SDNN depicts the standard deviation between two peaks in the pluse waveform. Higher value means your body is under high pressure.</string>
+    <string name="explanation_sdnn">SDNN is the standard deviation of the NN intervals in the HRV waveform. Higher value implies that your body is under less stress.</string>
     <string name="pnn50">pNN50</string>
     <string name="normal_range_pnn">Normal range: 5–40%</string>
-    <string name="explanation_pnn">pNN50 depicts the standard deviation between two peaks in the pluse waveform. Balanced value means your body is coping well.</string>
-    <string name="rmssd">rMSSD</string>
+    <string name="explanation_pnn">pNN50 is the percentage of successive heartbeat intervals that differ by more than 50 ms. Balanced value means your body is coping well.</string>
+    <string name="rmssd">RMSSD</string>
     <string name="normal_range_rmssd">Normal range: 30–96 ms</string>
-    <string name="explanation_rmssd">rMSSD calculates the root mean sqaures between two peaks in the pulse waveform. Lower value means your body is slow.</string>
+    <string name="explanation_rmssd">RMSSD is the root mean square of successive differences between normal heartbeats. Higher value means your body is recovering well.</string>
     <string name="waveform_non_medical">The waveform is only for reference. It is not intended for medical use.</string>
     <string name="stress_levels">Stress Levels</string>
     <string name="more">More</string>
@@ -160,4 +160,8 @@
     <string name="gems">Gems</string>
     <string name="view_result">View Result</string>
     <string name="gently_cover_camera">Gently cover the back camera and the flash with your index finger</string>
+    <string name="pressure_message">Apply gentle pressure on the camera and flash to stabilize your finger</string>
+    <string name="movement_message">Do not move or talk while you are taking the reading</string>
+    <string name="breathing_message">Breath normally. Do not take very deep or shallow breaths</string>
+    <string name="running_graph_message">Take cue from the running graph to assess the quality of the reading</string>
 </resources>
