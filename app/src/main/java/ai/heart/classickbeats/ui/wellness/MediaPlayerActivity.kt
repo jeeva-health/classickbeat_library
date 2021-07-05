@@ -9,6 +9,8 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import timber.log.Timber
@@ -24,6 +26,8 @@ class MediaPlayerActivity : AppCompatActivity() {
 
     private var isPlaying: Boolean = false
 
+    private var isActivityResumed = false
+
     private val connection = object : ServiceConnection {
 
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
@@ -32,6 +36,11 @@ class MediaPlayerActivity : AppCompatActivity() {
             mService = binder.getService()
             mBound = true
             mService.init()
+            mService.playerPrepared.observe(this@MediaPlayerActivity, {
+                if (it) {
+                    binding?.progressBar?.visibility = View.GONE
+                }
+            })
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
@@ -45,6 +54,7 @@ class MediaPlayerActivity : AppCompatActivity() {
         binding = ActivityMediaPlayerBinding.inflate(layoutInflater)
         val view = binding?.root
         setContentView(view)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     override fun onStart() {
@@ -59,7 +69,13 @@ class MediaPlayerActivity : AppCompatActivity() {
         super.onResume()
         Timber.i("onResume() called")
 
+        isActivityResumed = true
+
         window.statusBarColor = ContextCompat.getColor(this, R.color.very_dark_blue)
+
+        binding?.cross?.setSafeOnClickListener {
+            finish()
+        }
 
         val playButton = binding!!.playPauseBtn
         playButton.setSafeOnClickListener(400) {
@@ -69,11 +85,17 @@ class MediaPlayerActivity : AppCompatActivity() {
                 playButton.setImageResource(R.drawable.ic_play)
             } else {
                 mService.play()
+                binding?.playTxt?.visibility = View.GONE
                 isPlaying = true
                 playButton.setImageResource(R.drawable.ic_pause)
                 startProgress()
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isActivityResumed = false
     }
 
     private fun startProgress() {
@@ -82,11 +104,16 @@ class MediaPlayerActivity : AppCompatActivity() {
         val mTimer = Timer()
         mTimer.schedule(object : TimerTask() {
             override fun run() {
-                runOnUiThread {
-                    val currentPosition = mService.getProgress()
-                    val progress = ((currentPosition ?: 0) * 100) / (totalDuration ?: 1)
-                    Timber.i("totalDuration: $totalDuration, currentPosition: $currentPosition, progress: $progress")
-                    binding?.audioProgressBar?.setProgress(progress, true)
+                if (isActivityResumed) {
+                    runOnUiThread {
+                        val currentPosition = mService.getProgress()
+                        val progress = ((currentPosition ?: 0) * 100) / (totalDuration ?: 1)
+                        Timber.i("totalDuration: $totalDuration, currentPosition: $currentPosition, progress: $progress")
+                        binding?.audioProgressBar?.setProgress(progress, true)
+                        if (progress == 100) {
+                            finish()
+                        }
+                    }
                 }
             }
         }, 0, 400)

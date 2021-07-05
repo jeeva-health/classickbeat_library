@@ -15,6 +15,8 @@ import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import timber.log.Timber
 
 class MediaPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
@@ -24,6 +26,10 @@ class MediaPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
     private var wifiLock: WifiManager.WifiLock? = null
 
     private val binder: IBinder = MediaPlayerBinder()
+
+    private val _playerPrepared = MutableLiveData(false)
+    val playerPrepared: LiveData<Boolean> = _playerPrepared
+    private fun setPlayerPrepared() = _playerPrepared.postValue(true)
 
     inner class MediaPlayerBinder : Binder() {
         fun getService(): MediaPlayerService = this@MediaPlayerService
@@ -90,7 +96,13 @@ class MediaPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
 
     fun getDuration() = mediaPlayer?.duration
 
-    fun getProgress() = mediaPlayer?.currentPosition
+    fun getProgress(): Int {
+        return if (mediaPlayer?.isPlaying == true) {
+            mediaPlayer?.currentPosition ?: 0
+        } else {
+            0
+        }
+    }
 
     fun play() {
         Timber.i("play() called")
@@ -108,6 +120,7 @@ class MediaPlayerService : Service(), MediaPlayer.OnPreparedListener, MediaPlaye
 
     override fun onPrepared(p0: MediaPlayer?) {
         Timber.i("onPrepared() called")
+        setPlayerPrepared()
     }
 
     override fun onError(p0: MediaPlayer?, p1: Int, p2: Int): Boolean {

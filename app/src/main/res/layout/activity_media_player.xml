@@ -15,6 +15,7 @@
         tools:src="@drawable/bg_star" />
 
     <ImageView
+        android:id="@+id/cross"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -71,5 +72,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:progress="50" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dim_background"
+        android:elevation="16dp"
+        android:indeterminateTint="@color/white"
+        android:padding="144dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

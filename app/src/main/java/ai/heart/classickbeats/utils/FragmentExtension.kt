@@ -25,7 +25,9 @@ fun Fragment.hideKeyboard(view: View) {
 
 fun Fragment.postOnMainLooper(call: () -> Unit) {
     GlobalScope.launch(Dispatchers.Main) {
-        call.invoke()
+        if (isResumed) {
+            call.invoke()
+        }
     }
 }
 
