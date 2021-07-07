@@ -68,9 +68,7 @@ class MediaPlayerActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Timber.i("onResume() called")
-
         isActivityResumed = true
-
         window.statusBarColor = ContextCompat.getColor(this, R.color.very_dark_blue)
 
         binding?.cross?.setSafeOnClickListener {
@@ -101,12 +99,15 @@ class MediaPlayerActivity : AppCompatActivity() {
     private fun startProgress() {
         val totalDuration = mService.getDuration()
 
+        val initialDelay = 400L
+        val period = 400L
+
         val mTimer = Timer()
         mTimer.schedule(object : TimerTask() {
             override fun run() {
                 if (isActivityResumed) {
                     runOnUiThread {
-                        val currentPosition = mService.getProgress()
+                        val currentPosition = mService.getProgress() + period.toInt()
                         val progress = ((currentPosition ?: 0) * 100) / (totalDuration ?: 1)
                         Timber.i("totalDuration: $totalDuration, currentPosition: $currentPosition, progress: $progress")
                         binding?.audioProgressBar?.setProgress(progress, true)
@@ -116,7 +117,7 @@ class MediaPlayerActivity : AppCompatActivity() {
                     }
                 }
             }
-        }, 0, 400)
+        }, initialDelay, period)
     }
 
     override fun onStop() {

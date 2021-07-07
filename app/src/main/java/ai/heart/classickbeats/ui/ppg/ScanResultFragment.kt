@@ -64,10 +64,10 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         val scanResult = monitorViewModel.scanResult ?: throw Exception("Scan result null")
         val bioAgeIndex = scanResult.ageBin
         val bioAge = BioAge.values()[bioAgeIndex]
-        val bioAgeInfo = when (scanResult.bioAgeResult) {
-            1 -> getString(R.string.bio_age_more)
-            -1 -> getString(R.string.bio_age_less)
-            else -> getString(R.string.bio_age_same)
+        val bioAgeInfo: SpannableString = when (scanResult.bioAgeResult) {
+            1 -> setBoldSpan(SpannableString(getString(R.string.bio_age_more)), 76, 87)
+            -1 -> setBoldSpan(SpannableString(getString(R.string.bio_age_less)), 77, 88)
+            else -> setBoldSpan(SpannableString(getString(R.string.bio_age_same)), 78, 89)
         }
 
         val activeStarCount = scanResult.activeStar
@@ -218,6 +218,16 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             endPos,
             SpannableString.SPAN_INCLUSIVE_INCLUSIVE
         )
+    }
+
+    private fun setBoldSpan(message: SpannableString, startPos: Int, endPos: Int): SpannableString {
+        message.setSpan(
+            StyleSpan(Typeface.BOLD),
+            startPos,
+            endPos,
+            SpannableString.SPAN_INCLUSIVE_INCLUSIVE
+        )
+        return message
     }
 
     private fun navigateToHistoryFragment() {

@@ -42,13 +42,9 @@ class MonitorViewModel @Inject constructor(
     private var timer: CountDownTimer? = null
 
     val mean1List = mutableListOf<Double>()
-
     val mean2List = mutableListOf<Double>()
-
     val mean3List = mutableListOf<Double>()
-
     val centeredSignal = mutableListOf<Double>()
-
     val timeList = mutableListOf<Int>()
 
     var ppgId: Long = -1
@@ -103,7 +99,7 @@ class MonitorViewModel @Inject constructor(
 
     fun uploadRawData() {
         viewModelScope.launch {
-            val timeStamp0 = timeList[0]
+            val timeStamp0 = timeList.firstOrNull() ?: 0
             val ppgEntity = PPGEntity(
                 rMeans = mean1List.toList().map { String.format("%.4f", it).toFloat() },
                 gMeans = mean2List.toList().map { String.format("%.4f", it).toFloat() },

@@ -39,9 +39,7 @@ import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.charts.LineChart
 import com.github.psambit9791.jdsp.signal.peaks.FindPeak
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import timber.log.Timber
 import java.lang.Boolean
 import java.util.*
@@ -377,19 +375,20 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         Timber.i("Size Mov Avgs: ${movAvgSmall.size}, ${movAvgLarge.size}, ${monitorViewModel.centeredSignal.size}")
 
                         //Calculating dynamic BPM
-                        lifecycleScope.launch(Dispatchers.Default) {
-                            val totalTimeElapsed = timeStamp - monitorViewModel.timeList[0]
-                            val localTimeElapsed = timeStamp - localTimeLast
-                            Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
-                            if (totalTimeElapsed >= 6000 && localTimeElapsed >= 5000) {
+                        val totalTimeElapsed =
+                            timeStamp - (monitorViewModel.timeList.firstOrNull() ?: 0)
+                        val localTimeElapsed = timeStamp - localTimeLast
+                        Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
+                        if (totalTimeElapsed >= 6000 && localTimeElapsed >= 5000) {
+                            lifecycleScope.launch {
                                 val dynamicBPM = calculateEnvelopeDynamicBPM(
-                                    monitorViewModel.centeredSignal,
-                                    monitorViewModel.timeList
+                                    monitorViewModel.centeredSignal.toList(),
+                                    monitorViewModel.timeList.toList()
                                 )
                                 postOnMainLooper {
                                     updateDynamicHeartRate(dynamicBPM)
                                 }
-                                localTimeLast = monitorViewModel.timeList.last()
+                                localTimeLast = monitorViewModel.timeList.lastOrNull() ?: 0
                             }
                         }
                     }
@@ -479,6 +478,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             Timber.e("scanning already running")
         } else {
             countdownType = 1
+            monitorViewModel.resetReadings()
             monitorViewModel.isProcessing = true
             monitorViewModel.startTimer()
         }
@@ -505,7 +505,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         stopBackgroundThread()
         imageCounter = 0
         badImageCounter = 0
-        monitorViewModel.resetReadings()
         chart?.data?.clearValues()
 
         binding.circularProgressBar.setProgressWithAnimation(0.0f)
@@ -579,11 +578,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         return ((60 * 1000.0) / ibiAvg).toInt()
     }
 
-    private fun calculateEnvelopeDynamicBPM(
+    private suspend fun calculateEnvelopeDynamicBPM(
         centeredSignal: List<Double>,
         timeStamp: List<Int>
-    ): Int {
-
+    ) = withContext(Dispatchers.Default) {
         val offset = 16
         val time = timeStamp.subList(offset, timeStamp.size - offset).toTypedArray()
         assert(time.size == centeredSignal.size)
@@ -604,7 +602,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION)
         val meanNN = pulseStats[0]
         val bpm = (60 * 1000.0) / meanNN
-        return bpm.toInt()
+        return@withContext bpm.toInt()
     }
 
 
