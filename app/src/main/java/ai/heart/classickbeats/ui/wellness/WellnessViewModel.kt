@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.ui.wellness
 
+import ai.heart.classickbeats.R
 import ai.heart.classickbeats.model.MeditationMedia
 import ai.heart.classickbeats.model.WellnessModel
 import ai.heart.classickbeats.model.WellnessType
@@ -10,8 +11,8 @@ class WellnessViewModel @Inject constructor() : ViewModel() {
 
     val sleepMeditation = WellnessModel(
         type = WellnessType.SLEEP,
-        title = "Sleep Well",
-        message = "Nothing feels more frustrating than not getting sleep when you are tired and exhausted. Relax your mind and body with \u2028a meditation exercise that puts you into \u2028a place of complete rest.",
+        title = R.string.sleep_meditation_title,
+        message = R.string.sleep_meditation_message,
         meditationMediaList = listOf(
             MeditationMedia(
                 author = "Vipul",
@@ -30,8 +31,8 @@ class WellnessViewModel @Inject constructor() : ViewModel() {
 
     private val bpMeditation = WellnessModel(
         type = WellnessType.BLOOD_PRESSURE,
-        title = "Rest your Heart",
-        message = "Nothing feels more frustrating than not getting sleep when you are tired and exhausted. Relax your mind and body with \u2028a meditation exercise that puts you into \u2028a place of complete rest.",
+        title = R.string.bp_meditation_title,
+        message = R.string.bp_meditation_message,
         meditationMediaList = listOf(
             MeditationMedia(
                 author = "Vipul",
@@ -50,8 +51,8 @@ class WellnessViewModel @Inject constructor() : ViewModel() {
 
     private val angerMeditation = WellnessModel(
         type = WellnessType.ANGER,
-        title = "Stay Calm",
-        message = "Nothing feels more frustrating than not getting sleep when you are tired and exhausted. Relax your mind and body with \u2028a meditation exercise that puts you into \u2028a place of complete rest.",
+        title = R.string.anger_meditation_title,
+        message = R.string.anger_meditation_message,
         meditationMediaList = listOf(
             MeditationMedia(
                 author = "Vipul",
@@ -70,8 +71,8 @@ class WellnessViewModel @Inject constructor() : ViewModel() {
 
     private val stressMeditation = WellnessModel(
         type = WellnessType.STRESS,
-        title = "Ease your Mind",
-        message = "Nothing feels more frustrating than not getting sleep when you are tired and exhausted. Relax your mind and body with \u2028a meditation exercise that puts you into \u2028a place of complete rest.",
+        title = R.string.stress_meditation_title,
+        message = R.string.stress_meditation_message,
         meditationMediaList = listOf(
             MeditationMedia(
                 author = "Vipul",
@@ -90,8 +91,8 @@ class WellnessViewModel @Inject constructor() : ViewModel() {
 
     private val immunityMeditation = WellnessModel(
         type = WellnessType.IMMUNITY,
-        title = "Feel Good",
-        message = "Nothing feels more frustrating than not getting sleep when you are tired and exhausted. Relax your mind and body with \u2028a meditation exercise that puts you into \u2028a place of complete rest.",
+        title = R.string.immunity_meditation_title,
+        message = R.string.immunity_meditation_message,
         meditationMediaList = listOf(
             MeditationMedia(
                 author = "Vipul",

@@ -68,9 +68,9 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
 
             pageCategory.text = wellnessCategory.name
 
-            pageTitle.text = wellnessModel.title
+            pageTitle.text = getString(wellnessModel.title)
 
-            pageMessage.text = wellnessModel.message
+            pageMessage.text = getString(wellnessModel.message)
 
             shortMeditationCard.setSafeOnClickListener {
                 playShortMeditation()

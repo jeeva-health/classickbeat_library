@@ -65,18 +65,18 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         val bioAgeIndex = scanResult.ageBin
         val bioAge = BioAge.values()[bioAgeIndex]
         val bioAgeInfo: SpannableString = when (scanResult.bioAgeResult) {
-            1 -> setBoldSpan(SpannableString(getString(R.string.bio_age_more)), 76, 87)
-            -1 -> setBoldSpan(SpannableString(getString(R.string.bio_age_less)), 77, 88)
-            else -> setBoldSpan(SpannableString(getString(R.string.bio_age_same)), 78, 89)
+            1 -> setBoldSpan(SpannableString.valueOf(getString(R.string.bio_age_more)), 91, 102)
+            -1 -> setBoldSpan(SpannableString.valueOf(getString(R.string.bio_age_less)), 92, 103)
+            else -> setBoldSpan(SpannableString.valueOf(getString(R.string.bio_age_same)), 91, 102)
         }
 
         val activeStarCount = scanResult.activeStar
         val lifeStyleText =
             if (scanResult.isActive) getString(R.string.active) else getString(R.string.sedentary)
         val lifeStyleInfoText = if (scanResult.isActive)
-            getString(R.string.active_lifestyle)
+            setBoldSpan(SpannableString.valueOf(getString(R.string.active_lifestyle)), 93, 104)
         else
-            getString(R.string.sedentary_lifestyle)
+            setBoldSpan(SpannableString.valueOf(getString(R.string.sedentary_lifestyle)), 93, 104)
 
         val dateStr = scanResult.timeStamp.toOrdinalFormattedDateString()
         val timeStr = scanResult.timeStamp.toTimeString()
