@@ -33,7 +33,6 @@ class LoggingDataMapper @Inject constructor() :
             }
             "record_data.ppg" -> {
                 val hr = fields.hr?.toFloat() ?: -1.0f
-                val stressLevel = fields.stressLevel ?: -1
                 PPGEntity(hr = hr, stressLevel = stressLevel, timeStamp = timeStamp)
             }
             else -> {

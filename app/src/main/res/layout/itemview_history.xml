@@ -54,6 +54,7 @@
             tools:text="5:28 PM" />
 
         <ImageView
+            android:id="@+id/click_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"

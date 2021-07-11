@@ -4,7 +4,6 @@ import java.util.Date
 
 data class ScanResult(
     val bpm: Double,
-    val hrv: Double,
     val aFib: String,
     val quality: String,
     val ageBin: Int,

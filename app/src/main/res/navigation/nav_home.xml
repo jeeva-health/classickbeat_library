@@ -41,7 +41,11 @@
         android:id="@+id/historyHomeFragment"
         android:name="ai.heart.classickbeats.ui.history.HistoryHomeFragment"
         android:label="fragment_history_home"
-        tools:layout="@layout/fragment_history_home" />
+        tools:layout="@layout/fragment_history_home" >
+        <action
+            android:id="@+id/action_historyHomeFragment_to_scanResultFragment"
+            app:destination="@id/scanResultFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/loggingHomeFragment"

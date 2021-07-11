@@ -6,14 +6,19 @@ import ai.heart.classickbeats.databinding.ItemviewHistoryDateBinding
 import ai.heart.classickbeats.model.HistoryItem
 import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.entity.*
+import ai.heart.classickbeats.utils.setSafeOnClickListener
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class HistoryAdapter constructor(private val context: Context) :
+class HistoryAdapter constructor(
+    private val context: Context,
+    private val itemClickListener: (BaseLogEntity) -> Unit
+) :
     ListAdapter<HistoryItem, RecyclerView.ViewHolder>(HistoryItemDiffCallback()) {
 
     companion object {
@@ -24,7 +29,11 @@ class HistoryAdapter constructor(private val context: Context) :
     class HistoryItemViewHolder private constructor(val binding: ItemviewHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(context: Context, itemData: BaseLogEntity) {
+        fun bind(
+            context: Context,
+            itemData: BaseLogEntity,
+            itemClickListener: (BaseLogEntity) -> Unit
+        ) {
             val title: String
             val value: String
             val unit: String
@@ -61,12 +70,16 @@ class HistoryAdapter constructor(private val context: Context) :
                     title = context.getString(R.string.heart_rate)
                     value = ppgEntity.hr?.toInt().toString()
                     unit = context.getString(R.string.bpm)
+                    binding.clickArrow.visibility = View.VISIBLE
                 }
                 LogType.Medicine -> TODO()
             }
             binding.title.text = title
             binding.value.text = value
             binding.unit.text = unit
+            binding.root.setSafeOnClickListener {
+                itemClickListener.invoke(itemData)
+            }
         }
 
         companion object {
@@ -109,6 +122,7 @@ class HistoryAdapter constructor(private val context: Context) :
                 is HistoryItem.LogItem -> (holder as HistoryItemViewHolder).bind(
                     context,
                     it.logEntity,
+                    itemClickListener
                 )
                 is HistoryItem.DateItem -> (holder as DateItemViewHolder).bind(it.date)
             }

@@ -3,7 +3,9 @@ package ai.heart.classickbeats.ui.history
 import ai.heart.classickbeats.data.record.RecordRepository
 import ai.heart.classickbeats.model.HistoryItem
 import ai.heart.classickbeats.model.LogType
+import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.model.entity.*
+import ai.heart.classickbeats.shared.data.login.LoginRepository
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.error
@@ -21,6 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
+    private val loginRepository: LoginRepository,
     private val recordRepository: RecordRepository
 ) : ViewModel() {
 
@@ -34,6 +37,12 @@ class HistoryViewModel @Inject constructor(
     val refreshData: LiveData<Event<Unit>> = _refreshData
     private fun reloadHistoryHomeScreen() {
         _refreshData.postValue(Event(Unit))
+    }
+
+    private val _userData = MutableLiveData<Event<User>>()
+    val userData: LiveData<Event<User>> = _userData
+    private fun setUserDate(user: User) {
+        _userData.postValue(Event(user))
     }
 
     private val _showLoading = MutableLiveData(Event(false))
@@ -97,6 +106,15 @@ class HistoryViewModel @Inject constructor(
         Timber.i("date: $date and currDate: $currDate")
         if (date != currDate) {
             outputList.add(HistoryItem.DateItem(date))
+        }
+    }
+
+    fun getUser() {
+        viewModelScope.launch {
+            setShowLoadingTrue()
+            val user = loginRepository.getUser().data ?: throw Exception("User data is null")
+            setUserDate(user)
+            setShowLoadingFalse()
         }
     }
 }

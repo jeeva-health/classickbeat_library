@@ -2,7 +2,15 @@ package ai.heart.classickbeats.ui.history
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentHistoryHomeBinding
+import ai.heart.classickbeats.model.BioAge
+import ai.heart.classickbeats.model.LogType
+import ai.heart.classickbeats.model.ScanResult
+import ai.heart.classickbeats.model.StressResult
+import ai.heart.classickbeats.model.entity.BaseLogEntity
+import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.shared.util.computeAge
+import ai.heart.classickbeats.shared.util.toDate
 import ai.heart.classickbeats.utils.hideLoadingBar
 import ai.heart.classickbeats.utils.showLoadingBar
 import ai.heart.classickbeats.utils.viewBinding
@@ -13,6 +21,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -26,14 +35,18 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
 
     private lateinit var historyAdapter: HistoryAdapter
 
+    private var userAge: Int = -1
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
 
+        historyViewModel.getUser()
+
         historyViewModel.getHistoryData()
 
-        historyAdapter = HistoryAdapter(requireContext())
+        historyAdapter = HistoryAdapter(requireContext(), historyItemClickListener)
 
         binding.historyRv.apply {
             adapter = historyAdapter
@@ -44,6 +57,10 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
             historyAdapter.notifyDataSetChanged()
         })
 
+        historyViewModel.userData.observe(viewLifecycleOwner, EventObserver {
+            userAge = it.dob.toDate()?.computeAge() ?: -1
+        })
+
         historyViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {
             if (it) {
                 showLoadingBar()
@@ -51,5 +68,52 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
                 hideLoadingBar()
             }
         })
+    }
+
+    private val historyItemClickListener = fun(data: BaseLogEntity) {
+        when (data.type) {
+            LogType.BloodPressure -> {
+            }
+            LogType.GlucoseLevel -> {
+            }
+            LogType.WaterIntake -> {
+            }
+            LogType.Weight -> {
+            }
+            LogType.Medicine -> {
+            }
+            LogType.PPG -> {
+                val ppgEntity = data as PPGEntity
+
+                val bAgeBin = ppgEntity.bAgeBin ?: 0
+                val bioAge = BioAge.values()[bAgeBin]
+                val bioAgeResult = if (userAge != -1) {
+                    when {
+                        userAge < bioAge.startRange -> -1
+                        userAge > bioAge.endRange -> 1
+                        else -> 0
+                    }
+                } else {
+                    0
+                }
+
+                val isActive = ppgEntity.sedRatioLog ?: 0f < 0
+
+                val ppgScanResult = ScanResult(
+                    bpm = ppgEntity.hr?.toDouble() ?: 0.0,
+                    aFib = "Not Detected",
+                    quality = ppgEntity.quality?.toString() ?: "",
+                    ageBin = ppgEntity.bAgeBin ?: 0,
+                    bioAgeResult = bioAgeResult,
+                    activeStar = 6 - (ppgEntity.sedStars ?: 0),
+                    sdnn = ppgEntity.sdnn?.toDouble() ?: 0.0,
+                    pnn50 = ppgEntity.pnn50?.toDouble() ?: 0.0,
+                    rmssd = ppgEntity.rmssd?.toDouble() ?: 0.0,
+                    isActive = isActive,
+                val stress: StressResult,
+                val timeStamp: Date
+                )
+            }
+        }
     }
 }

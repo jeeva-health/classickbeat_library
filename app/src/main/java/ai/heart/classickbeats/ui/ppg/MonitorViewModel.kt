@@ -235,11 +235,11 @@ class MonitorViewModel @Inject constructor(
             val sdnnListResponse = recordRepository.getSdnnList()
             val stressOutput = if (sdnnListResponse.succeeded) {
                 val dataArray = sdnnListResponse.data!!.toDoubleArray()
-                sdnnDataCount = dataArray.size
+                sdnnDataCount = dataArray.size + 1
                 mapModeling.stressLevelPrediction(dataArray, sdnn)
             } else {
-                sdnnDataCount = 0
-                0
+                sdnnDataCount = 1
+                1
             }
 
             val stressResult = StressResult(stressResult = stressOutput, dataCount = sdnnDataCount)
@@ -256,7 +256,6 @@ class MonitorViewModel @Inject constructor(
             scanResult =
                 ScanResult(
                     bpm = bpm,
-                    hrv = sdnn,
                     aFib = "Not Detected",
                     quality = qualityStr,
                     ageBin = bAgeBin,
