@@ -4,7 +4,7 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentHistoryHomeBinding
 import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.model.LogType
-import ai.heart.classickbeats.model.ScanResult
+import ai.heart.classickbeats.model.PPGData
 import ai.heart.classickbeats.model.StressResult
 import ai.heart.classickbeats.model.entity.BaseLogEntity
 import ai.heart.classickbeats.model.entity.PPGEntity
@@ -99,19 +99,19 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
 
                 val isActive = ppgEntity.sedRatioLog ?: 0f < 0
 
-                val ppgScanResult = ScanResult(
-                    bpm = ppgEntity.hr?.toDouble() ?: 0.0,
+                val ppgScanResult = PPGData.ScanResult(
+                    bpm = ppgEntity.hr ?: 0.0f,
                     aFib = "Not Detected",
                     quality = ppgEntity.quality?.toString() ?: "",
                     ageBin = ppgEntity.bAgeBin ?: 0,
                     bioAgeResult = bioAgeResult,
                     activeStar = 6 - (ppgEntity.sedStars ?: 0),
-                    sdnn = ppgEntity.sdnn?.toDouble() ?: 0.0,
-                    pnn50 = ppgEntity.pnn50?.toDouble() ?: 0.0,
-                    rmssd = ppgEntity.rmssd?.toDouble() ?: 0.0,
+                    sdnn = ppgEntity.sdnn ?: 0.0f,
+                    pnn50 = ppgEntity.pnn50 ?: 0.0f,
+                    rmssd = ppgEntity.rmssd ?: 0.0f,
                     isActive = isActive,
-                val stress: StressResult,
-                val timeStamp: Date
+                    stress = StressResult(dataCount = 0),
+                    timeStamp = Date()
                 )
             }
         }

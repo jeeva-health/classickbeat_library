@@ -6,7 +6,7 @@ import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.data.record.RecordRepository
 import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.model.Gender
-import ai.heart.classickbeats.model.ScanResult
+import ai.heart.classickbeats.model.PPGData
 import ai.heart.classickbeats.model.StressResult
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.data.login.LoginRepository
@@ -37,7 +37,7 @@ class MonitorViewModel @Inject constructor(
     private val recordRepository: RecordRepository
 ) : ViewModel() {
 
-    var scanResult: ScanResult? = null
+    var scanResult: PPGData.ScanResult? = null
 
     private var timer: CountDownTimer? = null
 
@@ -254,17 +254,17 @@ class MonitorViewModel @Inject constructor(
             val currentTime = Date()
 
             scanResult =
-                ScanResult(
-                    bpm = bpm,
+                PPGData.ScanResult(
+                    bpm = bpm.toFloat(),
                     aFib = "Not Detected",
                     quality = qualityStr,
                     ageBin = bAgeBin,
                     bioAgeResult = bioAgeResult,
                     activeStar = activeStars,
                     isActive = isActive,
-                    sdnn = sdnn,
-                    pnn50 = pnn50,
-                    rmssd = rmssd,
+                    sdnn = sdnn.toFloat(),
+                    pnn50 = pnn50.toFloat(),
+                    rmssd = rmssd.toFloat(),
                     stress = stressResult,
                     timeStamp = currentTime
                 )

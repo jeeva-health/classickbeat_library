@@ -33,7 +33,7 @@ class LoggingDataMapper @Inject constructor() :
             }
             "record_data.ppg" -> {
                 val hr = fields.hr?.toFloat() ?: -1.0f
-                PPGEntity(hr = hr, stressLevel = stressLevel, timeStamp = timeStamp)
+                PPGEntity(hr = hr, timeStamp = timeStamp)
             }
             else -> {
                 Timber.e("unhandled log entity type")
