@@ -16,6 +16,7 @@ buildscript {
         hilt_jetpack_version = '1.0.0'
         nav_version = "2.3.1"
         camerax_version = '1.1.0-alpha06'
+        paging_version = "3.0.0"
     }
     repositories {
         google()

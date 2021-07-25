@@ -16,8 +16,6 @@ interface RecordDataSource {
 
     suspend fun getLoggingData(): Result<LoggingListResponse.LoggingData>
 
-    suspend fun getHistoryData(): Result<HistoryResponse.LoggingData>
-
     suspend fun recordBloodPressure(bpLogEntity: BpLogEntity): Result<Long>
 
     suspend fun recordGlucoseLevel(glucoseLogEntity: GlucoseLogEntity): Result<Long>

@@ -11,15 +11,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class HistoryAdapter constructor(
     private val context: Context,
     private val itemClickListener: (BaseLogEntity) -> Unit
 ) :
-    ListAdapter<HistoryItem, RecyclerView.ViewHolder>(HistoryItemDiffCallback()) {
+    PagingDataAdapter<HistoryItem, RecyclerView.ViewHolder>(HistoryItemDiffCallback()) {
 
     companion object {
         const val LOG_ITEM = 0

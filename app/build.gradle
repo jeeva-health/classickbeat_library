@@ -162,12 +162,16 @@ dependencies {
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
     implementation 'org.conscrypt:conscrypt-android:2.5.2'
 
+    // Pagination
+    implementation "androidx.paging:paging-runtime:$paging_version"
+
     // Leak Canary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
 
     // TEST Dependencies
     testImplementation 'junit:junit:4.13.2'
+    testImplementation "androidx.paging:paging-common:$paging_version"
 
     // Core library
     testImplementation 'androidx.test:core:1.4.0'

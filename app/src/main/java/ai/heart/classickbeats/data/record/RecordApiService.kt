@@ -27,8 +27,8 @@ interface RecordApiService {
     @GET("record/logging")
     suspend fun getLoggingData(): Response<LoggingListResponse>
 
-    @GET("record/history")
-    suspend fun getHistoryData(): Response<HistoryResponse>
+    @GET("record/history/")
+    suspend fun getHistoryData(@Query("page") page: Int?): HistoryResponse
 
     @POST("record/bp/add/")
     suspend fun recordBloodPressure(@Body bpLogEntity: BpLogEntity): Response<ApiResponse>

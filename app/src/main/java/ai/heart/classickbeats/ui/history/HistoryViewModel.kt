@@ -8,16 +8,19 @@ import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.data.login.LoginRepository
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
-import ai.heart.classickbeats.shared.result.error
-import ai.heart.classickbeats.shared.result.succeeded
 import ai.heart.classickbeats.shared.util.toDateStringWithoutTime
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.insertSeparators
+import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -50,62 +53,62 @@ class HistoryViewModel @Inject constructor(
     fun setShowLoadingTrue() = _showLoading.postValue(Event(true))
     fun setShowLoadingFalse() = _showLoading.postValue(Event(false))
 
-    fun getHistoryData() {
-        viewModelScope.launch {
-            setShowLoadingTrue()
-            val response = recordRepository.getHistoryData()
-            if (response.succeeded) {
-                _historyData = response.data?.let { convertLogEntityToHistoryItem(it) }
-                reloadHistoryHomeScreen()
-            } else {
-                apiError = response.error
+//    fun getHistoryData() {
+//        viewModelScope.launch {
+//            setShowLoadingTrue()
+//            val response = recordRepository.getHistoryData()
+//            if (response.succeeded) {
+//                _historyData = response.data?.let { convertLogEntityToHistoryItem(it) }
+//                reloadHistoryHomeScreen()
+//            } else {
+//                apiError = response.error
+//            }
+//            setShowLoadingFalse()
+//        }
+//    }
+
+    fun getHistoryData(): Flow<PagingData<HistoryItem>> {
+        return recordRepository.getHistoryData().map { pagingData ->
+            pagingData.map {
+                convertLogEntityToHistoryItem(it)
+            }.insertSeparators { before: HistoryItem?, after: HistoryItem? ->
+                insertDateSeparatorIfNeeded(before, after)
             }
-            setShowLoadingFalse()
-        }
+        }.cachedIn(viewModelScope)
     }
 
-    private fun convertLogEntityToHistoryItem(entityList: List<BaseLogEntity>): List<HistoryItem> {
-        var currDate = ""
-        val outputList = mutableListOf<HistoryItem>()
-        Timber.i("entityList size: ${entityList.size}")
-        entityList.forEach {
-            val date: String?
-            when (it.type) {
-                LogType.BloodPressure -> {
-                    date = (it as BpLogEntity).timeStamp?.toDateStringWithoutTime()
-                }
-                LogType.GlucoseLevel -> {
-                    date = (it as GlucoseLogEntity).timeStamp?.toDateStringWithoutTime()
-                }
-                LogType.WaterIntake -> {
-                    date = (it as WaterLogEntity).timeStamp?.toDateStringWithoutTime()
-                }
-                LogType.Weight -> {
-                    date = (it as WeightLogEntity).timeStamp?.toDateStringWithoutTime()
-                }
-                LogType.Medicine -> {
-                    date = (it as MedicineLogEntity).timeStamp?.toDateStringWithoutTime()
-                }
-                LogType.PPG -> {
-                    date = (it as PPGEntity).timeStamp?.toDateStringWithoutTime()
-                }
-            }
-            Timber.i("type: ${it.type}")
-            addDateToList(date ?: "No Date", currDate, outputList)
-            currDate = date ?: "No Date"
-            outputList.add(HistoryItem.LogItem(it))
-        }
-        return outputList.toList()
+    private fun convertLogEntityToHistoryItem(baseLogEntity: BaseLogEntity): HistoryItem {
+        return HistoryItem.LogItem(baseLogEntity)
     }
 
-    private fun addDateToList(
-        date: String,
-        currDate: String,
-        outputList: MutableList<HistoryItem>
-    ) {
-        Timber.i("date: $date and currDate: $currDate")
-        if (date != currDate) {
-            outputList.add(HistoryItem.DateItem(date))
+    private fun insertDateSeparatorIfNeeded(
+        leftEntity: HistoryItem?,
+        rightEntity: HistoryItem?
+    ): HistoryItem? {
+        val leftLogEntity = (leftEntity as HistoryItem.LogItem?)?.logEntity
+        val rightLogEntity = (rightEntity as HistoryItem.LogItem?)?.logEntity
+        val leftDate: String? = when (leftLogEntity?.type) {
+            LogType.BloodPressure -> (leftLogEntity as BpLogEntity).timeStamp
+            LogType.GlucoseLevel -> (leftLogEntity as GlucoseLogEntity).timeStamp
+            LogType.WaterIntake -> (leftLogEntity as WaterLogEntity).timeStamp
+            LogType.Weight -> (leftLogEntity as WeightLogEntity).timeStamp
+            LogType.Medicine -> (leftLogEntity as MedicineLogEntity).timeStamp
+            LogType.PPG -> (leftLogEntity as PPGEntity).timeStamp
+            else -> null
+        }?.toDateStringWithoutTime()
+        val rightDate: String? = when (rightLogEntity?.type) {
+            LogType.BloodPressure -> (rightLogEntity as BpLogEntity).timeStamp
+            LogType.GlucoseLevel -> (rightLogEntity as GlucoseLogEntity).timeStamp
+            LogType.WaterIntake -> (rightLogEntity as WaterLogEntity).timeStamp
+            LogType.Weight -> (rightLogEntity as WeightLogEntity).timeStamp
+            LogType.Medicine -> (rightLogEntity as MedicineLogEntity).timeStamp
+            LogType.PPG -> (rightLogEntity as PPGEntity).timeStamp
+            else -> null
+        }?.toDateStringWithoutTime()
+        return if (leftDate != rightDate) {
+            HistoryItem.DateItem(rightDate ?: "No Date")
+        } else {
+            null
         }
     }
 

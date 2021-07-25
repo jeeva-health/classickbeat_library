@@ -1,6 +1,10 @@
 package ai.heart.classickbeats.model
 
+import com.squareup.moshi.Json
+
 data class Logging(
+    @Json(name = "pk")
+    val id: Int,
     val fields: Fields,
     val model: String,
 ) {

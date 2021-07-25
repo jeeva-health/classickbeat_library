@@ -1,7 +1,6 @@
 package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.model.entity.*
-import ai.heart.classickbeats.model.response.HistoryResponse
 import ai.heart.classickbeats.model.response.LoggingListResponse
 import ai.heart.classickbeats.model.response.SdnnListResponse
 import ai.heart.classickbeats.shared.data.BaseRemoteDataSource
@@ -52,16 +51,6 @@ class RecordRemoteDataSource internal constructor(
     override suspend fun getLoggingData(): Result<LoggingListResponse.LoggingData> =
         withContext(ioDispatcher) {
             val response = safeApiCall { recordApiService.getLoggingData() }
-            if (response.succeeded) {
-                val data = response.data!!.responseData
-                return@withContext Result.Success(data)
-            }
-            return@withContext Result.Error(response.error)
-        }
-
-    override suspend fun getHistoryData(): Result<HistoryResponse.LoggingData> =
-        withContext(ioDispatcher) {
-            val response = safeApiCall { recordApiService.getHistoryData() }
             if (response.succeeded) {
                 val data = response.data!!.responseData
                 return@withContext Result.Success(data)

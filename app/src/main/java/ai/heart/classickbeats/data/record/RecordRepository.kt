@@ -5,12 +5,17 @@ import ai.heart.classickbeats.mapper.input.LoggingListMapper
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import dagger.hilt.android.scopes.ActivityRetainedScoped
+import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 import javax.inject.Inject
 
 @ActivityRetainedScoped
 class RecordRepository @Inject constructor(
+    private val recordApiService: RecordApiService,
     private val recordRemoteDataSource: RecordRemoteDataSource,
     private val loggingListMapper: LoggingListMapper,
     private val historyListMapper: HistoryListMapper
@@ -47,17 +52,33 @@ class RecordRepository @Inject constructor(
         return Result.Error(response.error)
     }
 
-    suspend fun getHistoryData(): Result<List<BaseLogEntity>> {
-        val response = recordRemoteDataSource.getHistoryData()
-        when (response) {
-            is Result.Success -> {
-                val logEntityList = historyListMapper.map(response.data)
-                return Result.Success(logEntityList)
+//    suspend fun getHistoryData(): Result<List<BaseLogEntity>> {
+//        val response = recordRemoteDataSource.getHistoryData()
+//        when (response) {
+//            is Result.Success -> {
+//                val logEntityList = historyListMapper.map(response.data)
+//                return Result.Success(logEntityList)
+//            }
+//            is Result.Error -> Timber.e(response.exception)
+//            Result.Loading -> throw IllegalStateException("getHistoryData response invalid state")
+//        }
+//        return Result.Error(response.error)
+//    }
+
+    fun getHistoryData(): Flow<PagingData<BaseLogEntity>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                maxSize = 200,
+                enablePlaceholders = false,
+            ),
+            pagingSourceFactory = {
+                HistoryListPagingSource(
+                    recordApiService,
+                    historyListMapper
+                )
             }
-            is Result.Error -> Timber.e(response.exception)
-            Result.Loading -> throw IllegalStateException("getHistoryData response invalid state")
-        }
-        return Result.Error(response.error)
+        ).flow
     }
 
     suspend fun recordBloodPressure(bpLogEntity: BpLogEntity): Result<Long> =

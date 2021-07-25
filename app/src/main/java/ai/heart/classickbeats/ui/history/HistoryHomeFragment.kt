@@ -18,9 +18,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -52,10 +55,11 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
             adapter = historyAdapter
         }
 
-        historyViewModel.refreshData.observe(viewLifecycleOwner, {
-            historyAdapter.submitList(historyViewModel.historyData)
-            historyAdapter.notifyDataSetChanged()
-        })
+        lifecycleScope.launch {
+            historyViewModel.getHistoryData().collectLatest { pagingData ->
+                historyAdapter.submitData(pagingData)
+            }
+        }
 
         historyViewModel.userData.observe(viewLifecycleOwner, EventObserver {
             userAge = it.dob.toDate()?.computeAge() ?: -1
