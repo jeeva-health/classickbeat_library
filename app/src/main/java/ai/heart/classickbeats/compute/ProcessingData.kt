@@ -204,7 +204,7 @@ class ProcessingData {
                 qualityPercent = (highQualThres - midQualThres)*(qualityPercent - midQual) + midQualThres
             }
             else if (qualityPercent >= lowQual){
-                qual:ityPercent = (midQualThres - lowQualThres)*(qualityPercent - lowQual) + lowQualThres
+                qualityPercent = (midQualThres - lowQualThres)*(qualityPercent - lowQual) + lowQualThres
             }
             else{
                 qualityPercent = lowQualThres
