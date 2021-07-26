@@ -29,7 +29,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-const val SCAN_DURATION = 33
+const val SCAN_DURATION = 63
 
 @HiltViewModel
 class MonitorViewModel @Inject constructor(
@@ -213,6 +213,9 @@ class MonitorViewModel @Inject constructor(
                 quality <= 1e-2 -> "Poor Quality Recording. Please record again!"
                 else -> "Extremely poor signal quality. Please record again!"
             }
+
+            val qualityPercent = processData.qualityPercent(quality)
+            Timber.i("QualityPERCENT: $qualityPercent")
 
             val ppgEntity = PPGEntity(
                 filteredRMeans = leveledSignal?.map { String.format("%.4f", it).toDouble() },

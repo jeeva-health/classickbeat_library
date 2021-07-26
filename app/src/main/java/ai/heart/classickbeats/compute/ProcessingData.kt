@@ -182,4 +182,35 @@ class ProcessingData {
 
         return pulseStats
     }
+
+    fun qualityPercent(quality: Double): Double {
+        val highQualThres = 95.0
+        val lowQualThres = 0.0
+        val midQualThres = 70.0
+        val lowQual = 2.0
+        val midQual = 3.0
+        val highQual = 5.0
+
+        var qualityPercent = 0.0
+        if (quality == 0.0){
+            qualityPercent = 100.0
+        }
+        else {
+            qualityPercent = -1.0* kotlin.math.log10(quality)
+            if (qualityPercent >= highQual){
+                qualityPercent = 100 - (100 - highQualThres)*((highQual/qualityPercent).pow(2))
+            }
+            else if (qualityPercent >= midQual){
+                qualityPercent = (highQualThres - midQualThres)*(qualityPercent - midQual) + midQualThres
+            }
+            else if (qualityPercent >= lowQual){
+                qualityPercent = (midQualThres - lowQualThres)*(qualityPercent - lowQual) + lowQualThres
+            }
+            else{
+                qualityPercent = lowQualThres
+            }
+        }
+        Timber.i("QualityPERCENT: $qualityPercent")
+        return qualityPercent
+    }
 }
