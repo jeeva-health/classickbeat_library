@@ -48,6 +48,12 @@ class HistoryViewModel @Inject constructor(
         _userData.postValue(Event(user))
     }
 
+    private val _ppgDetails = MutableLiveData<Event<PPGEntity>>()
+    val ppgDetails: LiveData<Event<PPGEntity>> = _ppgDetails
+    private fun setPpgDetails(ppgEntity: PPGEntity) {
+        _ppgDetails.postValue(Event(ppgEntity))
+    }
+
     private val _showLoading = MutableLiveData(Event(false))
     val showLoading: LiveData<Event<Boolean>> = _showLoading
     fun setShowLoadingTrue() = _showLoading.postValue(Event(true))
@@ -75,6 +81,15 @@ class HistoryViewModel @Inject constructor(
                 insertDateSeparatorIfNeeded(before, after)
             }
         }.cachedIn(viewModelScope)
+    }
+
+    fun getScanDetail(scanId: Int) {
+        viewModelScope.launch {
+            setShowLoadingTrue()
+            val scanDetail = recordRepository.getScanDetail(scanId).data
+            scanDetail?.let { setPpgDetails(it) }
+            setShowLoadingFalse()
+        }
     }
 
     private fun convertLogEntityToHistoryItem(baseLogEntity: BaseLogEntity): HistoryItem {

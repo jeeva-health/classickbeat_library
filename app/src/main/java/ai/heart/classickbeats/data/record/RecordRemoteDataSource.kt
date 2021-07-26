@@ -2,6 +2,7 @@ package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.model.response.LoggingListResponse
+import ai.heart.classickbeats.model.response.ScanDetailResponse
 import ai.heart.classickbeats.model.response.SdnnListResponse
 import ai.heart.classickbeats.shared.data.BaseRemoteDataSource
 import ai.heart.classickbeats.shared.network.SessionManager
@@ -23,7 +24,7 @@ class RecordRemoteDataSource internal constructor(
         withContext(ioDispatcher) {
             val response = safeApiCall { recordApiService.recordPPG(ppgEntity) }
             if (response.succeeded) {
-                val ppgId = response.data?.id ?: -1L
+                val ppgId = response.data?.responseData?.id ?: -1L
                 return@withContext Result.Success(ppgId)
             }
             return@withContext Result.Error(response.error)
@@ -48,6 +49,16 @@ class RecordRemoteDataSource internal constructor(
             return@withContext Result.Error(response.error)
         }
 
+    override suspend fun getScanDetails(id: Int): Result<ScanDetailResponse.ResponseData> =
+        withContext(ioDispatcher) {
+            val response = safeApiCall { recordApiService.getScanDetail(id) }
+            if (response.succeeded) {
+                val data = response.data!!.responseData
+                return@withContext Result.Success(data)
+            }
+            return@withContext Result.Error(response.error)
+        }
+
     override suspend fun getLoggingData(): Result<LoggingListResponse.LoggingData> =
         withContext(ioDispatcher) {
             val response = safeApiCall { recordApiService.getLoggingData() }
@@ -62,7 +73,7 @@ class RecordRemoteDataSource internal constructor(
         withContext(ioDispatcher) {
             val response = safeApiCall { recordApiService.recordBloodPressure(bpLogEntity) }
             if (response.succeeded) {
-                val id = response.data?.id ?: -1L
+                val id = response.data?.responseData?.id ?: -1L
                 return@withContext Result.Success(id)
             }
             return@withContext Result.Error(response.error)
@@ -73,7 +84,7 @@ class RecordRemoteDataSource internal constructor(
         withContext(ioDispatcher) {
             val response = safeApiCall { recordApiService.recordGlucoseLevel(glucoseLogEntity) }
             if (response.succeeded) {
-                val id = response.data?.id ?: -1L
+                val id = response.data?.responseData?.id ?: -1L
                 return@withContext Result.Success(id)
             }
             return@withContext Result.Error(response.error)
@@ -84,7 +95,7 @@ class RecordRemoteDataSource internal constructor(
         withContext(ioDispatcher) {
             val response = safeApiCall { recordApiService.recordWaterIntake(waterLogEntity) }
             if (response.succeeded) {
-                val id = response.data?.id ?: -1L
+                val id = response.data?.responseData?.id ?: -1L
                 return@withContext Result.Success(id)
             }
             return@withContext Result.Error(response.error)
@@ -95,7 +106,7 @@ class RecordRemoteDataSource internal constructor(
         withContext(ioDispatcher) {
             val response = safeApiCall { recordApiService.recordWeight(weightLogEntity) }
             if (response.succeeded) {
-                val id = response.data?.id ?: -1L
+                val id = response.data?.responseData?.id ?: -1L
                 return@withContext Result.Success(id)
             }
             return@withContext Result.Error(response.error)

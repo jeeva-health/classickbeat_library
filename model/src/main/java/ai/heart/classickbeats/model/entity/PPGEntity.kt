@@ -4,6 +4,8 @@ import ai.heart.classickbeats.model.LogType
 import com.squareup.moshi.Json
 
 data class PPGEntity(
+    @Transient
+    val id: Int = -1,
     @Json(name = "r_means")
     val rMeans: List<Float>? = null,
     @Json(name = "g_means")
@@ -13,7 +15,7 @@ data class PPGEntity(
     @Json(name = "camera_timestamp")
     val cameraTimeStamps: List<Long>? = null,
     @Json(name = "filtered_r_means")
-    val filteredRMeans: List<Float>? = null,
+    val filteredRMeans: List<Double>? = null,
     val hr: Float? = null,
     val sdnn: Float? = null,
     @Json(name = "mean_nn")

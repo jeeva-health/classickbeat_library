@@ -215,7 +215,7 @@ class MonitorViewModel @Inject constructor(
             }
 
             val ppgEntity = PPGEntity(
-                filteredRMeans = leveledSignal?.map { String.format("%.4f", it).toFloat() },
+                filteredRMeans = leveledSignal?.map { String.format("%.4f", it).toDouble() },
                 hr = String.format("%.4f", bpm).toFloat(),
                 meanNN = String.format("%.4f", meanNN).toFloat(),
                 sdnn = String.format("%.4f", sdnn).toFloat(),
@@ -266,6 +266,7 @@ class MonitorViewModel @Inject constructor(
                     pnn50 = pnn50.toFloat(),
                     rmssd = rmssd.toFloat(),
                     stress = stressResult,
+                    filteredRMean = leveledSignal ?: emptyList(),
                     timeStamp = currentTime
                 )
 

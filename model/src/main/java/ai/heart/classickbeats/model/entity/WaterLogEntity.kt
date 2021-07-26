@@ -4,6 +4,8 @@ import ai.heart.classickbeats.model.LogType
 import com.squareup.moshi.Json
 
 data class WaterLogEntity(
+    @Transient
+    val id: Int = -1,
     @Json(name = "water")
     val quantity: Float,
     val timeStamp: String? = null,

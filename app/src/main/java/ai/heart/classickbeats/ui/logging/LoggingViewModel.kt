@@ -79,7 +79,12 @@ class LoggingViewModel @Inject constructor(
         viewModelScope.launch {
             setShowLoadingTrue()
             val timeStamp = getLogTimeStampString()
-            val bpLogEntity = BpLogEntity(systolic, diastolic, timeStamp, notes)
+            val bpLogEntity = BpLogEntity(
+                systolic = systolic,
+                diastolic = diastolic,
+                timeStamp = timeStamp,
+                note = notes
+            )
             recordRepository.recordBloodPressure(bpLogEntity)
             navigateBack()
         }
@@ -89,7 +94,12 @@ class LoggingViewModel @Inject constructor(
         viewModelScope.launch {
             setShowLoadingTrue()
             val timeStamp = getLogTimeStampString()
-            val glucoseLogEntity = GlucoseLogEntity(glucoseLevel, tag, timeStamp, notes)
+            val glucoseLogEntity = GlucoseLogEntity(
+                glucoseLevel = glucoseLevel,
+                tag = tag,
+                timeStamp = timeStamp,
+                note = notes
+            )
             recordRepository.recordGlucoseLevel(glucoseLogEntity)
             navigateBack()
         }
@@ -99,7 +109,8 @@ class LoggingViewModel @Inject constructor(
         viewModelScope.launch {
             setShowLoadingTrue()
             val timeStamp = getLogTimeStampString()
-            val waterLogEntity = WaterLogEntity(quantity, timeStamp, notes)
+            val waterLogEntity =
+                WaterLogEntity(quantity = quantity, timeStamp = timeStamp, note = notes)
             recordRepository.recordWaterIntake(waterLogEntity)
             navigateBack()
         }
@@ -109,7 +120,8 @@ class LoggingViewModel @Inject constructor(
         viewModelScope.launch {
             setShowLoadingTrue()
             val timeStamp = getLogTimeStampString()
-            val weightLogEntity = WeightLogEntity(weight, timeStamp, notes)
+            val weightLogEntity =
+                WeightLogEntity(weight = weight, timeStamp = timeStamp, note = notes)
             recordRepository.recordWeight(weightLogEntity)
             navigateBack()
         }

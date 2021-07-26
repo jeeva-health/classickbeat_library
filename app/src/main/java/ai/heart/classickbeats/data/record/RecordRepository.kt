@@ -52,19 +52,6 @@ class RecordRepository @Inject constructor(
         return Result.Error(response.error)
     }
 
-//    suspend fun getHistoryData(): Result<List<BaseLogEntity>> {
-//        val response = recordRemoteDataSource.getHistoryData()
-//        when (response) {
-//            is Result.Success -> {
-//                val logEntityList = historyListMapper.map(response.data)
-//                return Result.Success(logEntityList)
-//            }
-//            is Result.Error -> Timber.e(response.exception)
-//            Result.Loading -> throw IllegalStateException("getHistoryData response invalid state")
-//        }
-//        return Result.Error(response.error)
-//    }
-
     fun getHistoryData(): Flow<PagingData<BaseLogEntity>> {
         return Pager(
             config = PagingConfig(
@@ -79,6 +66,19 @@ class RecordRepository @Inject constructor(
                 )
             }
         ).flow
+    }
+
+    suspend fun getScanDetail(scanId: Int): Result<PPGEntity> {
+        val response = recordRemoteDataSource.getScanDetails(scanId)
+        when (response) {
+            is Result.Success -> {
+                val scanDetail = response.data.scanDetail
+                return Result.Success(scanDetail)
+            }
+            is Result.Error -> Timber.e(response.exception)
+            Result.Loading -> throw IllegalStateException("getScanDetail response invalid state")
+        }
+        return Result.Error(response.error)
     }
 
     suspend fun recordBloodPressure(bpLogEntity: BpLogEntity): Result<Long> =

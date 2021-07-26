@@ -1,8 +1,8 @@
 package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.model.entity.*
-import ai.heart.classickbeats.model.response.HistoryResponse
 import ai.heart.classickbeats.model.response.LoggingListResponse
+import ai.heart.classickbeats.model.response.ScanDetailResponse
 import ai.heart.classickbeats.model.response.SdnnListResponse
 import ai.heart.classickbeats.shared.result.Result
 
@@ -13,6 +13,8 @@ interface RecordDataSource {
     suspend fun updatePPG(ppgId: Long, ppgEntity: PPGEntity): Result<Boolean>
 
     suspend fun getSdnnList(): Result<SdnnListResponse.Data>
+
+    suspend fun getScanDetails(id: Int): Result<ScanDetailResponse.ResponseData>
 
     suspend fun getLoggingData(): Result<LoggingListResponse.LoggingData>
 

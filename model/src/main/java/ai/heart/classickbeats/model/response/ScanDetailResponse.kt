@@ -1,8 +1,9 @@
 package ai.heart.classickbeats.model.response
 
+import ai.heart.classickbeats.model.entity.PPGEntity
 import com.squareup.moshi.Json
 
-data class ApiResponse(
+data class ScanDetailResponse(
     @Json(name = "success")
     val successStatus: Boolean,
     @Json(name = "status_code")
@@ -12,5 +13,8 @@ data class ApiResponse(
     @Json(name = "error_list")
     val errorList: List<String>?
 ) {
-    data class ResponseData(@Json(name = "id") val id: Long = -1)
+    data class ResponseData(
+        @Json(name = "detail")
+        val scanDetail: PPGEntity
+    )
 }
