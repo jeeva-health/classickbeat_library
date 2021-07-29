@@ -8,6 +8,7 @@ import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,6 +72,24 @@ class HistoryAdapter constructor(
                     value = ppgEntity.hr?.toInt().toString()
                     unit = context.getString(R.string.bpm)
                     binding.clickArrow.visibility = View.VISIBLE
+                    binding.stressTag.visibility = View.VISIBLE
+                    when (ppgEntity.stressLevel ?: 1) {
+                        1 -> {
+                            binding.stressTag.text = context.getString(R.string.low_stress)
+                            binding.stressTag.backgroundTintList =
+                                ColorStateList.valueOf(context.getColor(R.color.moderate_green_2))
+                        }
+                        2 -> {
+                            binding.stressTag.text = context.getString(R.string.normal_stress)
+                            binding.stressTag.backgroundTintList =
+                                ColorStateList.valueOf(context.getColor(R.color.vivid_yellow))
+                        }
+                        else -> {
+                            binding.stressTag.text = context.getString(R.string.high_stress)
+                            binding.stressTag.backgroundTintList =
+                                ColorStateList.valueOf(context.getColor(R.color.bright_red_3))
+                        }
+                    }
                 }
                 LogType.Medicine -> TODO()
             }

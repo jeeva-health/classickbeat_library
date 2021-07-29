@@ -217,23 +217,6 @@ class MonitorViewModel @Inject constructor(
             val qualityPercent = processData.qualityPercent(quality)
             Timber.i("QualityPERCENT: $qualityPercent")
 
-            val ppgEntity = PPGEntity(
-                filteredRMeans = leveledSignal?.map { String.format("%.4f", it).toDouble() },
-                hr = String.format("%.4f", bpm).toFloat(),
-                meanNN = String.format("%.4f", meanNN).toFloat(),
-                sdnn = String.format("%.4f", sdnn).toFloat(),
-                pnn50 = String.format("%.4f", pnn50).toFloat(),
-                ln = String.format("%.4f", ln).toFloat(),
-                quality = String.format("%.8f", quality).toFloat(),
-                binProbsMAP = binProbsMAP.toList().map { String.format("%.8f", it).toFloat() },
-                bAgeBin = bAgeBin,
-                activeSedantryProb = activeSedantryProb.toList()
-                    .map { String.format("%.8f", it).toFloat() },
-                sedRatioLog = String.format("%.8f", quality).toFloat(),
-                sedStars = sedStars,
-            )
-            recordRepository.updatePPG(ppgId, ppgEntity)
-
             val sdnnDataCount: Int
             val sdnnListResponse = recordRepository.getSdnnList()
             val stressOutput = if (sdnnListResponse.succeeded) {
@@ -253,6 +236,25 @@ class MonitorViewModel @Inject constructor(
                 age > bioAge.endRange -> 1
                 else -> 0
             }
+
+            val ppgEntity = PPGEntity(
+                filteredRMeans = leveledSignal?.map { String.format("%.4f", it).toDouble() },
+                hr = String.format("%.4f", bpm).toFloat(),
+                meanNN = String.format("%.4f", meanNN).toFloat(),
+                sdnn = String.format("%.4f", sdnn).toFloat(),
+                pnn50 = String.format("%.4f", pnn50).toFloat(),
+                rmssd = String.format("%.4f", rmssd).toFloat(),
+                ln = String.format("%.4f", ln).toFloat(),
+                quality = String.format("%.8f", quality).toFloat(),
+                binProbsMAP = binProbsMAP.toList().map { String.format("%.8f", it).toFloat() },
+                bAgeBin = bAgeBin,
+                activeSedantryProb = activeSedantryProb.toList()
+                    .map { String.format("%.8f", it).toFloat() },
+                sedRatioLog = String.format("%.8f", quality).toFloat(),
+                sedStars = sedStars,
+                stressLevel = stressOutput
+            )
+            recordRepository.updatePPG(ppgId, ppgEntity)
 
             val currentTime = Date()
 
