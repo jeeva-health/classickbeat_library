@@ -590,7 +590,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         assert(time.size == centeredSignal.size)
         interpolatedList = processData.interpolate(
             time,
-            centeredSignal.toTypedArray()
+            centeredSignal.toTypedArray(),
+            monitorViewModel.f_interp
         )
         envelope = filt.hilbert(interpolatedList!!.toTypedArray())
         val windowSize2 = 101
@@ -602,7 +603,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         )
         val peaksQ = filt.peakDetection(leveledSignal!!.toTypedArray())
         val peaks = peaksQ.first
-        val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION)
+        val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION, monitorViewModel.f_interp)
         val meanNN = pulseStats[0]
         val bpm = (60 * 1000.0) / meanNN
         return@withContext bpm.toInt()

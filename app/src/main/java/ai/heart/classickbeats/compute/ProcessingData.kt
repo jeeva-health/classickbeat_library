@@ -13,23 +13,24 @@ class ProcessingData {
 
     fun median(l: List<Double>) = l.sorted().let { (it[it.size / 2] + it[(it.size - 1) / 2]) / 2 }
 
-    fun interpolate(xArray: Array<Int>, yArray: Array<Double>): List<Double> {
+    fun interpolate(xArray: Array<Int>, yArray: Array<Double>, f: Double): List<Double> {
         Timber.i("Sizes X, Y in interpolator $xArray.size, $yArray.size")
         val akimaSplineInterpolator = AkimaSplineInterpolator()
         val x0 = xArray[0]
         val pXDouble = xArray.map { (it - x0).toDouble() }
         val xMax = pXDouble.maxOrNull()!!
         Timber.i("Max time recorded: $xMax")
-        val size = (xMax / 10).toInt()
+        val size = (xMax / (1000.0/f)).toInt()
 
         val polynomialFunction =
             akimaSplineInterpolator.interpolate(pXDouble.toDoubleArray(), yArray.toDoubleArray())
 
-        val inputList = (0 until size).map { it * 10.0 }
+        val inputList = (0 until size).map { it * (1000.0/f) }
         val outputList = mutableListOf<Double>()
         for (i in inputList) {
             outputList.add(polynomialFunction.value(i))
         }
+        Timber.i("Interpolation done! Output size: ${outputList.size}")
         return outputList
     }
 
@@ -75,18 +76,6 @@ class ProcessingData {
             step = 1,
             partialWindows = false
         ) { window -> window.average() }
-//        val movingWindow = mutableListOf<Double>()
-//        val y = mutableListOf<Double>()
-//        for (i in 0 until X.size) {
-//            if (i < window) {
-//                movingWindow.add(X[i])
-//            } else {
-//                movingWindow.removeAt(0)
-//                movingWindow.add(X[i])
-//            }
-//            y.add(movingWindow.average())
-//
-//        }
     }
 
     fun runningMovAvg(value: Double, windowSize: Int, movingWindow: MutableList<Double>, movingAvg: MutableList<Double>){
@@ -127,13 +116,14 @@ class ProcessingData {
             }
     }
 
-    fun heartRateAndHRV(peaks: List<Int>, scanDuration: Int): List<Double> {
+    fun heartRateAndHRV(peaks: List<Int>, scanDuration: Int, f: Double): List<Double> {
 
         val time = (0 until 100 * scanDuration).toList()
         val ibiList = mutableListOf<Double>() //Time in milliseconds
 
+        val timePerSample = 1000.0/f
         for (i in 0 until peaks.size - 1) {
-            ibiList.add((time[peaks[i + 1]] - time[peaks[i]]) * 10.0)
+            ibiList.add((time[peaks[i + 1]] - time[peaks[i]]) * timePerSample)
         }
         var ibiMedian = median(ibiList)
         Timber.i("Size, Median, ibiList: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
