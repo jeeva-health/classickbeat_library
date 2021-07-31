@@ -25,7 +25,7 @@ data class PPGData(
     data class ScanResult(
         val bpm: Float,
         val aFib: String,
-        val quality: String,
+        val quality: Float,
         val ageBin: Int,
         val bioAgeResult: Int,
         val activeStar: Int,

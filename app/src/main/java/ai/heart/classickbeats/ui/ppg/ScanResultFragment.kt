@@ -131,6 +131,9 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
                     ColorStateList.valueOf(getContextColor(R.color.bright_red_3))
             }
 
+            val scanQuality = scanResult.quality
+            quality.text = "${scanQuality.toInt()} %"
+
             var stressDrawableInt = 0
             var stressSpannableString: SpannableString? = null
 

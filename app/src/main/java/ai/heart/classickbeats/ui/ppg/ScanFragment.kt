@@ -487,8 +487,11 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private fun endScanning() {
         monitorViewModel.isProcessing = false
         session?.abortCaptures()
+        Timber.i("TrackTime: session aborted")
         camera?.close()
+        Timber.i("TrackTime: camera closed")
         stopBackgroundThread()
+        Timber.i("TrackTime: background thread stopped")
         monitorViewModel.endTimer()
         monitorViewModel.uploadRawData()
         monitorViewModel.calculateResult()

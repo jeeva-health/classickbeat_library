@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.psambit9791.jdsp.misc.UtilMethods.argmax
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
@@ -107,18 +106,24 @@ class MonitorViewModel @Inject constructor(
                 cameraTimeStamps = timeList.toList().map { it.toLong() - timeStamp0.toLong() },
             )
             val result = recordRepository.recordPPG(ppgEntity)
+            Timber.i("TrackTime: upload raw upload completed")
             ppgId = result.data ?: -1
         }
     }
 
     fun calculateResult() {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
 
+
+            // TODO: cache dob and if not present do api call
             val user = loginRepository.getUser().data ?: throw Exception("User data is null")
             val age = user.dob.toDate()?.computeAge() ?: throw Exception("Unable to compute age")
             val gender = if (user.gender == Gender.MALE) 0 else 1
 
             val offset = 16
+
+            Timber.i("TrackTime: Calculate started")
+
             Timber.i("Calculating PULSE STATS, offset $offset")
             val time = timeList.subList(offset, timeList.size - offset).toTypedArray()
             Timber.i("LIST sizes ${time.size}, ${mean1List.size}, ${centeredSignal.size}")
@@ -129,19 +134,29 @@ class MonitorViewModel @Inject constructor(
             )
 //            interpolatedList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray())
 
+            Timber.i("TrackTime: Interpolated completed")
+
             Timber.i("Interpolated signal done")
 //            withoutSpikes = processData.spikeRemover(interpolatedList!!.toTypedArray())
 //            Timber.i("Spikes done")
 
             val filt = Filter()
             envelope = filt.hilbert(interpolatedList!!.toTypedArray())
+
+            Timber.i("TrackTime: envelope computed")
+
             val windowSize2 = 101
             envelopeAverage = processData.movAvg(envelope!!.toTypedArray(), windowSize2)
+
+            Timber.i("TrackTime: movAvg computed")
+
             leveledSignal = processData.leveling(
                 interpolatedList!!.toTypedArray(),
                 envelopeAverage!!.toTypedArray(),
                 windowSize2
             )
+
+            Timber.i("TrackTime: leveling completed")
 
 //            filtOut = filt.chebyBandpass(leveledSignal!!.toTypedArray())
             // filtOut = filt.filtfiltChinese(leveledSignal!!.toTypedArray())
@@ -152,12 +167,16 @@ class MonitorViewModel @Inject constructor(
             val quality = peaksQ.second
             Timber.i("Signal Quality: $quality")
 
+            Timber.i("TrackTime: quality computed")
+
             val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION)
             val meanNN = pulseStats[0]
             val sdnn = pulseStats[1]
             val rmssd = pulseStats[2]
             val pnn50 = pulseStats[3]
             val ln = pulseStats[4]
+
+            Timber.i("TrackTime: pulse state computed")
 
             val bpm = (60 * 1000.0) / meanNN
 
@@ -172,6 +191,8 @@ class MonitorViewModel @Inject constructor(
                     .toDoubleArray()
             // bAgeBin goes from 0 to 5
             val bAgeBin = argmax(binProbsMAP, false)
+
+            Timber.i("TrackTime: age prediction completed")
 
             // First and second indices is for sedantry and active probabilities, respectively.
             val activeSedantryProb = mapModeling.activeSedantryPrediction(27.0, meanNN, rmssd)
@@ -198,6 +219,8 @@ class MonitorViewModel @Inject constructor(
 
             val activeStars = 6 - sedStars
             val isActive = sedRatioLog < 0
+
+            Timber.i("TrackTime: sed ratio computation completed")
 
 //            val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
 
@@ -228,6 +251,8 @@ class MonitorViewModel @Inject constructor(
                 1
             }
 
+            Timber.i("TrackTime: stress calculation completed")
+
             val stressResult = StressResult(stressResult = stressOutput, dataCount = sdnnDataCount)
 
             val bioAge = BioAge.values()[bAgeBin]
@@ -245,7 +270,7 @@ class MonitorViewModel @Inject constructor(
                 pnn50 = String.format("%.4f", pnn50).toFloat(),
                 rmssd = String.format("%.4f", rmssd).toFloat(),
                 ln = String.format("%.4f", ln).toFloat(),
-                quality = String.format("%.8f", quality).toFloat(),
+                quality = String.format("%.2f", qualityPercent).toFloat(),
                 binProbsMAP = binProbsMAP.toList().map { String.format("%.8f", it).toFloat() },
                 bAgeBin = bAgeBin,
                 activeSedantryProb = activeSedantryProb.toList()
@@ -256,13 +281,15 @@ class MonitorViewModel @Inject constructor(
             )
             recordRepository.updatePPG(ppgId, ppgEntity)
 
+            Timber.i("TrackTime: api request completed")
+
             val currentTime = Date()
 
             scanResult =
                 PPGData.ScanResult(
                     bpm = bpm.toFloat(),
                     aFib = "Not Detected",
-                    quality = qualityStr,
+                    quality = qualityPercent.toFloat(),
                     ageBin = bAgeBin,
                     bioAgeResult = bioAgeResult,
                     activeStar = activeStars,
@@ -281,6 +308,8 @@ class MonitorViewModel @Inject constructor(
             timeList.clear()
             centeredSignal.clear()
             outputComputed.postValue(Event(true))
+
+            Timber.i("TrackTime: output computed posted")
         }
     }
 
