@@ -125,7 +125,7 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
         val ppgScanResult = PPGData.ScanResult(
             bpm = ppgEntity.hr ?: 0.0f,
             aFib = "Not Detected",
-            quality = ppgEntity.quality?.toString() ?: "",
+            quality = ppgEntity.quality ?: 0.0f,
             ageBin = ppgEntity.bAgeBin ?: 0,
             bioAgeResult = bioAgeResult,
             activeStar = 6 - (ppgEntity.sedStars ?: 0),
