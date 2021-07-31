@@ -73,7 +73,9 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
             monitorViewModel.scanResult = scanResult
             monitorViewModel.leveledSignal = scanResult.filteredRMean
             val action =
-                HistoryHomeFragmentDirections.actionHistoryHomeFragmentToScanResultFragment()
+                HistoryHomeFragmentDirections.actionHistoryHomeFragmentToScanResultFragment(
+                    showingHistory = true
+                )
             navController.navigate(action)
         })
 
@@ -133,7 +135,7 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
             pnn50 = ppgEntity.pnn50 ?: 0.0f,
             rmssd = ppgEntity.rmssd ?: 0.0f,
             isActive = isActive,
-            stress = StressResult(dataCount = 0),
+            stress = StressResult(stressResult = ppgEntity.stressLevel ?: 0, dataCount = 0),
             filteredRMean = ppgEntity.filteredRMeans ?: emptyList(),
             timeStamp = ppgEntity.timeStamp?.toDate() ?: Date()
         )

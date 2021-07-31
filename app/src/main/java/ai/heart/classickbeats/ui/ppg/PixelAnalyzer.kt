@@ -191,7 +191,7 @@ class PixelAnalyzer constructor(
     }
 
     fun processImageRenderScript(image: Image): CameraReading {
-        val timeStamp = (image.timestamp/(1000000.0)).toInt() //SystemClock.elapsedRealtime().toInt()
+        val timeStamp = (image.timestamp / 1000000L).toInt() //SystemClock.elapsedRealtime().toInt()
         val argbArray = yuv420ToARGB(image, context)
         val w = image.width
         val h = image.height
@@ -256,7 +256,7 @@ class PixelAnalyzer constructor(
         var g_sum = 0
         var b_sum = 0
         var count = 0
-        val len = h/3  // Length of square is (2*len)
+        val len = h / 3  // Length of square is (2*len)
         for (y in max(0, h / 2 - len) until min(h - 2, h / 2 + len)) {
             for (x in max(0, w / 2 - len) until min(w - 2, w / 2 + len)) {
                 val yIndex = y * w + x

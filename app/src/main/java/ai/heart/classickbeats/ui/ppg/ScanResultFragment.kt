@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.github.mikephil.charting.charts.LineChart
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,10 +39,16 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
     private lateinit var waveformChart: LineChart
 
+    private val args: ScanResultFragmentArgs by navArgs()
+
+    private var isShowingHistory = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
+
+        isShowingHistory = args.showingHistory
 
         waveformChart = binding.waveformChart.apply {
             setDrawGridBackground(false)
@@ -193,6 +200,10 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
             saveBtn.setSafeOnClickListener {
                 navigateToHistoryFragment()
+            }
+
+            if (isShowingHistory) {
+                stressInsufficientCard.visibility = View.GONE
             }
         }
     }
