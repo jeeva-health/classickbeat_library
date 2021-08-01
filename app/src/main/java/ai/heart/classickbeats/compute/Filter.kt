@@ -40,11 +40,11 @@ class Filter {
     }
 
     fun hilbert(X: Array<Double>): List<Double>{
-        Timber.i("TrackTime: Hilbert starting (fn)")
+//        Timber.i("TrackTime: Hilbert starting (fn)")
         val h = Hilbert(X.toDoubleArray())
         h.hilbertTransform()
         h.output
-        Timber.i("TrackTime: Hilbert computed (fn)")
+//        Timber.i("TrackTime: Hilbert computed (fn)")
         return (h.amplitudeEnvelope).toMutableList()
     }
 
@@ -60,7 +60,7 @@ class Filter {
     fun peakDetection(X: Array<Double>): Pair<List<Int>, Double> {
         val fp = FindPeak(X.toDoubleArray())
         val out = fp.detectPeaks()
-        Timber.i("TrackTime: Peaks detected (fn)")
+//        Timber.i("TrackTime: Peaks detected (fn)")
 
         val peaks = out.peaks
         Timber.i("Size, Peaks: ${peaks.size}, ${Arrays.toString(peaks)}")
@@ -68,7 +68,7 @@ class Filter {
         Timber.i("Size, Prominent Peaks: ${filteredPeaks.size}, ${Arrays.toString(filteredPeaks)}")
 //        filteredPeaks = out.filterByWidth(filteredPeaks, 20.0, null)
 //        Timber.i("Size, Wide and Prominent Peaks: ${filteredPeaks.size}, ${Arrays.toString(filteredPeaks)}")
-        Timber.i("TrackTime: Prominent Peaks detected (fn)")
+//        Timber.i("TrackTime: Prominent Peaks detected (fn)")
 
         val peaksHeights = mutableListOf<Double>()
         for (i in filteredPeaks) {
