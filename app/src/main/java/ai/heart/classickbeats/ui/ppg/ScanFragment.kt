@@ -380,7 +380,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 //                        val localTimeElapsed = timeStamp - localTimeLast
 //                        Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
 //                        if (totalTimeElapsed >= 6000 && localTimeElapsed >= 5000) {
-                        if (imageCounter % 5 * fps == 0 && imageCounter > 6 * fps) {
+                        if (imageCounter % (5 * fps) == 0 && imageCounter > (6 * fps)) {
                             lifecycleScope.launchWhenResumed {
                                 val dynamicBPM = calculateEnvelopeDynamicBPM(
                                     monitorViewModel.centeredSignal.toList(),
