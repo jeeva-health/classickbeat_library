@@ -380,7 +380,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         val localTimeElapsed = timeStamp - localTimeLast
                         Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
                         if (totalTimeElapsed >= 6000 && localTimeElapsed >= 5000) {
-                            lifecycleScope.launch {
+                            lifecycleScope.launchWhenResumed {
                                 val dynamicBPM = calculateEnvelopeDynamicBPM(
                                     monitorViewModel.centeredSignal.toList(),
                                     monitorViewModel.timeList.toList()
@@ -585,6 +585,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         centeredSignal: List<Double>,
         timeStamp: List<Int>
     ) = withContext(Dispatchers.Default) {
+        Timber.i("TrackTime: Updating Dynamic BPM in thread.")
         val offset = 16
         val time = timeStamp.subList(offset, timeStamp.size - offset).toTypedArray()
         assert(time.size == centeredSignal.size)
