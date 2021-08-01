@@ -20,54 +20,49 @@ class RecordRemoteDataSource internal constructor(
     sessionManager: SessionManager
 ) : BaseRemoteDataSource(sessionManager), RecordDataSource {
 
-    override suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long> =
-        withContext(ioDispatcher) {
-            val response = safeApiCall { recordApiService.recordPPG(ppgEntity) }
-            if (response.succeeded) {
-                val ppgId = response.data?.responseData?.id ?: -1L
-                return@withContext Result.Success(ppgId)
-            }
-            return@withContext Result.Error(response.error)
+    override suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long> {
+        val response = safeApiCall { recordApiService.recordPPG(ppgEntity) }
+        if (response.succeeded) {
+            val ppgId = response.data?.responseData?.id ?: -1L
+            return Result.Success(ppgId)
         }
+        return Result.Error(response.error)
+    }
 
-    override suspend fun updatePPG(ppgId: Long, ppgEntity: PPGEntity): Result<Boolean> =
-        withContext(ioDispatcher) {
-            val response = safeApiCall { recordApiService.updatePPG(ppgId, ppgEntity) }
-            if (response.succeeded) {
-                return@withContext Result.Success(true)
-            }
-            return@withContext Result.Error(response.error)
+    override suspend fun updatePPG(ppgId: Long, ppgEntity: PPGEntity): Result<Boolean> {
+        val response = safeApiCall { recordApiService.updatePPG(ppgId, ppgEntity) }
+        if (response.succeeded) {
+            return Result.Success(true)
         }
+        return Result.Error(response.error)
+    }
 
-    override suspend fun getSdnnList(): Result<SdnnListResponse.Data> =
-        withContext(ioDispatcher) {
-            val response = safeApiCall { recordApiService.getSdnnList() }
-            if (response.succeeded) {
-                val data = response.data!!.responseData
-                return@withContext Result.Success(data)
-            }
-            return@withContext Result.Error(response.error)
+    override suspend fun getSdnnList(): Result<SdnnListResponse.Data> {
+        val response = safeApiCall { recordApiService.getSdnnList() }
+        if (response.succeeded) {
+            val data = response.data!!.responseData
+            return Result.Success(data)
         }
+        return Result.Error(response.error)
+    }
 
-    override suspend fun getScanDetails(id: Int): Result<ScanDetailResponse.ResponseData> =
-        withContext(ioDispatcher) {
-            val response = safeApiCall { recordApiService.getScanDetail(id) }
-            if (response.succeeded) {
-                val data = response.data!!.responseData
-                return@withContext Result.Success(data)
-            }
-            return@withContext Result.Error(response.error)
+    override suspend fun getScanDetails(id: Int): Result<ScanDetailResponse.ResponseData> {
+        val response = safeApiCall { recordApiService.getScanDetail(id) }
+        if (response.succeeded) {
+            val data = response.data!!.responseData
+            return Result.Success(data)
         }
+        return Result.Error(response.error)
+    }
 
-    override suspend fun getLoggingData(): Result<LoggingListResponse.LoggingData> =
-        withContext(ioDispatcher) {
-            val response = safeApiCall { recordApiService.getLoggingData() }
-            if (response.succeeded) {
-                val data = response.data!!.responseData
-                return@withContext Result.Success(data)
-            }
-            return@withContext Result.Error(response.error)
+    override suspend fun getLoggingData(): Result<LoggingListResponse.LoggingData> {
+        val response = safeApiCall { recordApiService.getLoggingData() }
+        if (response.succeeded) {
+            val data = response.data!!.responseData
+            return Result.Success(data)
         }
+        return Result.Error(response.error)
+    }
 
     override suspend fun recordBloodPressure(bpLogEntity: BpLogEntity): Result<Long> =
         withContext(ioDispatcher) {

@@ -50,12 +50,11 @@ class LoginRemoteDataSource internal constructor(
             return@withContext Result.Error(registerResponse.error!!)
         }
 
-    override suspend fun getUser(): Result<GetUserResponse.Data> =
-        withContext(ioDispatcher) {
-            val response = safeApiCall { loginApiService.fetchUser() }
-            if (response.succeeded) {
-                return@withContext Result.Success(response.data!!.responseData)
-            }
-            return@withContext Result.Error(response.error!!)
+    override suspend fun getUser(): Result<GetUserResponse.Data> {
+        val response = safeApiCall { loginApiService.fetchUser() }
+        if (response.succeeded) {
+            return Result.Success(response.data!!.responseData)
         }
+        return Result.Error(response.error!!)
+    }
 }
