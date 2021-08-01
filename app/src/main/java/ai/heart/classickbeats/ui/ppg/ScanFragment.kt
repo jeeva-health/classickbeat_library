@@ -375,11 +375,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         Timber.i("Size Mov Avgs: ${movAvgSmall.size}, ${movAvgLarge.size}, ${monitorViewModel.centeredSignal.size}")
 
                         //Calculating dynamic BPM
-                        val totalTimeElapsed =
-                            timeStamp - (monitorViewModel.timeList.firstOrNull() ?: 0)
-                        val localTimeElapsed = timeStamp - localTimeLast
-                        Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
-                        if (totalTimeElapsed >= 6000 && localTimeElapsed >= 5000) {
+//                        val totalTimeElapsed =
+//                            timeStamp - (monitorViewModel.timeList.firstOrNull() ?: 0)
+//                        val localTimeElapsed = timeStamp - localTimeLast
+//                        Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
+//                        if (totalTimeElapsed >= 6000 && localTimeElapsed >= 5000) {
+                        if (imageCounter % 5 * fps == 0 && imageCounter > 6 * fps) {
                             lifecycleScope.launchWhenResumed {
                                 val dynamicBPM = calculateEnvelopeDynamicBPM(
                                     monitorViewModel.centeredSignal.toList(),
@@ -388,7 +389,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                                 postOnMainLooper {
                                     updateDynamicHeartRate(dynamicBPM)
                                 }
-                                localTimeLast = monitorViewModel.timeList.lastOrNull() ?: 0
+//                                localTimeLast = monitorViewModel.timeList.lastOrNull() ?: 0
+//                            }
                             }
                         }
                     }
@@ -557,7 +559,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
     }
 
-    private fun calculateDynamicBPM(centeredSignal: List<Double>, timeStamp: List<Int>): Int {
+    private fun calculateDynamicBPM(
+        centeredSignal: List<Double>,
+        timeStamp: List<Int>
+    ): Int {
         val fp = FindPeak(centeredSignal.toDoubleArray())
         val out = fp.detectPeaks()
 
@@ -577,7 +582,13 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             ibiList.add((timeStamp[filteredPeaks[i + 1]] - timeStamp[filteredPeaks[i]]) * 1.0)
         }
         val ibiAvg = ibiList.average()
-        Timber.i("Size, Average, ibiList: ${ibiList.size}, $ibiAvg, ${Arrays.toString(ibiList.toDoubleArray())}")
+        Timber.i(
+            "Size, Average, ibiList: ${ibiList.size}, $ibiAvg, ${
+                Arrays.toString(
+                    ibiList.toDoubleArray()
+                )
+            }"
+        )
         return ((60 * 1000.0) / ibiAvg).toInt()
     }
 
@@ -604,7 +615,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         )
         val peaksQ = filt.peakDetection(leveledSignal!!.toTypedArray())
         val peaks = peaksQ.first
-        val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION, monitorViewModel.f_interp)
+        val pulseStats =
+            processData.heartRateAndHRV(peaks, SCAN_DURATION, monitorViewModel.f_interp)
         val meanNN = pulseStats[0]
         val bpm = (60 * 1000.0) / meanNN
         return@withContext bpm.toInt()
