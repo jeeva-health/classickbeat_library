@@ -596,6 +596,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         centeredSignal: List<Double>,
         timeStamp: List<Int>
     ) = withContext(Dispatchers.Default) {
+        Timber.i("TrackTime: Updating Dynamic BPM in thread.")
         val offset = 16
         val time = timeStamp.subList(offset, timeStamp.size - offset).toTypedArray()
         assert(time.size == centeredSignal.size)
