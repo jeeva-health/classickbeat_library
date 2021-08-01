@@ -95,6 +95,8 @@ class MonitorViewModel @Inject constructor(
     var withoutSpikes: List<Double>? = null
     val processData = ProcessingData()
     val fps = 30
+    // Make sure 1000/f_interp is an integer
+    val f_interp = 100.0
 
     fun uploadRawData() {
         viewModelScope.launch {
@@ -122,7 +124,7 @@ class MonitorViewModel @Inject constructor(
 
             val offset = 16
 
-            Timber.i("TrackTime: Calculate started")
+            Timber.i("TrackTime: Calculating Pulse Stats now!")
 
             Timber.i("Calculating PULSE STATS, offset $offset")
             val time = timeList.subList(offset, timeList.size - offset).toTypedArray()
@@ -130,15 +132,13 @@ class MonitorViewModel @Inject constructor(
             assert(time.size == centeredSignal.size)
             interpolatedList = processData.interpolate(
                 time,
-                centeredSignal.toTypedArray()
+                centeredSignal.toTypedArray(),
+                f_interp
             )
-//            interpolatedList = processData.interpolate(timeList.toTypedArray(), mean1List.toTypedArray())
 
             Timber.i("TrackTime: Interpolated completed")
 
-            Timber.i("Interpolated signal done")
-//            withoutSpikes = processData.spikeRemover(interpolatedList!!.toTypedArray())
-//            Timber.i("Spikes done")
+            // withoutSpikes = processData.spikeRemover(interpolatedList!!.toTypedArray())
 
             val filt = Filter()
             envelope = filt.hilbert(interpolatedList!!.toTypedArray())
@@ -158,18 +158,14 @@ class MonitorViewModel @Inject constructor(
 
             Timber.i("TrackTime: leveling completed")
 
-//            filtOut = filt.chebyBandpass(leveledSignal!!.toTypedArray())
-            // filtOut = filt.filtfiltChinese(leveledSignal!!.toTypedArray())
-            // filtOut = filtOut!!.drop(300)
-
             val peaksQ = filt.peakDetection(leveledSignal!!.toTypedArray())
             val peaks = peaksQ.first
             val quality = peaksQ.second
             Timber.i("Signal Quality: $quality")
 
-            Timber.i("TrackTime: quality computed")
+            Timber.i("TrackTime: peaks and quality computed")
 
-            val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION)
+            val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION, f_interp)
             val meanNN = pulseStats[0]
             val sdnn = pulseStats[1]
             val rmssd = pulseStats[2]
