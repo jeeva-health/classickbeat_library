@@ -96,7 +96,7 @@ class MonitorViewModel @Inject constructor(
     val processData = ProcessingData()
     val fps = 30
     // Make sure 1000/f_interp is an integer
-    val f_interp = 100.0
+    val f_interp = 40.0
 
     fun uploadRawData() {
         viewModelScope.launch {
@@ -113,6 +113,47 @@ class MonitorViewModel @Inject constructor(
         }
     }
 
+    fun calculatePulseStats(time: Array<Int>, centeredSignal: List<Double>,
+                            f: Double): Pair<List<Double>, Double> {
+        interpolatedList = processData.interpolate(
+            time,
+            centeredSignal.toTypedArray(),
+            f
+        )
+
+        Timber.i("TrackTime: Interpolated completed")
+
+        // withoutSpikes = processData.spikeRemover(interpolatedList!!.toTypedArray())
+
+        val filt = Filter()
+        envelope = filt.hilbert(interpolatedList!!.toTypedArray())
+
+        Timber.i("TrackTime: envelope computed")
+
+        val windowSize2 = 101
+        envelopeAverage = processData.movAvg(envelope!!.toTypedArray(), windowSize2)
+
+        Timber.i("TrackTime: movAvg computed")
+
+        leveledSignal = processData.leveling(
+            interpolatedList!!.toTypedArray(),
+            envelopeAverage!!.toTypedArray(),
+            windowSize2
+        )
+
+        Timber.i("TrackTime: leveling completed")
+
+        val peaksQ = filt.peakDetection(leveledSignal!!.toTypedArray())
+        val peaks = peaksQ.first
+        val quality = peaksQ.second
+        Timber.i("SignalQuality: $quality")
+
+        Timber.i("TrackTime: peaks and quality computed")
+
+        val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION, f)
+        return Pair(pulseStats, quality)
+    }
+
     fun calculateResult() {
         viewModelScope.launch {
 
@@ -124,57 +165,44 @@ class MonitorViewModel @Inject constructor(
 
             val offset = 16
 
-            Timber.i("TrackTime: Calculating Pulse Stats now!")
-
             Timber.i("Calculating PULSE STATS, offset $offset")
             val time = timeList.subList(offset, timeList.size - offset).toTypedArray()
             Timber.i("LIST sizes ${time.size}, ${mean1List.size}, ${centeredSignal.size}")
             assert(time.size == centeredSignal.size)
-            interpolatedList = processData.interpolate(
-                time,
-                centeredSignal.toTypedArray(),
-                f_interp
-            )
 
-            Timber.i("TrackTime: Interpolated completed")
+            Timber.i("TrackTime: Calculating Pulse Stats now!")
+            val stats = calculatePulseStats(time, centeredSignal, f_interp)
+            val pulseStats = stats.first
+            val quality = stats.second
 
-            // withoutSpikes = processData.spikeRemover(interpolatedList!!.toTypedArray())
+            val qualityPercent = processData.qualityPercent(quality)
+            Timber.i("QualityPercent: $qualityPercent")
 
-            val filt = Filter()
-            envelope = filt.hilbert(interpolatedList!!.toTypedArray())
-
-            Timber.i("TrackTime: envelope computed")
-
-            val windowSize2 = 101
-            envelopeAverage = processData.movAvg(envelope!!.toTypedArray(), windowSize2)
-
-            Timber.i("TrackTime: movAvg computed")
-
-            leveledSignal = processData.leveling(
-                interpolatedList!!.toTypedArray(),
-                envelopeAverage!!.toTypedArray(),
-                windowSize2
-            )
-
-            Timber.i("TrackTime: leveling completed")
-
-            val peaksQ = filt.peakDetection(leveledSignal!!.toTypedArray())
-            val peaks = peaksQ.first
-            val quality = peaksQ.second
-            Timber.i("Signal Quality: $quality")
-
-            Timber.i("TrackTime: peaks and quality computed")
-
-            val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION, f_interp)
             val meanNN = pulseStats[0]
             val sdnn = pulseStats[1]
             val rmssd = pulseStats[2]
             val pnn50 = pulseStats[3]
             val ln = pulseStats[4]
 
-            Timber.i("TrackTime: pulse state computed")
-
             val bpm = (60 * 1000.0) / meanNN
+            Timber.i("TrackTime: BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
+
+            Timber.i("2 TrackTime: Calculating Pulse Stats!")
+            val stats2 = calculatePulseStats(time, centeredSignal, 100.0)
+            val pulseStats2 = stats2.first
+            val quality2 = stats2.second
+
+            val qualityPercent2 = processData.qualityPercent(quality2)
+            Timber.i("2 QualityPercent: $qualityPercent2")
+
+            val meanNN2 = pulseStats2[0]
+            val sdnn2 = pulseStats2[1]
+            val rmssd2 = pulseStats2[2]
+            val pnn502 = pulseStats2[3]
+            val ln2 = pulseStats2[4]
+
+            val bpm2 = (60 * 1000.0) / meanNN2
+            Timber.i("2 TrackTime: BPM: $bpm2, SDNN: $sdnn2, RMSSD: $rmssd2, PNN50: $pnn502, LN: $ln2")
 
             val mapModeling = MAPmodeling()
 
@@ -208,10 +236,6 @@ class MonitorViewModel @Inject constructor(
                 4
             else
                 5
-//            else if (sedRatioLog >= 0.5 && sedRatioLog < 1)
-//                5
-//            else
-//                6
 
             val activeStars = 6 - sedStars
             val isActive = sedRatioLog < 0
@@ -223,18 +247,6 @@ class MonitorViewModel @Inject constructor(
             Timber.i("BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
             Timber.i("binProbsMAP: ${Arrays.toString(binProbsMAP)}")
             Timber.i("Sedantry and Active Probs: ${Arrays.toString(activeSedantryProb.toDoubleArray())}")
-//            Timber.i("Stress Probs: ${Arrays.toString(stressProb.toDoubleArray())}")
-
-            val qualityStr = when {
-                quality <= 1e-5 -> "PERFECT Quality Recording, Good job!"
-                quality <= 1e-4 -> "Good Quality Recording, Good job!"
-                quality <= 1e-3 -> "Decent Quality Recording!"
-                quality <= 1e-2 -> "Poor Quality Recording. Please record again!"
-                else -> "Extremely poor signal quality. Please record again!"
-            }
-
-            val qualityPercent = processData.qualityPercent(quality)
-            Timber.i("QualityPERCENT: $qualityPercent")
 
             val sdnnDataCount: Int
             val sdnnListResponse = recordRepository.getSdnnList()

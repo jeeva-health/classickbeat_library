@@ -174,6 +174,15 @@ class ProcessingData {
     }
 
     fun qualityPercent(quality: Double): Double {
+        /*
+        The following block defines the main idea of qualityPercent:
+            quality <= 1e-5 -> "PERFECT Quality Recording, Good job!"
+            quality <= 1e-4 -> "Good Quality Recording, Good job!"
+            quality <= 1e-3 -> "Decent Quality Recording!"
+            ------ Anything > 0.001 is rejected --------------------
+            quality <= 1e-2 -> "Poor Quality Recording. Please record again!"
+            else -> "Extremely poor signal quality. Please record again!"
+         */
         val highQualThres = 95.0
         val lowQualThres = 0.0
         val midQualThres = 70.0
