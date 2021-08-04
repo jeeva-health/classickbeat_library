@@ -88,11 +88,11 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.7.0-alpha01'
-    implementation 'androidx.activity:activity-ktx:1.3.0-rc01'
-    implementation 'androidx.fragment:fragment-ktx:1.3.5'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'androidx.activity:activity-ktx:1.3.0'
+    implementation 'androidx.fragment:fragment-ktx:1.3.6'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -119,7 +119,7 @@ dependencies {
     // CameraX
     implementation "androidx.camera:camera-camera2:$camerax_version"
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
-    implementation 'androidx.camera:camera-view:1.0.0-alpha26'
+    implementation 'androidx.camera:camera-view:1.0.0-alpha27'
 
     //Lottie
     implementation 'com.airbnb.android:lottie:3.7.1'
@@ -144,7 +144,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
 
     implementation 'com.google.android.play:core:1.10.0'
     implementation 'com.google.android.play:core-ktx:1.8.1'
@@ -163,7 +164,7 @@ dependencies {
     implementation 'org.conscrypt:conscrypt-android:2.5.2'
 
     // Pagination
-    implementation "androidx.paging:paging-runtime:$paging_version"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     // Leak Canary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
@@ -171,7 +172,7 @@ dependencies {
 
     // TEST Dependencies
     testImplementation 'junit:junit:4.13.2'
-    testImplementation "androidx.paging:paging-common:$paging_version"
+    testImplementation "androidx.paging:paging-common-ktx:$paging_version"
 
     // Core library
     testImplementation 'androidx.test:core:1.4.0'
@@ -202,5 +203,4 @@ dependencies {
     // dependency to appear on your APK's compile classpath or the test APK
     // classpath.
     androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.4.0'
-
 }
