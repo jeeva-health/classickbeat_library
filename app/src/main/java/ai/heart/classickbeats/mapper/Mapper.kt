@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.shared.mapper
+package ai.heart.classickbeats.mapper
 
 interface Mapper<I, O> {
     fun map(input: I): O

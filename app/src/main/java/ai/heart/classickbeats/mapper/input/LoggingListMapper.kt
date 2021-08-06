@@ -1,8 +1,8 @@
 package ai.heart.classickbeats.mapper.input
 
+import ai.heart.classickbeats.mapper.Mapper
 import ai.heart.classickbeats.model.entity.BaseLogEntity
 import ai.heart.classickbeats.model.response.LoggingListResponse
-import ai.heart.classickbeats.shared.mapper.Mapper
 import javax.inject.Inject
 
 class LoggingListMapper @Inject constructor(private val loggingDataMapper: LoggingDataMapper) :

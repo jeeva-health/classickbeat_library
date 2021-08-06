@@ -4,12 +4,12 @@ import ai.heart.classickbeats.compute.Filter
 import ai.heart.classickbeats.compute.MAPmodeling
 import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.data.record.RecordRepository
+import ai.heart.classickbeats.data.user.UserRepository
 import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.model.Gender
 import ai.heart.classickbeats.model.PPGData
 import ai.heart.classickbeats.model.StressResult
 import ai.heart.classickbeats.model.entity.PPGEntity
-import ai.heart.classickbeats.shared.data.login.LoginRepository
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.succeeded
@@ -32,7 +32,7 @@ const val SCAN_DURATION = 63
 
 @HiltViewModel
 class MonitorViewModel @Inject constructor(
-    private val loginRepository: LoginRepository,
+    private val userRepository: UserRepository,
     private val recordRepository: RecordRepository
 ) : ViewModel() {
 
@@ -95,6 +95,7 @@ class MonitorViewModel @Inject constructor(
     var withoutSpikes: List<Double>? = null
     val processData = ProcessingData()
     val fps = 30
+
     // Make sure 1000/f_interp is an integer
     val f_interp = 40.0
 
@@ -113,8 +114,10 @@ class MonitorViewModel @Inject constructor(
         }
     }
 
-    fun calculatePulseStats(time: Array<Int>, centeredSignal: List<Double>,
-                            f: Double): Pair<List<Double>, Double> {
+    fun calculatePulseStats(
+        time: Array<Int>, centeredSignal: List<Double>,
+        f: Double
+    ): Pair<List<Double>, Double> {
         interpolatedList = processData.interpolate(
             time,
             centeredSignal.toTypedArray(),
@@ -159,7 +162,7 @@ class MonitorViewModel @Inject constructor(
 
 
             // TODO: cache dob and if not present do api call
-            val user = loginRepository.getUser().data ?: throw Exception("User data is null")
+            val user = userRepository.getUser().data ?: throw Exception("User data is null")
             val age = user.dob.toDate()?.computeAge() ?: throw Exception("Unable to compute age")
             val gender = if (user.gender == Gender.MALE) 0 else 1
 

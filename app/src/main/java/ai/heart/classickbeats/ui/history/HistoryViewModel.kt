@@ -1,11 +1,11 @@
 package ai.heart.classickbeats.ui.history
 
 import ai.heart.classickbeats.data.record.RecordRepository
+import ai.heart.classickbeats.data.user.UserRepository
 import ai.heart.classickbeats.model.HistoryItem
 import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.model.entity.*
-import ai.heart.classickbeats.shared.data.login.LoginRepository
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.util.toDateStringWithoutTime
@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val loginRepository: LoginRepository,
+    private val userRepository: UserRepository,
     private val recordRepository: RecordRepository
 ) : ViewModel() {
 
@@ -130,7 +130,7 @@ class HistoryViewModel @Inject constructor(
     fun getUser() {
         viewModelScope.launch {
             setShowLoadingTrue()
-            val user = loginRepository.getUser().data ?: throw Exception("User data is null")
+            val user = userRepository.getUser().data ?: throw Exception("User data is null")
             setUserDate(user)
             setShowLoadingFalse()
         }

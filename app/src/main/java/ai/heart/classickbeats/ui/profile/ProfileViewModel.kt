@@ -1,7 +1,7 @@
 package ai.heart.classickbeats.ui.profile
 
+import ai.heart.classickbeats.data.user.UserRepository
 import ai.heart.classickbeats.model.User
-import ai.heart.classickbeats.shared.data.login.LoginRepository
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
 import androidx.lifecycle.LiveData
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private val _userData = MutableLiveData<Event<User>>()
@@ -37,7 +37,7 @@ class ProfileViewModel @Inject constructor(
     fun getUser() {
         viewModelScope.launch {
             setShowLoadingTrue()
-            val user = loginRepository.getUser().data ?: throw Exception("User data is null")
+            val user = userRepository.getUser().data ?: throw Exception("User data is null")
             setUserDate(user)
             setShowLoadingFalse()
         }

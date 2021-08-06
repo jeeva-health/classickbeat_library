@@ -1,9 +1,9 @@
 package ai.heart.classickbeats.mapper.input
 
+import ai.heart.classickbeats.mapper.Mapper
 import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.Logging
 import ai.heart.classickbeats.model.entity.*
-import ai.heart.classickbeats.shared.mapper.Mapper
 import timber.log.Timber
 import javax.inject.Inject
 

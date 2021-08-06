@@ -163,6 +163,10 @@ dependencies {
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
     implementation 'org.conscrypt:conscrypt-android:2.5.2'
 
+    // Room
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
     // Pagination
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
