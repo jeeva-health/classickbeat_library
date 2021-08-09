@@ -5,10 +5,7 @@ import ai.heart.classickbeats.compute.MAPmodeling
 import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.data.record.RecordRepository
 import ai.heart.classickbeats.data.user.UserRepository
-import ai.heart.classickbeats.model.BioAge
-import ai.heart.classickbeats.model.Gender
-import ai.heart.classickbeats.model.PPGData
-import ai.heart.classickbeats.model.StressResult
+import ai.heart.classickbeats.model.*
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
@@ -22,9 +19,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.psambit9791.jdsp.misc.UtilMethods.argmax
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
+import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -35,6 +34,8 @@ class MonitorViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val recordRepository: RecordRepository
 ) : ViewModel() {
+
+    var user: User? = null
 
     var scanResult: PPGData.ScanResult? = null
 
@@ -99,6 +100,14 @@ class MonitorViewModel @Inject constructor(
     // Make sure 1000/f_interp is an integer
     val f_interp = 40.0
 
+    fun fetchUser() {
+        viewModelScope.launch {
+            userRepository.getUser().collectLatest {
+                user = it
+            }
+        }
+    }
+
     fun uploadRawData() {
         viewModelScope.launch {
             val timeStamp0 = timeList.firstOrNull() ?: 0
@@ -160,11 +169,8 @@ class MonitorViewModel @Inject constructor(
     fun calculateResult() {
         viewModelScope.launch {
 
-
-            // TODO: cache dob and if not present do api call
-            val user = userRepository.getUser().data ?: throw Exception("User data is null")
-            val age = user.dob.toDate()?.computeAge() ?: throw Exception("Unable to compute age")
-            val gender = if (user.gender == Gender.MALE) 0 else 1
+            val age = user?.dob?.toDate()?.computeAge() ?: throw Exception("Unable to compute age")
+            val gender = if (user?.gender == Gender.MALE) 0 else 1
 
             val offset = 16
 

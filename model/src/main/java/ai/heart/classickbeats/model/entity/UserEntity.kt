@@ -7,27 +7,32 @@ import com.squareup.moshi.Json
 
 @Entity(tableName = "user")
 data class UserEntity(
+
     @Transient
-    @PrimaryKey
-    val id: Int? = null,
+    @ColumnInfo(name = "id")
+    var userId: Int = -1,
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "local_id")
+    var id: Int = -1,
 
     @Json(name = "phone")
     @ColumnInfo(name = "phone")
-    val phoneNumber: String? = null,
+    var phoneNumber: String? = null,
 
     @Json(name = "email")
     @ColumnInfo(name = "email")
-    val emailAddress: String? = null,
+    var emailAddress: String? = null,
 
     @Json(name = "name")
     @ColumnInfo(name = "name")
-    val fullName: String?,
+    var fullName: String? = null,
 
-    val gender: String?,
+    var gender: String? = null,
 
     @Json(name = "height_standard")
     @ColumnInfo(name = "height_standard")
-    val height: Double?,
+    var height: Double? = null,
 
     @Json(name = "height_unit")
     @ColumnInfo(name = "height_unit")
@@ -35,27 +40,27 @@ data class UserEntity(
 
     @Json(name = "weight_standard")
     @ColumnInfo(name = "weight_standard")
-    val weight: Double?,
+    var weight: Double? = null,
 
     @Json(name = "weight_unit")
     @ColumnInfo(name = "weight_unit")
     val weightUnit: Int?,
 
-    val dob: String?,
+    var dob: String? = null,
 
     @Json(name = "is_info_added")
     @ColumnInfo(name = "is_info_added")
-    val isRegistered: Boolean? = null,
+    var isRegistered: Boolean? = null,
 
     @Json(name = "is_baseline_set")
     @ColumnInfo(name = "is_baseline_set")
-    val isBaselineSet: Boolean? = null,
+    var isBaselineSet: Boolean? = null,
 
     @Transient
     @ColumnInfo(name = "created_at")
-    val createdAt: Long,
+    var createdAt: Long? = null,
 
     @Transient
     @ColumnInfo(name = "modified_at")
-    val modifiedAt: Long
+    var modifiedAt: Long? = null
 )

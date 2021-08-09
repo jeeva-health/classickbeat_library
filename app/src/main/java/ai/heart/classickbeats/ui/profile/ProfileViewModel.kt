@@ -3,12 +3,12 @@ package ai.heart.classickbeats.ui.profile
 import ai.heart.classickbeats.data.user.UserRepository
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.shared.result.Event
-import ai.heart.classickbeats.shared.result.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,8 +37,9 @@ class ProfileViewModel @Inject constructor(
     fun getUser() {
         viewModelScope.launch {
             setShowLoadingTrue()
-            val user = userRepository.getUser().data ?: throw Exception("User data is null")
-            setUserDate(user)
+            userRepository.getUser().collectLatest { user: User? ->
+                user?.let { setUserDate(it) }
+            }
             setShowLoadingFalse()
         }
     }

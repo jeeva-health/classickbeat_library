@@ -19,6 +19,7 @@ import androidx.paging.insertSeparators
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -42,10 +43,10 @@ class HistoryViewModel @Inject constructor(
         _refreshData.postValue(Event(Unit))
     }
 
-    private val _userData = MutableLiveData<Event<User>>()
-    val userData: LiveData<Event<User>> = _userData
+    private val _userData = MutableLiveData<User>()
+    val userData: LiveData<User> = _userData
     private fun setUserDate(user: User) {
-        _userData.postValue(Event(user))
+        _userData.postValue(user)
     }
 
     private val _ppgDetails = MutableLiveData<Event<PPGEntity>>()
@@ -130,8 +131,9 @@ class HistoryViewModel @Inject constructor(
     fun getUser() {
         viewModelScope.launch {
             setShowLoadingTrue()
-            val user = userRepository.getUser().data ?: throw Exception("User data is null")
-            setUserDate(user)
+            userRepository.getUser().collectLatest { user: User? ->
+                user?.let { setUserDate(it) }
+            }
             setShowLoadingFalse()
         }
     }

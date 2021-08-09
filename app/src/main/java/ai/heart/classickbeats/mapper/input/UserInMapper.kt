@@ -9,7 +9,7 @@ class UserInMapper @Inject constructor() : Mapper<UserEntity, User> {
     override fun map(input: UserEntity): User {
         val fullName = input.fullName ?: ""
         val email = input.emailAddress ?: ""
-        val phoneNumber = input.phoneNumber
+        val phoneNumber = input.phoneNumber ?: ""
         val gender = input.gender?.stringToGender() ?: Gender.MALE
         val weight = input.weight ?: 70.0
         val isWeightKgs = WeightUnits.KGS.valueToEnum(input.weightUnit)

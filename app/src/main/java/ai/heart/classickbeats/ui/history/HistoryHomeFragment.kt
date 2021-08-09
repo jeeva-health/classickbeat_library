@@ -24,7 +24,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -48,23 +47,13 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
 
         navController = findNavController()
 
-        historyViewModel.getUser()
-
-        historyViewModel.getHistoryData()
-
         historyAdapter = HistoryAdapter(requireContext(), historyItemClickListener)
 
         binding.historyRv.apply {
             adapter = historyAdapter
         }
 
-        lifecycleScope.launch {
-            historyViewModel.getHistoryData().collectLatest { pagingData ->
-                historyAdapter.submitData(pagingData)
-            }
-        }
-
-        historyViewModel.userData.observe(viewLifecycleOwner, EventObserver {
+        historyViewModel.userData.observe(viewLifecycleOwner, {
             userAge = it.dob.toDate()?.computeAge() ?: -1
         })
 
@@ -86,6 +75,18 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
                 hideLoadingBar()
             }
         })
+
+        historyViewModel.getUser()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        lifecycleScope.launchWhenResumed {
+            historyViewModel.getHistoryData().collectLatest { pagingData ->
+                historyAdapter.submitData(pagingData)
+            }
+        }
     }
 
     private val historyItemClickListener = fun(data: BaseLogEntity) {

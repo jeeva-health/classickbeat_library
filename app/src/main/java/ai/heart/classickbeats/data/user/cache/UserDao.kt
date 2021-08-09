@@ -5,17 +5,40 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface UserDao {
+abstract class UserDao {
 
     @Insert(onConflict = REPLACE)
-    suspend fun save(user: UserEntity)
+    abstract suspend fun insert(user: UserEntity)
+
+    suspend fun insertWithTimestamp(user: UserEntity) {
+        insert(user.apply {
+            createdAt = System.currentTimeMillis()
+            modifiedAt = System.currentTimeMillis()
+        })
+    }
+
+    @Update
+    abstract suspend fun update(user: UserEntity)
+
+    suspend fun updateWithTimestamp(user: UserEntity) {
+        update(user.apply {
+            modifiedAt = System.currentTimeMillis()
+        })
+    }
 
     @Query("SELECT * FROM user WHERE id = :userId")
-    fun load(userId: Int): Flow<UserEntity>
+    abstract fun load(userId: Int): Flow<UserEntity>
 
-    @Query("SELECT * FROM user LIMIT 1")
-    fun load(): Flow<UserEntity>
+    @Query("SELECT * FROM user")
+    abstract fun load(): Flow<List<UserEntity>>
+
+    @Query("SELECT COUNT(*) FROM user WHERE modified_at >= (:currentTime - :freshTimeout)")
+    abstract suspend fun hasUser(
+        freshTimeout: Long,
+        currentTime: Long = System.currentTimeMillis()
+    ): Int
 }

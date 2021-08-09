@@ -122,7 +122,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private lateinit var accelerometerListener: AccelerometerListener
 
     private var fps = 30
-    private var localTimeLast = 0
 
     private var badImageCounter = 0
 
@@ -148,6 +147,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         super.onCreate(savedInstanceState)
 
         pixelAnalyzer = PixelAnalyzer(requireContext(), monitorViewModel)
+
         fps = monitorViewModel.fps
 
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -159,6 +159,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
 
         accelerometerListener = AccelerometerListener(handleAcceleration)
+
+        monitorViewModel.fetchUser()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -371,15 +373,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                                 )
                             }
                         }
-                        // Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
                         Timber.i("Size Mov Avgs: ${movAvgSmall.size}, ${movAvgLarge.size}, ${monitorViewModel.centeredSignal.size}")
 
                         //Calculating dynamic BPM
-//                        val totalTimeElapsed =
-//                            timeStamp - (monitorViewModel.timeList.firstOrNull() ?: 0)
-//                        val localTimeElapsed = timeStamp - localTimeLast
-//                        Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
-//                        if (totalTimeElapsed >= 6000 && localTimeElapsed >= 5000) {
                         if (imageCounter % (5 * fps) == 0 && imageCounter > (6 * fps)) {
                             lifecycleScope.launchWhenResumed {
                                 val dynamicBPM = calculateEnvelopeDynamicBPM(
@@ -389,8 +385,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                                 postOnMainLooper {
                                     updateDynamicHeartRate(dynamicBPM)
                                 }
-//                                localTimeLast = monitorViewModel.timeList.lastOrNull() ?: 0
-//                            }
                             }
                         }
                     }
