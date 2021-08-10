@@ -187,22 +187,19 @@ class MonitorViewModel @Inject constructor(
             val bpm = (60 * 1000.0) / meanNN
             Timber.i("TrackTime: BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
 
-            Timber.i("2 TrackTime: Calculating Pulse Stats!")
-            val stats2 = calculatePulseStats(time, centeredSignal, 100.0)
-            val pulseStats2 = stats2.first
-            val quality2 = stats2.second
-
-            val qualityPercent2 = processData.qualityPercent(quality2)
-            Timber.i("2 QualityPercent: $qualityPercent2")
-
-            val meanNN2 = pulseStats2[0]
-            val sdnn2 = pulseStats2[1]
-            val rmssd2 = pulseStats2[2]
-            val pnn502 = pulseStats2[3]
-            val ln2 = pulseStats2[4]
-
-            val bpm2 = (60 * 1000.0) / meanNN2
-            Timber.i("2 TrackTime: BPM: $bpm2, SDNN: $sdnn2, RMSSD: $rmssd2, PNN50: $pnn502, LN: $ln2")
+//            Timber.i("2 TrackTime: Calculating Pulse Stats!")
+//            val stats2 = calculatePulseStats(time, centeredSignal, 100.0)
+//            val pulseStats2 = stats2.first
+//            val quality2 = stats2.second
+//            val qualityPercent2 = processData.qualityPercent(quality2)
+//            Timber.i("2 QualityPercent: $qualityPercent2")
+//            val meanNN2 = pulseStats2[0]
+//            val sdnn2 = pulseStats2[1]
+//            val rmssd2 = pulseStats2[2]
+//            val pnn502 = pulseStats2[3]
+//            val ln2 = pulseStats2[4]
+//            val bpm2 = (60 * 1000.0) / meanNN2
+//            Timber.i("2 TrackTime: BPM: $bpm2, SDNN: $sdnn2, RMSSD: $rmssd2, PNN50: $pnn502, LN: $ln2")
 
             val mapModeling = MAPmodeling()
 
