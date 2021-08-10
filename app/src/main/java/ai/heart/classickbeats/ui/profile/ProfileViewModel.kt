@@ -36,11 +36,9 @@ class ProfileViewModel @Inject constructor(
 
     fun getUser() {
         viewModelScope.launch {
-            setShowLoadingTrue()
             userRepository.getUser().collectLatest { user: User? ->
                 user?.let { setUserDate(it) }
             }
-            setShowLoadingFalse()
         }
     }
 }
