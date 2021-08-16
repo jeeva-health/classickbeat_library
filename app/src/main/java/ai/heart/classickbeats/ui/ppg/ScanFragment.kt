@@ -63,6 +63,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private var countdownType: Int = 0
 
+    private var isIntermediatedProcessing = false
+
     private var camera: CameraDevice? = null
     private var session: CameraCaptureSession? = null
     private var imageReader: ImageReader? = null
@@ -223,6 +225,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         endScanning()
                     }
                 }
+            } else if (it == SPLIT_SCAN_DURATION && !isIntermediatedProcessing) {
+                isIntermediatedProcessing = true
+                endSplitScanning()
             } else {
                 if (countdownType == 0) {
                     binding.countdown.text = it.toString()
@@ -480,6 +485,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
     }
 
+    private fun endSplitScanning() {
+        monitorViewModel.calculateResult()
+    }
+
     private fun endScanning() {
         monitorViewModel.isProcessing = false
         session?.abortCaptures()
@@ -609,8 +618,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         )
         val peaksQ = filt.peakDetection(leveledSignal!!.toTypedArray())
         val peaks = peaksQ.first
-        val pulseStats =
-            processData.heartRateAndHRV(peaks, SCAN_DURATION, monitorViewModel.f_interp)
+        val ibiList = processData.computeIBI(peaks, SCAN_DURATION, monitorViewModel.f_interp)
+        val pulseStats = processData.heartRateAndHRV(ibiList)
         val meanNN = pulseStats[0]
         val bpm = (60 * 1000.0) / meanNN
         return@withContext bpm.toInt()

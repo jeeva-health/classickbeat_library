@@ -21,6 +21,7 @@ import com.github.psambit9791.jdsp.misc.UtilMethods.argmax
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import okhttp3.internal.toImmutableList
 import timber.log.Timber
 import java.util.*
 import java.util.Date
@@ -28,6 +29,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 const val SCAN_DURATION = 63
+const val SPLIT_SCAN_DURATION = 48
 
 @HiltViewModel
 class MonitorViewModel @Inject constructor(
@@ -90,15 +92,12 @@ class MonitorViewModel @Inject constructor(
     }
 
     var leveledSignal: List<Double>? = null
-    var envelopeAverage: List<Double>? = null
-    var envelope: List<Double>? = null
-    var interpolatedList: List<Double>? = null
     var withoutSpikes: List<Double>? = null
     val processData = ProcessingData()
     val fps = 30
 
     // Make sure 1000/f_interp is an integer
-    val f_interp = 40.0
+    val f_interp = 100.0
 
     fun fetchUser() {
         viewModelScope.launch {
@@ -123,47 +122,75 @@ class MonitorViewModel @Inject constructor(
         }
     }
 
-    fun calculatePulseStats(
+    private fun calculatePulseStats(
         time: Array<Int>, centeredSignal: List<Double>,
         f: Double
-    ): Pair<List<Double>, Double> {
-        interpolatedList = processData.interpolate(
+    ): Triple<List<Double>, List<Double>, Double> {
+        val interpolatedList = processData.interpolate(
             time,
             centeredSignal.toTypedArray(),
             f
         )
 
-        Timber.i("TrackTime: Interpolated completed")
-
         // withoutSpikes = processData.spikeRemover(interpolatedList!!.toTypedArray())
 
         val filt = Filter()
-        envelope = filt.hilbert(interpolatedList!!.toTypedArray())
-
-        Timber.i("TrackTime: envelope computed")
+        val envelope = filt.hilbert(interpolatedList.toTypedArray())
 
         val windowSize2 = 101
-        envelopeAverage = processData.movAvg(envelope!!.toTypedArray(), windowSize2)
+        val envelopeAverage = processData.movAvg(envelope.toTypedArray(), windowSize2)
 
-        Timber.i("TrackTime: movAvg computed")
-
-        leveledSignal = processData.leveling(
-            interpolatedList!!.toTypedArray(),
-            envelopeAverage!!.toTypedArray(),
+        val leveledSignal = processData.leveling(
+            interpolatedList.toTypedArray(),
+            envelopeAverage.toTypedArray(),
             windowSize2
         )
 
-        Timber.i("TrackTime: leveling completed")
-
-        val peaksQ = filt.peakDetection(leveledSignal!!.toTypedArray())
+        val peaksQ = filt.peakDetection(leveledSignal.toTypedArray())
         val peaks = peaksQ.first
         val quality = peaksQ.second
         Timber.i("SignalQuality: $quality")
 
         Timber.i("TrackTime: peaks and quality computed")
 
-        val pulseStats = processData.heartRateAndHRV(peaks, SCAN_DURATION, f)
-        return Pair(pulseStats, quality)
+        val ibiList = processData.computeIBI(peaks, SCAN_DURATION, f)
+
+
+        val pulseStats = processData.heartRateAndHRV(ibiList)
+        return Triple(leveledSignal, pulseStats, quality)
+    }
+
+    fun calculateSplitResult() {
+        viewModelScope.launch {
+
+//            val age = user?.dob?.toDate()?.computeAge() ?: throw Exception("Unable to compute age")
+//            val gender = if (user?.gender == Gender.MALE) 0 else 1
+
+            val offset = 16
+
+//            Timber.i("Calculating PULSE STATS, offset $offset")
+
+            val mean1ListSplit = mean1List.toImmutableList()
+            val centeredSignalSplit = centeredSignal.toImmutableList()
+            val timeListSplit = timeList.toImmutableList()
+
+            val time = timeListSplit.subList(offset, timeListSplit.size - offset).toTypedArray()
+            assert(time.size == centeredSignalSplit.size)
+
+            val (leveledSignal, pulseStats, quality) = calculatePulseStats(
+                time,
+                centeredSignalSplit,
+                f_interp
+            )
+
+            val qualityPercent = processData.qualityPercent(quality)
+
+            val meanNN = pulseStats[0]
+            val sdnn = pulseStats[1]
+            val rmssd = pulseStats[2]
+            val pnn50 = pulseStats[3]
+            val ln = pulseStats[4]
+        }
     }
 
     fun calculateResult() {
@@ -180,9 +207,11 @@ class MonitorViewModel @Inject constructor(
             assert(time.size == centeredSignal.size)
 
             Timber.i("TrackTime: Calculating Pulse Stats now!")
-            val stats = calculatePulseStats(time, centeredSignal, f_interp)
-            val pulseStats = stats.first
-            val quality = stats.second
+            val (leveledSignal, pulseStats, quality) = calculatePulseStats(
+                time,
+                centeredSignal,
+                f_interp
+            )
 
             val qualityPercent = processData.qualityPercent(quality)
             Timber.i("QualityPercent: $qualityPercent")
@@ -196,10 +225,11 @@ class MonitorViewModel @Inject constructor(
             val bpm = (60 * 1000.0) / meanNN
             Timber.i("TrackTime: BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
 
+            // This will be used by View
+            this@MonitorViewModel.leveledSignal = leveledSignal
+
             Timber.i("2 TrackTime: Calculating Pulse Stats!")
-            val stats2 = calculatePulseStats(time, centeredSignal, 100.0)
-            val pulseStats2 = stats2.first
-            val quality2 = stats2.second
+            val (_, pulseStats2, quality2) = calculatePulseStats(time, centeredSignal, 100.0)
 
             val qualityPercent2 = processData.qualityPercent(quality2)
             Timber.i("2 QualityPercent: $qualityPercent2")
@@ -290,7 +320,7 @@ class MonitorViewModel @Inject constructor(
                 quality = String.format("%.2f", qualityPercent).toFloat(),
                 binProbsMAP = binProbsMAP.toList().map { String.format("%.8f", it).toFloat() },
                 bAgeBin = bAgeBin,
-                activeSedantryProb = activeSedantryProb.toList()
+                activeSedentaryProb = activeSedantryProb.toList()
                     .map { String.format("%.8f", it).toFloat() },
                 sedRatioLog = String.format("%.8f", quality).toFloat(),
                 sedStars = sedStars,

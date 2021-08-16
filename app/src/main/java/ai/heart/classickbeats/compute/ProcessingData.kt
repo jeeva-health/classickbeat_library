@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.compute
 
+import okhttp3.internal.toImmutableList
 import org.apache.commons.math3.analysis.interpolation.AkimaSplineInterpolator
 import timber.log.Timber
 import java.util.*
@@ -20,12 +21,12 @@ class ProcessingData {
         val pXDouble = xArray.map { (it - x0).toDouble() }
         val xMax = pXDouble.maxOrNull()!!
         Timber.i("Max time recorded: $xMax")
-        val size = (xMax / (1000.0/f)).toInt()
+        val size = (xMax / (1000.0 / f)).toInt()
 
         val polynomialFunction =
             akimaSplineInterpolator.interpolate(pXDouble.toDoubleArray(), yArray.toDoubleArray())
 
-        val inputList = (0 until size).map { it * (1000.0/f) }
+        val inputList = (0 until size).map { it * (1000.0 / f) }
         val outputList = mutableListOf<Double>()
         for (i in inputList) {
             outputList.add(polynomialFunction.value(i))
@@ -59,7 +60,8 @@ class ProcessingData {
         val polynomialFunction =
             akimaSplineInterpolator.interpolate(
                 filteredDataIndex.map { it.toDouble() }.toDoubleArray(),
-                X.toList().filterIndexed { index, d -> filteredDataIndex.contains(index) }.toDoubleArray()
+                X.toList().filterIndexed { index, d -> filteredDataIndex.contains(index) }
+                    .toDoubleArray()
             )
 
         val withoutSpikesData = mutableListOf<Double>()
@@ -78,8 +80,13 @@ class ProcessingData {
         ) { window -> window.average() }
     }
 
-    fun runningMovAvg(value: Double, windowSize: Int, movingWindow: MutableList<Double>, movingAvg: MutableList<Double>){
-        if (movingWindow.size < windowSize-1) {
+    fun runningMovAvg(
+        value: Double,
+        windowSize: Int,
+        movingWindow: MutableList<Double>,
+        movingAvg: MutableList<Double>
+    ) {
+        if (movingWindow.size < windowSize - 1) {
             movingWindow.add(value)
         } else {
             movingWindow.add(value)
@@ -88,9 +95,14 @@ class ProcessingData {
         }
     }
 
-    fun runningCentering(X: MutableList<Double>, movAvg: MutableList<Double>, output: MutableList<Double>, windowSize: Int){
+    fun runningCentering(
+        X: MutableList<Double>,
+        movAvg: MutableList<Double>,
+        output: MutableList<Double>,
+        windowSize: Int
+    ) {
         val offset = (windowSize - 1) / 2
-        if (X.size > offset && output.size == movAvg.size-1){
+        if (X.size > offset && output.size == movAvg.size - 1) {
             output.add(X.last() - movAvg.last())
         }
     }
@@ -116,22 +128,15 @@ class ProcessingData {
             }
     }
 
-    fun heartRateAndHRV(peaks: List<Int>, scanDuration: Int, f: Double): List<Double> {
+    fun heartRateAndHRV(ibiList: MutableList<Double>): List<Double> {
 
-        val time = (0 until 100 * scanDuration).toList()
-        val ibiList = mutableListOf<Double>() //Time in milliseconds
-
-        val timePerSample = 1000.0/f
-        for (i in 0 until peaks.size - 1) {
-            ibiList.add((time[peaks[i + 1]] - time[peaks[i]]) * timePerSample)
-        }
         var ibiMedian = median(ibiList)
         Timber.i("Size, Median, ibiList: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
         var i = 0
-        while (i < ibiList.size-1){
-            if (ibiList[i] + ibiList[i+1] < 1.5 * ibiMedian){
-                ibiList[i] = ibiList[i] + ibiList[i+1]
-                ibiList.removeAt(i+1)
+        while (i < ibiList.size - 1) {
+            if (ibiList[i] + ibiList[i + 1] < 1.5 * ibiMedian) {
+                ibiList[i] = ibiList[i] + ibiList[i + 1]
+                ibiList.removeAt(i + 1)
             }
             i++
         }
@@ -139,10 +144,10 @@ class ProcessingData {
         Timber.i("Size, Median, ibiList2: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
 
         i = 0
-        while (i < ibiList.size-1){
-            if (ibiList[i] + ibiList[i+1] < 1.5 * ibiMedian){
-                ibiList[i] = ibiList[i] + ibiList[i+1]
-                ibiList.removeAt(i+1)
+        while (i < ibiList.size - 1) {
+            if (ibiList[i] + ibiList[i + 1] < 1.5 * ibiMedian) {
+                ibiList[i] = ibiList[i] + ibiList[i + 1]
+                ibiList.removeAt(i + 1)
             }
             i++
         }
@@ -159,18 +164,30 @@ class ProcessingData {
         var rmssd = 0.0
         var nn50 = 0
         val ibiSize = filteredIbiList.size - 1
-        for (i in 0 until ibiSize){
-            val diffRR = (filteredIbiList[i] - filteredIbiList[i+1]).absoluteValue
+        for (i in 0 until ibiSize) {
+            val diffRR = (filteredIbiList[i] - filteredIbiList[i + 1]).absoluteValue
             rmssd += diffRR.pow(2)
-            if (diffRR >= 50){
+            if (diffRR >= 50) {
                 nn50 += 1
             }
         }
-        rmssd = sqrt(rmssd/ibiSize)
-        val pnn50 = (100.0*nn50)/ibiSize
+        rmssd = sqrt(rmssd / ibiSize)
+        val pnn50 = (100.0 * nn50) / ibiSize
         val pulseStats = listOf(ibiAvg2, SDNN, rmssd, pnn50, ln(rmssd))
 
         return pulseStats
+    }
+
+    fun computeIBI(peaks: List<Int>, scanDuration: Int, f: Double): MutableList<Double> {
+
+        val time = (0 until 100 * scanDuration).toList()
+        val ibiList = mutableListOf<Double>() //Time in milliseconds
+
+        val timePerSample = 1000.0 / f
+        for (i in 0 until peaks.size - 1) {
+            ibiList.add((time[peaks[i + 1]] - time[peaks[i]]) * timePerSample)
+        }
+        return ibiList
     }
 
     fun qualityPercent(quality: Double): Double {
@@ -191,21 +208,19 @@ class ProcessingData {
         val highQual = 5.0
 
         var qualityPercent = 0.0
-        if (quality == 0.0){
+        if (quality == 0.0) {
             qualityPercent = 100.0
-        }
-        else {
-            qualityPercent = -1.0* kotlin.math.log10(quality)
-            if (qualityPercent >= highQual){
-                qualityPercent = 100 - (100 - highQualThres)*((highQual/qualityPercent).pow(2))
-            }
-            else if (qualityPercent >= midQual){
-                qualityPercent = (highQualThres - midQualThres)*(qualityPercent - midQual) + midQualThres
-            }
-            else if (qualityPercent >= lowQual){
-                qualityPercent = (midQualThres - lowQualThres)*(qualityPercent - lowQual) + lowQualThres
-            }
-            else{
+        } else {
+            qualityPercent = -1.0 * kotlin.math.log10(quality)
+            if (qualityPercent >= highQual) {
+                qualityPercent = 100 - (100 - highQualThres) * ((highQual / qualityPercent).pow(2))
+            } else if (qualityPercent >= midQual) {
+                qualityPercent =
+                    (highQualThres - midQualThres) * (qualityPercent - midQual) + midQualThres
+            } else if (qualityPercent >= lowQual) {
+                qualityPercent =
+                    (midQualThres - lowQualThres) * (qualityPercent - lowQual) + lowQualThres
+            } else {
                 qualityPercent = lowQualThres
             }
         }
