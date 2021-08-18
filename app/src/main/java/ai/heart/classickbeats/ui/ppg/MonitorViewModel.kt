@@ -5,6 +5,7 @@ import ai.heart.classickbeats.compute.MAPmodeling
 import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.data.record.RecordRepository
 import ai.heart.classickbeats.data.user.UserRepository
+import ai.heart.classickbeats.domain.CameraReading
 import ai.heart.classickbeats.model.*
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.result.Event
@@ -14,6 +15,7 @@ import ai.heart.classickbeats.shared.util.computeAge
 import ai.heart.classickbeats.shared.util.toDate
 import android.os.CountDownTimer
 import android.text.format.DateUtils
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -49,7 +51,20 @@ class MonitorViewModel @Inject constructor(
     val centeredSignal = mutableListOf<Double>()
     val timeList = mutableListOf<Int>()
 
+    val movAvgSmall = mutableListOf<Double>()
+    val movAvgLarge = mutableListOf<Double>()
+
+    val fps = 30
+
+    // Keep window sizes odd
+    private val smallWindow = fps / 10
+    private val largeWindow = fps + 1
+    val offset = (largeWindow - 1) / 2
+
     var ppgId: Long = -1
+
+    private val _dynamicGraphCoordinates = MutableLiveData<Event<Pair<Int, Double>>>()
+    val dynamicGraphCoordinates: LiveData<Event<Pair<Int, Double>>> = _dynamicGraphCoordinates
 
     val outputComputed = MutableLiveData(Event(false))
 
@@ -92,12 +107,10 @@ class MonitorViewModel @Inject constructor(
     }
 
     var leveledSignal: List<Double>? = null
-    var withoutSpikes: List<Double>? = null
     val processData = ProcessingData()
-    val fps = 30
 
     // Make sure 1000/f_interp is an integer
-    val f_interp = 100.0
+    val fInterp = 100.0
 
     fun fetchUser() {
         viewModelScope.launch {
@@ -122,75 +135,72 @@ class MonitorViewModel @Inject constructor(
         }
     }
 
-    private fun calculatePulseStats(
-        time: Array<Int>, centeredSignal: List<Double>,
-        f: Double
-    ): Triple<List<Double>, List<Double>, Double> {
+    fun addFrameDataToList(cameraReading: CameraReading) {
+        val red = cameraReading.red
+        val green = cameraReading.green
+        val blue = cameraReading.blue
+        val timeStamp = cameraReading.timeStamp
+
+        mean1List.add(red)
+        mean2List.add(green)
+        mean3List.add(blue)
+        timeList.add(timeStamp)
+    }
+
+    fun calculateCenteredSignal() {
+        val smallAvg = processData.runningMovAvg(
+            smallWindow,
+            mean1List
+        )
+        smallAvg?.let { movAvgSmall.add(it) }
+
+        val largeAvg = processData.runningMovAvg(
+            largeWindow,
+            movAvgSmall
+        )
+        largeAvg?.let { movAvgLarge.add(it) }
+
+        if (movAvgSmall.size >= largeWindow) {
+            val x = -1.0 * (movAvgSmall[movAvgSmall.size - offset] - movAvgLarge.last())
+            centeredSignal.add(x)
+
+            _dynamicGraphCoordinates.postValue(Event(Pair(centeredSignal.size, x)))
+        }
+    }
+
+    private fun calculateLevelSignalAndPeaks(
+        timeList: List<Int>, centeredSignal: List<Double>, f: Double
+    ): Triple<List<Double>, List<Int>, Double> {
+
+        val offset = 16
+        val windowSize = 101
+
+        val time = timeList.subList(offset, timeList.size - offset)
+        assert(time.size == centeredSignal.size)
+
         val interpolatedList = processData.interpolate(
             time,
-            centeredSignal.toTypedArray(),
+            centeredSignal,
             f
         )
 
-        // withoutSpikes = processData.spikeRemover(interpolatedList!!.toTypedArray())
-
-        val filt = Filter()
-        val envelope = filt.hilbert(interpolatedList.toTypedArray())
-
-        val windowSize2 = 101
-        val envelopeAverage = processData.movAvg(envelope.toTypedArray(), windowSize2)
+        val envelope = Filter.hilbert(interpolatedList)
+        val envelopeAverage = processData.movAvg(envelope, windowSize)
 
         val leveledSignal = processData.leveling(
-            interpolatedList.toTypedArray(),
-            envelopeAverage.toTypedArray(),
-            windowSize2
+            interpolatedList,
+            envelopeAverage,
+            windowSize
         )
 
-        val peaksQ = filt.peakDetection(leveledSignal.toTypedArray())
-        val peaks = peaksQ.first
-        val quality = peaksQ.second
-        Timber.i("SignalQuality: $quality")
+        val (peaks, quality) = Filter.peakDetection(leveledSignal)
 
-        Timber.i("TrackTime: peaks and quality computed")
-
-        val ibiList = processData.computeIBI(peaks, SCAN_DURATION, f)
-
-
-        val pulseStats = processData.heartRateAndHRV(ibiList)
-        return Triple(leveledSignal, pulseStats, quality)
+        return Triple(leveledSignal, peaks, quality)
     }
 
-    fun calculateSplitResult() {
-        viewModelScope.launch {
-
-//            val age = user?.dob?.toDate()?.computeAge() ?: throw Exception("Unable to compute age")
-//            val gender = if (user?.gender == Gender.MALE) 0 else 1
-
-            val offset = 16
-
-//            Timber.i("Calculating PULSE STATS, offset $offset")
-
-            val mean1ListSplit = mean1List.toImmutableList()
-            val centeredSignalSplit = centeredSignal.toImmutableList()
-            val timeListSplit = timeList.toImmutableList()
-
-            val time = timeListSplit.subList(offset, timeListSplit.size - offset).toTypedArray()
-            assert(time.size == centeredSignalSplit.size)
-
-            val (leveledSignal, pulseStats, quality) = calculatePulseStats(
-                time,
-                centeredSignalSplit,
-                f_interp
-            )
-
-            val qualityPercent = processData.qualityPercent(quality)
-
-            val meanNN = pulseStats[0]
-            val sdnn = pulseStats[1]
-            val rmssd = pulseStats[2]
-            val pnn50 = pulseStats[3]
-            val ln = pulseStats[4]
-        }
+    fun calculatePulseStats(peaks: List<Int>, f: Double): List<Double> {
+        val ibiList = processData.computeIBI(peaks, SCAN_DURATION, f)
+        return processData.heartRateAndHRV(ibiList)
     }
 
     fun calculateResult() {
@@ -199,19 +209,12 @@ class MonitorViewModel @Inject constructor(
             val age = user?.dob?.toDate()?.computeAge() ?: throw Exception("Unable to compute age")
             val gender = if (user?.gender == Gender.MALE) 0 else 1
 
-            val offset = 16
-
-            Timber.i("Calculating PULSE STATS, offset $offset")
-            val time = timeList.subList(offset, timeList.size - offset).toTypedArray()
-            Timber.i("LIST sizes ${time.size}, ${mean1List.size}, ${centeredSignal.size}")
-            assert(time.size == centeredSignal.size)
-
-            Timber.i("TrackTime: Calculating Pulse Stats now!")
-            val (leveledSignal, pulseStats, quality) = calculatePulseStats(
-                time,
-                centeredSignal,
-                f_interp
+            val (leveledSignal, peaks, quality) = calculateLevelSignalAndPeaks(
+                timeList.toImmutableList(),
+                centeredSignal.toImmutableList(),
+                fInterp
             )
+            val pulseStats = calculatePulseStats(peaks, fInterp)
 
             val qualityPercent = processData.qualityPercent(quality)
             Timber.i("QualityPercent: $qualityPercent")
@@ -227,21 +230,6 @@ class MonitorViewModel @Inject constructor(
 
             // This will be used by View
             this@MonitorViewModel.leveledSignal = leveledSignal
-
-            Timber.i("2 TrackTime: Calculating Pulse Stats!")
-            val (_, pulseStats2, quality2) = calculatePulseStats(time, centeredSignal, 100.0)
-
-            val qualityPercent2 = processData.qualityPercent(quality2)
-            Timber.i("2 QualityPercent: $qualityPercent2")
-
-            val meanNN2 = pulseStats2[0]
-            val sdnn2 = pulseStats2[1]
-            val rmssd2 = pulseStats2[2]
-            val pnn502 = pulseStats2[3]
-            val ln2 = pulseStats2[4]
-
-            val bpm2 = (60 * 1000.0) / meanNN2
-            Timber.i("2 TrackTime: BPM: $bpm2, SDNN: $sdnn2, RMSSD: $rmssd2, PNN50: $pnn502, LN: $ln2")
 
             val mapModeling = MAPmodeling()
 

@@ -1,6 +1,5 @@
 package ai.heart.classickbeats.compute
 
-import okhttp3.internal.toImmutableList
 import org.apache.commons.math3.analysis.interpolation.AkimaSplineInterpolator
 import timber.log.Timber
 import java.util.*
@@ -14,23 +13,21 @@ class ProcessingData {
 
     fun median(l: List<Double>) = l.sorted().let { (it[it.size / 2] + it[(it.size - 1) / 2]) / 2 }
 
-    fun interpolate(xArray: Array<Int>, yArray: Array<Double>, f: Double): List<Double> {
+    fun interpolate(xArray: List<Int>, yArray: List<Double>, f: Double): List<Double> {
         Timber.i("Sizes X, Y in interpolator $xArray.size, $yArray.size")
+        val timePerSample = 1000.0 / f
         val akimaSplineInterpolator = AkimaSplineInterpolator()
         val x0 = xArray[0]
         val pXDouble = xArray.map { (it - x0).toDouble() }
-        val xMax = pXDouble.maxOrNull()!!
+        val xMax = pXDouble.last()
         Timber.i("Max time recorded: $xMax")
-        val size = (xMax / (1000.0 / f)).toInt()
+        val size = (xMax / timePerSample).toInt()
 
         val polynomialFunction =
             akimaSplineInterpolator.interpolate(pXDouble.toDoubleArray(), yArray.toDoubleArray())
 
-        val inputList = (0 until size).map { it * (1000.0 / f) }
-        val outputList = mutableListOf<Double>()
-        for (i in inputList) {
-            outputList.add(polynomialFunction.value(i))
-        }
+        val inputList = (0 until size).map { it * timePerSample }
+        val outputList = inputList.map { polynomialFunction.value(it) }
         Timber.i("Interpolation done! Output size: ${outputList.size}")
         return outputList
     }
@@ -72,51 +69,27 @@ class ProcessingData {
         return withoutSpikesData
     }
 
-    fun movAvg(X: Array<Double>, window_size: Int): List<Double> {
-        return X.toMutableList().windowed(
+    // TODO: modify it to remove unnecessary list to array conversion
+    fun movAvg(X: DoubleArray, window_size: Int): Array<Double> {
+        return X.toList().windowed(
             size = window_size,
             step = 1,
             partialWindows = false
-        ) { window -> window.average() }
+        ) { window -> window.average() }.toTypedArray()
     }
 
-    fun runningMovAvg(
-        value: Double,
-        windowSize: Int,
-        movingWindow: MutableList<Double>,
-        movingAvg: MutableList<Double>
-    ) {
-        if (movingWindow.size < windowSize - 1) {
-            movingWindow.add(value)
+    fun runningMovAvg(windowSize: Int, dataList: List<Double>): Double? {
+        val average = if (dataList.size >= windowSize) {
+            dataList.takeLast(windowSize).average()
         } else {
-            movingWindow.add(value)
-            movingAvg.add(movingWindow.average())
-            movingWindow.removeAt(0)
+            null
         }
+        return average
     }
 
-    fun runningCentering(
-        X: MutableList<Double>,
-        movAvg: MutableList<Double>,
-        output: MutableList<Double>,
-        windowSize: Int
-    ) {
-        val offset = (windowSize - 1) / 2
-        if (X.size > offset && output.size == movAvg.size - 1) {
-            output.add(X.last() - movAvg.last())
-        }
-    }
-
-    fun centering(X: Array<Double>, movAvg: Array<Double>, window_size: Int): List<Double> {
+    fun leveling(X: List<Double>, movAvg: Array<Double>, window_size: Int): List<Double> {
         val offset = (window_size - 1) / 2
-        val differ = X.toMutableList().subList(offset, X.size - offset).zip(movAvg, Double::minus)
-        return differ
-    }
-
-    fun leveling(X: Array<Double>, movAvg: Array<Double>, window_size: Int): List<Double> {
-        val offset = (window_size - 1) / 2
-        val differ = X.toMutableList().subList(offset, X.size - offset).zip(movAvg, Double::div)
-        return differ
+        return X.subList(offset, X.size - offset).zip(movAvg, Double::div)
     }
 
     fun sd(data: DoubleArray): Double {
@@ -131,7 +104,6 @@ class ProcessingData {
     fun heartRateAndHRV(ibiList: MutableList<Double>): List<Double> {
 
         var ibiMedian = median(ibiList)
-        Timber.i("Size, Median, ibiList: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
         var i = 0
         while (i < ibiList.size - 1) {
             if (ibiList[i] + ibiList[i + 1] < 1.5 * ibiMedian) {
@@ -141,7 +113,6 @@ class ProcessingData {
             i++
         }
         ibiMedian = median(ibiList)
-        Timber.i("Size, Median, ibiList2: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
 
         i = 0
         while (i < ibiList.size - 1) {
@@ -152,14 +123,10 @@ class ProcessingData {
             i++
         }
         ibiMedian = median(ibiList)
-        Timber.i("Size, Median, ibiList3: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
 
         val filteredIbiList = ibiList.filter { it > 0.8 * ibiMedian && it < 1.2 * ibiMedian }
         val ibiAvg2 = filteredIbiList.average()
-        Timber.i(
-            "Size, Avg, filteredIbiList: ${filteredIbiList.size}, $ibiAvg2, " +
-                    "${Arrays.toString(filteredIbiList.toDoubleArray())}"
-        )
+
         val SDNN = sd(filteredIbiList.toDoubleArray())
         var rmssd = 0.0
         var nn50 = 0
