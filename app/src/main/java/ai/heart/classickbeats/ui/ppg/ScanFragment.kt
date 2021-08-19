@@ -160,7 +160,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         (requireActivity() as MainActivity).navigateToHeartRateFragment()
 
         // If its first scan show the scan tutorial dialog fragment
-        scanViewModel.isFirstTimeScanCompleted.observe(viewLifecycleOwner, {
+        scanViewModel.isFirstTimeScanCompleted.observe(viewLifecycleOwner, EventObserver {
             if (!it) {
                 navigateToScanTutorialFragment()
             }

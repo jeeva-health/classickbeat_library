@@ -23,9 +23,9 @@ class ScanViewModel @Inject constructor(
         val result = firstScanCompletedUseCase(Unit)
         Timber.i("isFirstTimeScanCompleted: ${result.data}")
         if (result.data == false) {
-            emit(false)
+            emit(Event(false))
         } else {
-            emit(true)
+            emit(Event(true))
         }
     }
 
