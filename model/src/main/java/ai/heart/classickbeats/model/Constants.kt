@@ -4,6 +4,9 @@ object Constants {
 
     const val PLAYBACK_CHANNEL_ID = "playback_1"
     const val PLAYBACK__NOTIFICATION_ID = 1023
+
+    const val SCAN_DURATION = 63
+    const val SPLIT_SCAN_DURATION = 15
 }
 
 enum class WeightUnits {

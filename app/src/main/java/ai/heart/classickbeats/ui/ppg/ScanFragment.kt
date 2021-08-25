@@ -2,11 +2,12 @@ package ai.heart.classickbeats.ui.ppg
 
 import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
-import ai.heart.classickbeats.compute.Filter
 import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.databinding.FragmentScanBinding
 import ai.heart.classickbeats.domain.CameraReading
 import ai.heart.classickbeats.graph.RunningGraph
+import ai.heart.classickbeats.model.Constants.SCAN_DURATION
+import ai.heart.classickbeats.model.Constants.SPLIT_SCAN_DURATION
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.widgets.CircleProgressBar
 import ai.heart.classickbeats.utils.*
@@ -129,7 +130,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private var badImageCounter = 0
 
-    val processData = ProcessingData()
+    private var timeListSplitSize: Int = 0
+
+    private var centeredSignalSplitSize: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -217,9 +220,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                     }
                 }
             } else if (it == SPLIT_SCAN_DURATION && !isIntermediatedProcessing) {
-                Timber.i("TrackTime: it: $it")
+                Timber.i("Ritesh TrackTime: it: $it")
                 isIntermediatedProcessing = true
-                //endSplitScanning()
+                endSplitScanning()
             } else {
                 if (countdownType == 0) {
                     binding.countdown.text = it.toString()
@@ -457,20 +460,31 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private fun endSplitScanning() {
         Timber.i("TrackTime: endSplitScanning called")
-        monitorViewModel.calculateResult()
+        val timeListImmutable = monitorViewModel.timeList.toImmutableList()
+        val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
+        timeListSplitSize = timeListImmutable.size
+        centeredSignalSplitSize = centeredSignalListImmutable.size
+        monitorViewModel.calculateResultSplit(timeListImmutable, centeredSignalListImmutable)
     }
 
     private fun endScanning() {
+        Timber.i("endScanning called")
         monitorViewModel.isProcessing = false
         session?.abortCaptures()
-        Timber.i("TrackTime: session aborted")
         camera?.close()
-        Timber.i("TrackTime: camera closed")
         stopBackgroundThread()
-        Timber.i("TrackTime: background thread stopped")
         monitorViewModel.endTimer()
         monitorViewModel.uploadRawData()
-        monitorViewModel.calculateResult()
+        val timeListSize = monitorViewModel.timeList.size
+        val centeredSignalSize = monitorViewModel.centeredSignal.size
+        val timeListImmutable = monitorViewModel.timeList.toImmutableList()
+        val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
+        monitorViewModel.calculateResultSplit(
+            timeListImmutable.subList(timeListSplitSize, timeListSize),
+            centeredSignalListImmutable.subList(centeredSignalSplitSize, centeredSignalSize)
+        )
+        monitorViewModel.calculateSplitCombinedResult()
+        monitorViewModel.calculateResult(timeListImmutable, centeredSignalListImmutable)
         imageCounter = 0
         navigateToScanQuestionFragment()
         scanViewModel.setFirstScanCompleted()
@@ -539,33 +553,21 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     ) = withContext(Dispatchers.Default) {
 
         Timber.i("TrackTime: Updating Dynamic BPM in thread.")
-
         val offset = 16
         val windowSize = 101
 
-        val time = timeStamp.subList(offset, timeStamp.size - offset)
-        assert(time.size == centeredSignal.size)
-
-        // TODO: Vipul remove interpolated list
-        val interpolatedList = processData.interpolate(
-            time,
-            centeredSignal,
+        // TODO(Harsh: check if leveledSignal is needed for dynamic bpm, else split below function)
+        val leveledSignal = ProcessingData.computeLeveledSignal(
+            timeList = timeStamp,
+            centeredSignalList = centeredSignal,
+            offset = offset,
+            windowSize = windowSize
+        )
+        val (ibiList, _) = ProcessingData.calculateIbiListAndQuality(
+            leveledSignal,
             monitorViewModel.fInterp
         )
-
-        val envelope = Filter.hilbert(interpolatedList)
-        val envelopeAverage = processData.movAvg(envelope, windowSize)
-
-        val leveledSignal = processData.leveling(
-            interpolatedList,
-            envelopeAverage,
-            windowSize
-        )
-
-        val (peaks, _) = Filter.peakDetection(leveledSignal)
-        val ibiList = processData.computeIBI(peaks, SCAN_DURATION, monitorViewModel.fInterp)
-        val pulseStats = processData.heartRateAndHRV(ibiList)
-        val meanNN = pulseStats[0]
+        val (meanNN, _, _, _, _) = ProcessingData.calculatePulseStats(ibiList)
         val bpm = (60 * 1000.0) / meanNN
 
         return@withContext bpm.toInt()

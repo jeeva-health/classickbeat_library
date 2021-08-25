@@ -6,6 +6,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Error(
-    @Json(name = "error_message")
-    val errorMessage: String
+    @Json(name = "error_list")
+    val errorList: List<String>?
 )
