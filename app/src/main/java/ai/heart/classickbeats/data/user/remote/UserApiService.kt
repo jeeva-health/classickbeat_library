@@ -1,10 +1,8 @@
 package ai.heart.classickbeats.data.user.remote
 
 import ai.heart.classickbeats.model.entity.UserEntity
-import ai.heart.classickbeats.model.request.LoginRequest
-import ai.heart.classickbeats.model.request.RefreshTokenRequest
+import ai.heart.classickbeats.model.request.FirebaseTokenRequest
 import ai.heart.classickbeats.model.response.GetUserResponse
-import ai.heart.classickbeats.model.response.LoginResponse
 import ai.heart.classickbeats.model.response.RegisterResponse
 import ai.heart.classickbeats.shared.BuildConfig
 import retrofit2.Response
@@ -24,4 +22,7 @@ interface UserApiService {
 
     @GET("/user/users")
     suspend fun fetchUser(): Response<GetUserResponse>
+
+    @POST("/devices/")
+    suspend fun registerFirebaseToken(@Body request: FirebaseTokenRequest): Response<Unit>
 }

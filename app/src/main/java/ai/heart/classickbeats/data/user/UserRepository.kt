@@ -51,6 +51,9 @@ class UserRepository @Inject constructor(
             .flowOn(Dispatchers.IO)
     }
 
+    suspend fun registerFirebaseToken(firebaseToken: String): Result<Unit> =
+        userRemoteDataSource.registerFirebaseToken(firebaseToken)
+
     private suspend fun refreshUser() {
         // Check if user data was fetched recently.
         val userExists = userDao.hasUser(FRESH_TIMEOUT) > 0

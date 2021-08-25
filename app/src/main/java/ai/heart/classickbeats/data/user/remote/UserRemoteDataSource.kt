@@ -2,6 +2,7 @@ package ai.heart.classickbeats.data.user.remote
 
 import ai.heart.classickbeats.data.user.UserDataSource
 import ai.heart.classickbeats.model.entity.UserEntity
+import ai.heart.classickbeats.model.request.FirebaseTokenRequest
 import ai.heart.classickbeats.model.response.GetUserResponse
 import ai.heart.classickbeats.model.response.RegisterResponse
 import ai.heart.classickbeats.shared.data.BaseRemoteDataSource
@@ -31,9 +32,18 @@ class UserRemoteDataSource internal constructor(
 
     override suspend fun getUser(): Result<GetUserResponse.Data> {
         val response = safeApiCall { userApiService.fetchUser() }
-        if (response.succeeded) {
-            return Result.Success(response.data!!.responseData)
-        }
-        return Result.Error(response.error!!)
+        return if (response.succeeded)
+            Result.Success(response.data!!.responseData)
+        else
+            Result.Error(response.error!!)
+    }
+
+    override suspend fun registerFirebaseToken(firebaseToken: String): Result<Unit> {
+        val firebaseTokenRequest = FirebaseTokenRequest(registrationId = firebaseToken)
+        val response = safeApiCall { userApiService.registerFirebaseToken(firebaseTokenRequest) }
+        return if (response.succeeded)
+            Result.Success(Unit)
+        else
+            Result.Error(response.error!!)
     }
 }
