@@ -16,15 +16,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class FirebaseNotificationService : FirebaseMessagingService() {
 
     companion object {
         const val REQUEST_CODE = 1005
     }
 
-    @Inject
-    lateinit var userRepository: UserRepository
+//    @Inject
+//    lateinit var userRepository: UserRepository
 
     private val scope = CoroutineScope(Job() + Dispatchers.Default)
 
@@ -39,7 +39,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
     override fun onNewToken(string: String) {
         super.onNewToken(string)
         scope.launch {
-            userRepository.registerFirebaseToken(string)
+//            userRepository.registerFirebaseToken(string)
         }
     }
 
