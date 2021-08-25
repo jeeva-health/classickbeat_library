@@ -7,18 +7,16 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityRetainedComponent
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 
-@InstallIn(ActivityRetainedComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 object RecordDataModule {
 
-    @ActivityRetainedScoped
     @Provides
     fun provideRecordApiService(
         moshiConverterFactory: MoshiConverterFactory,
@@ -33,7 +31,6 @@ object RecordDataModule {
             .create(RecordApiService::class.java)
     }
 
-    @ActivityRetainedScoped
     @Provides
     fun provideRecordRemoteDataSource(
         recordApiService: RecordApiService,

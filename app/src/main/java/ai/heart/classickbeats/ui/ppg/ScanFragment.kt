@@ -217,8 +217,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                     }
                 }
             } else if (it == SPLIT_SCAN_DURATION && !isIntermediatedProcessing) {
+                Timber.i("TrackTime: it: $it")
                 isIntermediatedProcessing = true
-                endSplitScanning()
+                //endSplitScanning()
             } else {
                 if (countdownType == 0) {
                     binding.countdown.text = it.toString()
@@ -455,6 +456,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     }
 
     private fun endSplitScanning() {
+        Timber.i("TrackTime: endSplitScanning called")
         monitorViewModel.calculateResult()
     }
 

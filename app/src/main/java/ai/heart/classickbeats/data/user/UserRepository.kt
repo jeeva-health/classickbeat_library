@@ -8,7 +8,6 @@ import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.model.entity.UserEntity
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
-import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -16,8 +15,9 @@ import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@ActivityRetainedScoped
+@Singleton
 class UserRepository @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource,
     private val userDao: UserDao,
