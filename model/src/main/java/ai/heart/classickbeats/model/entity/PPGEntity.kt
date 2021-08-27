@@ -11,7 +11,7 @@ data class PPGEntity(
 
     @Transient
     @ColumnInfo(name = "id")
-    var id: Int = -1,
+    var id: Long = -1,
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "local_id")

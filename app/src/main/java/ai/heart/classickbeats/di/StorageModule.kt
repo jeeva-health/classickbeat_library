@@ -25,4 +25,7 @@ class StorageModule {
 
     @Provides
     fun provideUserDao(database: AppDatabase) = database.userDao()
+
+    @Provides
+    fun providePPGDao(database: AppDatabase) = database.ppgDao()
 }
