@@ -137,4 +137,8 @@ class HistoryViewModel @Inject constructor(
             setShowLoadingFalse()
         }
     }
+
+    fun groupByWeek(list: List<BaseLogEntity>) {
+
+    }
 }

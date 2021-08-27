@@ -37,6 +37,10 @@
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width=""
+            android:layout_height=""
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/history_rv"
             android:layout_width="0dp"
