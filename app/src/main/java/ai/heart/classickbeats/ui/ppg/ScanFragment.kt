@@ -557,14 +557,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     ) = withContext(Dispatchers.Default) {
 
         Timber.i("TrackTime: Updating Dynamic BPM in thread.")
-        val offset = 16
         val windowSize = 101
 
         // TODO(Harsh: check if leveledSignal is needed for dynamic bpm, else split below function)
         val leveledSignal = ProcessingData.computeLeveledSignal(
             timeList = timeStamp,
             centeredSignalList = centeredSignal,
-            offset = offset,
             windowSize = windowSize
         )
         val (ibiList, _) = ProcessingData.calculateIbiListAndQuality(

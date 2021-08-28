@@ -157,8 +157,9 @@ class MonitorViewModel @Inject constructor(
         )
         largeAvg?.let { movAvgLarge.add(it) }
 
+        val largeWindowOffset = (largeWindow - 1) / 2
         if (movAvgSmall.size >= largeWindow) {
-            val x = -1.0 * (movAvgSmall[movAvgSmall.size - offset] - movAvgLarge.last())
+            val x = -1.0 * (movAvgSmall[movAvgSmall.size - largeWindowOffset] - movAvgLarge.last())
             centeredSignal.add(x)
 
             _dynamicGraphCoordinates.postValue(Event(Pair(centeredSignal.size, x)))
@@ -169,10 +170,13 @@ class MonitorViewModel @Inject constructor(
         withContext(Dispatchers.Default) {
             val windowSize = 101
 
+            val smallWindowOffset = smallWindow - 1
+            val largeWindowOffset = (largeWindow - 1) / 2
             val leveledSignal = ProcessingData.computeLeveledSignal(
                 timeList = timeList,
                 centeredSignalList = centeredSignalList,
-                offset = offset,
+                smallWindowOffset = smallWindowOffset,
+                largeWindowOffset = largeWindowOffset,
                 windowSize = windowSize
             )
             val (_ibiList, _quality) = ProcessingData.calculateIbiListAndQuality(
@@ -280,7 +284,6 @@ class MonitorViewModel @Inject constructor(
             val leveledSignal = ProcessingData.computeLeveledSignal(
                 timeList = timeList,
                 centeredSignalList = centeredSignalList,
-                offset = offset,
                 windowSize = windowSize
             )
             val (ibiList, quality) = ProcessingData.calculateIbiListAndQuality(

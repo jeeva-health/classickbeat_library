@@ -32,12 +32,16 @@ object ProcessingData {
     fun computeLeveledSignal(
         timeList: List<Int>,
         centeredSignalList: List<Double>,
-        offset: Int = 16,
+        smallWindowOffset: Int = 2,
+        largeWindowOffset: Int = 15,
         windowSize: Int = 101,
         fInterpolate: Double = 100.0
     ): List<Double> {
 
-        val time = timeList.subList(offset, timeList.size - offset)
+        val time = timeList.subList(
+            smallWindowOffset + largeWindowOffset,
+            timeList.size - largeWindowOffset
+        )
 
         Timber.i("Ritesh timeList size: ${time.size}, centeredSignalSize: ${centeredSignalList.size}")
 

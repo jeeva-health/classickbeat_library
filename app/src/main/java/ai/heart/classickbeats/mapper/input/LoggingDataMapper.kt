@@ -2,14 +2,14 @@ package ai.heart.classickbeats.mapper.input
 
 import ai.heart.classickbeats.mapper.Mapper
 import ai.heart.classickbeats.model.LogType
-import ai.heart.classickbeats.model.Logging
+import ai.heart.classickbeats.model.HistoryRecord
 import ai.heart.classickbeats.model.entity.*
 import timber.log.Timber
 import javax.inject.Inject
 
 class LoggingDataMapper @Inject constructor() :
-    Mapper<Logging, BaseLogEntity> {
-    override fun map(input: Logging): BaseLogEntity {
+    Mapper<HistoryRecord, BaseLogEntity> {
+    override fun map(input: HistoryRecord): BaseLogEntity {
         val id = input.id
         val fields = input.fields
         val timeStamp = input.fields.timeStamp

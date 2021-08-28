@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.model.response
 
-import ai.heart.classickbeats.model.Logging
+import ai.heart.classickbeats.model.HistoryRecord
 import com.squareup.moshi.Json
 
 data class LoggingListResponse(
@@ -10,6 +10,6 @@ data class LoggingListResponse(
 ) {
     data class LoggingData(
         @Json(name = "logging_list")
-        val loggingList: List<List<Logging>>
+        val loggingList: List<List<HistoryRecord>>
     )
 }
