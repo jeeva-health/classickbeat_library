@@ -20,8 +20,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -163,8 +165,8 @@ class MonitorViewModel @Inject constructor(
         }
     }
 
-    fun calculateResultSplit(timeList: List<Int>, centeredSignalList: List<Double>) {
-        viewModelScope.launch {
+    suspend fun calculateResultSplit(timeList: List<Int>, centeredSignalList: List<Double>) =
+        withContext(Dispatchers.Default) {
             val windowSize = 101
 
             val leveledSignal = ProcessingData.computeLeveledSignal(
@@ -181,7 +183,6 @@ class MonitorViewModel @Inject constructor(
             ibiList.addAll(_ibiList)
             quality.add(_quality)
         }
-    }
 
     fun calculateSplitCombinedResult() {
         viewModelScope.launch {

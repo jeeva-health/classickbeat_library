@@ -459,35 +459,39 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     }
 
     private fun endSplitScanning() {
-        Timber.i("TrackTime: endSplitScanning called")
-        val timeListImmutable = monitorViewModel.timeList.toImmutableList()
-        val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
-        timeListSplitSize = timeListImmutable.size
-        centeredSignalSplitSize = centeredSignalListImmutable.size
-        monitorViewModel.calculateResultSplit(timeListImmutable, centeredSignalListImmutable)
+        lifecycleScope.launchWhenResumed {
+            Timber.i("TrackTime: endSplitScanning called")
+            val timeListImmutable = monitorViewModel.timeList.toImmutableList()
+            val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
+            timeListSplitSize = timeListImmutable.size
+            centeredSignalSplitSize = centeredSignalListImmutable.size
+            monitorViewModel.calculateResultSplit(timeListImmutable, centeredSignalListImmutable)
+        }
     }
 
     private fun endScanning() {
-        Timber.i("endScanning called")
-        monitorViewModel.isProcessing = false
-        session?.abortCaptures()
-        camera?.close()
-        stopBackgroundThread()
-        monitorViewModel.endTimer()
-        monitorViewModel.uploadRawData()
-        val timeListSize = monitorViewModel.timeList.size
-        val centeredSignalSize = monitorViewModel.centeredSignal.size
-        val timeListImmutable = monitorViewModel.timeList.toImmutableList()
-        val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
-        monitorViewModel.calculateResultSplit(
-            timeListImmutable.subList(timeListSplitSize, timeListSize),
-            centeredSignalListImmutable.subList(centeredSignalSplitSize, centeredSignalSize)
-        )
-        monitorViewModel.calculateSplitCombinedResult()
-        monitorViewModel.calculateResult(timeListImmutable, centeredSignalListImmutable)
-        imageCounter = 0
-        navigateToScanQuestionFragment()
-        scanViewModel.setFirstScanCompleted()
+        lifecycleScope.launchWhenResumed {
+            Timber.i("endScanning called")
+            monitorViewModel.isProcessing = false
+            session?.abortCaptures()
+            camera?.close()
+            stopBackgroundThread()
+            monitorViewModel.endTimer()
+            monitorViewModel.uploadRawData()
+            val timeListSize = monitorViewModel.timeList.size
+            val centeredSignalSize = monitorViewModel.centeredSignal.size
+            val timeListImmutable = monitorViewModel.timeList.toImmutableList()
+            val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
+            monitorViewModel.calculateResultSplit(
+                timeListImmutable.subList(timeListSplitSize, timeListSize),
+                centeredSignalListImmutable.subList(centeredSignalSplitSize, centeredSignalSize)
+            )
+            monitorViewModel.calculateSplitCombinedResult()
+            monitorViewModel.calculateResult(timeListImmutable, centeredSignalListImmutable)
+            imageCounter = 0
+            navigateToScanQuestionFragment()
+            scanViewModel.setFirstScanCompleted()
+        }
     }
 
     private fun endIncompleteScanning() {
