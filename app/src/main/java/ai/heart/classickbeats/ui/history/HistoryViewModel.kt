@@ -138,7 +138,64 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
-    fun groupByWeek(list: List<BaseLogEntity>) {
+    fun groupByEntity(list: List<BaseLogEntity>) {
+        val bpSysList = mutableListOf<Double>()
+        val bpDiaList = mutableListOf<Double>()
+        val bpTimeStampList = mutableListOf<String>()
 
+        val glucoseList = mutableListOf<Double>()
+        val glucoseTimeStampList = mutableListOf<String>()
+
+        val waterList = mutableListOf<Double>()
+        val waterTimeStampList = mutableListOf<String>()
+
+        val weightList = mutableListOf<Double>()
+        val weightTimeStampList = mutableListOf<String>()
+
+        val hrList = mutableListOf<Double>()
+        val sdnnList = mutableListOf<Double>()
+        val ppgTimeStampList = mutableListOf<String>()
+
+        list.forEach {
+            when(it.type) {
+                LogType.BloodPressure -> {
+                    val temp = it as BpLogEntity
+                    bpSysList.add(temp.systolic.toDouble())
+                    bpDiaList.add(temp.diastolic.toDouble())
+                    temp.timeStamp?.let { it1 -> bpTimeStampList.add(it1) }
+                }
+                LogType.GlucoseLevel -> {
+                    val temp = it as GlucoseLogEntity
+                    glucoseList.add{temp.glucoseLevel.toDouble()}
+                    glucoseTimeStampList.add{temp.timeStamp}
+                }
+                LogType.WaterIntake -> {
+                    val temp = it as WaterLogEntity
+                    waterList.add{temp.quantity.toDouble()}
+                    waterTimeStampList.add{temp.timeStamp}
+                }
+                LogType.Weight -> {
+                    val temp = it as WeightLogEntity
+                    weightList.add{temp.weight.toDouble()}
+                    weightTimeStampList.add{temp.timeStamp}
+                }
+                LogType.Medicine -> TODO()
+                LogType.PPG -> {
+                    val temp = it as PPGEntity
+                    hrList.add(temp.hr.toDouble())
+                    sdnnList.add(temp.sdnn.toDouble())
+                    ppgTimeStampList.add(temp.timeStamp)
+                }
+            }
+        }
+    }
+
+    fun groupWeekly(valueList: List<Double>, timeStampList: List<String>){
+        """
+            First, average values in the valuelist that are on the same date.
+            (Only if we are not planning on showing the max/min per day)
+            Then, group the entries by weeks and months.
+            Finally, calculate weekly and monthly averages to show in the main page.
+        """.trimIndent()
     }
 }
