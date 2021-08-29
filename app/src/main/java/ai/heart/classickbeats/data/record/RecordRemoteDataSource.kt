@@ -46,7 +46,7 @@ class RecordRemoteDataSource internal constructor(
         return Result.Error(response.error)
     }
 
-    override suspend fun getScanDetails(id: Int): Result<ScanDetailResponse.ResponseData> {
+    override suspend fun getScanDetails(id: Long): Result<ScanDetailResponse.ResponseData> {
         val response = safeApiCall { recordApiService.getScanDetail(id) }
         if (response.succeeded) {
             val data = response.data!!.responseData

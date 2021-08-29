@@ -1,24 +1,27 @@
 package ai.heart.classickbeats.data.record
 
-import ai.heart.classickbeats.mapper.input.HistoryListMapper
+import ai.heart.classickbeats.data.db.AppDatabase
+import ai.heart.classickbeats.mapper.input.HistoryRecordMapper
 import ai.heart.classickbeats.mapper.input.LoggingListMapper
+import ai.heart.classickbeats.model.HistoryRecord
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.paging.*
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import javax.inject.Inject
 
+@ExperimentalPagingApi
 @ActivityRetainedScoped
 class RecordRepository @Inject constructor(
     private val recordApiService: RecordApiService,
+    private val database: AppDatabase,
     private val recordRemoteDataSource: RecordRemoteDataSource,
     private val loggingListMapper: LoggingListMapper,
-    private val historyListMapper: HistoryListMapper
+    private val historyMapper: HistoryRecordMapper
 ) {
     suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long> =
         recordRemoteDataSource.recordPPG(ppgEntity)
@@ -53,22 +56,22 @@ class RecordRepository @Inject constructor(
     }
 
     fun getHistoryData(): Flow<PagingData<BaseLogEntity>> {
+        val pagingSourceFactory = { database.historyDao().loadAll() }
         return Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                maxSize = 200,
-                enablePlaceholders = false,
+            config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, enablePlaceholders = false),
+            remoteMediator = HistoryRemoteMediator(
+                recordApiService,
+                database
             ),
-            pagingSourceFactory = {
-                HistoryListPagingSource(
-                    recordApiService,
-                    historyListMapper
-                )
+            pagingSourceFactory = pagingSourceFactory
+        ).flow.map { pagingData ->
+            pagingData.map { historyRecord: HistoryRecord ->
+                historyMapper.map(historyRecord)
             }
-        ).flow
+        }
     }
 
-    suspend fun getScanDetail(scanId: Int): Result<PPGEntity> {
+    suspend fun getScanDetail(scanId: Long): Result<PPGEntity> {
         val response = recordRemoteDataSource.getScanDetails(scanId)
         when (response) {
             is Result.Success -> {
@@ -92,4 +95,8 @@ class RecordRepository @Inject constructor(
 
     suspend fun recordWeight(weightLogEntity: WeightLogEntity): Result<Long> =
         recordRemoteDataSource.recordWeight(weightLogEntity)
+
+    companion object {
+        const val NETWORK_PAGE_SIZE = 50
+    }
 }

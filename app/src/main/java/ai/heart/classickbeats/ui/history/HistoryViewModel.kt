@@ -13,10 +13,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.insertSeparators
-import androidx.paging.map
+import androidx.paging.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -25,6 +22,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+@ExperimentalPagingApi
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
     private val userRepository: UserRepository,
@@ -60,20 +58,6 @@ class HistoryViewModel @Inject constructor(
     fun setShowLoadingTrue() = _showLoading.postValue(Event(true))
     fun setShowLoadingFalse() = _showLoading.postValue(Event(false))
 
-//    fun getHistoryData() {
-//        viewModelScope.launch {
-//            setShowLoadingTrue()
-//            val response = recordRepository.getHistoryData()
-//            if (response.succeeded) {
-//                _historyData = response.data?.let { convertLogEntityToHistoryItem(it) }
-//                reloadHistoryHomeScreen()
-//            } else {
-//                apiError = response.error
-//            }
-//            setShowLoadingFalse()
-//        }
-//    }
-
     fun getHistoryData(): Flow<PagingData<HistoryItem>> {
         return recordRepository.getHistoryData().map { pagingData ->
             pagingData.map {
@@ -84,7 +68,7 @@ class HistoryViewModel @Inject constructor(
         }.cachedIn(viewModelScope)
     }
 
-    fun getScanDetail(scanId: Int) {
+    fun getScanDetail(scanId: Long) {
         viewModelScope.launch {
             setShowLoadingTrue()
             val scanDetail = recordRepository.getScanDetail(scanId).data

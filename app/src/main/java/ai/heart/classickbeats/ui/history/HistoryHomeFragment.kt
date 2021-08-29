@@ -22,11 +22,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.paging.ExperimentalPagingApi
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import java.util.*
 
 
+@ExperimentalPagingApi
 @AndroidEntryPoint
 class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
 

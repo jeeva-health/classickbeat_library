@@ -18,9 +18,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.paging.ExperimentalPagingApi
 import dagger.hilt.android.AndroidEntryPoint
 
 
+@ExperimentalPagingApi
 @AndroidEntryPoint
 class LoggingHomeFragment : Fragment(R.layout.fragment_logging_home) {
 

@@ -37,6 +37,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.paging.ExperimentalPagingApi
 import com.github.mikephil.charting.charts.LineChart
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -45,6 +46,7 @@ import timber.log.Timber
 import java.lang.Boolean
 import java.util.*
 
+@ExperimentalPagingApi
 @AndroidEntryPoint
 class ScanFragment : Fragment(R.layout.fragment_scan) {
 

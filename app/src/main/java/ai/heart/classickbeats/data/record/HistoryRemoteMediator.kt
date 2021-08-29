@@ -27,19 +27,27 @@ class HistoryRemoteMediator(
 
         val page = when (loadType) {
             LoadType.REFRESH -> {
-                // TODO
+                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+                remoteKeys?.nextKey?.minus(1) ?: HISTORY_STARTING_PAGE_INDEX
             }
             LoadType.PREPEND -> {
-                // TODO
+                val remoteKeys = getRemoteKeyForFirstItem(state)
+                val prevKey = remoteKeys?.prevKey
+                    ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+                prevKey
             }
             LoadType.APPEND -> {
-                // TODO
+                val remoteKeys = getRemoteKeyForLastItem(state)
+                val nextKey = remoteKeys?.nextKey
+                    ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+                nextKey
             }
         }
 
         try {
             val apiResponse = service.getHistoryData(page)
 
+            // TODO: Ritesh: Add isSuccessful check
             val loggingList = apiResponse.responseData.historyPaginatedData.loggingList
             val endOfPaginationReached = loggingList.isEmpty()
             database.withTransaction {
@@ -61,6 +69,28 @@ class HistoryRemoteMediator(
             return MediatorResult.Error(exception)
         } catch (exception: HttpException) {
             return MediatorResult.Error(exception)
+        }
+    }
+
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, HistoryRecord>): HistoryRemoteKey? {
+        return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()
+            ?.let { record ->
+                database.historyRemoteKeyDao().remoteKeysHistoryId(record.id)
+            }
+    }
+
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, HistoryRecord>): HistoryRemoteKey? {
+        return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
+            ?.let { record ->
+                database.historyRemoteKeyDao().remoteKeysHistoryId(record.id)
+            }
+    }
+
+    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, HistoryRecord>): HistoryRemoteKey? {
+        return state.anchorPosition?.let { position ->
+            state.closestItemToPosition(position)?.id?.let { recordId ->
+                database.historyRemoteKeyDao().remoteKeysHistoryId(recordId)
+            }
         }
     }
 }

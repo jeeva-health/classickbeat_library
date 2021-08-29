@@ -13,7 +13,7 @@ data class HistoryRecord(
     @Transient
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "local_id")
-    val localId: Long,
+    val localId: Long = -1,
     @Embedded
     val fields: Fields,
     val model: String,

@@ -7,7 +7,7 @@ import ai.heart.classickbeats.model.entity.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class LoggingDataMapper @Inject constructor() :
+class HistoryRecordMapper @Inject constructor() :
     Mapper<HistoryRecord, BaseLogEntity> {
     override fun map(input: HistoryRecord): BaseLogEntity {
         val id = input.id

@@ -12,8 +12,10 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.paging.ExperimentalPagingApi
 
 
+@ExperimentalPagingApi
 class ScanQuestionFragment : Fragment(R.layout.fragment_scan_question) {
 
     private val binding by viewBinding(FragmentScanQuestionBinding::bind)
