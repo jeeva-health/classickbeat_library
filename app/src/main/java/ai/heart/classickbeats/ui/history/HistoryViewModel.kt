@@ -55,13 +55,13 @@ class HistoryViewModel @Inject constructor(
 
     private val _showLoading = MutableLiveData(Event(false))
     val showLoading: LiveData<Event<Boolean>> = _showLoading
-    fun setShowLoadingTrue() = _showLoading.postValue(Event(true))
-    fun setShowLoadingFalse() = _showLoading.postValue(Event(false))
+    private fun setShowLoadingTrue() = _showLoading.postValue(Event(true))
+    private fun setShowLoadingFalse() = _showLoading.postValue(Event(false))
 
     fun getHistoryData(): Flow<PagingData<HistoryItem>> {
         return recordRepository.getHistoryData().map { pagingData ->
-            pagingData.map {
-                convertLogEntityToHistoryItem(it)
+            pagingData.map { baseLogEntity ->
+                convertLogEntityToHistoryItem(baseLogEntity)
             }.insertSeparators { before: HistoryItem?, after: HistoryItem? ->
                 insertDateSeparatorIfNeeded(before, after)
             }
@@ -114,11 +114,9 @@ class HistoryViewModel @Inject constructor(
 
     fun getUser() {
         viewModelScope.launch {
-            setShowLoadingTrue()
             userRepository.getUser().collectLatest { user: User? ->
                 user?.let { setUserDate(it) }
             }
-            setShowLoadingFalse()
         }
     }
 }

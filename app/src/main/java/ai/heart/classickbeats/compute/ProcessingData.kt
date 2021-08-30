@@ -43,8 +43,6 @@ object ProcessingData {
             timeList.size - largeWindowOffset
         )
 
-        Timber.i("Ritesh timeList size: ${time.size}, centeredSignalSize: ${centeredSignalList.size}")
-
         assert(time.size == centeredSignalList.size)
 
         // TODO: Vipul remove interpolated list

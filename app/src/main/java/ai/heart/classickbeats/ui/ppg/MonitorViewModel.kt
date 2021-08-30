@@ -197,7 +197,6 @@ class MonitorViewModel @Inject constructor(
             val gender = if (user?.gender == Gender.MALE) 0 else 1
 
             val (meanNN, sdnn, rmssd, pnn50, ln) = ProcessingData.calculatePulseStats(ibiList)
-            Timber.i("Ritesh meanNN: $meanNN, sdnn: $sdnn, rmssd: $rmssd, pnn50: $pnn50, ln: $ln")
 
 //            // TODO(Harsh: combine quality parameter)
 //            val qualityPercent = ProcessingData.qualityPercent(quality[0])
@@ -294,7 +293,6 @@ class MonitorViewModel @Inject constructor(
             )
 
             val (meanNN, sdnn, rmssd, pnn50, ln) = ProcessingData.calculatePulseStats(ibiList)
-            Timber.i("Ritesh meanNN: $meanNN, sdnn: $sdnn, rmssd: $rmssd, pnn50: $pnn50, ln: $ln")
 
 //            val qualityPercent = ProcessingData.qualityPercent(quality)
 //            Timber.i("QualityPercent: $qualityPercent")

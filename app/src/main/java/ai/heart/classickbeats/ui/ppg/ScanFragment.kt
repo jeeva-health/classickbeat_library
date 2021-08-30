@@ -222,7 +222,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                     }
                 }
             } else if (it == SPLIT_SCAN_DURATION && !isIntermediatedProcessing) {
-                Timber.i("Ritesh TrackTime: it: $it")
                 isIntermediatedProcessing = true
                 endSplitScanning()
             } else {

@@ -104,7 +104,6 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
             LogType.Medicine -> {
             }
             LogType.PPG -> {
-
                 val ppgEntity = data as PPGEntity
                 val id = ppgEntity.id
                 historyViewModel.getScanDetail(id)

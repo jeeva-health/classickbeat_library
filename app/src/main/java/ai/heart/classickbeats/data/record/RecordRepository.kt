@@ -58,7 +58,11 @@ class RecordRepository @Inject constructor(
     fun getHistoryData(): Flow<PagingData<BaseLogEntity>> {
         val pagingSourceFactory = { database.historyDao().loadAll() }
         return Pager(
-            config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, enablePlaceholders = false),
+            config = PagingConfig(
+                pageSize = NETWORK_PAGE_SIZE,
+                maxSize = 5 * NETWORK_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
             remoteMediator = HistoryRemoteMediator(
                 recordApiService,
                 database
@@ -97,6 +101,6 @@ class RecordRepository @Inject constructor(
         recordRemoteDataSource.recordWeight(weightLogEntity)
 
     companion object {
-        const val NETWORK_PAGE_SIZE = 50
+        const val NETWORK_PAGE_SIZE = 5
     }
 }

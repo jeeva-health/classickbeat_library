@@ -1,19 +1,13 @@
 package ai.heart.classickbeats.model
 
-import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
-@Entity(tableName = "history_record")
+@Entity(tableName = "history_record", primaryKeys = ["id", "model"])
 data class HistoryRecord(
     @Json(name = "pk")
     val id: Long,
-    @Transient
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "local_id")
-    val localId: Long = -1,
     @Embedded
     val fields: Fields,
     val model: String,
