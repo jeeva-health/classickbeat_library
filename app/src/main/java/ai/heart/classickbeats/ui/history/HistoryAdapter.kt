@@ -47,24 +47,32 @@ class HistoryAdapter constructor(
                     val diastolic = bpLogEntity.diastolic
                     value = "$systolic/$diastolic"
                     unit = context.getString(R.string.mmhg)
+                    binding.clickArrow.visibility = View.GONE
+                    binding.stressTag.visibility = View.GONE
                 }
                 LogType.GlucoseLevel -> {
                     val glucoseLogEntity = itemData as GlucoseLogEntity
                     title = context.getString(R.string.blood_glucose_level)
                     value = glucoseLogEntity.glucoseLevel.toString()
                     unit = context.getString(R.string.mg_dl)
+                    binding.clickArrow.visibility = View.GONE
+                    binding.stressTag.visibility = View.GONE
                 }
                 LogType.WaterIntake -> {
                     val waterLogEntity = itemData as WaterLogEntity
                     title = context.getString(R.string.water_intake)
                     value = waterLogEntity.quantity.toString()
                     unit = context.getString(R.string.ltrs)
+                    binding.clickArrow.visibility = View.GONE
+                    binding.stressTag.visibility = View.GONE
                 }
                 LogType.Weight -> {
                     val weightLogEntity = itemData as WeightLogEntity
                     title = context.getString(R.string.weight)
                     value = weightLogEntity.weight.toString()
                     unit = context.getString(R.string.kg)
+                    binding.clickArrow.visibility = View.GONE
+                    binding.stressTag.visibility = View.GONE
                 }
                 LogType.PPG -> {
                     val ppgEntity = itemData as PPGEntity
