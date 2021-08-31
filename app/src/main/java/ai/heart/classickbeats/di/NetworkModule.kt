@@ -6,12 +6,12 @@ import ai.heart.classickbeats.shared.network.AuthInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 
-@InstallIn(ActivityRetainedComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
 

@@ -1,11 +1,11 @@
 package ai.heart.classickbeats.ui.history
 
 import ai.heart.classickbeats.data.record.RecordRepository
+import ai.heart.classickbeats.data.user.UserRepository
 import ai.heart.classickbeats.model.HistoryItem
 import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.model.entity.*
-import ai.heart.classickbeats.shared.data.login.LoginRepository
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.util.toDateStringWithoutTime
@@ -13,20 +13,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.insertSeparators
-import androidx.paging.map
+import androidx.paging.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+@ExperimentalPagingApi
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val loginRepository: LoginRepository,
+    private val userRepository: UserRepository,
     private val recordRepository: RecordRepository
 ) : ViewModel() {
 
@@ -42,10 +41,10 @@ class HistoryViewModel @Inject constructor(
         _refreshData.postValue(Event(Unit))
     }
 
-    private val _userData = MutableLiveData<Event<User>>()
-    val userData: LiveData<Event<User>> = _userData
+    private val _userData = MutableLiveData<User>()
+    val userData: LiveData<User> = _userData
     private fun setUserDate(user: User) {
-        _userData.postValue(Event(user))
+        _userData.postValue(user)
     }
 
     private val _ppgDetails = MutableLiveData<Event<PPGEntity>>()
@@ -56,34 +55,20 @@ class HistoryViewModel @Inject constructor(
 
     private val _showLoading = MutableLiveData(Event(false))
     val showLoading: LiveData<Event<Boolean>> = _showLoading
-    fun setShowLoadingTrue() = _showLoading.postValue(Event(true))
-    fun setShowLoadingFalse() = _showLoading.postValue(Event(false))
-
-//    fun getHistoryData() {
-//        viewModelScope.launch {
-//            setShowLoadingTrue()
-//            val response = recordRepository.getHistoryData()
-//            if (response.succeeded) {
-//                _historyData = response.data?.let { convertLogEntityToHistoryItem(it) }
-//                reloadHistoryHomeScreen()
-//            } else {
-//                apiError = response.error
-//            }
-//            setShowLoadingFalse()
-//        }
-//    }
+    private fun setShowLoadingTrue() = _showLoading.postValue(Event(true))
+    private fun setShowLoadingFalse() = _showLoading.postValue(Event(false))
 
     fun getHistoryData(): Flow<PagingData<HistoryItem>> {
         return recordRepository.getHistoryData().map { pagingData ->
-            pagingData.map {
-                convertLogEntityToHistoryItem(it)
+            pagingData.map { baseLogEntity ->
+                convertLogEntityToHistoryItem(baseLogEntity)
             }.insertSeparators { before: HistoryItem?, after: HistoryItem? ->
                 insertDateSeparatorIfNeeded(before, after)
             }
         }.cachedIn(viewModelScope)
     }
 
-    fun getScanDetail(scanId: Int) {
+    fun getScanDetail(scanId: Long) {
         viewModelScope.launch {
             setShowLoadingTrue()
             val scanDetail = recordRepository.getScanDetail(scanId).data
@@ -129,10 +114,9 @@ class HistoryViewModel @Inject constructor(
 
     fun getUser() {
         viewModelScope.launch {
-            setShowLoadingTrue()
-            val user = loginRepository.getUser().data ?: throw Exception("User data is null")
-            setUserDate(user)
-            setShowLoadingFalse()
+            userRepository.getUser().collectLatest { user: User? ->
+                user?.let { setUserDate(it) }
+            }
         }
     }
 }

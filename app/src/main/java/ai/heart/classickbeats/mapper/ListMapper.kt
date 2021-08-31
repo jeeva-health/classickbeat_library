@@ -1,3 +1,3 @@
-package ai.heart.classickbeats.shared.mapper
+package ai.heart.classickbeats.mapper
 
 interface ListMapper<I, O> : Mapper<List<I>, List<O>>

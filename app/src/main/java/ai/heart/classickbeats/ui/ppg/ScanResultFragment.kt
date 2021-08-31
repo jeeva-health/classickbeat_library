@@ -24,10 +24,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.paging.ExperimentalPagingApi
 import com.github.mikephil.charting.charts.LineChart
 import dagger.hilt.android.AndroidEntryPoint
 
 
+@ExperimentalPagingApi
 @AndroidEntryPoint
 class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 

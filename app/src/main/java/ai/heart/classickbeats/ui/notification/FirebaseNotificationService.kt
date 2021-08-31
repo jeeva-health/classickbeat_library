@@ -2,6 +2,7 @@ package ai.heart.classickbeats.ui.notification
 
 import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.data.user.UserRepository
 import ai.heart.classickbeats.model.Constants
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -11,12 +12,21 @@ import android.media.RingtoneManager
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class FirebaseNotificationService : FirebaseMessagingService() {
 
     companion object {
         const val REQUEST_CODE = 1005
     }
+
+    @Inject
+    lateinit var userRepository: UserRepository
+
+    private val scope = CoroutineScope(Job() + Dispatchers.Default)
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
@@ -28,6 +38,14 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
     override fun onNewToken(string: String) {
         super.onNewToken(string)
+        scope.launch {
+            userRepository.registerFirebaseToken(string)
+        }
+    }
+
+    override fun onDestroy() {
+        scope.cancel()
+        super.onDestroy()
     }
 
     /**

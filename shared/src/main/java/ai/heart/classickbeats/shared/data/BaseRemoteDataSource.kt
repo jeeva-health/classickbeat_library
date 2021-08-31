@@ -52,7 +52,7 @@ open class BaseRemoteDataSource(
             val errorMessage = try {
                 val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
                 val error = ErrorJsonAdapter(moshi).fromJson(errorJson)
-                error?.errorMessage
+                error?.errorList?.firstOrNull()
             } catch (e: Exception) {
                 Timber.e(e)
                 errorJson

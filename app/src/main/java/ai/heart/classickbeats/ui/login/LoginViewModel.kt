@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.ui.login
 
+import ai.heart.classickbeats.data.user.UserRepository
 import ai.heart.classickbeats.model.Gender
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.shared.data.login.LoginRepository
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
+    private val userRepository: UserRepository,
     private val sessionManager: SessionManager,
     private val preferenceStorage: PreferenceStorage,
     private val savedStateHandle: SavedStateHandle
@@ -86,7 +88,7 @@ class LoginViewModel @Inject constructor(
     fun registerUser(user: User) {
         showLoading.postValue(true)
         viewModelScope.launch {
-            val response = loginRepository.registerUser(user)
+            val response = userRepository.registerUser(user)
             apiResponse.postValue(Event(RequestType.REGISTER))
             showLoading.postValue(false)
         }

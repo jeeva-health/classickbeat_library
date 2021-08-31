@@ -9,7 +9,7 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 
-class Filter {
+object Filter {
 
     fun reverseArray(X: DoubleArray): DoubleArray {
         var out = mutableListOf<Double>()
@@ -39,13 +39,13 @@ class Filter {
         return y.toMutableList()
     }
 
-    fun hilbert(X: Array<Double>): List<Double>{
+    fun hilbert(X: List<Double>): DoubleArray {
 //        Timber.i("TrackTime: Hilbert starting (fn)")
         val h = Hilbert(X.toDoubleArray())
         h.hilbertTransform()
         h.output
 //        Timber.i("TrackTime: Hilbert computed (fn)")
-        return (h.amplitudeEnvelope).toMutableList()
+        return h.amplitudeEnvelope
     }
 
     private fun sd(data: DoubleArray): Double {
@@ -57,7 +57,7 @@ class Filter {
             }
     }
 
-    fun peakDetection(X: Array<Double>): Pair<List<Int>, Double> {
+    fun peakDetection(X: List<Double>): Pair<List<Int>, Double> {
         val fp = FindPeak(X.toDoubleArray())
         val out = fp.detectPeaks()
 //        Timber.i("TrackTime: Peaks detected (fn)")

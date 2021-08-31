@@ -4,11 +4,11 @@ import ai.heart.classickbeats.model.AuthToken
 import ai.heart.classickbeats.shared.domain.prefs.AuthTokenActionUseCase
 import ai.heart.classickbeats.shared.domain.prefs.AuthTokenUseCase
 import ai.heart.classickbeats.shared.result.data
-import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@ActivityRetainedScoped
+@Singleton
 class SessionManager @Inject constructor(
     val authTokenActionUseCase: AuthTokenActionUseCase,
     val authTokenUseCase: AuthTokenUseCase

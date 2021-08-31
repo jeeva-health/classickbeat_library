@@ -2,11 +2,12 @@ package ai.heart.classickbeats.ui.ppg
 
 import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
-import ai.heart.classickbeats.compute.Filter
 import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.databinding.FragmentScanBinding
 import ai.heart.classickbeats.domain.CameraReading
 import ai.heart.classickbeats.graph.RunningGraph
+import ai.heart.classickbeats.model.Constants.SCAN_DURATION
+import ai.heart.classickbeats.model.Constants.SPLIT_SCAN_DURATION
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.widgets.CircleProgressBar
 import ai.heart.classickbeats.utils.*
@@ -36,14 +37,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.paging.ExperimentalPagingApi
 import com.github.mikephil.charting.charts.LineChart
-import com.github.psambit9791.jdsp.signal.peaks.FindPeak
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import okhttp3.internal.toImmutableList
 import timber.log.Timber
 import java.lang.Boolean
 import java.util.*
 
+@ExperimentalPagingApi
 @AndroidEntryPoint
 class ScanFragment : Fragment(R.layout.fragment_scan) {
 
@@ -62,6 +65,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private var mAccelerometer: Sensor? = null
 
     private var countdownType: Int = 0
+
+    private var isIntermediatedProcessing = false
 
     private var camera: CameraDevice? = null
     private var session: CameraCaptureSession? = null
@@ -122,32 +127,20 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private lateinit var accelerometerListener: AccelerometerListener
 
     private var fps = 30
-    private var localTimeLast = 0
+
+    private var imageCounter = 0
 
     private var badImageCounter = 0
 
-    val movAvgSmall = mutableListOf<Double>()
-    val movAvgLarge = mutableListOf<Double>()
-    val movWindowSmall = mutableListOf<Double>()
-    val movWindowLarge = mutableListOf<Double>()
+    private var timeListSplitSize: Int = 0
 
-    // Keep window sizes odd
-    val smallWindow = fps / 10
-    val largeWindow = fps + 1
-    val offset = (largeWindow - 1) / 2
-
-    val processData = ProcessingData()
-    val filt = Filter()
-    var interpolatedList: List<Double>? = null
-    var leveledSignal: List<Double>? = null
-    var envelopeAverage: List<Double>? = null
-    var envelope: List<Double>? = null
-
+    private var centeredSignalSplitSize: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         pixelAnalyzer = PixelAnalyzer(requireContext(), monitorViewModel)
+
         fps = monitorViewModel.fps
 
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -159,24 +152,34 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
 
         accelerometerListener = AccelerometerListener(handleAcceleration)
+
+        monitorViewModel.fetchUser()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = findNavController()
+
+        // To make sure the bottom navigation is correctly set
         (requireActivity() as MainActivity).navigateToHeartRateFragment()
 
+        // If its first scan show the scan tutorial dialog fragment
         scanViewModel.isFirstTimeScanCompleted.observe(viewLifecycleOwner, EventObserver {
             if (!it) {
                 navigateToScanTutorialFragment()
             }
         })
 
+        // Resets the dynamic heart rate
         updateDynamicHeartRate(-1)
 
         checkPermission(Manifest.permission.CAMERA)
         checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
         checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+        // For circular boundary of image view
+        binding.viewFinderLayout.clipToOutline = true
 
         chart = binding.lineChart.apply {
             setDrawGridBackground(false)
@@ -190,10 +193,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             requestLayout()
         }
 
-        navController = findNavController()
-
         textureView = binding.viewFinder
-        binding.viewFinderLayout.clipToOutline = true
 
         circularProgressBar = binding.circularProgressBar
 
@@ -221,6 +221,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         endScanning()
                     }
                 }
+            } else if (it == SPLIT_SCAN_DURATION && !isIntermediatedProcessing) {
+                isIntermediatedProcessing = true
+                endSplitScanning()
             } else {
                 if (countdownType == 0) {
                     binding.countdown.text = it.toString()
@@ -231,6 +234,11 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                     circularProgressBar.requestLayout()
                 }
             }
+        })
+
+        monitorViewModel.dynamicGraphCoordinates.observe(viewLifecycleOwner, EventObserver {
+            val (x, y) = it
+            RunningGraph.addEntry(chart!!, x, y)
         })
     }
 
@@ -295,8 +303,13 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 }
             }
 
-            override fun onDisconnected(camera: CameraDevice) {}
-            override fun onError(camera: CameraDevice, error: Int) {}
+            override fun onDisconnected(camera: CameraDevice) {
+                TODO("Handle camera onDisconnect event")
+            }
+
+            override fun onError(camera: CameraDevice, error: Int) {
+                TODO("Handle camera onError event")
+            }
         }
 
     private val stateSessionCallback: CameraCaptureSession.StateCallback =
@@ -319,8 +332,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             override fun onConfigureFailed(session: CameraCaptureSession) {}
         }
 
-    var imageCounter = 0
-
     private val onImageAvailableListener =
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
@@ -340,57 +351,19 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                                 endIncompleteScanning()
                             }
                         }
-                        Timber.i("badImageCounter: $badImageCounter")
-                        monitorViewModel.mean1List.add(red)
-                        monitorViewModel.mean2List.add(green)
-                        monitorViewModel.mean3List.add(blue)
-                        monitorViewModel.timeList.add(timeStamp)
+                        monitorViewModel.addFrameDataToList(cameraReading)
+                        monitorViewModel.calculateCenteredSignal()
+                    }
 
-                        // Calculating running moving averages and centered signal
-                        monitorViewModel.processData.runningMovAvg(
-                            red,
-                            smallWindow,
-                            movWindowSmall,
-                            movAvgSmall
-                        )
-                        if (movAvgSmall.size > 0) {
-                            monitorViewModel.processData.runningMovAvg(
-                                movAvgSmall.last(),
-                                largeWindow,
-                                movWindowLarge,
-                                movAvgLarge
+                    //Calculating dynamic BPM
+                    if (imageCounter % (5 * fps) == 0 && imageCounter > (6 * fps)) {
+                        lifecycleScope.launchWhenResumed {
+                            val dynamicBPM = calculateDynamicBPM(
+                                monitorViewModel.centeredSignal.toImmutableList(),
+                                monitorViewModel.timeList.toImmutableList()
                             )
-                            if (movAvgSmall.size >= largeWindow) {
-                                val x =
-                                    -1.0 * (movAvgSmall[movAvgSmall.size - offset] - movAvgLarge.last())
-                                monitorViewModel.centeredSignal.add(x)
-                                RunningGraph.addEntry(
-                                    chart!!,
-                                    monitorViewModel.centeredSignal.size,
-                                    x
-                                )
-                            }
-                        }
-                        // Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
-                        Timber.i("Size Mov Avgs: ${movAvgSmall.size}, ${movAvgLarge.size}, ${monitorViewModel.centeredSignal.size}")
-
-                        //Calculating dynamic BPM
-//                        val totalTimeElapsed =
-//                            timeStamp - (monitorViewModel.timeList.firstOrNull() ?: 0)
-//                        val localTimeElapsed = timeStamp - localTimeLast
-//                        Timber.i("Total time: $totalTimeElapsed, Local Time: $localTimeElapsed")
-//                        if (totalTimeElapsed >= 6000 && localTimeElapsed >= 5000) {
-                        if (imageCounter % (5 * fps) == 0 && imageCounter > (6 * fps)) {
-                            lifecycleScope.launchWhenResumed {
-                                val dynamicBPM = calculateEnvelopeDynamicBPM(
-                                    monitorViewModel.centeredSignal.toList(),
-                                    monitorViewModel.timeList.toList()
-                                )
-                                postOnMainLooper {
-                                    updateDynamicHeartRate(dynamicBPM)
-                                }
-//                                localTimeLast = monitorViewModel.timeList.lastOrNull() ?: 0
-//                            }
+                            postOnMainLooper {
+                                updateDynamicHeartRate(dynamicBPM)
                             }
                         }
                     }
@@ -486,20 +459,41 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
     }
 
+    private fun endSplitScanning() {
+        lifecycleScope.launchWhenResumed {
+            Timber.i("TrackTime: endSplitScanning called")
+            val timeListImmutable = monitorViewModel.timeList.toImmutableList()
+            val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
+            timeListSplitSize = timeListImmutable.size
+            centeredSignalSplitSize = centeredSignalListImmutable.size
+            monitorViewModel.calculateResultSplit(timeListImmutable, centeredSignalListImmutable)
+        }
+    }
+
     private fun endScanning() {
-        monitorViewModel.isProcessing = false
-        session?.abortCaptures()
-        Timber.i("TrackTime: session aborted")
-        camera?.close()
-        Timber.i("TrackTime: camera closed")
-        stopBackgroundThread()
-        Timber.i("TrackTime: background thread stopped")
-        monitorViewModel.endTimer()
-        monitorViewModel.uploadRawData()
-        monitorViewModel.calculateResult()
-        imageCounter = 0
-        navigateToScanQuestionFragment()
-        scanViewModel.setFirstScanCompleted()
+        lifecycleScope.launchWhenResumed {
+            Timber.i("endScanning called")
+            monitorViewModel.isProcessing = false
+            session?.abortCaptures()
+            camera?.close()
+            stopBackgroundThread()
+            monitorViewModel.endTimer()
+            monitorViewModel.uploadRawData()
+            val timeOffset = monitorViewModel.smallWindow + monitorViewModel.largeWindow - 2
+            val timeListSize = monitorViewModel.timeList.size
+            val centeredSignalSize = monitorViewModel.centeredSignal.size
+            val timeListImmutable = monitorViewModel.timeList.toImmutableList()
+            val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
+            monitorViewModel.calculateResultSplit(
+                timeListImmutable.subList(timeListSplitSize - timeOffset, timeListSize),
+                centeredSignalListImmutable.subList(centeredSignalSplitSize, centeredSignalSize)
+            )
+            monitorViewModel.calculateSplitCombinedResult()
+            monitorViewModel.calculateResult(timeListImmutable, centeredSignalListImmutable)
+            imageCounter = 0
+            navigateToScanQuestionFragment()
+            scanViewModel.setFirstScanCompleted()
+        }
     }
 
     private fun endIncompleteScanning() {
@@ -559,69 +553,29 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
     }
 
-    private fun calculateDynamicBPM(
-        centeredSignal: List<Double>,
-        timeStamp: List<Int>
-    ): Int {
-        val fp = FindPeak(centeredSignal.toDoubleArray())
-        val out = fp.detectPeaks()
-
-        val peaks = out.peaks
-        Timber.i("Size, Dynamic Peaks: ${peaks.size}, ${Arrays.toString(peaks)}")
-        var filteredPeaks = out.filterByProminence(peaks, 0.4, null)
-        Timber.i(
-            "Size, Dynamic Prominent Peaks: ${filteredPeaks.size}, ${
-                Arrays.toString(
-                    filteredPeaks
-                )
-            }"
-        )
-
-        val ibiList = mutableListOf<Double>() //Time in milliseconds
-        for (i in 0 until filteredPeaks.size - 1) {
-            ibiList.add((timeStamp[filteredPeaks[i + 1]] - timeStamp[filteredPeaks[i]]) * 1.0)
-        }
-        val ibiAvg = ibiList.average()
-        Timber.i(
-            "Size, Average, ibiList: ${ibiList.size}, $ibiAvg, ${
-                Arrays.toString(
-                    ibiList.toDoubleArray()
-                )
-            }"
-        )
-        return ((60 * 1000.0) / ibiAvg).toInt()
-    }
-
-    private suspend fun calculateEnvelopeDynamicBPM(
+    private suspend fun calculateDynamicBPM(
         centeredSignal: List<Double>,
         timeStamp: List<Int>
     ) = withContext(Dispatchers.Default) {
+
         Timber.i("TrackTime: Updating Dynamic BPM in thread.")
-        val offset = 16
-        val time = timeStamp.subList(offset, timeStamp.size - offset).toTypedArray()
-        assert(time.size == centeredSignal.size)
-        interpolatedList = processData.interpolate(
-            time,
-            centeredSignal.toTypedArray(),
-            monitorViewModel.f_interp
+        val windowSize = 101
+
+        // TODO(Harsh: check if leveledSignal is needed for dynamic bpm, else split below function)
+        val leveledSignal = ProcessingData.computeLeveledSignal(
+            timeList = timeStamp,
+            centeredSignalList = centeredSignal,
+            windowSize = windowSize
         )
-        envelope = filt.hilbert(interpolatedList!!.toTypedArray())
-        val windowSize2 = 101
-        envelopeAverage = processData.movAvg(envelope!!.toTypedArray(), windowSize2)
-        leveledSignal = processData.leveling(
-            interpolatedList!!.toTypedArray(),
-            envelopeAverage!!.toTypedArray(),
-            windowSize2
+        val (ibiList, _) = ProcessingData.calculateIbiListAndQuality(
+            leveledSignal,
+            monitorViewModel.fInterp
         )
-        val peaksQ = filt.peakDetection(leveledSignal!!.toTypedArray())
-        val peaks = peaksQ.first
-        val pulseStats =
-            processData.heartRateAndHRV(peaks, SCAN_DURATION, monitorViewModel.f_interp)
-        val meanNN = pulseStats[0]
+        val (meanNN, _, _, _, _) = ProcessingData.calculatePulseStats(ibiList)
         val bpm = (60 * 1000.0) / meanNN
+
         return@withContext bpm.toInt()
     }
-
 
     private fun updateDynamicHeartRate(bpm: Int) {
         var heartRateStr = "_ _"

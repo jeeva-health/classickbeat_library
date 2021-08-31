@@ -3,6 +3,7 @@ package ai.heart.classickbeats.ui.profile
 import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentProfileHomeBinding
+import ai.heart.classickbeats.model.WeightUnits
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.shared.util.computeAge
 import ai.heart.classickbeats.shared.util.toDate
@@ -48,7 +49,10 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
         profileViewModel.userData.observe(viewLifecycleOwner, EventObserver {
             val userName = it.fullName
             val weight = it.weight.roundToInt()
-            val weightUnit = if (it.isWeightKgs) "kg" else "lbs"
+            val weightUnit = when(it.weightUnit) {
+                WeightUnits.KGS -> "kg"
+                WeightUnits.LBS -> "lbs"
+            }
             val age = it.dob.toDate()!!.computeAge()
             val heightInches = (it.height % 12).toInt()
             val heightFeet = (it.height / 12).toInt()

@@ -2,6 +2,7 @@ package ai.heart.classickbeats
 
 import ai.heart.classickbeats.databinding.ActivityMainBinding
 import ai.heart.classickbeats.model.Constants
+import ai.heart.classickbeats.shared.data.login.LoginRepository
 import ai.heart.classickbeats.shared.network.SessionManager
 import ai.heart.classickbeats.ui.login.LoginViewModel
 import android.app.NotificationChannel
@@ -35,14 +36,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    // It's needed to init loginRepoHolder class
+    @Inject
+    lateinit var loginRepository: LoginRepository
+
     @Inject
     lateinit var sessionManager: SessionManager
 
     private var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
 
     private lateinit var bottomSheetCallback: BottomSheetBehavior.BottomSheetCallback
-
-    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
