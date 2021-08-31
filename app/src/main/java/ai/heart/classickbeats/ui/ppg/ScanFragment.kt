@@ -489,7 +489,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 centeredSignalListImmutable.subList(centeredSignalSplitSize, centeredSignalSize)
             )
             monitorViewModel.calculateSplitCombinedResult()
-            monitorViewModel.calculateResult(timeListImmutable, centeredSignalListImmutable)
             imageCounter = 0
             navigateToScanQuestionFragment()
             scanViewModel.setFirstScanCompleted()
