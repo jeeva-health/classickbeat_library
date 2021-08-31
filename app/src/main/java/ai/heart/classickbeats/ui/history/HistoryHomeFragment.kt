@@ -49,8 +49,18 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
 
         historyAdapter = HistoryAdapter(requireContext(), historyItemClickListener)
 
-        binding.historyRv.apply {
-            adapter = historyAdapter
+        binding.apply {
+            historyRv.adapter = historyAdapter
+            dailyCategory.isSelected = true
+            arrayOf(dailyCategory, weeklyCategory, montlyCategory).forEach { category ->
+                category.setOnClickListener {
+                    dailyCategory.isSelected = false
+                    weeklyCategory.isSelected = false
+                    montlyCategory.isSelected = false
+
+                    category.isSelected = true
+                }
+            }
         }
 
         historyViewModel.userData.observe(viewLifecycleOwner, {

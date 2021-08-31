@@ -160,4 +160,11 @@
     <string name="gems">Gems</string>
     <string name="view_result">View Result</string>
     <string name="gently_cover_camera">Gently cover the back camera and the flash with your index finger</string>
+    <string name="pressure_message">Apply gentle pressure on the camera and flash to stabilize your finger</string>
+    <string name="movement_message">Do not move or talk while you are taking the reading</string>
+    <string name="breathing_message">Breath normally. Do not take very deep or shallow breaths</string>
+    <string name="running_graph_message">Take cue from the running graph to assess the quality of the reading</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
 </resources>
