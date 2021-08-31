@@ -14,6 +14,7 @@ data class HistoryRecord(
 ) {
     data class Fields(
         val hr: String?,
+        //TODO("add HRV metrics")
         val diastolic: Int?,
         val glucoseValue: Int?,
         val note: String?,
@@ -25,3 +26,17 @@ data class HistoryRecord(
         val weightValue: String?
     )
 }
+
+/*
+
+Fetch 1 month history data during scan
+
+* var sdnn: Float? = null,
+
+    @Json(name = "mean_nn")
+    var meanNN: Float? = null,
+
+    var rmssd: Float? = null,
+
+    var pnn50: Float? = null,
+* */

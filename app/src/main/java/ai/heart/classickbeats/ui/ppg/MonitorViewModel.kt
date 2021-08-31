@@ -52,7 +52,8 @@ class MonitorViewModel @Inject constructor(
     private val movAvgLarge = mutableListOf<Double>()
 
     private val ibiList = mutableListOf<Double>()
-    private val quality = mutableListOf<Double>()
+    private val qualityList = mutableListOf<Double>()
+    private val leveledSignalList = mutableListOf<List<Double>>()
 
     val fps = 30
 
@@ -186,8 +187,9 @@ class MonitorViewModel @Inject constructor(
                 fInterp
             )
 
+            leveledSignalList.add(leveledSignal)
             ibiList.addAll(_ibiList)
-            quality.add(_quality)
+            qualityList.add(_quality)
         }
 
     fun calculateSplitCombinedResult() {
@@ -197,6 +199,8 @@ class MonitorViewModel @Inject constructor(
             val gender = if (user?.gender == Gender.MALE) 0 else 1
 
             val (meanNN, sdnn, rmssd, pnn50, ln) = ProcessingData.calculatePulseStats(ibiList)
+
+            // TODO(Ritesh: store both leveled signal)
 
 //            // TODO(Harsh: combine quality parameter)
 //            val qualityPercent = ProcessingData.qualityPercent(quality[0])
@@ -282,16 +286,16 @@ class MonitorViewModel @Inject constructor(
             val age = user?.dob?.toDate()?.computeAge() ?: throw Exception("Unable to compute age")
             val gender = if (user?.gender == Gender.MALE) 0 else 1
 
-            val leveledSignal = ProcessingData.computeLeveledSignal(
-                timeList = timeList,
-                centeredSignalList = centeredSignalList,
-                windowSize = windowSize
-            )
-            val (ibiList, quality) = ProcessingData.calculateIbiListAndQuality(
-                leveledSignal,
-                fInterp
-            )
-
+//            val leveledSignal = ProcessingData.computeLeveledSignal(
+//                timeList = timeList,
+//                centeredSignalList = centeredSignalList,
+//                windowSize = windowSize
+//            )
+//            val (ibiList, quality) = ProcessingData.calculateIbiListAndQuality(
+//                leveledSignal,
+//                fInterp
+//            )
+//
             val (meanNN, sdnn, rmssd, pnn50, ln) = ProcessingData.calculatePulseStats(ibiList)
 
 //            val qualityPercent = ProcessingData.qualityPercent(quality)
