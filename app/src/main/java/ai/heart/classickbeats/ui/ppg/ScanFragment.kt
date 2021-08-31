@@ -479,12 +479,13 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             stopBackgroundThread()
             monitorViewModel.endTimer()
             monitorViewModel.uploadRawData()
+            val timeOffset = monitorViewModel.smallWindow + monitorViewModel.largeWindow - 2
             val timeListSize = monitorViewModel.timeList.size
             val centeredSignalSize = monitorViewModel.centeredSignal.size
             val timeListImmutable = monitorViewModel.timeList.toImmutableList()
             val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
             monitorViewModel.calculateResultSplit(
-                timeListImmutable.subList(timeListSplitSize, timeListSize),
+                timeListImmutable.subList(timeListSplitSize - timeOffset, timeListSize),
                 centeredSignalListImmutable.subList(centeredSignalSplitSize, centeredSignalSize)
             )
             monitorViewModel.calculateSplitCombinedResult()

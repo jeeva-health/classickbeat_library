@@ -57,8 +57,8 @@ class MonitorViewModel @Inject constructor(
     val fps = 30
 
     // Keep window sizes odd
-    private val smallWindow = fps / 10
-    private val largeWindow = fps + 1
+    val smallWindow = fps / 10
+    val largeWindow = fps + 1
     val offset = (largeWindow + smallWindow - 1) / 2
 
     var ppgId: Long = -1
