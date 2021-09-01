@@ -6,6 +6,7 @@ import android.media.Image
 import android.os.SystemClock
 import android.renderscript.*
 import android.text.format.DateUtils
+import androidx.paging.ExperimentalPagingApi
 import timber.log.Timber
 import java.nio.ByteBuffer
 import java.nio.ReadOnlyBufferException
@@ -15,6 +16,7 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 
+@ExperimentalPagingApi
 class PixelAnalyzer constructor(
     private val context: Context,
     private val viewModel: MonitorViewModel

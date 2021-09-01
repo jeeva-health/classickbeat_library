@@ -14,7 +14,7 @@ interface RecordDataSource {
 
     suspend fun getSdnnList(): Result<SdnnListResponse.Data>
 
-    suspend fun getScanDetails(id: Int): Result<ScanDetailResponse.ResponseData>
+    suspend fun getScanDetails(id: Long): Result<ScanDetailResponse.ResponseData>
 
     suspend fun getLoggingData(): Result<LoggingListResponse.LoggingData>
 

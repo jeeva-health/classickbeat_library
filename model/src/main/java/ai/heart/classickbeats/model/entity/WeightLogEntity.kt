@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 
 data class WeightLogEntity(
     @Transient
-    val id: Int = -1,
+    val id: Long = -1,
     @Json(name = "weightValue")
     val weight: Float,
     val timeStamp: String? = null,

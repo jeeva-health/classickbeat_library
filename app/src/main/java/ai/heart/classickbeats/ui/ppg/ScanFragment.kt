@@ -37,6 +37,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.paging.ExperimentalPagingApi
 import com.github.mikephil.charting.charts.LineChart
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -45,6 +46,7 @@ import timber.log.Timber
 import java.lang.Boolean
 import java.util.*
 
+@ExperimentalPagingApi
 @AndroidEntryPoint
 class ScanFragment : Fragment(R.layout.fragment_scan) {
 
@@ -220,7 +222,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                     }
                 }
             } else if (it == SPLIT_SCAN_DURATION && !isIntermediatedProcessing) {
-                Timber.i("Ritesh TrackTime: it: $it")
                 isIntermediatedProcessing = true
                 endSplitScanning()
             } else {
@@ -459,35 +460,39 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     }
 
     private fun endSplitScanning() {
-        Timber.i("TrackTime: endSplitScanning called")
-        val timeListImmutable = monitorViewModel.timeList.toImmutableList()
-        val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
-        timeListSplitSize = timeListImmutable.size
-        centeredSignalSplitSize = centeredSignalListImmutable.size
-        monitorViewModel.calculateResultSplit(timeListImmutable, centeredSignalListImmutable)
+        lifecycleScope.launchWhenResumed {
+            Timber.i("TrackTime: endSplitScanning called")
+            val timeListImmutable = monitorViewModel.timeList.toImmutableList()
+            val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
+            timeListSplitSize = timeListImmutable.size
+            centeredSignalSplitSize = centeredSignalListImmutable.size
+            monitorViewModel.calculateResultSplit(timeListImmutable, centeredSignalListImmutable)
+        }
     }
 
     private fun endScanning() {
-        Timber.i("endScanning called")
-        monitorViewModel.isProcessing = false
-        session?.abortCaptures()
-        camera?.close()
-        stopBackgroundThread()
-        monitorViewModel.endTimer()
-        monitorViewModel.uploadRawData()
-        val timeListSize = monitorViewModel.timeList.size
-        val centeredSignalSize = monitorViewModel.centeredSignal.size
-        val timeListImmutable = monitorViewModel.timeList.toImmutableList()
-        val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
-        monitorViewModel.calculateResultSplit(
-            timeListImmutable.subList(timeListSplitSize, timeListSize),
-            centeredSignalListImmutable.subList(centeredSignalSplitSize, centeredSignalSize)
-        )
-        monitorViewModel.calculateSplitCombinedResult()
-        monitorViewModel.calculateResult(timeListImmutable, centeredSignalListImmutable)
-        imageCounter = 0
-        navigateToScanQuestionFragment()
-        scanViewModel.setFirstScanCompleted()
+        lifecycleScope.launchWhenResumed {
+            Timber.i("endScanning called")
+            monitorViewModel.isProcessing = false
+            session?.abortCaptures()
+            camera?.close()
+            stopBackgroundThread()
+            monitorViewModel.endTimer()
+            monitorViewModel.uploadRawData()
+            val timeOffset = monitorViewModel.smallWindow + monitorViewModel.largeWindow - 2
+            val timeListSize = monitorViewModel.timeList.size
+            val centeredSignalSize = monitorViewModel.centeredSignal.size
+            val timeListImmutable = monitorViewModel.timeList.toImmutableList()
+            val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
+            monitorViewModel.calculateResultSplit(
+                timeListImmutable.subList(timeListSplitSize - timeOffset, timeListSize),
+                centeredSignalListImmutable.subList(centeredSignalSplitSize, centeredSignalSize)
+            )
+            monitorViewModel.calculateSplitCombinedResult()
+            imageCounter = 0
+            navigateToScanQuestionFragment()
+            scanViewModel.setFirstScanCompleted()
+        }
     }
 
     private fun endIncompleteScanning() {
@@ -553,14 +558,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     ) = withContext(Dispatchers.Default) {
 
         Timber.i("TrackTime: Updating Dynamic BPM in thread.")
-        val offset = 16
         val windowSize = 101
 
         // TODO(Harsh: check if leveledSignal is needed for dynamic bpm, else split below function)
         val leveledSignal = ProcessingData.computeLeveledSignal(
             timeList = timeStamp,
             centeredSignalList = centeredSignal,
-            offset = offset,
             windowSize = windowSize
         )
         val (ibiList, _) = ProcessingData.calculateIbiListAndQuality(

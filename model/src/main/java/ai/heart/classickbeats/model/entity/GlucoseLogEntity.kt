@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 
 data class GlucoseLogEntity(
     @Transient
-    val id: Int = -1,
+    val id: Long = -1,
     @Json(name = "glucoseValue")
     val glucoseLevel: Int,
     @Json(name = "statusTag")

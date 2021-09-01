@@ -8,9 +8,11 @@ import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.paging.ExperimentalPagingApi
 import java.util.*
 
 
+@ExperimentalPagingApi
 class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     private val loggingViewModel: LoggingViewModel by activityViewModels()
