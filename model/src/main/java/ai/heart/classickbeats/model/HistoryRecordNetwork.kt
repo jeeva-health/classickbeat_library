@@ -11,6 +11,7 @@ data class HistoryRecordNetwork(
     data class Fields(
         val hr: String?,
         val sdnn: Float?,
+        @Json(name = "mean_nn")
         val meanNN: Float?,
         val rmssd: Float?,
         val pnn50: Float?,
