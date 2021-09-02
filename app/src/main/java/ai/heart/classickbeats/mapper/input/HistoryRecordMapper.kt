@@ -1,22 +1,21 @@
 package ai.heart.classickbeats.mapper.input
 
 import ai.heart.classickbeats.mapper.Mapper
+import ai.heart.classickbeats.model.HistoryRecordDatabase
 import ai.heart.classickbeats.model.LogType
-import ai.heart.classickbeats.model.HistoryRecord
 import ai.heart.classickbeats.model.entity.*
 import timber.log.Timber
 import javax.inject.Inject
 
 class HistoryRecordMapper @Inject constructor() :
-    Mapper<HistoryRecord, BaseLogEntity> {
-    override fun map(input: HistoryRecord): BaseLogEntity {
+    Mapper<HistoryRecordDatabase, BaseLogEntity> {
+    override fun map(input: HistoryRecordDatabase): BaseLogEntity {
         val id = input.id
-        val fields = input.fields
-        val timeStamp = input.fields.timeStamp
+        val timeStamp = input.timeStamp
         return when (input.model) {
             "record_data.glucose" -> {
-                val glucoseValue = fields.glucoseValue ?: -1
-                val tag = fields.statusTag ?: -1
+                val glucoseValue = input.glucoseValue ?: -1
+                val tag = input.glucoseTag ?: -1
                 GlucoseLogEntity(
                     id = id,
                     glucoseLevel = glucoseValue,
@@ -25,16 +24,16 @@ class HistoryRecordMapper @Inject constructor() :
                 )
             }
             "record_data.waterintake" -> {
-                val waterQuantity = fields.water?.toFloat() ?: -1.0f
+                val waterQuantity = input.water?.toFloat() ?: -1.0f
                 WaterLogEntity(id = id, quantity = waterQuantity, timeStamp = timeStamp)
             }
             "record_data.weightlog" -> {
-                val weight = fields.weightValue?.toFloat() ?: -1.0f
+                val weight = input.weightValue?.toFloat() ?: -1.0f
                 WeightLogEntity(id = id, weight = weight, timeStamp = timeStamp)
             }
             "record_data.bloodpressure" -> {
-                val diastolic = fields.diastolic ?: -1
-                val systolic = fields.systolic ?: -1
+                val diastolic = input.diastolic ?: -1
+                val systolic = input.systolic ?: -1
                 BpLogEntity(
                     id = id,
                     systolic = systolic,
@@ -43,8 +42,8 @@ class HistoryRecordMapper @Inject constructor() :
                 )
             }
             "record_data.ppg" -> {
-                val hr = fields.hr?.toFloat() ?: -1.0f
-                val stressLevel = fields.stressLevel
+                val hr = input.hr?.toFloat() ?: -1.0f
+                val stressLevel = input.stressLevel
                 PPGEntity(id = id, hr = hr, stressLevel = stressLevel, timeStamp = timeStamp)
             }
             else -> {

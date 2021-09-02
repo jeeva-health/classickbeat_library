@@ -4,7 +4,7 @@ import ai.heart.classickbeats.data.record.cache.HistoryDao
 import ai.heart.classickbeats.data.record.cache.HistoryRemoteKey
 import ai.heart.classickbeats.data.record.cache.HistoryRemoteKeyDao
 import ai.heart.classickbeats.data.user.cache.UserDao
-import ai.heart.classickbeats.model.HistoryRecord
+import ai.heart.classickbeats.model.HistoryRecordDatabase
 import ai.heart.classickbeats.model.entity.UserEntity
 import android.content.Context
 import androidx.room.Database
@@ -12,7 +12,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [UserEntity::class, HistoryRecord::class, HistoryRemoteKey::class],
+    entities = [UserEntity::class, HistoryRecordDatabase::class, HistoryRemoteKey::class],
     version = 1,
     exportSchema = false
 )

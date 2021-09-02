@@ -525,6 +525,9 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 SensorManager.SENSOR_DELAY_UI
             )
         }
+
+        // TODO(Ritesh: move to appropriate location)
+        scanViewModel.getRecentHistoryData(10)
     }
 
     override fun onPause() {
