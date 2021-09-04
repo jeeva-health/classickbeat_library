@@ -22,6 +22,22 @@
           }
         },
         {
+          "client_id": "339312108441-f3lstcl2huudm2uhn62o82rr62p01g2h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ai.heart.classickbeats",
+            "certificate_hash": "5d9b976e86ef8dbeb9c0f25f45084be02eb08adb"
+          }
+        },
+        {
+          "client_id": "339312108441-qgi3a18ivh4042mg719iri1rj8eogbk5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ai.heart.classickbeats",
+            "certificate_hash": "62de2d00c275c291b85525a774553f0af40d6082"
+          }
+        },
+        {
           "client_id": "339312108441-8iotlnna8eof8l01j1umcpqcvgehv8b1.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -51,11 +67,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "339312108441-2tevkuum9g85cpkp7ae1palad20j4l04.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ai.heart.classickbeats.debug",
+            "certificate_hash": "5d9b976e86ef8dbeb9c0f25f45084be02eb08adb"
+          }
+        },
+        {
           "client_id": "339312108441-56c41jp83o21r78un5jltkp0q0i4itd2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "ai.heart.classickbeats.debug",
             "certificate_hash": "d7ff684e0452cb88c0f7a3b153beb0c5431bd597"
+          }
+        },
+        {
+          "client_id": "339312108441-7inn5opn106dk7um0ag2rmtcmihn8t45.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ai.heart.classickbeats.debug",
+            "certificate_hash": "62de2d00c275c291b85525a774553f0af40d6082"
           }
         },
         {
