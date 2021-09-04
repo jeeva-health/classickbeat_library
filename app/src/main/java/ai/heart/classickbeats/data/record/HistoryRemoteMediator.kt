@@ -12,12 +12,11 @@ import androidx.room.withTransaction
 import com.bumptech.glide.load.HttpException
 import timber.log.Timber
 import java.io.IOException
-import javax.inject.Inject
 
 const val HISTORY_STARTING_PAGE_INDEX = 1
 
 @ExperimentalPagingApi
-class HistoryRemoteMediator @Inject constructor(
+class HistoryRemoteMediator constructor(
     private val service: RecordApiService,
     private val database: AppDatabase,
     private val historyRecordNetworkDbMapper: HistoryRecordNetworkDbMapper

@@ -2,6 +2,7 @@ package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.data.db.AppDatabase
 import ai.heart.classickbeats.mapper.input.HistoryRecordMapper
+import ai.heart.classickbeats.mapper.input.HistoryRecordNetworkDbMapper
 import ai.heart.classickbeats.mapper.input.LoggingListMapper
 import ai.heart.classickbeats.model.HistoryRecordDatabase
 import ai.heart.classickbeats.model.entity.*
@@ -17,11 +18,12 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 @ActivityRetainedScoped
 class RecordRepository @Inject constructor(
+    private val service: RecordApiService,
     private val database: AppDatabase,
     private val recordRemoteDataSource: RecordRemoteDataSource,
     private val loggingListMapper: LoggingListMapper,
     private val historyMapper: HistoryRecordMapper,
-    private val historyRemoteMediator: HistoryRemoteMediator,
+    private val historyRecordNetworkDbMapper: HistoryRecordNetworkDbMapper
 ) {
     suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long> =
         recordRemoteDataSource.recordPPG(ppgEntity)
@@ -63,7 +65,11 @@ class RecordRepository @Inject constructor(
                 maxSize = 5 * NETWORK_PAGE_SIZE,
                 enablePlaceholders = false
             ),
-            remoteMediator = historyRemoteMediator,
+            remoteMediator = HistoryRemoteMediator(
+                service,
+                database,
+                historyRecordNetworkDbMapper
+            ),
             pagingSourceFactory = pagingSourceFactory
         ).flow.map { pagingData ->
             pagingData.map { historyRecord: HistoryRecordDatabase ->
