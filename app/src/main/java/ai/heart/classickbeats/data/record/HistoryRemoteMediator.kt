@@ -9,6 +9,7 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.bumptech.glide.load.HttpException
+import timber.log.Timber
 import java.io.IOException
 
 const val HISTORY_STARTING_PAGE_INDEX = 1
@@ -44,12 +45,15 @@ class HistoryRemoteMediator(
             }
         }
 
+        Timber.i("loadType: $loadType, page to be loaded: $page")
+
         try {
             val apiResponse = service.getHistoryData(page)
 
             // TODO: Ritesh: Add isSuccessful check
             val loggingList = apiResponse.responseData.historyPaginatedData.loggingList
-            val endOfPaginationReached = loggingList.isEmpty()
+            val endOfPaginationReached =
+                apiResponse.responseData.historyPaginatedData.nextPage == null
             database.withTransaction {
                 // clear all tables in the database
                 if (loadType == LoadType.REFRESH) {

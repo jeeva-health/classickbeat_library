@@ -126,7 +126,7 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
 
         val isActive = ppgEntity.sedRatioLog ?: 0f < 0
 
-        val ppgScanResult = PPGData.ScanResult(
+        return PPGData.ScanResult(
             bpm = ppgEntity.hr ?: 0.0f,
             aFib = "Not Detected",
             quality = ppgEntity.quality ?: 0.0f,
@@ -141,7 +141,5 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
             filteredRMean = ppgEntity.filteredRMeans ?: emptyList(),
             timeStamp = ppgEntity.timeStamp?.toDate() ?: Date()
         )
-
-        return ppgScanResult
     }
 }
