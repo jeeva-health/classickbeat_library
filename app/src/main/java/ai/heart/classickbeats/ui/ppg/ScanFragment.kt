@@ -132,10 +132,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private var badImageCounter = 0
 
-    private var timeListSplitSize: Int = 0
-
-    private var centeredSignalSplitSize: Int = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -464,35 +460,20 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             Timber.i("TrackTime: endSplitScanning called")
             val timeListImmutable = monitorViewModel.timeList.toImmutableList()
             val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
-            timeListSplitSize = timeListImmutable.size
-            centeredSignalSplitSize = centeredSignalListImmutable.size
             monitorViewModel.calculateResultSplit(timeListImmutable, centeredSignalListImmutable)
         }
     }
 
     private fun endScanning() {
-        lifecycleScope.launchWhenResumed {
-            Timber.i("endScanning called")
-            monitorViewModel.isProcessing = false
-            session?.abortCaptures()
-            camera?.close()
-            stopBackgroundThread()
-            monitorViewModel.endTimer()
-            monitorViewModel.uploadRawData()
-            val timeOffset = monitorViewModel.smallWindow + monitorViewModel.largeWindow - 2
-            val timeListSize = monitorViewModel.timeList.size
-            val centeredSignalSize = monitorViewModel.centeredSignal.size
-            val timeListImmutable = monitorViewModel.timeList.toImmutableList()
-            val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
-            monitorViewModel.calculateResultSplit(
-                timeListImmutable.subList(timeListSplitSize - timeOffset, timeListSize),
-                centeredSignalListImmutable.subList(centeredSignalSplitSize, centeredSignalSize)
-            )
-            monitorViewModel.calculateSplitCombinedResult()
-            imageCounter = 0
-            navigateToScanQuestionFragment()
-            scanViewModel.setFirstScanCompleted()
-        }
+        Timber.i("endScanning called")
+        monitorViewModel.isProcessing = false
+        monitorViewModel.endScanHandling()
+        session?.abortCaptures()
+        camera?.close()
+        stopBackgroundThread()
+        imageCounter = 0
+        navigateToScanQuestionFragment()
+        scanViewModel.setFirstScanCompleted()
     }
 
     private fun endIncompleteScanning() {

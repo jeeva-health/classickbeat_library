@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.internal.toImmutableList
 import timber.log.Timber
 import java.util.*
 import java.util.Date
@@ -65,6 +66,10 @@ class MonitorViewModel @Inject constructor(
     val largeWindow = fps + 1
     val offset = (largeWindow + smallWindow - 1) / 2
 
+    var timeListSplitSize: Int = 0
+    var centeredSignalSplitSize: Int = 0
+
+    @Volatile
     var ppgId: Long = -1
 
     private val _dynamicGraphCoordinates = MutableLiveData<Event<Pair<Int, Double>>>()
@@ -123,19 +128,33 @@ class MonitorViewModel @Inject constructor(
         }
     }
 
-    fun uploadRawData() {
-        viewModelScope.launch {
-            val timeStamp0 = timeList.firstOrNull() ?: 0
-            val ppgEntity = PPGEntity(
-                rMeans = mean1List.toList().map { String.format("%.4f", it).toFloat() },
-                gMeans = mean2List.toList().map { String.format("%.4f", it).toFloat() },
-                bMeans = mean3List.toList().map { String.format("%.4f", it).toFloat() },
-                cameraTimeStamps = timeList.toList().map { it.toLong() - timeStamp0.toLong() },
+    fun endScanHandling() {
+        viewModelScope.launch(Dispatchers.Default) {
+            endTimer()
+            uploadRawData()
+            val timeOffset = smallWindow + largeWindow - 2
+            val timeListSize = timeList.size
+            val centeredSignalSize = centeredSignal.size
+            calculateResultSplit(
+                timeList.subList(timeListSplitSize - timeOffset, timeListSize).toImmutableList(),
+                centeredSignal.subList(centeredSignalSplitSize, centeredSignalSize)
+                    .toImmutableList()
             )
-            val result = recordRepository.recordPPG(ppgEntity)
-            Timber.i("TrackTime: upload raw upload completed")
-            ppgId = result.data ?: -1
+            calculateSplitCombinedResult()
         }
+    }
+
+    private suspend fun uploadRawData() {
+        val timeStamp0 = timeList.firstOrNull() ?: 0
+        val ppgEntity = PPGEntity(
+            rMeans = mean1List.toList().map { String.format("%.4f", it).toFloat() },
+            gMeans = mean2List.toList().map { String.format("%.4f", it).toFloat() },
+            bMeans = mean3List.toList().map { String.format("%.4f", it).toFloat() },
+            cameraTimeStamps = timeList.toList().map { it.toLong() - timeStamp0.toLong() },
+        )
+        val result = recordRepository.recordPPG(ppgEntity)
+        Timber.i("TrackTime: upload raw upload completed id: ${result.data}")
+        ppgId = result.data ?: -1
     }
 
     fun addFrameDataToList(cameraReading: CameraReading) {
@@ -176,6 +195,9 @@ class MonitorViewModel @Inject constructor(
         withContext(Dispatchers.Default) {
             val windowSize = 101
 
+            timeListSplitSize = timeList.size
+            centeredSignalSplitSize = centeredSignalList.size
+
             val smallWindowOffset = smallWindow - 1
             val largeWindowOffset = (largeWindow - 1) / 2
             val leveledSignal = ProcessingData.computeLeveledSignal(
@@ -195,276 +217,134 @@ class MonitorViewModel @Inject constructor(
             qualityList.add(_quality)
         }
 
-    fun calculateSplitCombinedResult() {
-        viewModelScope.launch {
+    private suspend fun calculateSplitCombinedResult() {
+        val age = user?.dob?.toDate()?.computeAge() ?: throw Exception("Unable to compute age")
+        val gender = if (user?.gender == Gender.MALE) 0 else 1
 
-            val age = user?.dob?.toDate()?.computeAge() ?: throw Exception("Unable to compute age")
-            val gender = if (user?.gender == Gender.MALE) 0 else 1
+        val (meanNN, sdnn, rmssd, pnn50, ln) = ProcessingData.calculatePulseStats(ibiList)
 
-            val (meanNN, sdnn, rmssd, pnn50, ln) = ProcessingData.calculatePulseStats(ibiList)
+        // TODO(Ritesh: store both leveled signal)
 
-            // TODO(Ritesh: store both leveled signal)
+        // TODO(Harsh: combine quality parameter)
+        val qualityPercent = ProcessingData.qualityPercent(qualityList[0])
+        Timber.i("QualityPercent: $qualityPercent")
 
-            // TODO(Harsh: combine quality parameter)
-            val qualityPercent = ProcessingData.qualityPercent(qualityList[0])
-            Timber.i("QualityPercent: $qualityPercent")
+        val bpm = (60 * 1000.0) / meanNN
 
-            val bpm = (60 * 1000.0) / meanNN
+        // This will be used by View
+        this@MonitorViewModel.leveledSignal = leveledSignalList[0]
 
-            // This will be used by View
-            this@MonitorViewModel.leveledSignal = leveledSignalList[0]
+        val mapModeling = MAPmodeling()
 
-            val mapModeling = MAPmodeling()
+        //@RITESH: In cAge and gender parameters in lines 152 and 155,
+        // input the age and gender of the user, respectively
+        // gender = 0 is male and 1 is female
 
-            //@RITESH: In cAge and gender parameters in lines 152 and 155,
-            // input the age and gender of the user, respectively
-            // gender = 0 is male and 1 is female
+        val binProbsMAP =
+            mapModeling.bAgePrediction(age.toDouble(), gender, meanNN, sdnn, rmssd, pnn50)
+                .toDoubleArray()
+        // bAgeBin goes from 0 to 5
+        val bAgeBin = argmax(binProbsMAP, false)
 
-            val binProbsMAP =
-                mapModeling.bAgePrediction(age.toDouble(), gender, meanNN, sdnn, rmssd, pnn50)
-                    .toDoubleArray()
-            // bAgeBin goes from 0 to 5
-            val bAgeBin = argmax(binProbsMAP, false)
-
-            Timber.i("TrackTime: age prediction completed")
+        Timber.i("TrackTime: age prediction completed")
 //
-            // First and second indices is for sedantry and active probabilities, respectively.
-            val activeSedantryProb = mapModeling.activeSedantryPrediction(27.0, meanNN, rmssd)
-            val sedRatioLog = kotlin.math.log10(activeSedantryProb[0] / activeSedantryProb[1])
-            // sedStars = 0 implies the person is fully active and the sedRatioLog is small
-            // sedStars =  6 implies all stars related to sedantry lifestyle be highlighted
-            // (sedRatioLog, sedStars) = (-1,0); (-0.7,1); (-0.3,2); (0,3); (0.3,4); (0.7, 5); (1, 6)
-            val sedStars = if (sedRatioLog < -1.0)
-                0
-            else if (sedRatioLog >= -1.0 && sedRatioLog < -0.5)
-                1
-            else if (sedRatioLog >= -0.5 && sedRatioLog < -0.15)
-                2
-            else if (sedRatioLog >= -0.15 && sedRatioLog < 0.15)
-                3
-            else if (sedRatioLog >= 0.15 && sedRatioLog < 0.5)
-                4
-            else
-                5
+        // First and second indices is for sedantry and active probabilities, respectively.
+        val activeSedantryProb = mapModeling.activeSedantryPrediction(27.0, meanNN, rmssd)
+        val sedRatioLog = kotlin.math.log10(activeSedantryProb[0] / activeSedantryProb[1])
+        // sedStars = 0 implies the person is fully active and the sedRatioLog is small
+        // sedStars =  6 implies all stars related to sedantry lifestyle be highlighted
+        // (sedRatioLog, sedStars) = (-1,0); (-0.7,1); (-0.3,2); (0,3); (0.3,4); (0.7, 5); (1, 6)
+        val sedStars = if (sedRatioLog < -1.0)
+            0
+        else if (sedRatioLog >= -1.0 && sedRatioLog < -0.5)
+            1
+        else if (sedRatioLog >= -0.5 && sedRatioLog < -0.15)
+            2
+        else if (sedRatioLog >= -0.15 && sedRatioLog < 0.15)
+            3
+        else if (sedRatioLog >= 0.15 && sedRatioLog < 0.5)
+            4
+        else
+            5
 
-            val activeStars = 6 - sedStars
-            val isActive = sedRatioLog < 0
+        val activeStars = 6 - sedStars
+        val isActive = sedRatioLog < 0
 
-            Timber.i("TrackTime: sed ratio computation completed")
+        Timber.i("TrackTime: sed ratio computation completed")
 
-            val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
+        val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
 
-            Timber.i("BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
-            Timber.i("binProbsMAP: ${Arrays.toString(binProbsMAP)}")
-            Timber.i("Sedantry and Active Probs: ${Arrays.toString(activeSedantryProb.toDoubleArray())}")
+        Timber.i("BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
+        Timber.i("binProbsMAP: ${Arrays.toString(binProbsMAP)}")
+        Timber.i("Sedantry and Active Probs: ${Arrays.toString(activeSedantryProb.toDoubleArray())}")
 
-            val sdnnDataCount: Int
-            val sdnnListResponse = recordRepository.getSdnnList()
-            val stressOutput = if (sdnnListResponse.succeeded) {
-                val dataArray = sdnnListResponse.data!!.toDoubleArray()
-                sdnnDataCount = dataArray.size + 1
-                mapModeling.stressLevelPrediction(dataArray, sdnn)
-            } else {
-                sdnnDataCount = 1
-                1
-            }
+        val sdnnDataCount: Int
+        val sdnnListResponse = recordRepository.getSdnnList()
+        val stressOutput = if (sdnnListResponse.succeeded) {
+            val dataArray = sdnnListResponse.data!!.toDoubleArray()
+            sdnnDataCount = dataArray.size + 1
+            mapModeling.stressLevelPrediction(dataArray, sdnn)
+        } else {
+            sdnnDataCount = 1
+            1
+        }
 
-            Timber.i("TrackTime: stress calculation completed")
+        Timber.i("TrackTime: stress calculation completed")
 
-            val stressResult = StressResult(stressResult = stressOutput, dataCount = sdnnDataCount)
+        val stressResult = StressResult(stressResult = stressOutput, dataCount = sdnnDataCount)
 
-            val bioAge = BioAge.values()[bAgeBin]
-            val bioAgeResult = when {
-                age < bioAge.startRange -> -1
-                age > bioAge.endRange -> 1
-                else -> 0
-            }
+        val bioAge = BioAge.values()[bAgeBin]
+        val bioAgeResult = when {
+            age < bioAge.startRange -> -1
+            age > bioAge.endRange -> 1
+            else -> 0
+        }
 
-            val ppgEntity = PPGEntity(
-                filteredRMeans = leveledSignal?.map { String.format("%.4f", it).toDouble() },
-                hr = String.format("%.4f", bpm).toFloat(),
-                meanNN = String.format("%.4f", meanNN).toFloat(),
-                sdnn = String.format("%.4f", sdnn).toFloat(),
-                pnn50 = String.format("%.4f", pnn50).toFloat(),
-                rmssd = String.format("%.4f", rmssd).toFloat(),
-                ln = String.format("%.4f", ln).toFloat(),
-                quality = String.format("%.2f", qualityPercent).toFloat(),
-                binProbsMAP = binProbsMAP.toList().map { String.format("%.8f", it).toFloat() },
-                bAgeBin = bAgeBin,
-                activeSedentaryProb = activeSedantryProb.toList()
-                    .map { String.format("%.8f", it).toFloat() },
-                sedRatioLog = String.format("%.8f", qualityList[0]).toFloat(),
-                sedStars = sedStars,
-                stressLevel = stressOutput
+        val ppgEntity = PPGEntity(
+            filteredRMeans = leveledSignal?.map { String.format("%.4f", it).toDouble() },
+            hr = String.format("%.4f", bpm).toFloat(),
+            meanNN = String.format("%.4f", meanNN).toFloat(),
+            sdnn = String.format("%.4f", sdnn).toFloat(),
+            pnn50 = String.format("%.4f", pnn50).toFloat(),
+            rmssd = String.format("%.4f", rmssd).toFloat(),
+            ln = String.format("%.4f", ln).toFloat(),
+            quality = String.format("%.2f", qualityPercent).toFloat(),
+            binProbsMAP = binProbsMAP.toList().map { String.format("%.8f", it).toFloat() },
+            bAgeBin = bAgeBin,
+            activeSedentaryProb = activeSedantryProb.toList()
+                .map { String.format("%.8f", it).toFloat() },
+            sedRatioLog = String.format("%.8f", qualityList[0]).toFloat(),
+            sedStars = sedStars,
+            stressLevel = stressOutput
+        )
+
+        recordRepository.updatePPG(ppgId, ppgEntity)
+
+        Timber.i("TrackTime: api request completed")
+
+        val currentTime = Date()
+
+        scanResult =
+            PPGData.ScanResult(
+                bpm = bpm.toFloat(),
+                aFib = "Not Detected",
+                quality = qualityPercent.toFloat(),
+                ageBin = bAgeBin,
+                bioAgeResult = bioAgeResult,
+                activeStar = activeStars,
+                isActive = isActive,
+                sdnn = sdnn.toFloat(),
+                pnn50 = pnn50.toFloat(),
+                rmssd = rmssd.toFloat(),
+                stress = stressResult,
+                filteredRMean = leveledSignal ?: emptyList(),
+                timeStamp = currentTime
             )
-            recordRepository.updatePPG(ppgId, ppgEntity)
 
-            Timber.i("TrackTime: api request completed")
+        clearGlobalData()
+        outputComputed.postValue(Event(true))
 
-            val currentTime = Date()
-
-            scanResult =
-                PPGData.ScanResult(
-                    bpm = bpm.toFloat(),
-                    aFib = "Not Detected",
-                    quality = qualityPercent.toFloat(),
-                    ageBin = bAgeBin,
-                    bioAgeResult = bioAgeResult,
-                    activeStar = activeStars,
-                    isActive = isActive,
-                    sdnn = sdnn.toFloat(),
-                    pnn50 = pnn50.toFloat(),
-                    rmssd = rmssd.toFloat(),
-                    stress = stressResult,
-                    filteredRMean = leveledSignal ?: emptyList(),
-                    timeStamp = currentTime
-                )
-
-            clearGlobalData()
-            outputComputed.postValue(Event(true))
-
-            Timber.i("TrackTime: output computed posted")
-        }
-    }
-
-    fun calculateResult(timeList: List<Int>, centeredSignalList: List<Double>) {
-        viewModelScope.launch {
-            val windowSize = 101
-
-            val age = user?.dob?.toDate()?.computeAge() ?: throw Exception("Unable to compute age")
-            val gender = if (user?.gender == Gender.MALE) 0 else 1
-
-//            val leveledSignal = ProcessingData.computeLeveledSignal(
-//                timeList = timeList,
-//                centeredSignalList = centeredSignalList,
-//                windowSize = windowSize
-//            )
-//            val (ibiList, quality) = ProcessingData.calculateIbiListAndQuality(
-//                leveledSignal,
-//                fInterp
-//            )
-//
-            val (meanNN, sdnn, rmssd, pnn50, ln) = ProcessingData.calculatePulseStats(ibiList)
-
-//            val qualityPercent = ProcessingData.qualityPercent(quality)
-//            Timber.i("QualityPercent: $qualityPercent")
-//
-//            val bpm = (60 * 1000.0) / meanNN
-//
-//            // This will be used by View
-//            this@MonitorViewModel.leveledSignal = leveledSignal
-//
-//            val mapModeling = MAPmodeling()
-//
-//            //@RITESH: In cAge and gender parameters in lines 152 and 155,
-//            // input the age and gender of the user, respectively
-//            // gender = 0 is male and 1 is female
-//
-//            val binProbsMAP =
-//                mapModeling.bAgePrediction(age.toDouble(), gender, meanNN, sdnn, rmssd, pnn50)
-//                    .toDoubleArray()
-//            // bAgeBin goes from 0 to 5
-//            val bAgeBin = argmax(binProbsMAP, false)
-//
-//            Timber.i("TrackTime: age prediction completed")
-//
-//            // First and second indices is for sedantry and active probabilities, respectively.
-//            val activeSedantryProb = mapModeling.activeSedantryPrediction(27.0, meanNN, rmssd)
-//            val sedRatioLog = kotlin.math.log10(activeSedantryProb[0] / activeSedantryProb[1])
-//            // sedStars = 0 implies the person is fully active and the sedRatioLog is small
-//            // sedStars =  6 implies all stars related to sedantry lifestyle be highlighted
-//            // (sedRatioLog, sedStars) = (-1,0); (-0.7,1); (-0.3,2); (0,3); (0.3,4); (0.7, 5); (1, 6)
-//            val sedStars = if (sedRatioLog < -1.0)
-//                0
-//            else if (sedRatioLog >= -1.0 && sedRatioLog < -0.5)
-//                1
-//            else if (sedRatioLog >= -0.5 && sedRatioLog < -0.15)
-//                2
-//            else if (sedRatioLog >= -0.15 && sedRatioLog < 0.15)
-//                3
-//            else if (sedRatioLog >= 0.15 && sedRatioLog < 0.5)
-//                4
-//            else
-//                5
-//
-//            val activeStars = 6 - sedStars
-//            val isActive = sedRatioLog < 0
-//
-//            Timber.i("TrackTime: sed ratio computation completed")
-//
-////            val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
-//
-//            Timber.i("BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
-//            Timber.i("binProbsMAP: ${Arrays.toString(binProbsMAP)}")
-//            Timber.i("Sedantry and Active Probs: ${Arrays.toString(activeSedantryProb.toDoubleArray())}")
-//
-//            val sdnnDataCount: Int
-//            val sdnnListResponse = recordRepository.getSdnnList()
-//            val stressOutput = if (sdnnListResponse.succeeded) {
-//                val dataArray = sdnnListResponse.data!!.toDoubleArray()
-//                sdnnDataCount = dataArray.size + 1
-//                mapModeling.stressLevelPrediction(dataArray, sdnn)
-//            } else {
-//                sdnnDataCount = 1
-//                1
-//            }
-//
-//            Timber.i("TrackTime: stress calculation completed")
-//
-//            val stressResult = StressResult(stressResult = stressOutput, dataCount = sdnnDataCount)
-//
-//            val bioAge = BioAge.values()[bAgeBin]
-//            val bioAgeResult = when {
-//                age < bioAge.startRange -> -1
-//                age > bioAge.endRange -> 1
-//                else -> 0
-//            }
-//
-//            val ppgEntity = PPGEntity(
-//                filteredRMeans = leveledSignal?.map { String.format("%.4f", it).toDouble() },
-//                hr = String.format("%.4f", bpm).toFloat(),
-//                meanNN = String.format("%.4f", meanNN).toFloat(),
-//                sdnn = String.format("%.4f", sdnn).toFloat(),
-//                pnn50 = String.format("%.4f", pnn50).toFloat(),
-//                rmssd = String.format("%.4f", rmssd).toFloat(),
-//                ln = String.format("%.4f", ln).toFloat(),
-//                quality = String.format("%.2f", qualityPercent).toFloat(),
-//                binProbsMAP = binProbsMAP.toList().map { String.format("%.8f", it).toFloat() },
-//                bAgeBin = bAgeBin,
-//                activeSedentaryProb = activeSedantryProb.toList()
-//                    .map { String.format("%.8f", it).toFloat() },
-//                sedRatioLog = String.format("%.8f", quality).toFloat(),
-//                sedStars = sedStars,
-//                stressLevel = stressOutput
-//            )
-//            recordRepository.updatePPG(ppgId, ppgEntity)
-//
-//            Timber.i("TrackTime: api request completed")
-//
-//            val currentTime = Date()
-//
-//            scanResult =
-//                PPGData.ScanResult(
-//                    bpm = bpm.toFloat(),
-//                    aFib = "Not Detected",
-//                    quality = qualityPercent.toFloat(),
-//                    ageBin = bAgeBin,
-//                    bioAgeResult = bioAgeResult,
-//                    activeStar = activeStars,
-//                    isActive = isActive,
-//                    sdnn = sdnn.toFloat(),
-//                    pnn50 = pnn50.toFloat(),
-//                    rmssd = rmssd.toFloat(),
-//                    stress = stressResult,
-//                    filteredRMean = leveledSignal ?: emptyList(),
-//                    timeStamp = currentTime
-//                )
-//
-//            clearGlobalData()
-//            outputComputed.postValue(Event(true))
-//
-//            Timber.i("TrackTime: output computed posted")
-        }
+        Timber.i("TrackTime: output computed posted")
     }
 
     private fun clearGlobalData() {
