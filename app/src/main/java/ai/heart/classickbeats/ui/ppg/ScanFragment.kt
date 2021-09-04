@@ -41,9 +41,7 @@ import androidx.paging.ExperimentalPagingApi
 import com.github.mikephil.charting.charts.LineChart
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import okhttp3.internal.toImmutableList
 import timber.log.Timber
-import java.lang.Boolean
 import java.util.*
 
 @ExperimentalPagingApi
@@ -131,10 +129,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private var imageCounter = 0
 
     private var badImageCounter = 0
-
-    private var timeListSplitSize: Int = 0
-
-    private var centeredSignalSplitSize: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -359,8 +353,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                     if (imageCounter % (5 * fps) == 0 && imageCounter > (6 * fps)) {
                         lifecycleScope.launchWhenResumed {
                             val dynamicBPM = calculateDynamicBPM(
-                                monitorViewModel.centeredSignal.toImmutableList(),
-                                monitorViewModel.timeList.toImmutableList()
+                                monitorViewModel.centeredSignal.toList(),
+                                monitorViewModel.timeList.toList()
                             )
                             postOnMainLooper {
                                 updateDynamicHeartRate(dynamicBPM)
@@ -419,7 +413,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             builder.addTarget(imageReader!!.surface)
             builder.addTarget(Surface(texture))
             builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF)
-            builder.set(CaptureRequest.CONTROL_AWB_LOCK, Boolean.TRUE)
+            builder.set(CaptureRequest.CONTROL_AWB_LOCK, true)
             builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range.create(fps, fps))
 //            builder.set(CaptureRequest.SENSOR_SENSITIVITY, 50);
 //            builder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 10000000);
@@ -462,37 +456,22 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private fun endSplitScanning() {
         lifecycleScope.launchWhenResumed {
             Timber.i("TrackTime: endSplitScanning called")
-            val timeListImmutable = monitorViewModel.timeList.toImmutableList()
-            val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
-            timeListSplitSize = timeListImmutable.size
-            centeredSignalSplitSize = centeredSignalListImmutable.size
+            val timeListImmutable = monitorViewModel.timeList.toList()
+            val centeredSignalListImmutable = monitorViewModel.centeredSignal.toList()
             monitorViewModel.calculateResultSplit(timeListImmutable, centeredSignalListImmutable)
         }
     }
 
     private fun endScanning() {
-        lifecycleScope.launchWhenResumed {
-            Timber.i("endScanning called")
-            monitorViewModel.isProcessing = false
-            session?.abortCaptures()
-            camera?.close()
-            stopBackgroundThread()
-            monitorViewModel.endTimer()
-            monitorViewModel.uploadRawData()
-            val timeOffset = monitorViewModel.smallWindow + monitorViewModel.largeWindow - 2
-            val timeListSize = monitorViewModel.timeList.size
-            val centeredSignalSize = monitorViewModel.centeredSignal.size
-            val timeListImmutable = monitorViewModel.timeList.toImmutableList()
-            val centeredSignalListImmutable = monitorViewModel.centeredSignal.toImmutableList()
-            monitorViewModel.calculateResultSplit(
-                timeListImmutable.subList(timeListSplitSize - timeOffset, timeListSize),
-                centeredSignalListImmutable.subList(centeredSignalSplitSize, centeredSignalSize)
-            )
-            monitorViewModel.calculateSplitCombinedResult()
-            imageCounter = 0
-            navigateToScanQuestionFragment()
-            scanViewModel.setFirstScanCompleted()
-        }
+        Timber.i("endScanning called")
+        monitorViewModel.isProcessing = false
+        monitorViewModel.endScanHandling()
+        session?.abortCaptures()
+        camera?.close()
+        stopBackgroundThread()
+        imageCounter = 0
+        navigateToScanQuestionFragment()
+        scanViewModel.setFirstScanCompleted()
     }
 
     private fun endIncompleteScanning() {

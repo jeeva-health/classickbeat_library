@@ -106,8 +106,8 @@ class HistoryViewModel @Inject constructor(
             LogType.PPG -> (rightLogEntity as PPGEntity).timeStamp
             else -> null
         }?.toDateStringWithoutTime()
-        return if (leftDate != rightDate) {
-            HistoryItem.DateItem(rightDate ?: "No Date")
+        return if (leftDate != rightDate && rightDate != null) {
+            HistoryItem.DateItem(rightDate)
         } else {
             null
         }

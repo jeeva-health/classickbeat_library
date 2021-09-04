@@ -48,13 +48,16 @@ class HistoryRemoteMediator @Inject constructor(
             }
         }
 
+        Timber.i("loadType: $loadType, page to be loaded: $page")
+
         try {
             val apiResponse = service.getHistoryData(page)
 
             // TODO: Ritesh: Add isSuccessful check
             val loggingList = apiResponse.responseData.historyPaginatedData.loggingList
-            val endOfPaginationReached = loggingList.isEmpty()
             val loggingListDb = loggingList.map { historyRecordNetworkDbMapper.map(it) }
+            val endOfPaginationReached =
+                apiResponse.responseData.historyPaginatedData.nextPage == null
             database.withTransaction {
                 // clear all tables in the database
                 if (loadType == LoadType.REFRESH) {
