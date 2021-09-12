@@ -41,4 +41,8 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun getReferralGemReward(): Pair<Int, Int> {
+        return Pair(10, 5)
+    }
 }

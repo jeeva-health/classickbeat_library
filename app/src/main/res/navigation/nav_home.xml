@@ -186,6 +186,12 @@
         <action
             android:id="@+id/action_profileSettingsFragment_to_signOutDialogFragment"
             app:destination="@id/signOutDialogFragment" />
+        <action
+            android:id="@+id/action_profileSettingsFragment_to_inviteFriendFragment"
+            app:destination="@id/inviteFriendFragment" />
+        <action
+            android:id="@+id/action_profileSettingsFragment_to_howJeevaWorksFragment"
+            app:destination="@id/howJeevaWorksFragment" />
     </fragment>
 
     <dialog
@@ -193,5 +199,17 @@
         android:name="ai.heart.classickbeats.ui.profile.SignOutDialogFragment"
         android:label="fragment_sign_out_dialog"
         tools:layout="@layout/fragment_sign_out_dialog" />
+
+    <fragment
+        android:id="@+id/inviteFriendFragment"
+        android:name="ai.heart.classickbeats.ui.profile.InviteFriendFragment"
+        android:label="fragment_invite_friend"
+        tools:layout="@layout/fragment_invite_friend" />
+
+    <dialog
+        android:id="@+id/howJeevaWorksFragment"
+        android:name="ai.heart.classickbeats.ui.profile.HowJeevaWorksFragment"
+        android:label="fragment_how_jeeva_works"
+        tools:layout="@layout/fragment_how_jeeva_works" />
 
 </navigation>

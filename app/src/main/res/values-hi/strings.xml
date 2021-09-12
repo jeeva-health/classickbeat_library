@@ -167,4 +167,10 @@
     <string name="daily">Daily</string>
     <string name="weekly">Weekly</string>
     <string name="monthly">Monthly</string>
+
+    <!--    Profile-->
+    <string name="earn_gems_message_1">Earn %d gems with every invite to unlock premium features</string>
+    <string name="earn_gems_message_2">Every time your friend downloads the Jeeva app, you get %d gems and they get %d gems.</string>
+    <string name="invite_message">Hey! I’m using the Jeeva app to keep a regular check of my HRV metrics and important vitals to maintain a healthy lifestyle. You can download and try it here: %s</string>
+
 </resources>

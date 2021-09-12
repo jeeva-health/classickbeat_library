@@ -31,22 +31,16 @@ class ProfileSettingsFragment : Fragment(R.layout.fragment_profile_settings) {
             navController.navigateUp()
         }
 
+        binding.inviteFriend.setSafeOnClickListener {
+            navigateToReferralFragment()
+        }
+
+        binding.jeevaWork.setSafeOnClickListener {
+            showHowJeevaWorksDialog()
+        }
+
         binding.feedback.setSafeOnClickListener {
-            val manager = ReviewManagerFactory.create(requireContext())
-            val request = manager.requestReviewFlow()
-            request.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val reviewInfo = task.result
-                    val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
-                    flow.addOnCompleteListener { _ ->
-                    }
-                    flow.addOnFailureListener {
-                        Timber.e(it)
-                    }
-                } else {
-                    Timber.e(task.exception)
-                }
-            }
+            showFeedbackDialog()
         }
 
         binding.signOut.setSafeOnClickListener {
@@ -54,9 +48,39 @@ class ProfileSettingsFragment : Fragment(R.layout.fragment_profile_settings) {
         }
     }
 
+    private fun showFeedbackDialog() {
+        val manager = ReviewManagerFactory.create(requireContext())
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val reviewInfo = task.result
+                val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
+                flow.addOnCompleteListener { _ ->
+                }
+                flow.addOnFailureListener {
+                    Timber.e(it)
+                }
+            } else {
+                Timber.e(task.exception)
+            }
+        }
+    }
+
     private fun showSignOutConfirmDialog() {
         val action =
             ProfileSettingsFragmentDirections.actionProfileSettingsFragmentToSignOutDialogFragment()
+        navController.navigate(action)
+    }
+
+    private fun navigateToReferralFragment() {
+        val action =
+            ProfileSettingsFragmentDirections.actionProfileSettingsFragmentToInviteFriendFragment()
+        navController.navigate(action)
+    }
+
+    private fun showHowJeevaWorksDialog() {
+        val action =
+            ProfileSettingsFragmentDirections.actionProfileSettingsFragmentToHowJeevaWorksFragment()
         navController.navigate(action)
     }
 }
