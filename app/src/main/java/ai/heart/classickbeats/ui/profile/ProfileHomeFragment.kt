@@ -1,18 +1,15 @@
 package ai.heart.classickbeats.ui.profile
 
-import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentProfileHomeBinding
 import ai.heart.classickbeats.model.WeightUnits
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.shared.util.computeAge
 import ai.heart.classickbeats.shared.util.toDate
-import ai.heart.classickbeats.ui.login.LoginViewModel
 import ai.heart.classickbeats.utils.hideLoadingBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.showLoadingBar
 import ai.heart.classickbeats.utils.viewBinding
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -28,8 +25,6 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
 
     private val profileViewModel: ProfileViewModel by activityViewModels()
 
-    private val loginViewModel: LoginViewModel by activityViewModels()
-
     private lateinit var navController: NavController
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,15 +36,14 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
 
         binding.profilePic.clipToOutline = true
 
-        binding.logout.setSafeOnClickListener {
-            loginViewModel.logoutUser()
-            startActivity(Intent(requireActivity(), MainActivity::class.java))
+        binding.settings.setSafeOnClickListener {
+            navigateToProfileSettingsFragment()
         }
 
         profileViewModel.userData.observe(viewLifecycleOwner, EventObserver {
             val userName = it.fullName
             val weight = it.weight.roundToInt()
-            val weightUnit = when(it.weightUnit) {
+            val weightUnit = when (it.weightUnit) {
                 WeightUnits.KGS -> "kg"
                 WeightUnits.LBS -> "lbs"
             }
@@ -68,5 +62,11 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
                 hideLoadingBar()
             }
         })
+    }
+
+    private fun navigateToProfileSettingsFragment() {
+        val action =
+            ProfileHomeFragmentDirections.actionProfileHomeFragmentToProfileSettingsFragment()
+        navController.navigate(action)
     }
 }
