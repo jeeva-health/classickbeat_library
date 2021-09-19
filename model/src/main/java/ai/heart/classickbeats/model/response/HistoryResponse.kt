@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.model.response
 
-import ai.heart.classickbeats.model.HistoryRecord
+import ai.heart.classickbeats.model.HistoryRecordNetwork
 import com.squareup.moshi.Json
 
 data class HistoryResponse(
@@ -25,7 +25,7 @@ data class HistoryResponse(
             @Json(name = "previous")
             val previousPage: String?,
             @Json(name = "results")
-            val loggingList: List<HistoryRecord>
+            val loggingList: List<HistoryRecordNetwork>
         )
     }
 }

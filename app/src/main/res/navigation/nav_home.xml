@@ -5,18 +5,26 @@
     android:id="@+id/nav_home"
     app:startDestination="@id/scanFragment">
 
+    <action
+        android:id="@+id/action_global_timePickerFragment"
+        app:destination="@id/timePickerFragment" />
+
+    <action
+        android:id="@+id/action_global_datePickerFragment"
+        app:destination="@id/datePickerFragment" />
+
     <fragment
         android:id="@+id/scanResultFragment"
         android:name="ai.heart.classickbeats.ui.ppg.ScanResultFragment"
         android:label="fragment_heart_result"
-        tools:layout="@layout/fragment_scan_result" >
+        tools:layout="@layout/fragment_scan_result">
         <action
             android:id="@+id/action_scanResultFragment_to_historyHomeFragment"
             app:destination="@id/historyHomeFragment" />
         <argument
             android:name="showing_history"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
 
     <fragment
@@ -45,7 +53,7 @@
         android:id="@+id/historyHomeFragment"
         android:name="ai.heart.classickbeats.ui.history.HistoryHomeFragment"
         android:label="fragment_history_home"
-        tools:layout="@layout/fragment_history_home" >
+        tools:layout="@layout/fragment_history_home">
         <action
             android:id="@+id/action_historyHomeFragment_to_scanResultFragment"
             app:destination="@id/scanResultFragment" />
@@ -77,7 +85,11 @@
         android:id="@+id/profileHomeFragment"
         android:name="ai.heart.classickbeats.ui.profile.ProfileHomeFragment"
         android:label="fragment_profile_home"
-        tools:layout="@layout/fragment_profile_home" />
+        tools:layout="@layout/fragment_profile_home">
+        <action
+            android:id="@+id/action_profileHomeFragment_to_profileSettingsFragment"
+            app:destination="@id/profileSettingsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/wellnessHomeFragment"
@@ -166,12 +178,38 @@
         android:name="ai.heart.classickbeats.ui.widgets.DatePickerFragment"
         android:label="fragment_date_picker_dialog" />
 
-    <action
-        android:id="@+id/action_global_timePickerFragment"
-        app:destination="@id/timePickerFragment" />
+    <fragment
+        android:id="@+id/profileSettingsFragment"
+        android:name="ai.heart.classickbeats.ui.profile.ProfileSettingsFragment"
+        android:label="fragment_profile_settings"
+        tools:layout="@layout/fragment_profile_settings">
+        <action
+            android:id="@+id/action_profileSettingsFragment_to_signOutDialogFragment"
+            app:destination="@id/signOutDialogFragment" />
+        <action
+            android:id="@+id/action_profileSettingsFragment_to_inviteFriendFragment"
+            app:destination="@id/inviteFriendFragment" />
+        <action
+            android:id="@+id/action_profileSettingsFragment_to_howJeevaWorksFragment"
+            app:destination="@id/howJeevaWorksFragment" />
+    </fragment>
 
-    <action
-        android:id="@+id/action_global_datePickerFragment"
-        app:destination="@id/datePickerFragment" />
+    <dialog
+        android:id="@+id/signOutDialogFragment"
+        android:name="ai.heart.classickbeats.ui.profile.SignOutDialogFragment"
+        android:label="fragment_sign_out_dialog"
+        tools:layout="@layout/fragment_sign_out_dialog" />
+
+    <fragment
+        android:id="@+id/inviteFriendFragment"
+        android:name="ai.heart.classickbeats.ui.profile.InviteFriendFragment"
+        android:label="fragment_invite_friend"
+        tools:layout="@layout/fragment_invite_friend" />
+
+    <dialog
+        android:id="@+id/howJeevaWorksFragment"
+        android:name="ai.heart.classickbeats.ui.profile.HowJeevaWorksFragment"
+        android:label="fragment_how_jeeva_works"
+        tools:layout="@layout/fragment_how_jeeva_works" />
 
 </navigation>

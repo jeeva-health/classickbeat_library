@@ -2,8 +2,9 @@ package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.data.db.AppDatabase
 import ai.heart.classickbeats.mapper.input.HistoryRecordMapper
+import ai.heart.classickbeats.mapper.input.HistoryRecordNetworkDbMapper
 import ai.heart.classickbeats.mapper.input.LoggingListMapper
-import ai.heart.classickbeats.model.HistoryRecord
+import ai.heart.classickbeats.model.HistoryRecordDatabase
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
@@ -17,11 +18,12 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 @ActivityRetainedScoped
 class RecordRepository @Inject constructor(
-    private val recordApiService: RecordApiService,
+    private val service: RecordApiService,
     private val database: AppDatabase,
     private val recordRemoteDataSource: RecordRemoteDataSource,
     private val loggingListMapper: LoggingListMapper,
-    private val historyMapper: HistoryRecordMapper
+    private val historyMapper: HistoryRecordMapper,
+    private val historyRecordNetworkDbMapper: HistoryRecordNetworkDbMapper
 ) {
     suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long> =
         recordRemoteDataSource.recordPPG(ppgEntity)
@@ -64,14 +66,29 @@ class RecordRepository @Inject constructor(
                 enablePlaceholders = false
             ),
             remoteMediator = HistoryRemoteMediator(
-                recordApiService,
-                database
+                service,
+                database,
+                historyRecordNetworkDbMapper
             ),
             pagingSourceFactory = pagingSourceFactory
         ).flow.map { pagingData ->
-            pagingData.map { historyRecord: HistoryRecord ->
+            pagingData.map { historyRecord: HistoryRecordDatabase ->
                 historyMapper.map(historyRecord)
             }
+        }
+    }
+
+    suspend fun getPpgHistoryDataByCount(limit: Int): Result<List<PPGEntity>> {
+        return try {
+            val historyRecordList: List<HistoryRecordDatabase> =
+                database.historyDao()
+                    .loadHistoryDataByModel(model = "record_data.ppg", limit = limit)
+            val baseLogEntities = historyRecordList.map { historyMapper.map(it) }
+            val ppgEntities = baseLogEntities.map { it as PPGEntity }
+            Result.Success(ppgEntities)
+        } catch (e: Exception) {
+            Timber.i(e)
+            Result.Error(e.localizedMessage)
         }
     }
 

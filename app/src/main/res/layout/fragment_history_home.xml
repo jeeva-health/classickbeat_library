@@ -32,6 +32,53 @@
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:id="@+id/timeline_category_ll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_rounded_rectangle_borderless_small"
+        android:backgroundTint="@color/very_soft_blue"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/history_tv">
+
+        <TextView
+            android:id="@+id/daily_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rounded_rectangle_borderless_small"
+            android:backgroundTint="@color/history_timeline_category_bg_selector"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="@string/daily" />
+
+        <TextView
+            android:id="@+id/weekly_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rounded_rectangle_borderless_small"
+            android:backgroundTint="@color/history_timeline_category_bg_selector"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="@string/weekly" />
+
+        <TextView
+            android:id="@+id/montly_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rounded_rectangle_borderless_small"
+            android:backgroundTint="@color/history_timeline_category_bg_selector"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="@string/monthly" />
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/history_rv"
         android:layout_width="0dp"
@@ -42,7 +89,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
-        app:layout_constraintTop_toBottomOf="@id/history_tv"
+        app:layout_constraintTop_toBottomOf="@id/timeline_category_ll"
         app:layout_constraintVertical_bias="0"
         tools:itemCount="4"
         tools:listitem="@layout/itemview_history" />

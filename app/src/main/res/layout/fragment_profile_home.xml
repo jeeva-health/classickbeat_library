@@ -42,8 +42,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_settings"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/profile_tv"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintTop_toTopOf="@id/profile_tv" />
 
@@ -169,17 +167,6 @@
             app:layout_constraintBaseline_toBaselineOf="@id/gem_tv"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="20" />
-
-        <Button
-            android:id="@+id/logout"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/page_navigation_bottom_margin"
-            android:text="Logout"
-            android:theme="@style/ThemeOverlay.Jeeva.Button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/end_guideline"
-            app:layout_constraintStart_toStartOf="@id/start_guideline" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

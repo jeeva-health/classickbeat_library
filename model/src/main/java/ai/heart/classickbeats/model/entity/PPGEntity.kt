@@ -8,68 +8,68 @@ import com.squareup.moshi.Json
 data class PPGEntity(
 
     @Transient
-    var id: Long = -1,
+    val id: Long = -1,
 
     @PrimaryKey(autoGenerate = true)
-    var localId: Int = -1,
+    val localId: Int = -1,
 
     @Json(name = "r_means")
-    var rMeans: List<Float>? = null,
+    val rMeans: List<Float>? = null,
 
     @Json(name = "g_means")
-    var gMeans: List<Float>? = null,
+    val gMeans: List<Float>? = null,
 
     @Json(name = "b_means")
-    var bMeans: List<Float>? = null,
+    val bMeans: List<Float>? = null,
 
     @Json(name = "camera_timestamp")
-    var cameraTimeStamps: List<Long>? = null,
+    val cameraTimeStamps: List<Long>? = null,
 
     @Json(name = "filtered_r_means")
-    var filteredRMeans: List<Double>? = null,
+    val filteredRMeans: List<Double>? = null,
 
-    var hr: Float? = null,
+    val hr: Float? = null,
 
-    var sdnn: Float? = null,
+    val sdnn: Float? = null,
 
     @Json(name = "mean_nn")
-    var meanNN: Float? = null,
+    val meanNN: Float? = null,
 
-    var rmssd: Float? = null,
+    val rmssd: Float? = null,
 
-    var pnn50: Float? = null,
+    val pnn50: Float? = null,
 
-    var ln: Float? = null,
+    val ln: Float? = null,
 
-    var quality: Float? = null,
+    val quality: Float? = null,
 
-    var binProbsMAP: List<Float>? = null,
+    val binProbsMAP: List<Float>? = null,
 
-    var bAgeBin: Int? = null,
+    val bAgeBin: Int? = null,
 
     @Json(name = "activeSedantryProb")
-    var activeSedentaryProb: List<Float>? = null,
+    val activeSedentaryProb: List<Float>? = null,
 
-    var sedRatioLog: Float? = null,
+    val sedRatioLog: Float? = null,
 
-    var sedStars: Int? = null,
+    val sedStars: Int? = null,
 
-    var stressLevel: Int? = null,
+    val stressLevel: Int? = null,
 
     @Json(name = "surveySleep")
-    var sleepRating: Int? = null,
+    val sleepRating: Int? = null,
 
     @Json(name = "surveyMood")
-    var moodRating: Int? = null,
+    val moodRating: Int? = null,
 
     @Json(name = "surveyHealthy")
-    var healthRating: Int? = null,
+    val healthRating: Int? = null,
 
     @Json(name = "surveyState")
-    var scanState: String? = null,
+    val scanState: String? = null,
 
-    var timeStamp: String? = null,
+    val timeStamp: String? = null,
 
-    var isUploaded: Boolean = false
+    val isUploaded: Boolean = false
 
 ) : BaseLogEntity(LogType.PPG)

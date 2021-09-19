@@ -26,7 +26,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.internal.toImmutableList
 import timber.log.Timber
 import java.util.*
 import java.util.Date
@@ -136,9 +135,8 @@ class MonitorViewModel @Inject constructor(
             val timeListSize = timeList.size
             val centeredSignalSize = centeredSignal.size
             calculateResultSplit(
-                timeList.subList(timeListSplitSize - timeOffset, timeListSize).toImmutableList(),
-                centeredSignal.subList(centeredSignalSplitSize, centeredSignalSize)
-                    .toImmutableList()
+                timeList.subList(timeListSplitSize - timeOffset, timeListSize).toList(),
+                centeredSignal.subList(centeredSignalSplitSize, centeredSignalSize).toList()
             )
             calculateSplitCombinedResult()
         }

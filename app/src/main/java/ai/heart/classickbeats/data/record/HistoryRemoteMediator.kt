@@ -2,7 +2,8 @@ package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.data.db.AppDatabase
 import ai.heart.classickbeats.data.record.cache.HistoryRemoteKey
-import ai.heart.classickbeats.model.HistoryRecord
+import ai.heart.classickbeats.mapper.input.HistoryRecordNetworkDbMapper
+import ai.heart.classickbeats.model.HistoryRecordDatabase
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -15,15 +16,16 @@ import java.io.IOException
 const val HISTORY_STARTING_PAGE_INDEX = 1
 
 @ExperimentalPagingApi
-class HistoryRemoteMediator(
+class HistoryRemoteMediator constructor(
     private val service: RecordApiService,
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val historyRecordNetworkDbMapper: HistoryRecordNetworkDbMapper
 ) :
-    RemoteMediator<Int, HistoryRecord>() {
+    RemoteMediator<Int, HistoryRecordDatabase>() {
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, HistoryRecord>
+        state: PagingState<Int, HistoryRecordDatabase>
     ): MediatorResult {
 
         val page = when (loadType) {
@@ -52,6 +54,7 @@ class HistoryRemoteMediator(
 
             // TODO: Ritesh: Add isSuccessful check
             val loggingList = apiResponse.responseData.historyPaginatedData.loggingList
+            val loggingListDb = loggingList.map { historyRecordNetworkDbMapper.map(it) }
             val endOfPaginationReached =
                 apiResponse.responseData.historyPaginatedData.nextPage == null
             database.withTransaction {
@@ -66,7 +69,7 @@ class HistoryRemoteMediator(
                     HistoryRemoteKey(historyId = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
                 database.historyRemoteKeyDao().insertAll(keys)
-                database.historyDao().insertAll(loggingList)
+                database.historyDao().insertAll(loggingListDb)
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: IOException) {
@@ -76,21 +79,21 @@ class HistoryRemoteMediator(
         }
     }
 
-    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, HistoryRecord>): HistoryRemoteKey? {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, HistoryRecordDatabase>): HistoryRemoteKey? {
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()
             ?.let { record ->
                 database.historyRemoteKeyDao().remoteKeysHistoryId(record.id)
             }
     }
 
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, HistoryRecord>): HistoryRemoteKey? {
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, HistoryRecordDatabase>): HistoryRemoteKey? {
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
             ?.let { record ->
                 database.historyRemoteKeyDao().remoteKeysHistoryId(record.id)
             }
     }
 
-    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, HistoryRecord>): HistoryRemoteKey? {
+    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, HistoryRecordDatabase>): HistoryRemoteKey? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { recordId ->
                 database.historyRemoteKeyDao().remoteKeysHistoryId(recordId)
