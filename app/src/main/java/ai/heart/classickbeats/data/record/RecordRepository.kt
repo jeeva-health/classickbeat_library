@@ -82,7 +82,24 @@ class RecordRepository @Inject constructor(
         return try {
             val historyRecordList: List<HistoryRecordDatabase> =
                 database.historyDao()
-                    .loadHistoryDataByModel(model = "record_data.ppg", limit = limit)
+                    .loadHistoryDataByModelAndCount(model = "record_data.ppg", limit = limit)
+            val baseLogEntities = historyRecordList.map { historyMapper.map(it) }
+            val ppgEntities = baseLogEntities.map { it as PPGEntity }
+            Result.Success(ppgEntities)
+        } catch (e: Exception) {
+            Timber.i(e)
+            Result.Error(e.localizedMessage)
+        }
+    }
+
+    suspend fun getPpgHistoryDataByDuration(startDate: String): Result<List<PPGEntity>> {
+        return try {
+            val historyRecordList: List<HistoryRecordDatabase> =
+                database.historyDao()
+                    .loadHistoryDataByModelAndDuration(
+                        model = "record_data.ppg",
+                        startTimeStamp = startDate
+                    )
             val baseLogEntities = historyRecordList.map { historyMapper.map(it) }
             val ppgEntities = baseLogEntities.map { it as PPGEntity }
             Result.Success(ppgEntities)

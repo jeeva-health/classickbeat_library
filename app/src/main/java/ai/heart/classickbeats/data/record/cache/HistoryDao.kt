@@ -29,5 +29,14 @@ interface HistoryDao {
     fun loadAll(): PagingSource<Int, HistoryRecordDatabase>
 
     @Query("SELECT * FROM history_record WHERE model = :model ORDER BY id DESC LIMIT :limit")
-    suspend fun loadHistoryDataByModel(model: String, limit: Int): List<HistoryRecordDatabase>
+    suspend fun loadHistoryDataByModelAndCount(
+        model: String,
+        limit: Int
+    ): List<HistoryRecordDatabase>
+
+    @Query("SELECT * FROM history_record WHERE model = :model AND timeStamp >= :startTimeStamp ORDER BY id DESC")
+    suspend fun loadHistoryDataByModelAndDuration(
+        model: String,
+        startTimeStamp: String
+    ): List<HistoryRecordDatabase>
 }

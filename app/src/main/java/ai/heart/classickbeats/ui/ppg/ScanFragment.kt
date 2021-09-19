@@ -506,7 +506,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
 
         // TODO(Ritesh: move to appropriate location)
-        scanViewModel.getRecentHistoryData(10)
+        scanViewModel.getPpgHistoryDataByCount(10)
+        scanViewModel.getPpgHistoryDataByDuration(-100)
     }
 
     override fun onPause() {

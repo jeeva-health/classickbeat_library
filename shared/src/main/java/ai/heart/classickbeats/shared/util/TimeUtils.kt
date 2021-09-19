@@ -35,6 +35,11 @@ fun Date.toOrdinalFormattedDateString(): String {
     return "$formattedDay $formattedMonth, $year"
 }
 
+fun Date.toDbFormatString(): String {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    return dateFormat.format(this)
+}
+
 fun Date.toTimeString(): String {
     val timeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
     return timeFormat.format(this)
@@ -49,4 +54,10 @@ fun String.toDateStringWithoutTime(): String {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
     val dateFormat2 = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
     return dateFormat2.format(let { dateFormat.parse(it) })
+}
+
+fun Date.getDateSubtractedBy(diff: Int): Date {
+    val inputDateTimestamp = this.time
+    val requestedDateTimestamp = inputDateTimestamp + DateUtils.DAY_IN_MILLIS * diff
+    return Date(requestedDateTimestamp)
 }

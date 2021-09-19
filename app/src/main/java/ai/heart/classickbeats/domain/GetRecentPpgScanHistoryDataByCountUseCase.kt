@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 @ExperimentalPagingApi
-class GetRecentScanHistoryDataUseCase @Inject constructor(
+class GetRecentPpgScanHistoryDataByCountUseCase @Inject constructor(
     private val repository: RecordRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) :
