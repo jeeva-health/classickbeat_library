@@ -34,6 +34,12 @@ class ProfileViewModel @Inject constructor(
         _showLoading.postValue(Event(false))
     }
 
+    private val _dismissDialog = MutableLiveData(Event(false))
+    val dismissDialog: LiveData<Event<Boolean>> = _dismissDialog
+    fun setDismissDialogTrue() {
+        _dismissDialog.postValue(Event(true))
+    }
+
     fun getUser() {
         viewModelScope.launch {
             userRepository.getUser().collectLatest { user: User? ->
@@ -44,5 +50,13 @@ class ProfileViewModel @Inject constructor(
 
     fun getReferralGemReward(): Pair<Int, Int> {
         return Pair(10, 5)
+    }
+
+    fun getProPricing(): Triple<Int, Int, Int> {
+        return Triple(2500, 208, 350)
+    }
+
+    fun submitFeedback(feedback: String) {
+        setDismissDialogTrue()
     }
 }

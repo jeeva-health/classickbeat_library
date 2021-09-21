@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_violet_2"
+    tools:context=".ui.profile.UpgradeToProFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/big_guideline_margin" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/big_guideline_margin" />
+
+    <TextView
+        android:id="@+id/upgrade_pro_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/page_top_margin"
+        android:text="@string/upgrade_to_pro"
+        android:textColor="@color/bright_red_2"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/cross"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:src="@drawable/ic_cross"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintTop_toTopOf="@id/upgrade_pro_tv"
+        app:tint="@color/bright_red_2" />
+
+    <TextView
+        android:id="@+id/upgrade_message"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_gradient_rect_orange"
+        android:gravity="center"
+        android:paddingHorizontal="36dp"
+        android:paddingVertical="8dp"
+        android:text="@string/first_week_free_message"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/upgrade_pro_tv" />
+
+    <ImageView
+        android:id="@+id/tick_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/ic_tick"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toTopOf="@id/waveform_benefit" />
+
+    <TextView
+        android:id="@+id/waveform_benefit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="34dp"
+        android:text="@string/view_your_pulse_waveform"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toEndOf="@id/tick_1"
+        app:layout_constraintTop_toBottomOf="@id/upgrade_message" />
+
+    <ImageView
+        android:id="@+id/tick_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/ic_tick"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toTopOf="@id/hrv_benefit" />
+
+    <TextView
+        android:id="@+id/hrv_benefit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="42dp"
+        android:text="@string/view_your_hrv_metric"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toEndOf="@id/tick_1"
+        app:layout_constraintTop_toBottomOf="@id/waveform_benefit" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/yearly_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="20dp"
+        app:cardCornerRadius="6dp"
+        app:layout_constraintEnd_toStartOf="@id/monthly_card"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/hrv_benefit">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/yearly_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/yearly"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/yearly_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/yearly_tv"
+                tools:text="Rs. 2500/year" />
+
+            <TextView
+                android:id="@+id/yearly_per_month_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/yearly_price"
+                app:layout_constraintVertical_bias="0"
+                tools:text="Rs. 208/month" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/monthly_card"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        app:cardCornerRadius="6dp"
+        app:layout_constraintBottom_toBottomOf="@id/yearly_card"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toEndOf="@id/yearly_card"
+        app:layout_constraintTop_toTopOf="@id/yearly_card">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/monthly_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/monthly"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/monthly_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/monthly_tv"
+                app:layout_constraintVertical_bias="0.35"
+                tools:text="Rs. 350/month" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/invite_friend_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:layout_marginBottom="@dimen/page_bottom_margin"
+        android:paddingVertical="16dp"
+        android:text="@string/upgrade"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

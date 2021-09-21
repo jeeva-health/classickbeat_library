@@ -3,6 +3,8 @@
     <string name="app_name_small_case">jeeva</string>
     <string name="app_tagline">Health. Vitality. Longevity</string>
 
+    <string name="rupee_amount">\u20B9 %s</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main_borrowed">MainActivityBorrowed</string>
     <!--
@@ -172,5 +174,11 @@
     <string name="earn_gems_message_1">Earn %d gems with every invite to unlock premium features</string>
     <string name="earn_gems_message_2">Every time your friend downloads the Jeeva app, you get %d gems and they get %d gems.</string>
     <string name="invite_message">Hey! I’m using the Jeeva app to keep a regular check of my HRV metrics and important vitals to maintain a healthy lifestyle. You can download and try it here: %s</string>
+    <string name="view_your_pulse_waveform">View your pulse waveform- Find how your heartbeat rhythm changed during the measurement.</string>
+    <string name="view_your_hrv_metric">View your HRV metric- Learn about how the time intervals between your heart beat changed during the measurement.</string>
+    <string name="upgrade_to_pro">Upgrade to PRO</string>
+    <string name="yearly">Yearly</string>
+    <string name="upgrade">Upgrade</string>
+    <string name="first_week_free_message">Enjoy your first week FREE, with premium features</string>
 
 </resources>

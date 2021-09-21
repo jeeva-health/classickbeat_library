@@ -3,15 +3,16 @@ package ai.heart.classickbeats.ui.profile
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentProfileSettingsBinding
 import ai.heart.classickbeats.utils.setSafeOnClickListener
+import ai.heart.classickbeats.utils.showLongToast
 import ai.heart.classickbeats.utils.viewBinding
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.google.android.play.core.review.ReviewManagerFactory
-import timber.log.Timber
 
 
 class ProfileSettingsFragment : Fragment(R.layout.fragment_profile_settings) {
@@ -27,6 +28,8 @@ class ProfileSettingsFragment : Fragment(R.layout.fragment_profile_settings) {
 
         navController = findNavController()
 
+        profileViewModel.getUser()
+
         binding.backArrow.setSafeOnClickListener {
             navController.navigateUp()
         }
@@ -35,8 +38,12 @@ class ProfileSettingsFragment : Fragment(R.layout.fragment_profile_settings) {
             navigateToReferralFragment()
         }
 
+        binding.upgrade.setSafeOnClickListener {
+            openUpgradeFragment()
+        }
+
         binding.jeevaWork.setSafeOnClickListener {
-            showHowJeevaWorksDialog()
+            openHowJeevaWorksPage()
         }
 
         binding.feedback.setSafeOnClickListener {
@@ -49,20 +56,18 @@ class ProfileSettingsFragment : Fragment(R.layout.fragment_profile_settings) {
     }
 
     private fun showFeedbackDialog() {
-        val manager = ReviewManagerFactory.create(requireContext())
-        val request = manager.requestReviewFlow()
-        request.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val reviewInfo = task.result
-                val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
-                flow.addOnCompleteListener { _ ->
-                }
-                flow.addOnFailureListener {
-                    Timber.e(it)
-                }
-            } else {
-                Timber.e(task.exception)
-            }
+        val action =
+            ProfileSettingsFragmentDirections.actionProfileSettingsFragmentToFeedbackDialogFragment()
+        navController.navigate(action)
+    }
+
+    private fun openUpgradeFragment() {
+        if (profileViewModel.userData.value?.peekContent()?.isUpgradedPro == true) {
+            showLongToast("Already a PRO User")
+        } else {
+            val action =
+                ProfileSettingsFragmentDirections.actionProfileSettingsFragmentToUpgradeToProFragment()
+            navController.navigate(action)
         }
     }
 
@@ -78,9 +83,8 @@ class ProfileSettingsFragment : Fragment(R.layout.fragment_profile_settings) {
         navController.navigate(action)
     }
 
-    private fun showHowJeevaWorksDialog() {
-        val action =
-            ProfileSettingsFragmentDirections.actionProfileSettingsFragmentToHowJeevaWorksFragment()
-        navController.navigate(action)
+    private fun openHowJeevaWorksPage() {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"))
+        startActivity(intent)
     }
 }

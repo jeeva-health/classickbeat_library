@@ -190,8 +190,11 @@
             android:id="@+id/action_profileSettingsFragment_to_inviteFriendFragment"
             app:destination="@id/inviteFriendFragment" />
         <action
-            android:id="@+id/action_profileSettingsFragment_to_howJeevaWorksFragment"
-            app:destination="@id/howJeevaWorksFragment" />
+            android:id="@+id/action_profileSettingsFragment_to_upgradeToProFragment"
+            app:destination="@id/upgradeToProFragment" />
+        <action
+            android:id="@+id/action_profileSettingsFragment_to_feedbackDialogFragment"
+            app:destination="@id/feedbackDialogFragment" />
     </fragment>
 
     <dialog
@@ -205,11 +208,16 @@
         android:name="ai.heart.classickbeats.ui.profile.InviteFriendFragment"
         android:label="fragment_invite_friend"
         tools:layout="@layout/fragment_invite_friend" />
+    <fragment
+        android:id="@+id/upgradeToProFragment"
+        android:name="ai.heart.classickbeats.ui.profile.UpgradeToProFragment"
+        android:label="fragment_upgrade_to_pro"
+        tools:layout="@layout/fragment_upgrade_to_pro" />
 
     <dialog
-        android:id="@+id/howJeevaWorksFragment"
-        android:name="ai.heart.classickbeats.ui.profile.HowJeevaWorksFragment"
-        android:label="fragment_how_jeeva_works"
-        tools:layout="@layout/fragment_how_jeeva_works" />
+        android:id="@+id/feedbackDialogFragment"
+        android:name="ai.heart.classickbeats.ui.profile.FeedbackDialogFragment"
+        android:label="fragment_feedback_dialog"
+        tools:layout="@layout/fragment_feedback_dialog" />
 
 </navigation>

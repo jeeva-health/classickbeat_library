@@ -9,5 +9,6 @@ data class User(
     val weightUnit: WeightUnits = WeightUnits.KGS,
     val dob: String,
     val emailAddress: String? = null,
-    val isRegistered: Boolean = false
+    val isRegistered: Boolean = false,
+    val isUpgradedPro: Boolean = true
 )
