@@ -4,6 +4,7 @@ import ai.heart.classickbeats.NavHomeDirections
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentLogGlucoseBinding
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.ui.widgets.DateTimePickerViewModel
 import ai.heart.classickbeats.utils.hideLoadingBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.showLoadingBar
@@ -26,6 +27,8 @@ class LogGlucoseFragment : Fragment(R.layout.fragment_log_glucose) {
 
     private val loggingViewModel: LoggingViewModel by activityViewModels()
 
+    private val dateTimePickerViewModel: DateTimePickerViewModel by activityViewModels()
+
     private lateinit var navController: NavController
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,11 +50,11 @@ class LogGlucoseFragment : Fragment(R.layout.fragment_log_glucose) {
             navController.navigateUp()
         }
 
-        loggingViewModel.selectedLogDate.observe(viewLifecycleOwner, EventObserver {
+        dateTimePickerViewModel.selectedLogDate.observe(viewLifecycleOwner, EventObserver {
             binding?.dateLayout?.editText?.setText(it.toString())
         })
 
-        loggingViewModel.selectedLogTime.observe(viewLifecycleOwner, EventObserver {
+        dateTimePickerViewModel.selectedLogTime.observe(viewLifecycleOwner, EventObserver {
             binding?.timeLayout?.editText?.setText(it.toString())
         })
 
@@ -104,7 +107,9 @@ class LogGlucoseFragment : Fragment(R.layout.fragment_log_glucose) {
             loggingViewModel.uploadGlucoseLevelEntry(
                 glucoseLevel = glucoseLevel,
                 tag = tag,
-                notes = note
+                notes = note,
+                time = dateTimePickerViewModel.selectedLogTime.value?.peekContent(),
+                date = dateTimePickerViewModel.selectedLogDate.value?.peekContent()
             )
         }
     }

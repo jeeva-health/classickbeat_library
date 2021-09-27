@@ -195,6 +195,9 @@
         <action
             android:id="@+id/action_profileSettingsFragment_to_feedbackDialogFragment"
             app:destination="@id/feedbackDialogFragment" />
+        <action
+            android:id="@+id/action_profileSettingsFragment_to_reminderListFragment"
+            app:destination="@id/reminderListFragment" />
     </fragment>
 
     <dialog
@@ -219,5 +222,21 @@
         android:name="ai.heart.classickbeats.ui.profile.FeedbackDialogFragment"
         android:label="fragment_feedback_dialog"
         tools:layout="@layout/fragment_feedback_dialog" />
+
+    <fragment
+        android:id="@+id/reminderListFragment"
+        android:name="ai.heart.classickbeats.ui.profile.ReminderListFragment"
+        android:label="fragment_reminder_list"
+        tools:layout="@layout/fragment_reminder_list" >
+        <action
+            android:id="@+id/action_reminderListFragment_to_addReminderFragment"
+            app:destination="@id/addReminderFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/addReminderFragment"
+        android:name="ai.heart.classickbeats.ui.profile.AddReminderFragment"
+        android:label="fragment_add_reminder"
+        tools:layout="@layout/fragment_add_reminder" />
 
 </navigation>

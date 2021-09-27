@@ -25,18 +25,28 @@
         <entry key="app/src/main/res/drawable/bg_shade.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/drawable/bg_top_rounded_borderless.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.30512820512820515" />
+        <entry key="app/src/main/res/layout/fragment_add_reminder.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_feedback_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_google_sign_up.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/fragment_history_home.xml" value="0.30185185185185187" />
         <entry key="app/src/main/res/layout/fragment_how_jeeva_works.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_hrv_info_bottom_sheet.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_invite_friend.xml" value="0.29583333333333334" />
+        <entry key="app/src/main/res/layout/fragment_log_water_intake.xml" value="0.21203703703703702" />
+        <entry key="app/src/main/res/layout/fragment_personal_details.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/fragment_profile_home.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_profile_settings.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_reminder_list.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_scan_question.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/fragment_sign_out_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_sign_up_mode_selection.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/fragment_upgrade_to_pro.xml" value="0.1" />
         <entry key="app/src/main/res/layout/itemview_history.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/itemview_history_date.xml" value="0.21203703703703702" />
+        <entry key="app/src/main/res/layout/itemview_onboarding.xml" value="0.21203703703703702" />
+        <entry key="app/src/main/res/layout/itemview_reminder.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/itemview_scan_tutorial.xml" value="0.21203703703703702" />
+        <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.30512820512820515" />
       </map>
     </option>
   </component>

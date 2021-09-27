@@ -11,8 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class SignOutDialogFragment : DialogFragment() {
 
     private var binding: FragmentSignOutDialogBinding? = null

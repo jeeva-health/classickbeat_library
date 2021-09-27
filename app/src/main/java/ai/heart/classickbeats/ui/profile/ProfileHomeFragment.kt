@@ -16,9 +16,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.roundToInt
 
 
+@AndroidEntryPoint
 class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
 
     private val binding by viewBinding(FragmentProfileHomeBinding::bind)

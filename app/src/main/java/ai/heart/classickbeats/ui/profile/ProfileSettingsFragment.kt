@@ -13,8 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class ProfileSettingsFragment : Fragment(R.layout.fragment_profile_settings) {
 
     private val binding by viewBinding(FragmentProfileSettingsBinding::bind)
@@ -32,6 +34,10 @@ class ProfileSettingsFragment : Fragment(R.layout.fragment_profile_settings) {
 
         binding.backArrow.setSafeOnClickListener {
             navController.navigateUp()
+        }
+
+        binding.reminder.setSafeOnClickListener {
+            navigateToReminderListFragment()
         }
 
         binding.inviteFriend.setSafeOnClickListener {
@@ -86,5 +92,11 @@ class ProfileSettingsFragment : Fragment(R.layout.fragment_profile_settings) {
     private fun openHowJeevaWorksPage() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"))
         startActivity(intent)
+    }
+
+    private fun navigateToReminderListFragment() {
+        val action =
+            ProfileSettingsFragmentDirections.actionProfileSettingsFragmentToReminderListFragment()
+        navController.navigate(action)
     }
 }

@@ -1,7 +1,6 @@
 package ai.heart.classickbeats.ui.widgets
 
 import ai.heart.classickbeats.model.Time
-import ai.heart.classickbeats.ui.logging.LoggingViewModel
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -9,13 +8,15 @@ import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.paging.ExperimentalPagingApi
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 
 @ExperimentalPagingApi
+@AndroidEntryPoint
 class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
 
-    private val loggingViewModel: LoggingViewModel by activityViewModels()
+    private val dateTimePickerViewModel: DateTimePickerViewModel by activityViewModels()
 
     private val is24HourFormat: Boolean = false
 
@@ -31,6 +32,6 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         val selectedTime = Time(hourOfDay, minute)
-        loggingViewModel.setLogTime(selectedTime)
+        dateTimePickerViewModel.setLogTime(selectedTime)
     }
 }

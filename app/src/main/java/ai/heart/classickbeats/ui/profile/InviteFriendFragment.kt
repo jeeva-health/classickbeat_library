@@ -11,8 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class InviteFriendFragment : Fragment(R.layout.fragment_invite_friend) {
 
     private val binding by viewBinding(FragmentInviteFriendBinding::bind)

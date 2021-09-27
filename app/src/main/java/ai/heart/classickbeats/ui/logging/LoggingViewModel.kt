@@ -29,18 +29,6 @@ class LoggingViewModel @Inject constructor(
     val loggingData: List<BaseLogEntity>?
         get() = _loggingData
 
-    private val _selectedLogDate = MutableLiveData<Event<Date>>()
-    val selectedLogDate: LiveData<Event<Date>> = _selectedLogDate
-    fun setLogDate(date: Date) {
-        _selectedLogDate.postValue(Event(date))
-    }
-
-    private val _selectedLogTime = MutableLiveData<Event<Time>>()
-    val selectedLogTime: LiveData<Event<Time>> = _selectedLogTime
-    fun setLogTime(time: Time) {
-        _selectedLogTime.postValue(Event(time))
-    }
-
     private val _navigateToLoggingHome = MutableLiveData<Event<Boolean>>()
     val navigateToLoggingHome: LiveData<Event<Boolean>> = _navigateToLoggingHome
     private fun navigateBack() {
@@ -77,10 +65,16 @@ class LoggingViewModel @Inject constructor(
         }
     }
 
-    fun uploadBloodPressureEntry(systolic: Int, diastolic: Int, notes: String? = null) {
+    fun uploadBloodPressureEntry(
+        systolic: Int,
+        diastolic: Int,
+        notes: String? = null,
+        time: Time?,
+        date: Date?
+    ) {
         viewModelScope.launch {
             setShowLoadingTrue()
-            val timeStamp = getLogTimeStampString()
+            val timeStamp = getLogTimeStampString(time, date)
             val bpLogEntity = BpLogEntity(
                 systolic = systolic,
                 diastolic = diastolic,
@@ -92,10 +86,16 @@ class LoggingViewModel @Inject constructor(
         }
     }
 
-    fun uploadGlucoseLevelEntry(glucoseLevel: Int, tag: Int, notes: String? = null) {
+    fun uploadGlucoseLevelEntry(
+        glucoseLevel: Int,
+        tag: Int,
+        notes: String? = null,
+        time: Time?,
+        date: Date?
+    ) {
         viewModelScope.launch {
             setShowLoadingTrue()
-            val timeStamp = getLogTimeStampString()
+            val timeStamp = getLogTimeStampString(time, date)
             val glucoseLogEntity = GlucoseLogEntity(
                 glucoseLevel = glucoseLevel,
                 tag = tag,
@@ -107,10 +107,15 @@ class LoggingViewModel @Inject constructor(
         }
     }
 
-    fun uploadWaterIntakeEntry(quantity: Float, notes: String? = null) {
+    fun uploadWaterIntakeEntry(
+        quantity: Float,
+        notes: String? = null,
+        time: Time?,
+        date: Date?
+    ) {
         viewModelScope.launch {
             setShowLoadingTrue()
-            val timeStamp = getLogTimeStampString()
+            val timeStamp = getLogTimeStampString(time, date)
             val waterLogEntity =
                 WaterLogEntity(quantity = quantity, timeStamp = timeStamp, note = notes)
             recordRepository.recordWaterIntake(waterLogEntity)
@@ -118,10 +123,15 @@ class LoggingViewModel @Inject constructor(
         }
     }
 
-    fun uploadWeightEntry(weight: Float, notes: String? = null) {
+    fun uploadWeightEntry(
+        weight: Float,
+        notes: String? = null,
+        time: Time?,
+        date: Date?
+    ) {
         viewModelScope.launch {
             setShowLoadingTrue()
-            val timeStamp = getLogTimeStampString()
+            val timeStamp = getLogTimeStampString(time, date)
             val weightLogEntity =
                 WeightLogEntity(weight = weight, timeStamp = timeStamp, note = notes)
             recordRepository.recordWeight(weightLogEntity)
@@ -129,11 +139,9 @@ class LoggingViewModel @Inject constructor(
         }
     }
 
-    private fun getLogTimeStampString(): String {
-        val date =
-            selectedLogDate.value?.peekContent() ?: throw Exception("selected date is null")
-        val time =
-            selectedLogTime.value?.peekContent() ?: Time(0, 0)
+    private fun getLogTimeStampString(timeInput: Time?, dateInput: Date?): String {
+        val time = timeInput ?: Time(0, 0)
+        val date = dateInput ?: throw Exception("Date must be set")
         return "${date.year}-${date.month}-${date.day} ${time.hourOfDay}:${time.minute}"
     }
 }

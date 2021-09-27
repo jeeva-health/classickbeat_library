@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class UpgradeToProFragment : Fragment(R.layout.fragment_upgrade_to_pro) {
 
     private val binding by viewBinding(FragmentUpgradeToProBinding::bind)
