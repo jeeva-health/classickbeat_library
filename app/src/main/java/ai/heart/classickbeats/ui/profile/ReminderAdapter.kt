@@ -2,9 +2,10 @@ package ai.heart.classickbeats.ui.profile
 
 import ai.heart.classickbeats.databinding.ItemviewReminderBinding
 import ai.heart.classickbeats.model.Reminder
-import ai.heart.classickbeats.model.toShortDisplayString
+import ai.heart.classickbeats.model.toDisplayString
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -25,10 +26,20 @@ class ReminderAdapter constructor(
             toggleClickListener: (Reminder, Boolean) -> Unit
         ) {
             binding.name.text = itemData.name
-            binding.time.text = itemData.time.toString()
-            binding.frequency.text = itemData.frequency.toShortDisplayString()
-            binding.toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
-                toggleClickListener.invoke(itemData, isChecked)
+            if (itemData.isReminderSet) {
+                binding.time.visibility = View.VISIBLE
+                binding.time.text = itemData.time.toString()
+                binding.time.visibility = View.VISIBLE
+                binding.frequency.text = itemData.frequency.toDisplayString()
+                binding.toggleSwitch.isChecked = itemData.isReminderActive
+                binding.toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
+                    toggleClickListener.invoke(itemData, isChecked)
+                }
+                binding.notSet.visibility = View.GONE
+            } else {
+                binding.time.visibility = View.GONE
+                binding.frequency.visibility = View.GONE
+                binding.notSet.visibility = View.VISIBLE
             }
             binding.root.setSafeOnClickListener {
                 itemClickListener.invoke(itemData)
@@ -60,5 +71,8 @@ class ReminderItemDiffCallback : DiffUtil.ItemCallback<Reminder>() {
         oldItem._id == newItem._id
 
     override fun areContentsTheSame(oldItem: Reminder, newItem: Reminder): Boolean =
-        oldItem._id == newItem._id && oldItem.name == newItem.name && oldItem.time == newItem.time
+        oldItem._id == newItem._id &&
+                oldItem.name == newItem.name &&
+                oldItem.time == newItem.time &&
+                newItem.frequency.toDisplayString() == oldItem.frequency.toDisplayString()
 }

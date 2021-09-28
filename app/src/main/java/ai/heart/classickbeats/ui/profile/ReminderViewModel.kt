@@ -13,14 +13,21 @@ import javax.inject.Inject
 @HiltViewModel
 class ReminderViewModel @Inject constructor() : ViewModel() {
 
-
     private val _reminderSaved = MutableLiveData(Event(false))
     val reminderSaved: LiveData<Event<Boolean>> = _reminderSaved
-    private fun setReminderSavedTrue() {
+    private fun setReminderUpdated() {
         _reminderSaved.postValue(Event(true))
     }
 
+    private val _dialogDismissed = MutableLiveData(false)
+    val dialogDismissed: LiveData<Boolean> = _dialogDismissed
+    fun setDialogDismissed() {
+        _dialogDismissed.postValue(true)
+    }
+
     private val localReminders = mutableListOf<Reminder>()
+
+    var selectedReminder: Reminder? = null
 
     fun addReminder(name: String, time: Time, frequency: List<Reminder.DayOfWeek>) {
         val localRandomNumber = UUID.randomUUID().mostSignificantBits and Long.MAX_VALUE
@@ -33,11 +40,44 @@ class ReminderViewModel @Inject constructor() : ViewModel() {
             isReminderActive = true
         )
         addReminder(reminder)
-        setReminderSavedTrue()
+        setReminderUpdated()
+    }
+
+    fun updateReminder(
+        reminder: Reminder,
+        name: String,
+        time: Time?,
+        frequency: List<Reminder.DayOfWeek>
+    ) {
+        val updatedReminder = Reminder(
+            _id = reminder._id,
+            name = name,
+            time = time ?: reminder.time,
+            frequency = frequency,
+            isReminderSet = true,
+            isReminderActive = true
+        )
+        updateReminder(updatedReminder)
+        setReminderUpdated()
+    }
+
+    fun deleteReminder(reminder: Reminder) {
+        localReminders.removeIf { it._id == reminder._id }
+        setReminderUpdated()
     }
 
     private fun addReminder(reminder: Reminder) {
         localReminders.add(reminder)
+    }
+
+    private fun updateReminder(reminder: Reminder) {
+        val index = localReminders.indexOfFirst { it._id == reminder._id }
+        if (index == -1) {
+            addReminder(reminder)
+        } else {
+            localReminders.removeAt(index)
+            localReminders.add(index, reminder)
+        }
     }
 
     fun getAllReminders(): List<Reminder> = localReminders

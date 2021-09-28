@@ -21,6 +21,11 @@
         <item name="shapeAppearance">@style/ShapeAppearance.Jeeva.SmallComponent</item>
     </style>
 
+    <style name="Widget.Jeeva.Button.Negative" parent="Widget.Jeeva.Button">
+        <item name="backgroundTint">@color/soft_red</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="Widget.Jeeva.TextButton" parent="Widget.MaterialComponents.Button.TextButton" />
 
     <style name="TextAppearance.Jeeva.H1" parent="TextAppearance.MaterialComponents.Headline1">

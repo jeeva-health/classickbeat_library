@@ -176,15 +176,27 @@
     </com.google.android.material.chip.ChipGroup>
 
     <Button
+        android:id="@+id/delete_btn"
+        style="@style/Widget.Jeeva.Button.Negative"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_height"
+        android:text="Delete"
+        android:textColor="@color/design_default_color_error"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@id/save_btn"
+        app:layout_constraintStart_toStartOf="@id/start_guideline" />
+
+    <Button
         android:id="@+id/save_btn"
         android:layout_width="0dp"
         android:layout_height="@dimen/button_height"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
         android:layout_marginBottom="24dp"
         android:text="Save Reminder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
-        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintStart_toEndOf="@id/delete_btn"
         app:layout_constraintTop_toBottomOf="@id/frequency_chip_group"
         app:layout_constraintVertical_bias="1" />
 

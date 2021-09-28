@@ -8,6 +8,7 @@ import ai.heart.classickbeats.model.Time
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.widgets.DateTimePickerViewModel
 import ai.heart.classickbeats.utils.setSafeOnClickListener
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -63,13 +64,43 @@ class AddReminderFragment : BottomSheetDialogFragment() {
             }
             saveBtn.setSafeOnClickListener {
                 val name: String = nameLayout.editText?.text?.toString() ?: "Reminder"
-                val time: Time =
-                    dateTimePickerViewModel.selectedLogTime.value?.peekContent() ?: Time(0, 0)
+                val time: Time? = dateTimePickerViewModel.selectedLogTime.value?.peekContent()
                 val selectedDayList = frequencyChipGroup.checkedChipIds.map {
                     mapChipIdToDayOfWeek(it)
                 }
-                reminderViewModel.addReminder(name, time, selectedDayList)
+                if (reminderViewModel.selectedReminder != null) {
+                    reminderViewModel.updateReminder(
+                        reminderViewModel.selectedReminder!!,
+                        name,
+                        time,
+                        selectedDayList
+                    )
+                } else {
+                    reminderViewModel.addReminder(name, time!!, selectedDayList)
+                }
             }
+            deleteBtn.setSafeOnClickListener {
+                reminderViewModel.deleteReminder(reminderViewModel.selectedReminder!!)
+            }
+        }
+
+        reminderViewModel.selectedReminder?.apply {
+            binding?.nameLayout?.editText?.setText(this.name)
+            if (this.isReminderSet) {
+                binding?.timeLayout?.editText?.setText(this.time.toString())
+                this.frequency.forEach {
+                    when (it) {
+                        Reminder.DayOfWeek.Monday -> binding?.chipMonday?.isChecked = true
+                        Reminder.DayOfWeek.Tuesday -> binding?.chipTuesday?.isChecked = true
+                        Reminder.DayOfWeek.Wednesday -> binding?.chipWednesday?.isChecked = true
+                        Reminder.DayOfWeek.Thursday -> binding?.chipThursday?.isChecked = true
+                        Reminder.DayOfWeek.Friday -> binding?.chipFriday?.isChecked = true
+                        Reminder.DayOfWeek.Saturday -> binding?.chipSaturday?.isChecked = true
+                        Reminder.DayOfWeek.Sunday -> binding?.chipSunday?.isChecked = true
+                    }
+                }
+            }
+            binding?.deleteBtn?.visibility = View.VISIBLE
         }
     }
 
@@ -93,6 +124,11 @@ class AddReminderFragment : BottomSheetDialogFragment() {
     private fun openTimePickerDialog() {
         val action = NavHomeDirections.actionGlobalTimePickerFragment()
         navController.navigate(action)
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        reminderViewModel.setDialogDismissed()
     }
 
     override fun onDestroyView() {

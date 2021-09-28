@@ -35,16 +35,17 @@ class ReminderListFragment : Fragment(R.layout.fragment_reminder_list) {
         binding.reminderRv.adapter = reminderAdapter
 
         binding.addReminder.setSafeOnClickListener {
+            reminderViewModel.selectedReminder = null
             openAddReminderDialog()
         }
-    }
 
-    override fun onResume() {
-        super.onResume()
-
-        val reminders = reminderViewModel.getAllReminders()
-
-        reminderAdapter.submitList(reminders)
+        reminderViewModel.dialogDismissed.observe(viewLifecycleOwner, {
+            if (it) {
+                val reminders = reminderViewModel.getAllReminders()
+                reminderAdapter.submitList(reminders)
+                reminderAdapter.notifyDataSetChanged()
+            }
+        })
     }
 
     private fun openAddReminderDialog() {
@@ -54,7 +55,8 @@ class ReminderListFragment : Fragment(R.layout.fragment_reminder_list) {
     }
 
     private val reminderItemClickListener = fun(item: Reminder) {
-
+        reminderViewModel.selectedReminder = item
+        openAddReminderDialog()
     }
 
     private val reminderToggleClickListener = fun(item: Reminder, isChecked: Boolean) {
