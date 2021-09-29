@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
+import java.util.*
 
 @Entity(tableName = "timeline")
 data class TimelineEntity(
@@ -47,8 +48,8 @@ data class TimelineEntity(
     @Json(name = "monthly_avg")
     val monthlyAvg: Double?
 ) {
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
+    @PrimaryKey
+    var id: Long = UUID.randomUUID().mostSignificantBits and Long.MAX_VALUE
 
     @ColumnInfo(name = "timeline_type")
     var type: String = TimelineType.Daily.value

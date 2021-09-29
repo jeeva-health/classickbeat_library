@@ -67,6 +67,13 @@ class TimelineRemoteMediator constructor(
                 val keys = timelineFields.map {
                     TimelineRemoteKey(timelineId = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
+                timelineFields.forEach {
+                    it.type = when {
+                        it.weeklyAvg != null || it.diastolicWeeklyAvg != null || it.hrWeeklyAvg != null -> TimelineType.Weekly
+                        it.monthlyAvg != null || it.diastolicMonthlyAvg != null || it.hrMonthlyAvg != null -> TimelineType.Monthly
+                        else -> TimelineType.Daily
+                    }.value
+                }
                 database.timelineRemoteKeyDao().insertAll(keys)
                 database.timelineDao().insertAll(timelineFields)
             }

@@ -139,7 +139,7 @@ class RecordRepository @Inject constructor(
         recordRemoteDataSource.recordWeight(weightLogEntity)
 
     fun getTimelineData(type: TimelineType): Flow<PagingData<Timeline>> {
-        val pagingSourceFactory = { database.timelineDao().loadAll() }
+        val pagingSourceFactory = { database.timelineDao().loadByType(type.value) }
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,

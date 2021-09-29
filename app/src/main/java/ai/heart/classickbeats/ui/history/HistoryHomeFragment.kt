@@ -13,6 +13,7 @@ import ai.heart.classickbeats.shared.util.computeAge
 import ai.heart.classickbeats.shared.util.toDate
 import ai.heart.classickbeats.ui.ppg.MonitorViewModel
 import ai.heart.classickbeats.utils.hideLoadingBar
+import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.showLoadingBar
 import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
@@ -53,15 +54,11 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
 
         binding.apply {
             historyRv.adapter = historyAdapter
-            dailyCategory.isSelected = true
-            arrayOf(dailyCategory, weeklyCategory, montlyCategory).forEach { category ->
-                category.setOnClickListener {
-                    dailyCategory.isSelected = false
-                    weeklyCategory.isSelected = false
-                    montlyCategory.isSelected = false
 
-                    category.isSelected = true
-                }
+            seeTimeline.setSafeOnClickListener {
+                val action =
+                    HistoryHomeFragmentDirections.actionHistoryHomeFragmentToTimelineFragment()
+                navController.navigate(action)
             }
         }
 

@@ -25,6 +25,6 @@ interface TimelineDao {
     @Query("SELECT * FROM timeline WHERE id = :id")
     suspend fun load(id: Int): TimelineEntity
 
-    @Query("SELECT * FROM timeline")
-    fun loadAll(): PagingSource<Int, TimelineEntity>
+    @Query("SELECT * FROM timeline WHERE timeline_type = :type")
+    fun loadByType(type: String): PagingSource<Int, TimelineEntity>
 }

@@ -57,6 +57,9 @@
         <action
             android:id="@+id/action_historyHomeFragment_to_scanResultFragment"
             app:destination="@id/scanResultFragment" />
+        <action
+            android:id="@+id/action_historyHomeFragment_to_timelineFragment"
+            app:destination="@id/timelineFragment" />
     </fragment>
 
     <fragment
@@ -238,5 +241,10 @@
         android:name="ai.heart.classickbeats.ui.profile.AddReminderFragment"
         android:label="fragment_add_reminder"
         tools:layout="@layout/fragment_add_reminder" />
+    <fragment
+        android:id="@+id/timelineFragment"
+        android:name="ai.heart.classickbeats.ui.history.TimelineFragment"
+        android:label="fragment_timeline"
+        tools:layout="@layout/fragment_timeline" />
 
 </navigation>
