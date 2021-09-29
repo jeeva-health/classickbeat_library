@@ -44,4 +44,10 @@ interface RecordApiService {
 
     @GET("record/sdnn/list")
     suspend fun getSdnnList(): Response<SdnnListResponse>
+
+    @GET("record/timeline/")
+    suspend fun getTimelineRecord(
+        @Query("type") type: String,
+        @Query("page") page: Int?
+    ): TimelineResponse
 }

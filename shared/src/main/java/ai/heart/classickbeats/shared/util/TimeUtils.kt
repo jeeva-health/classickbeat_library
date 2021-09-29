@@ -1,8 +1,12 @@
 package ai.heart.classickbeats.shared.util
 
+import android.annotation.SuppressLint
 import android.text.format.DateUtils
 import java.text.SimpleDateFormat
 import java.util.*
+
+@SuppressLint("ConstantLocale")
+private val locale: Locale = Locale.getDefault()
 
 fun Int.toDurationString(): String {
     val duration = this
@@ -27,33 +31,55 @@ fun Date.computeAge(): Int {
 }
 
 fun Date.toOrdinalFormattedDateString(): String {
-    val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+    val dateFormat = SimpleDateFormat("dd MMM yyyy", locale)
     val dateString = dateFormat.format(this)
     val (day, month, year) = dateString.split(" ")
     val formattedDay = Utils.ordinalOf(day.toInt())
-    val formattedMonth = month[0] + month.substring(1).toLowerCase(Locale.ROOT)
+    val formattedMonth = month[0] + month.substring(1).lowercase(locale)
     return "$formattedDay $formattedMonth, $year"
 }
 
+fun Date.toDateString(): String {
+    val timeFormat = SimpleDateFormat("yyyy-MMM-dd", locale)
+    return timeFormat.format(this)
+}
+
 fun Date.toDbFormatString(): String {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", locale)
     return dateFormat.format(this)
 }
 
 fun Date.toTimeString(): String {
-    val timeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
+    val timeFormat = SimpleDateFormat("h:mm a", locale)
     return timeFormat.format(this)
 }
 
 fun String.toDate(): Date? {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd", locale)
     return dateFormat.parse(this)
 }
 
 fun String.toDateStringWithoutTime(): String {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-    val dateFormat2 = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-    return dateFormat2.format(let { dateFormat.parse(it) })
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", locale)
+    val dateFormat2 = SimpleDateFormat("dd MMM yyyy", locale)
+    return dateFormat2.format(let { dateFormat.parse(it)!! })
+}
+
+fun Date.toWeekString(): String {
+    val startDate = this
+    val endDate = Date(this.time + DateUtils.DAY_IN_MILLIS * 6 + DateUtils.HOUR_IN_MILLIS * 12)
+    val (_, startMonth, startDay) = startDate.toDateString().split("-")
+    val (_, endMonth, endDay) = endDate.toDateString().split("-")
+    val formattedStartDay = Utils.ordinalOf(startDay.toInt())
+    val formattedStartMonth = startMonth[0] + startMonth.substring(1).lowercase(locale)
+    val formattedEndDay = Utils.ordinalOf(endDay.toInt())
+    val formattedEndMonth = endMonth[0] + endMonth.substring(1).lowercase(locale)
+    return "$formattedStartDay $formattedStartMonth-$formattedEndDay $formattedEndMonth"
+}
+
+fun Date.toMonthString(): String {
+    val monthFormat = SimpleDateFormat("MMM", locale)
+    return monthFormat.format(this)
 }
 
 fun Date.getDateSubtractedBy(diff: Int): Date {

@@ -4,7 +4,10 @@ import ai.heart.classickbeats.data.db.AppDatabase
 import ai.heart.classickbeats.mapper.input.HistoryRecordMapper
 import ai.heart.classickbeats.mapper.input.HistoryRecordNetworkDbMapper
 import ai.heart.classickbeats.mapper.input.LoggingListMapper
+import ai.heart.classickbeats.mapper.input.TimelineMapper
 import ai.heart.classickbeats.model.HistoryRecordDatabase
+import ai.heart.classickbeats.model.Timeline
+import ai.heart.classickbeats.model.TimelineType
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
@@ -23,6 +26,7 @@ class RecordRepository @Inject constructor(
     private val recordRemoteDataSource: RecordRemoteDataSource,
     private val loggingListMapper: LoggingListMapper,
     private val historyMapper: HistoryRecordMapper,
+    private val timelineMapper: TimelineMapper,
     private val historyRecordNetworkDbMapper: HistoryRecordNetworkDbMapper
 ) {
     suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long> =
@@ -133,6 +137,27 @@ class RecordRepository @Inject constructor(
 
     suspend fun recordWeight(weightLogEntity: WeightLogEntity): Result<Long> =
         recordRemoteDataSource.recordWeight(weightLogEntity)
+
+    fun getTimelineData(type: TimelineType): Flow<PagingData<Timeline>> {
+        val pagingSourceFactory = { database.timelineDao().loadAll() }
+        return Pager(
+            config = PagingConfig(
+                pageSize = NETWORK_PAGE_SIZE,
+                maxSize = 5 * NETWORK_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
+            remoteMediator = TimelineRemoteMediator(
+                type,
+                service,
+                database
+            ),
+            pagingSourceFactory = pagingSourceFactory
+        ).flow.map { pagingData ->
+            pagingData.map { timelineEntity: TimelineEntity ->
+                timelineMapper.map(timelineEntity)
+            }
+        }
+    }
 
     companion object {
         const val NETWORK_PAGE_SIZE = 5
