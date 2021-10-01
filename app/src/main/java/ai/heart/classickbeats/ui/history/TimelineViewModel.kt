@@ -6,7 +6,7 @@ import ai.heart.classickbeats.model.TimelineItem
 import ai.heart.classickbeats.model.TimelineType
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.util.toMonthString
-import ai.heart.classickbeats.shared.util.toOrdinalFormattedDateString
+import ai.heart.classickbeats.shared.util.toOrdinalFormattedDateStringWithoutYear
 import ai.heart.classickbeats.shared.util.toWeekString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -67,7 +67,7 @@ class TimelineViewModel @Inject constructor(
 
     private fun getDateStringByTimelineType(timelineType: TimelineType, date: Date): String =
         when (timelineType) {
-            TimelineType.Daily -> date.toOrdinalFormattedDateString()
+            TimelineType.Daily -> date.toOrdinalFormattedDateStringWithoutYear()
             TimelineType.Weekly -> date.toWeekString()
             TimelineType.Monthly -> date.toMonthString()
         }

@@ -39,6 +39,15 @@ fun Date.toOrdinalFormattedDateString(): String {
     return "$formattedDay $formattedMonth, $year"
 }
 
+fun Date.toOrdinalFormattedDateStringWithoutYear(): String {
+    val dateFormat = SimpleDateFormat("dd MMM yyyy", locale)
+    val dateString = dateFormat.format(this)
+    val (day, month, year) = dateString.split(" ")
+    val formattedDay = Utils.ordinalOf(day.toInt())
+    val formattedMonth = month[0] + month.substring(1).lowercase(locale)
+    return "$formattedDay $formattedMonth"
+}
+
 fun Date.toDateString(): String {
     val timeFormat = SimpleDateFormat("yyyy-MMM-dd", locale)
     return timeFormat.format(this)
@@ -47,6 +56,20 @@ fun Date.toDateString(): String {
 fun Date.toDbFormatString(): String {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", locale)
     return dateFormat.format(this)
+}
+
+fun String.toTimeString(): String? {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", locale)
+    val date = inputFormat.parse(this)
+    val outputFormat = SimpleDateFormat("h:mm a", locale)
+    return date?.let { outputFormat.format(date) }
+}
+
+fun String.toTimeString2(): String? {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale)
+    val date = inputFormat.parse(this)
+    val outputFormat = SimpleDateFormat("h:mm a", locale)
+    return date?.let { outputFormat.format(date) }
 }
 
 fun Date.toTimeString(): String {

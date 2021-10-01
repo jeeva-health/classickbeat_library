@@ -14,10 +14,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalPagingApi
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class LoggingViewModel @Inject constructor(
     private val recordRepository: RecordRepository

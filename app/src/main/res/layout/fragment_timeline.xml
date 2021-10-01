@@ -11,14 +11,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="@dimen/big_guideline_margin" />
+        app:layout_constraintGuide_begin="@dimen/small_guideline_marin" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/end_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="@dimen/big_guideline_margin" />
+        app:layout_constraintGuide_end="@dimen/small_guideline_marin" />
 
     <TextView
         android:id="@+id/history_tv"
