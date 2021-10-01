@@ -23,6 +23,14 @@ class TimelineRemoteMediator constructor(
 ) :
     RemoteMediator<Int, TimelineEntity>() {
 
+    override suspend fun initialize(): InitializeAction {
+        // Launch remote refresh as soon as paging starts and do not trigger remote prepend or
+        // append until refresh has succeeded. In cases where we don't mind showing out-of-date,
+        // cached offline data, we can return SKIP_INITIAL_REFRESH instead to prevent paging
+        // triggering remote refresh.
+        return InitializeAction.LAUNCH_INITIAL_REFRESH
+    }
+
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, TimelineEntity>
@@ -62,20 +70,22 @@ class TimelineRemoteMediator constructor(
                     database.timelineRemoteKeyDao().clearRemoteKeys()
                     database.timelineDao().deleteAll()
                 }
-                val prevKey = if (page == TIMELINE_STARTING_PAGE_INDEX) null else page - 1
-                val nextKey = if (endOfPaginationReached) null else page + 1
-                val keys = timelineFields.map {
-                    TimelineRemoteKey(timelineId = it.id, prevKey = prevKey, nextKey = nextKey)
-                }
                 timelineFields.forEach {
                     it.type = when {
-                        it.weeklyAvg != null || it.diastolicWeeklyAvg != null || it.hrWeeklyAvg != null -> TimelineType.Weekly
-                        it.monthlyAvg != null || it.diastolicMonthlyAvg != null || it.hrMonthlyAvg != null -> TimelineType.Monthly
+                        it.weeklyAvg != null || it.diastolicWeeklyAvg != null || it.hrWeeklyAvg != null || it.week != null -> TimelineType.Weekly
+                        it.monthlyAvg != null || it.diastolicMonthlyAvg != null || it.hrMonthlyAvg != null || it.month != null -> TimelineType.Monthly
                         else -> TimelineType.Daily
                     }.value
                 }
+                val insertedIds =
+                    database.timelineDao().insertAll(timelineFields).map { it.toInt() }
+                val updatedTimelineList = database.timelineDao().loadByIdList(insertedIds)
+                val prevKey = if (page == TIMELINE_STARTING_PAGE_INDEX) null else page - 1
+                val nextKey = if (endOfPaginationReached) null else page + 1
+                val keys = updatedTimelineList.map {
+                    TimelineRemoteKey(timelineId = it.id, prevKey = prevKey, nextKey = nextKey)
+                }
                 database.timelineRemoteKeyDao().insertAll(keys)
-                database.timelineDao().insertAll(timelineFields)
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: IOException) {

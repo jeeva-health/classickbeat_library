@@ -18,9 +18,13 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @ExperimentalPagingApi
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class TimelineFragment : Fragment(R.layout.fragment_timeline) {
 
@@ -33,6 +37,8 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
     private lateinit var timelineAdapter: TimelineAdapter
 
     private var selectedTimelineType: TimelineType = TimelineType.Daily
+
+    private var job: Job? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,8 +72,13 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
                             TimelineType.Daily
                         }
                     }
-
-                    timelineViewModel.getTimelineData(selectedTimelineType)
+                    job?.cancel()
+                    job = lifecycleScope.launch {
+                        timelineViewModel.getTimelineData(selectedTimelineType)
+                            .collectLatest { pagingData ->
+                                timelineAdapter.submitData(pagingData)
+                            }
+                    }
                 }
             }
         }
@@ -84,10 +95,10 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
     override fun onResume() {
         super.onResume()
 
-        lifecycleScope.launchWhenResumed {
+        job?.cancel()
+        job = lifecycleScope.launchWhenResumed {
             timelineViewModel.getTimelineData(selectedTimelineType).collectLatest { pagingData ->
                 timelineAdapter.submitData(pagingData)
-                timelineAdapter.notifyDataSetChanged()
             }
         }
     }

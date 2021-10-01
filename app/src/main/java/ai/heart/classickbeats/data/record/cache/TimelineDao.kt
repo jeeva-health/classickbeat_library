@@ -11,7 +11,7 @@ interface TimelineDao {
     suspend fun insert(timelineEntity: TimelineEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(timelineEntityList: List<TimelineEntity>)
+    suspend fun insertAll(timelineEntityList: List<TimelineEntity>): List<Long>
 
     @Update
     suspend fun update(timelineEntity: TimelineEntity)
@@ -27,4 +27,7 @@ interface TimelineDao {
 
     @Query("SELECT * FROM timeline WHERE timeline_type = :type")
     fun loadByType(type: String): PagingSource<Int, TimelineEntity>
+
+    @Query("SELECT * FROM timeline WHERE id IN (:ids)")
+    suspend fun loadByIdList(ids: List<Int>): List<TimelineEntity>
 }

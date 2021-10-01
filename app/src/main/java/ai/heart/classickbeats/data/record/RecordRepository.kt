@@ -13,12 +13,15 @@ import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
 import androidx.paging.*
 import dagger.hilt.android.scopes.ActivityRetainedScoped
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import timber.log.Timber
 import javax.inject.Inject
 
 @ExperimentalPagingApi
+@ExperimentalCoroutinesApi
 @ActivityRetainedScoped
 class RecordRepository @Inject constructor(
     private val service: RecordApiService,
@@ -152,7 +155,7 @@ class RecordRepository @Inject constructor(
                 database
             ),
             pagingSourceFactory = pagingSourceFactory
-        ).flow.map { pagingData ->
+        ).flow.mapLatest { pagingData ->
             pagingData.map { timelineEntity: TimelineEntity ->
                 timelineMapper.map(timelineEntity)
             }

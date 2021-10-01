@@ -5,7 +5,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
-import java.util.*
 
 @Entity(tableName = "timeline")
 data class TimelineEntity(
@@ -27,29 +26,29 @@ data class TimelineEntity(
     val systolicDailyAvg: Double?,
     @Json(name = "daily_avg")
     val dailyAvg: Double?,
-    @Json(name = "diastolic_weekly_avg")
+    @Json(name = "diastolic_week_avg")
     val diastolicWeeklyAvg: Double?,
-    @Json(name = "hr_weekly_avg")
+    @Json(name = "hr_week_avg")
     val hrWeeklyAvg: Double?,
-    @Json(name = "sdnn_weekly_avg")
+    @Json(name = "sdnn_week_avg")
     val sdnnWeeklyAvg: Double?,
-    @Json(name = "systolic_weekly_avg")
+    @Json(name = "systolic_week_avg")
     val systolicWeeklyAvg: Double?,
-    @Json(name = "weekly_avg")
+    @Json(name = "week_avg")
     val weeklyAvg: Double?,
-    @Json(name = "diastolic_monthly_avg")
+    @Json(name = "diastolic_month_avg")
     val diastolicMonthlyAvg: Double?,
-    @Json(name = "hr_monthly_avg")
+    @Json(name = "hr_month_avg")
     val hrMonthlyAvg: Double?,
-    @Json(name = "sdnn_monthly_avg")
+    @Json(name = "sdnn_month_avg")
     val sdnnMonthlyAvg: Double?,
-    @Json(name = "systolic_monthly_avg")
+    @Json(name = "systolic_month_avg")
     val systolicMonthlyAvg: Double?,
-    @Json(name = "monthly_avg")
+    @Json(name = "month_avg")
     val monthlyAvg: Double?
 ) {
-    @PrimaryKey
-    var id: Long = UUID.randomUUID().mostSignificantBits and Long.MAX_VALUE
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
 
     @ColumnInfo(name = "timeline_type")
     var type: String = TimelineType.Daily.value

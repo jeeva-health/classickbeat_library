@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "timeline_remote_keys")
 data class TimelineRemoteKey(
     @PrimaryKey
-    val timelineId: Long,
+    val timelineId: Int,
     val prevKey: Int?,
     val nextKey: Int?
 )

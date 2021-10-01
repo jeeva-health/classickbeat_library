@@ -14,13 +14,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import java.util.*
 import javax.inject.Inject
 
 
 @ExperimentalPagingApi
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class TimelineViewModel @Inject constructor(
     private val recordRepository: RecordRepository
@@ -34,7 +36,7 @@ class TimelineViewModel @Inject constructor(
     private fun setShowLoadingFalse() = _showLoading.postValue(Event(false))
 
     fun getTimelineData(type: TimelineType): Flow<PagingData<TimelineItem>> =
-        recordRepository.getTimelineData(type).map { pagingData ->
+        recordRepository.getTimelineData(type).mapLatest { pagingData ->
             pagingData.map { timeline ->
                 convertTimelineToTimelineItem(timeline)
             }.insertSeparators { before: TimelineItem?, after: TimelineItem? ->

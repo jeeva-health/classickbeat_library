@@ -13,7 +13,7 @@ class TimelineMapper @Inject constructor() : Mapper<TimelineEntity, Timeline> {
     override fun map(input: TimelineEntity): Timeline {
         val type = when (input.type) {
             "daily" -> TimelineType.Daily
-            "weekly" -> TimelineType.Monthly
+            "weekly" -> TimelineType.Weekly
             "monthly" -> TimelineType.Monthly
             else -> throw Exception("Unhandled timeline type variable")
         }
