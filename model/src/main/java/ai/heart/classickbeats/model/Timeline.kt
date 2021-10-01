@@ -7,7 +7,7 @@ data class Timeline(
     val date: Date,
     val model: LogType,
     val diastolicAvg: Int?,
-    val hrAvg: Double?,
+    val hrAvg: Int?,
     val sdnnAvg: Double?,
     val systolicAvg: Int?,
     val avgValue: Double?,

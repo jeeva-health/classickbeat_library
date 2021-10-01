@@ -7,6 +7,7 @@ import ai.heart.classickbeats.model.TimelineType
 import ai.heart.classickbeats.model.entity.TimelineEntity
 import ai.heart.classickbeats.shared.util.toDate
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 class TimelineMapper @Inject constructor() : Mapper<TimelineEntity, Timeline> {
 
@@ -60,9 +61,9 @@ class TimelineMapper @Inject constructor() : Mapper<TimelineEntity, Timeline> {
             model = model,
             diastolicAvg = diastolicAvg,
             systolicAvg = systolicAvg,
-            hrAvg = hrAvg,
+            hrAvg = hrAvg?.roundToInt(),
             sdnnAvg = sdnnAvg,
-            avgValue = avgValue
+            avgValue = String.format("%.1f", avgValue ?: 0.0).toDouble()
         )
     }
 

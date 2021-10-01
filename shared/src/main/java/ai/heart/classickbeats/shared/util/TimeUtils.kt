@@ -74,7 +74,7 @@ fun Date.toWeekString(): String {
     val formattedStartMonth = startMonth[0] + startMonth.substring(1).lowercase(locale)
     val formattedEndDay = Utils.ordinalOf(endDay.toInt())
     val formattedEndMonth = endMonth[0] + endMonth.substring(1).lowercase(locale)
-    return "$formattedStartDay $formattedStartMonth-$formattedEndDay $formattedEndMonth"
+    return "$formattedStartDay $formattedStartMonth - $formattedEndDay $formattedEndMonth"
 }
 
 fun Date.toMonthString(): String {

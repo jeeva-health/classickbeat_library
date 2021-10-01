@@ -23,6 +23,7 @@ import androidx.paging.ExperimentalPagingApi
 import com.github.psambit9791.jdsp.misc.UtilMethods.argmax
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,6 +34,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @ExperimentalPagingApi
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class MonitorViewModel @Inject constructor(
     private val userRepository: UserRepository,
