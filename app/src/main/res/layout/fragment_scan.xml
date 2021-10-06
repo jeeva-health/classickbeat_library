@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
-    tools:context=".ui.ppg.ScanFragment">
+    tools:context=".ui.ppg.fragment.ScanFragment">
 
     <TextView
         android:id="@+id/heart_rate_tv"

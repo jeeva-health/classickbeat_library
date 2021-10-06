@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.ppg
+package ai.heart.classickbeats.ui.ppg.fragment
 
 import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
@@ -9,6 +9,10 @@ import ai.heart.classickbeats.graph.RunningGraph
 import ai.heart.classickbeats.model.Constants.SCAN_DURATION
 import ai.heart.classickbeats.model.Constants.SPLIT_SCAN_DURATION
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.ui.ppg.AccelerometerListener
+import ai.heart.classickbeats.ui.ppg.PixelAnalyzer
+import ai.heart.classickbeats.ui.ppg.viewmodel.MonitorViewModel
+import ai.heart.classickbeats.ui.ppg.viewmodel.ScanViewModel
 import ai.heart.classickbeats.ui.widgets.CircleProgressBar
 import ai.heart.classickbeats.utils.*
 import android.Manifest
@@ -44,6 +48,7 @@ import kotlinx.coroutines.*
 import timber.log.Timber
 import java.util.*
 
+@ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @AndroidEntryPoint
 class ScanFragment : Fragment(R.layout.fragment_scan) {

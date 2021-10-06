@@ -2,16 +2,10 @@ package ai.heart.classickbeats.ui.history
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentHistoryHomeBinding
-import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.model.LogType
-import ai.heart.classickbeats.model.PPGData
-import ai.heart.classickbeats.model.StressResult
 import ai.heart.classickbeats.model.entity.BaseLogEntity
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.result.EventObserver
-import ai.heart.classickbeats.shared.util.computeAge
-import ai.heart.classickbeats.shared.util.toDate
-import ai.heart.classickbeats.ui.ppg.MonitorViewModel
 import ai.heart.classickbeats.utils.hideLoadingBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.showLoadingBar
@@ -25,11 +19,12 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
-import java.util.*
 
 
 @ExperimentalPagingApi
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
 
@@ -37,13 +32,9 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
 
     private val historyViewModel: HistoryViewModel by activityViewModels()
 
-    private val monitorViewModel: MonitorViewModel by activityViewModels()
-
     private lateinit var navController: NavController
 
     private lateinit var historyAdapter: HistoryAdapter
-
-    private var userAge: Int = -1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,26 +47,9 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
             historyRv.adapter = historyAdapter
 
             seeTimeline.setSafeOnClickListener {
-                val action =
-                    HistoryHomeFragmentDirections.actionHistoryHomeFragmentToTimelineFragment()
-                navController.navigate(action)
+                navigateToTimelineFragment()
             }
         }
-
-        historyViewModel.userData.observe(viewLifecycleOwner, {
-            userAge = it.dob.toDate()?.computeAge() ?: -1
-        })
-
-        historyViewModel.ppgDetails.observe(viewLifecycleOwner, EventObserver {
-            val scanResult = convertPpgEntityToScanResult(it)
-            monitorViewModel.scanResult = scanResult
-            monitorViewModel.leveledSignal = scanResult.filteredRMean
-            val action =
-                HistoryHomeFragmentDirections.actionHistoryHomeFragmentToScanResultFragment(
-                    showingHistory = true
-                )
-            navController.navigate(action)
-        })
 
         historyViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {
             if (it) {
@@ -84,8 +58,6 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
                 hideLoadingBar()
             }
         })
-
-        historyViewModel.getUser()
     }
 
     override fun onResume() {
@@ -99,54 +71,24 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
     }
 
     private val historyItemClickListener = fun(data: BaseLogEntity) {
-        when (data.type) {
-            LogType.BloodPressure -> {
-            }
-            LogType.GlucoseLevel -> {
-            }
-            LogType.WaterIntake -> {
-            }
-            LogType.Weight -> {
-            }
-            LogType.Medicine -> {
-            }
-            LogType.PPG -> {
-                val ppgEntity = data as PPGEntity
-                val id = ppgEntity.id
-                historyViewModel.getScanDetail(id)
-            }
+        if (data.type == LogType.PPG) {
+            val ppgEntity = data as PPGEntity
+            val id = ppgEntity.id
+            navigateToScanDetailFragment(id)
         }
     }
 
-    private fun convertPpgEntityToScanResult(ppgEntity: PPGEntity): PPGData.ScanResult {
-        val bAgeBin = ppgEntity.bAgeBin ?: 0
-        val bioAge = BioAge.values()[bAgeBin]
-        val bioAgeResult = if (userAge != -1) {
-            when {
-                userAge < bioAge.startRange -> -1
-                userAge > bioAge.endRange -> 1
-                else -> 0
-            }
-        } else {
-            0
-        }
+    private fun navigateToTimelineFragment() {
+        val action =
+            HistoryHomeFragmentDirections.actionHistoryHomeFragmentToTimelineFragment()
+        navController.navigate(action)
+    }
 
-        val isActive = ppgEntity.sedRatioLog ?: 0f < 0
-
-        return PPGData.ScanResult(
-            bpm = ppgEntity.hr ?: 0.0f,
-            aFib = "Not Detected",
-            quality = ppgEntity.quality ?: 0.0f,
-            ageBin = ppgEntity.bAgeBin ?: 0,
-            bioAgeResult = bioAgeResult,
-            activeStar = 6 - (ppgEntity.sedStars ?: 0),
-            sdnn = ppgEntity.sdnn ?: 0.0f,
-            pnn50 = ppgEntity.pnn50 ?: 0.0f,
-            rmssd = ppgEntity.rmssd ?: 0.0f,
-            isActive = isActive,
-            stress = StressResult(stressResult = ppgEntity.stressLevel ?: 0, dataCount = 0),
-            filteredRMean = ppgEntity.filteredRMeans ?: emptyList(),
-            timeStamp = ppgEntity.timeStamp?.toDate() ?: Date()
+    private fun navigateToScanDetailFragment(scanId: Long) {
+        val action = HistoryHomeFragmentDirections.actionHistoryHomeFragmentToScanResultFragment(
+            showingHistory = true,
+            scanId = scanId
         )
+        navController.navigate(action)
     }
 }

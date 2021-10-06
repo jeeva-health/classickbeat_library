@@ -7,8 +7,10 @@ import ai.heart.classickbeats.shared.domain.UseCase
 import ai.heart.classickbeats.shared.result.data
 import androidx.paging.ExperimentalPagingApi
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 class GetRecentPpgScanHistoryDataByDurationUseCase @Inject constructor(
     private val repository: RecordRepository,

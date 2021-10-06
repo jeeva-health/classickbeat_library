@@ -1,8 +1,9 @@
-package ai.heart.classickbeats.ui.ppg
+package ai.heart.classickbeats.ui.ppg.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanQuestionBinding
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.ui.ppg.viewmodel.MonitorViewModel
 import ai.heart.classickbeats.utils.hideLoadingBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.showLoadingBar
@@ -13,9 +14,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
+@ExperimentalCoroutinesApi
 @ExperimentalPagingApi
+@AndroidEntryPoint
 class ScanQuestionFragment : Fragment(R.layout.fragment_scan_question) {
 
     private val binding by viewBinding(FragmentScanQuestionBinding::bind)
@@ -62,7 +67,10 @@ class ScanQuestionFragment : Fragment(R.layout.fragment_scan_question) {
 
     private fun navigateToScanResultFragment() {
         hideLoadingBar()
-        val action = ScanQuestionFragmentDirections.actionScanQuestionFragmentToScanResultFragment()
+        val action = ScanQuestionFragmentDirections.actionScanQuestionFragmentToScanResultFragment(
+            showingHistory = false,
+            scanId = monitorViewModel.ppgId
+        )
         findNavController().navigate(action)
     }
 }

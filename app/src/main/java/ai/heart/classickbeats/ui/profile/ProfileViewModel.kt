@@ -42,7 +42,7 @@ class ProfileViewModel @Inject constructor(
 
     fun getUser() {
         viewModelScope.launch {
-            userRepository.getUser().collectLatest { user: User? ->
+            userRepository.getUserAsFlow().collectLatest { user: User? ->
                 user?.let { setUserDate(it) }
             }
         }

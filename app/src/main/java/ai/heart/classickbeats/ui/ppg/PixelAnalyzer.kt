@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.ui.ppg
 
 import ai.heart.classickbeats.domain.CameraReading
+import ai.heart.classickbeats.ui.ppg.viewmodel.MonitorViewModel
 import android.content.Context
 import android.media.Image
 import android.os.SystemClock

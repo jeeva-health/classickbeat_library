@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/scanResultFragment"
-        android:name="ai.heart.classickbeats.ui.ppg.ScanResultFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.fragment.ScanResultFragment"
         android:label="fragment_heart_result"
         tools:layout="@layout/fragment_scan_result">
         <action
@@ -25,11 +25,14 @@
             android:name="showing_history"
             android:defaultValue="false"
             app:argType="boolean" />
+        <argument
+            android:name="scan_id"
+            app:argType="long" />
     </fragment>
 
     <fragment
         android:id="@+id/scanFragment"
-        android:name="ai.heart.classickbeats.ui.ppg.ScanFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.fragment.ScanFragment"
         android:label="ScanFragment"
         tools:layout="@layout/fragment_scan">
         <action
@@ -107,13 +110,13 @@
 
     <dialog
         android:id="@+id/hrvInfoBottomSheetFragment"
-        android:name="ai.heart.classickbeats.ui.ppg.HrvInfoBottomSheetFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.fragment.HrvInfoBottomSheetFragment"
         android:label="fragment_hrv_info_bottom_sheet"
         tools:layout="@layout/fragment_hrv_info_bottom_sheet" />
 
     <fragment
         android:id="@+id/scanQuestionFragment"
-        android:name="ai.heart.classickbeats.ui.ppg.ScanQuestionFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.fragment.ScanQuestionFragment"
         android:label="fragment_scan_question"
         tools:layout="@layout/fragment_scan_question">
         <action
@@ -143,7 +146,7 @@
 
     <fragment
         android:id="@+id/scanTutorialFragment"
-        android:name="ai.heart.classickbeats.ui.ppg.ScanTutorialFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.fragment.ScanTutorialFragment"
         android:label="fragment_scan_tutorial"
         tools:layout="@layout/fragment_scan_tutorial" />
 
@@ -245,6 +248,29 @@
         android:id="@+id/timelineFragment"
         android:name="ai.heart.classickbeats.ui.history.TimelineFragment"
         android:label="fragment_timeline"
-        tools:layout="@layout/fragment_timeline" />
+        tools:layout="@layout/fragment_timeline" >
+        <action
+            android:id="@+id/action_timelineFragment_to_timelineGraphFragment"
+            app:destination="@id/timelineGraphFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/timelineGraphFragment"
+        android:name="ai.heart.classickbeats.ui.history.TimelineGraphFragment"
+        android:label="fragment_timeline_graph"
+        tools:layout="@layout/fragment_timeline_graph" >
+        <action
+            android:id="@+id/action_timelineGraphFragment_to_scanResultFragment"
+            app:destination="@id/scanResultFragment" />
+        <argument
+            android:name="log_type"
+            app:argType="ai.heart.classickbeats.model.LogType" />
+        <argument
+            android:name="date_type"
+            app:argType="ai.heart.classickbeats.model.TimelineType" />
+        <argument
+            android:name="start_date"
+            app:argType="java.util.Date" />
+    </fragment>
 
 </navigation>

@@ -1,9 +1,11 @@
-package ai.heart.classickbeats.ui.ppg
+package ai.heart.classickbeats.ui.ppg.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanTutorialBinding
 import ai.heart.classickbeats.model.ScanTutorialModel
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.ui.ppg.ScanSlidingPagerAdapter
+import ai.heart.classickbeats.ui.ppg.viewmodel.ScanViewModel
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat

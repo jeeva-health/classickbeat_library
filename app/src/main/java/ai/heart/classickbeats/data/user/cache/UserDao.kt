@@ -31,10 +31,13 @@ abstract class UserDao {
     }
 
     @Query("SELECT * FROM user WHERE id = :userId")
-    abstract fun load(userId: Int): Flow<UserEntity>
+    abstract fun loadFlow(userId: Int): Flow<UserEntity>
 
     @Query("SELECT * FROM user")
-    abstract fun load(): Flow<List<UserEntity>>
+    abstract fun loadFlow(): Flow<List<UserEntity>>
+
+    @Query("SELECT * FROM user")
+    abstract suspend fun load(): List<UserEntity>
 
     @Query("SELECT COUNT(*) FROM user WHERE modified_at >= (:currentTime - :freshTimeout)")
     abstract suspend fun hasUser(

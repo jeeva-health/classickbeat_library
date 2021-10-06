@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.ppg
+package ai.heart.classickbeats.ui.ppg.viewmodel
 
 import ai.heart.classickbeats.domain.GetRecentPpgScanHistoryDataByCountUseCase
 import ai.heart.classickbeats.domain.GetRecentPpgScanHistoryDataByDurationUseCase

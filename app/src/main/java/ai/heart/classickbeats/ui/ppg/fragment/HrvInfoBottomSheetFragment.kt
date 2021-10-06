@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.ppg
+package ai.heart.classickbeats.ui.ppg.fragment
 
 import ai.heart.classickbeats.databinding.FragmentHrvInfoBottomSheetBinding
 import ai.heart.classickbeats.utils.setSafeOnClickListener

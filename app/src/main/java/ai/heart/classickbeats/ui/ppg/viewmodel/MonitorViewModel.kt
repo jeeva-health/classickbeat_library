@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.ppg
+package ai.heart.classickbeats.ui.ppg.viewmodel
 
 import ai.heart.classickbeats.compute.MAPmodeling
 import ai.heart.classickbeats.compute.ProcessingData
@@ -33,8 +33,8 @@ import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-@ExperimentalPagingApi
 @ExperimentalCoroutinesApi
+@ExperimentalPagingApi
 @HiltViewModel
 class MonitorViewModel @Inject constructor(
     private val userRepository: UserRepository,
@@ -123,7 +123,7 @@ class MonitorViewModel @Inject constructor(
 
     fun fetchUser() {
         viewModelScope.launch {
-            userRepository.getUser().collectLatest {
+            userRepository.getUserAsFlow().collectLatest {
                 user = it
             }
         }

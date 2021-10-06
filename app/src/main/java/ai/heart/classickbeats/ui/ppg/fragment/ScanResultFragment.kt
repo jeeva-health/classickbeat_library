@@ -1,12 +1,15 @@
-package ai.heart.classickbeats.ui.ppg
+package ai.heart.classickbeats.ui.ppg.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanResultBinding
 import ai.heart.classickbeats.graph.LineGraph
 import ai.heart.classickbeats.model.BioAge
+import ai.heart.classickbeats.model.PPGData
 import ai.heart.classickbeats.model.displayString
+import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.shared.util.toOrdinalFormattedDateString
 import ai.heart.classickbeats.shared.util.toTimeString
+import ai.heart.classickbeats.ui.ppg.viewmodel.ScanResultViewModel
 import ai.heart.classickbeats.utils.getContextColor
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
@@ -20,16 +23,18 @@ import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.ExperimentalPagingApi
 import com.github.mikephil.charting.charts.LineChart
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
 @ExperimentalPagingApi
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
@@ -37,20 +42,25 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
     private lateinit var navController: NavController
 
-    private val monitorViewModel: MonitorViewModel by activityViewModels()
-
-    private lateinit var waveformChart: LineChart
+    private val scanResultViewModel: ScanResultViewModel by viewModels()
 
     private val args: ScanResultFragmentArgs by navArgs()
 
-    private var isShowingHistory = false
+    private lateinit var waveformChart: LineChart
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val (_, scanId) = args
+        scanResultViewModel.getScanDetail(scanId)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
 
-        isShowingHistory = args.showingHistory
+        val (isShowingHistory, _) = args
 
         waveformChart = binding.waveformChart.apply {
             setDrawGridBackground(false)
@@ -70,7 +80,14 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             requestLayout()
         }
 
-        val scanResult = monitorViewModel.scanResult ?: throw Exception("Scan result null")
+        scanResultViewModel.scanDetails.observe(viewLifecycleOwner, EventObserver {
+            showUi(it, isShowingHistory)
+        })
+
+        scanResultViewModel.scanDetails.value?.let { showUi(it.peekContent(), isShowingHistory) }
+    }
+
+    private fun showUi(scanResult: PPGData.ScanResult, isShowingHistory: Boolean) {
         val bioAgeIndex = scanResult.ageBin
         val bioAge = BioAge.values()[bioAgeIndex]
         val bioAgeInfo: SpannableString = when (scanResult.bioAgeResult) {
@@ -117,7 +134,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
                 )
             }
 
-            LineGraph.drawLineGraph(waveformChart, monitorViewModel.leveledSignal!!.toList())
+            LineGraph.drawLineGraph(waveformChart, scanResult.filteredRMean)
 
             val sdnnVal = scanResult.sdnn.toInt()
             sdnn.text = "$sdnnVal ms"

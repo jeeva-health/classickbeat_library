@@ -2,12 +2,15 @@ package ai.heart.classickbeats.data.user
 
 import ai.heart.classickbeats.data.user.cache.UserDao
 import ai.heart.classickbeats.data.user.remote.UserRemoteDataSource
+import ai.heart.classickbeats.domain.exception.UserException
 import ai.heart.classickbeats.mapper.input.UserInMapper
 import ai.heart.classickbeats.mapper.output.UserOutMapper
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.model.entity.UserEntity
 import ai.heart.classickbeats.shared.result.Result
+import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.error
+import ai.heart.classickbeats.shared.result.succeeded
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -44,11 +47,24 @@ class UserRepository @Inject constructor(
         return Result.Error(response.error)
     }
 
-    suspend fun getUser(): Flow<User?> {
+    suspend fun getUserAsFlow(): Flow<User?> {
         refreshUser()
-        return userDao.load()
+        return userDao.loadFlow()
             .map { value: List<UserEntity?>? -> value?.firstOrNull()?.let { userInMapper.map(it) } }
             .flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getUser(): User? {
+        val dbEntity = userDao.load().firstOrNull()
+        if (dbEntity == null) {
+            val result = userRemoteDataSource.getUser()
+            if (result.succeeded) {
+                return result.data?.user?.let { userInMapper.map(it) }
+            } else {
+                throw UserException(result.error)
+            }
+        }
+        return dbEntity.let { userInMapper.map(it) }
     }
 
     suspend fun registerFirebaseToken(firebaseToken: String): Result<Unit> =
