@@ -53,6 +53,11 @@ fun Date.toDateString(): String {
     return timeFormat.format(this)
 }
 
+fun Date.toDateStringNetwork(): String {
+    val timeFormat = SimpleDateFormat("yyyy-MM-dd", locale)
+    return timeFormat.format(this)
+}
+
 fun Date.toDbFormatString(): String {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", locale)
     return dateFormat.format(this)

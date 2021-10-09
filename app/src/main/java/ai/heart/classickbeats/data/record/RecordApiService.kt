@@ -50,4 +50,12 @@ interface RecordApiService {
         @Query("type") type: String,
         @Query("page") page: Int?
     ): TimelineResponse
+
+    @GET("record/graph/{model}/")
+    suspend fun getGraphData(
+        @Path("model") model: String,
+        @Query("type") type: String,
+        @Query("start_date") startDate: String,
+        @Query("end_date") endDate: String
+    ): Response<GraphDataResponse>
 }

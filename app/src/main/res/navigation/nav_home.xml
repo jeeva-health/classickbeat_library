@@ -54,7 +54,7 @@
 
     <fragment
         android:id="@+id/historyHomeFragment"
-        android:name="ai.heart.classickbeats.ui.history.HistoryHomeFragment"
+        android:name="ai.heart.classickbeats.ui.history.fragment.HistoryHomeFragment"
         android:label="fragment_history_home"
         tools:layout="@layout/fragment_history_home">
         <action
@@ -246,7 +246,7 @@
         tools:layout="@layout/fragment_add_reminder" />
     <fragment
         android:id="@+id/timelineFragment"
-        android:name="ai.heart.classickbeats.ui.history.TimelineFragment"
+        android:name="ai.heart.classickbeats.ui.history.fragment.TimelineFragment"
         android:label="fragment_timeline"
         tools:layout="@layout/fragment_timeline" >
         <action
@@ -256,7 +256,7 @@
 
     <fragment
         android:id="@+id/timelineGraphFragment"
-        android:name="ai.heart.classickbeats.ui.history.TimelineGraphFragment"
+        android:name="ai.heart.classickbeats.ui.history.fragment.TimelineGraphFragment"
         android:label="fragment_timeline_graph"
         tools:layout="@layout/fragment_timeline_graph" >
         <action

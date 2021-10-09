@@ -5,6 +5,7 @@ import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.Timeline
 import ai.heart.classickbeats.model.TimelineType
 import ai.heart.classickbeats.model.entity.TimelineEntity
+import ai.heart.classickbeats.model.getLogType
 import ai.heart.classickbeats.shared.util.toDate
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -47,14 +48,7 @@ class TimelineMapper @Inject constructor() : Mapper<TimelineEntity, Timeline> {
                     avgValue = input.monthlyAvg
                 )
         }
-        val model: LogType = when (input.model) {
-            "record_data.glucose" -> LogType.GlucoseLevel
-            "record_data.waterintake" -> LogType.WaterIntake
-            "record_data.weightlog" -> LogType.Weight
-            "record_data.bloodpressure" -> LogType.BloodPressure
-            "record_data.ppg" -> LogType.PPG
-            else -> throw Exception("Unhandled model type")
-        }
+        val model: LogType = input.model.getLogType()
         return Timeline(
             type = type,
             date = date.toDate()!!,

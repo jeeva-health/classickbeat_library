@@ -1,10 +1,12 @@
-package ai.heart.classickbeats.ui.history
+package ai.heart.classickbeats.ui.history.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentTimelineGraphBinding
 import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.entity.BaseLogEntity
 import ai.heart.classickbeats.model.entity.PPGEntity
+import ai.heart.classickbeats.ui.history.GraphHistoryAdapter
+import ai.heart.classickbeats.ui.history.viewmodel.TimelineViewModel
 import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
 import android.view.View

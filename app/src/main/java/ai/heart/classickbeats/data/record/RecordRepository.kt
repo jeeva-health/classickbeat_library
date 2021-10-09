@@ -1,16 +1,12 @@
 package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.data.db.AppDatabase
-import ai.heart.classickbeats.mapper.input.HistoryRecordMapper
-import ai.heart.classickbeats.mapper.input.HistoryRecordNetworkDbMapper
-import ai.heart.classickbeats.mapper.input.LoggingListMapper
-import ai.heart.classickbeats.mapper.input.TimelineMapper
-import ai.heart.classickbeats.model.HistoryRecordDatabase
-import ai.heart.classickbeats.model.Timeline
-import ai.heart.classickbeats.model.TimelineType
+import ai.heart.classickbeats.mapper.input.*
+import ai.heart.classickbeats.model.*
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
+import ai.heart.classickbeats.shared.util.toDateStringNetwork
 import androidx.paging.*
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import timber.log.Timber
+import java.util.Date
 import javax.inject.Inject
 
 @ExperimentalPagingApi
@@ -30,6 +27,7 @@ class RecordRepository @Inject constructor(
     private val loggingListMapper: LoggingListMapper,
     private val historyMapper: HistoryRecordMapper,
     private val timelineMapper: TimelineMapper,
+    private val graphDataMapper: GraphDataMapper,
     private val historyRecordNetworkDbMapper: HistoryRecordNetworkDbMapper
 ) {
     suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long> =
@@ -140,6 +138,35 @@ class RecordRepository @Inject constructor(
 
     suspend fun recordWeight(weightLogEntity: WeightLogEntity): Result<Long> =
         recordRemoteDataSource.recordWeight(weightLogEntity)
+
+    suspend fun getGraphData(
+        model: LogType,
+        type: TimelineType,
+        startDate: Date,
+        endDate: Date
+    ): Result<GraphData> {
+        val modelStr = model.getStringValue()
+        val typeStr = type.value
+        val startDateStr = startDate.toDateStringNetwork()
+        val endDateStr = endDate.toDateStringNetwork()
+        val response =
+            recordRemoteDataSource.getGraphData(modelStr, typeStr, startDateStr, endDateStr)
+        when (response) {
+            is Result.Success -> {
+                val mapperInput = GraphDataMapper.InputData(
+                    model = model,
+                    type = type,
+                    startDate = startDate,
+                    endDate = endDate,
+                    response = response.data
+                )
+                return Result.Success(graphDataMapper.map(mapperInput))
+            }
+            is Result.Error -> Timber.e(response.exception)
+            Result.Loading -> throw IllegalStateException("getGraphData response invalid state")
+        }
+        return Result.Error(response.error)
+    }
 
     fun getTimelineData(type: TimelineType): Flow<PagingData<Timeline>> {
         val pagingSourceFactory = { database.timelineDao().loadByType(type.value) }

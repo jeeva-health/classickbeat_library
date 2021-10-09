@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.history
+package ai.heart.classickbeats.ui.history.viewmodel
 
 import ai.heart.classickbeats.data.record.RecordRepository
 import ai.heart.classickbeats.model.Timeline

@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.history
+package ai.heart.classickbeats.ui.history.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentTimelineBinding
@@ -6,6 +6,8 @@ import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.Timeline
 import ai.heart.classickbeats.model.TimelineType
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.ui.history.TimelineAdapter
+import ai.heart.classickbeats.ui.history.viewmodel.TimelineViewModel
 import ai.heart.classickbeats.utils.hideLoadingBar
 import ai.heart.classickbeats.utils.showLoadingBar
 import ai.heart.classickbeats.utils.viewBinding

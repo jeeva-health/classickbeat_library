@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.model.entity.*
+import ai.heart.classickbeats.model.response.GraphDataResponse
 import ai.heart.classickbeats.model.response.LoggingListResponse
 import ai.heart.classickbeats.model.response.ScanDetailResponse
 import ai.heart.classickbeats.model.response.SdnnListResponse
@@ -25,4 +26,11 @@ interface RecordDataSource {
     suspend fun recordWaterIntake(waterLogEntity: WaterLogEntity): Result<Long>
 
     suspend fun recordWeight(weightLogEntity: WeightLogEntity): Result<Long>
+
+    suspend fun getGraphData(
+        model: String,
+        type: String,
+        startDate: String,
+        endDate: String
+    ): Result<List<GraphDataResponse.ResponseData>>
 }

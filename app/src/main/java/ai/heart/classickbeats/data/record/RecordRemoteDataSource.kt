@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.model.entity.*
+import ai.heart.classickbeats.model.response.GraphDataResponse
 import ai.heart.classickbeats.model.response.LoggingListResponse
 import ai.heart.classickbeats.model.response.ScanDetailResponse
 import ai.heart.classickbeats.model.response.SdnnListResponse
@@ -106,4 +107,19 @@ class RecordRemoteDataSource internal constructor(
             }
             return@withContext Result.Error(response.error)
         }
+
+    override suspend fun getGraphData(
+        model: String,
+        type: String,
+        startDate: String,
+        endDate: String
+    ): Result<List<GraphDataResponse.ResponseData>> = withContext(ioDispatcher) {
+        val response =
+            safeApiCall { recordApiService.getGraphData(model, type, startDate, endDate) }
+        if (response.succeeded) {
+            Result.Success(response.data!!.responseData!!)
+        } else {
+            Result.Error(response.error)
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.history
+package ai.heart.classickbeats.ui.history.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentHistoryHomeBinding
@@ -6,6 +6,8 @@ import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.entity.BaseLogEntity
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.ui.history.HistoryAdapter
+import ai.heart.classickbeats.ui.history.viewmodel.HistoryViewModel
 import ai.heart.classickbeats.utils.hideLoadingBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.showLoadingBar
