@@ -7,16 +7,18 @@ import ai.heart.classickbeats.domain.prefs.FistScanCompletedUseCase
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
-import ai.heart.classickbeats.shared.util.getDateSubtractedBy
+import ai.heart.classickbeats.shared.util.getDateAddedBy
 import ai.heart.classickbeats.shared.util.toDbFormatString
 import androidx.lifecycle.*
 import androidx.paging.ExperimentalPagingApi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @HiltViewModel
 class ScanViewModel @Inject constructor(
@@ -64,7 +66,7 @@ class ScanViewModel @Inject constructor(
 
     fun getPpgHistoryDataByDuration(daysDiff: Int) {
         viewModelScope.launch {
-            val startDate = Date().getDateSubtractedBy(daysDiff)
+            val startDate = Date().getDateAddedBy(daysDiff)
             val startDateStr = startDate.toDbFormatString()
             val result = getPpgScanHistoryDataByDurationUseCase(startDateStr)
             result.data?.let { processScanHistoryData(it) }

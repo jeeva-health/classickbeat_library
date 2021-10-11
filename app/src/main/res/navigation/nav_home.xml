@@ -266,7 +266,7 @@
             android:name="log_type"
             app:argType="ai.heart.classickbeats.model.LogType" />
         <argument
-            android:name="date_type"
+            android:name="data_type"
             app:argType="ai.heart.classickbeats.model.TimelineType" />
         <argument
             android:name="start_date"

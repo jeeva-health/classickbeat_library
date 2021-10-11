@@ -24,6 +24,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.*
 
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
@@ -106,13 +107,22 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
     }
 
     private val timelineItemClickListener = fun(data: Timeline) {
-        when (data.model) {
-            LogType.BloodPressure -> TODO()
-            LogType.GlucoseLevel -> TODO()
-            LogType.WaterIntake -> TODO()
-            LogType.Weight -> TODO()
-            LogType.Medicine -> TODO()
-            LogType.PPG -> TODO()
-        }
+        val model = data.model
+        val timelineType = data.type
+        val startDate = data.date
+        navigateToGraphFragment(model, timelineType, startDate)
+    }
+
+    private fun navigateToGraphFragment(
+        model: LogType,
+        timelineType: TimelineType,
+        startDate: Date
+    ) {
+        val action = TimelineFragmentDirections.actionTimelineFragmentToTimelineGraphFragment(
+            logType = model,
+            dataType = timelineType,
+            startDate = startDate
+        )
+        navController.navigate(action)
     }
 }

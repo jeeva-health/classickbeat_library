@@ -134,7 +134,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
                 )
             }
 
-            LineGraph.drawLineGraph(waveformChart, scanResult.filteredRMean)
+            LineGraph.draw(waveformChart, scanResult.filteredRMean)
 
             val sdnnVal = scanResult.sdnn.toInt()
             sdnn.text = "$sdnnVal ms"

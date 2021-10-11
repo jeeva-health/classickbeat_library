@@ -110,7 +110,7 @@ fun Date.toMonthString(): String {
     return monthFormat.format(this)
 }
 
-fun Date.getDateSubtractedBy(diff: Int): Date {
+fun Date.getDateAddedBy(diff: Int): Date {
     val inputDateTimestamp = this.time
     val requestedDateTimestamp = inputDateTimestamp + DateUtils.DAY_IN_MILLIS * diff
     return Date(requestedDateTimestamp)

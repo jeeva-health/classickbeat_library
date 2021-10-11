@@ -1,10 +1,12 @@
 package ai.heart.classickbeats.ui.history.viewmodel
 
 import ai.heart.classickbeats.data.record.RecordRepository
-import ai.heart.classickbeats.model.Timeline
-import ai.heart.classickbeats.model.TimelineItem
-import ai.heart.classickbeats.model.TimelineType
+import ai.heart.classickbeats.model.*
 import ai.heart.classickbeats.shared.result.Event
+import ai.heart.classickbeats.shared.result.data
+import ai.heart.classickbeats.shared.result.error
+import ai.heart.classickbeats.shared.result.succeeded
+import ai.heart.classickbeats.shared.util.getDateAddedBy
 import ai.heart.classickbeats.shared.util.toMonthString
 import ai.heart.classickbeats.shared.util.toOrdinalFormattedDateStringWithoutYear
 import ai.heart.classickbeats.shared.util.toWeekString
@@ -17,7 +19,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
-import java.util.*
+import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 
@@ -35,6 +38,9 @@ class TimelineViewModel @Inject constructor(
     private fun setShowLoadingTrue() = _showLoading.postValue(Event(true))
     private fun setShowLoadingFalse() = _showLoading.postValue(Event(false))
 
+    private val _graphData = MutableLiveData<GraphData>()
+    val graphData: LiveData<GraphData> = _graphData
+
     fun getTimelineData(type: TimelineType): Flow<PagingData<TimelineItem>> =
         recordRepository.getTimelineData(type).mapLatest { pagingData ->
             pagingData.map { timeline ->
@@ -43,6 +49,20 @@ class TimelineViewModel @Inject constructor(
                 insertDateSeparatorIfNeeded(before, after)
             }
         }.cachedIn(viewModelScope)
+
+    fun getGraphData(model: LogType, type: TimelineType, startDate: Date) {
+        viewModelScope.launch {
+            setShowLoadingTrue()
+            val endDate = getEndDate(startDate, type)
+            val response = recordRepository.getGraphData(model, type, startDate, endDate)
+            if (response.succeeded) {
+                _graphData.value = response.data
+            } else {
+                apiError = response.error
+            }
+            setShowLoadingFalse()
+        }
+    }
 
     private fun convertTimelineToTimelineItem(timeline: Timeline): TimelineItem {
         return TimelineItem.LogItem(timeline)
@@ -71,4 +91,13 @@ class TimelineViewModel @Inject constructor(
             TimelineType.Weekly -> date.toWeekString()
             TimelineType.Monthly -> date.toMonthString()
         }
+
+    private fun getEndDate(startDate: Date, type: TimelineType): Date {
+        val diffDays = when (type) {
+            TimelineType.Daily -> 1
+            TimelineType.Weekly -> 7
+            TimelineType.Monthly -> 30 //TODO(Ritesh: Need to replace with proper number based on month)
+        }
+        return startDate.getDateAddedBy(diffDays)
+    }
 }

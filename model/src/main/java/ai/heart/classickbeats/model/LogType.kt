@@ -19,6 +19,16 @@ fun LogType.getStringValue(): String =
         else -> throw Exception("Unknown logType value")
     }
 
+fun LogType.getShortString(): String =
+    when (this) {
+        LogType.BloodPressure -> "mm Hg"
+        LogType.GlucoseLevel -> "mg/dl"
+        LogType.WaterIntake -> "liters"
+        LogType.Weight -> "kg"
+        LogType.Medicine -> throw Exception("Unhandled logType")
+        LogType.PPG -> "BPM"
+    }
+
 fun String.getLogType(): LogType =
     when (this) {
         "record_data.glucose" -> LogType.GlucoseLevel
