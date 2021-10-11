@@ -1,7 +1,6 @@
 package ai.heart.classickbeats.ui.ppg
 
 import ai.heart.classickbeats.domain.CameraReading
-import ai.heart.classickbeats.ui.ppg.viewmodel.MonitorViewModel
 import android.content.Context
 import android.media.Image
 import android.os.SystemClock
@@ -19,17 +18,12 @@ import kotlin.math.roundToInt
 
 @ExperimentalPagingApi
 class PixelAnalyzer constructor(
-    private val context: Context,
-    private val viewModel: MonitorViewModel
+    private val context: Context
 ) {
 
     private var previousSecond: Long = 0
     private var currentSecond: Long = 0
-    private var maxIndex: Int = 0
     private var counter: Int = 0
-    private var imgCount: Int = 0
-    private val skipFrames: Int = 0
-    private val avgFrames: Int = 90
 
     private var script: ScriptIntrinsicYuvToRGB? = null
     private var inputAllocation: Allocation? = null
@@ -45,10 +39,6 @@ class PixelAnalyzer constructor(
         val data = ByteArray(remaining())
         get(data)
         return data
-    }
-
-    private fun clamp(value: Float, min: Float, max: Float): Float {
-        return Math.max(min, Math.min(max, value))
     }
 
     private fun displayCounter() {
@@ -105,94 +95,6 @@ class PixelAnalyzer constructor(
         return outputArray
     }
 
-    fun processImageSpO2(image: Image) {
-        val argbArray = yuv420ToARGB(image, context)
-        if (imgCount == (avgFrames)) {
-            maxIndex /= avgFrames
-            Timber.i("Averaged MaxIndex is: $maxIndex")
-        }
-        if (imgCount >= (skipFrames + avgFrames)) {
-            val h = image.height
-            val w = image.width
-            val size = argbArray.size
-            var counter = 0
-            var rSum = 0
-            var gSum = 0
-            var bSum = 0
-            val len = 320
-            val maxX = maxIndex % w
-            val maxY = maxIndex / w
-            var pixelSum = 0
-            while (counter < size) {
-                val counterX = (counter / 4) % w
-                val counterY = (counter / 4) / w
-                if (kotlin.math.abs(counterX - maxX) <= len && kotlin.math.abs(counterY - maxY) <= len) {
-                    val byte = argbArray[counter].toInt()
-                    when (counter % 4) {
-                        0 -> rSum += byte and 0xFF
-                        1 -> gSum += byte and 0xFF
-                        2 -> bSum += byte and 0xFF
-                    }
-                    pixelSum++
-                }
-                counter++
-            }
-            val pixelCount = pixelSum / 4
-            val rMax = argbArray[maxIndex * 4].toInt() and 0xFF
-            val gMax = argbArray[maxIndex * 4 + 1].toInt() and 0xFF
-            val bMax = argbArray[maxIndex * 4 + 2].toInt() and 0xFF
-            Timber.i("${rSum.toDouble() / pixelCount} \t ${gSum.toDouble() / pixelCount} \t ${bSum.toDouble() / pixelCount}")
-            Timber.i("MaxIndex: $maxIndex, Pixel count: $pixelCount, Image Count: $imgCount")
-            Timber.i("rMax: $rMax, gMax: $gMax, bMax: $bMax")
-            displayCounter()
-        }
-        imgCount++
-    }
-
-    fun processImageSpO2Y(image: Image): Pair<Double, Int> {
-        val argbArray = yuv420ToARGB(image, context)
-        var yMean = 0.0
-        var fps = 0
-        if (imgCount == (avgFrames)) {
-            maxIndex /= avgFrames
-            Timber.i("Averaged MaxIndex is: $maxIndex")
-        }
-        if (imgCount >= avgFrames) {
-            val yBuffer = image.planes[0].buffer
-            val w = image.width
-            val h = image.height
-            val maxX = maxIndex % w
-            val maxY = maxIndex / w
-            val yData = yBuffer.toByteArray()
-            var ySum = 0
-            val len = 20
-            var count = 0
-            var ind = 0
-            for (y in max(0, maxY - len) until min(h - 2, maxY + len)) {
-                for (x in max(0, maxX - len) until min(w - 2, maxX + len)) {
-                    ind = y * w + x
-                    ySum += yData[ind].toInt() and 0xFF
-                    count++
-                }
-            }
-            //        while (counter < size) {
-            //            val byte = yData[counter].toInt()
-            //            ySum += byte and 0xFF
-            //            counter++
-            //        }
-            yMean = ySum.toDouble() / count
-            displayCounter()
-            val fps = if (sec > 0) {
-                (frameRate.toDouble() / sec).roundToInt()
-            } else {
-                0
-            }
-            Timber.i("YMean: $yMean \t FPS: $fps \t $h \t $w")
-        }
-        imgCount++
-        return Pair(yMean, fps)
-    }
-
     fun processImageRenderScript(image: Image): CameraReading {
         val timeStamp = (image.timestamp / 1000000L).toInt() //SystemClock.elapsedRealtime().toInt()
         val argbArray = yuv420ToARGB(image, context)
@@ -237,79 +139,6 @@ class PixelAnalyzer constructor(
         }
         Timber.i("RGBMean: $rMean \t $gMean \t $bMean \t TimeStamp: $timeStamp \t FPS: $fps")
         return CameraReading(rMean, gMean, bMean, timeStamp)
-    }
-
-    fun processImageNaive(image: Image): CameraReading {
-        val timeStamp = SystemClock.elapsedRealtime().toInt()
-        val yuvByteArray = yuv420ToByteArray(image)
-        val w = image.width
-        val h = image.height
-        // val argbArray = IntArray(w * h)
-        val yBuffer = image.planes[0].buffer
-        yBuffer.position(0)
-        val uvBuffer = image.planes[1].buffer
-        uvBuffer.position(0)
-        var r: Int
-        var g: Int
-        var b: Int
-        var yValue: Int
-        var uValue: Int
-        var vValue: Int
-        var r_sum = 0
-        var g_sum = 0
-        var b_sum = 0
-        var count = 0
-        val len = h / 3  // Length of square is (2*len)
-        for (y in max(0, h / 2 - len) until min(h - 2, h / 2 + len)) {
-            for (x in max(0, w / 2 - len) until min(w - 2, w / 2 + len)) {
-                val yIndex = y * w + x
-                yValue = yBuffer[yIndex].toInt() and 0xff
-                val uvx = x / 2
-                val uvy = y / 2
-                val uIndex = uvy * w + 2 * uvx
-                val vIndex = uIndex + 1
-                uValue = (uvBuffer[uIndex].toInt() and 0xff) - 128
-                vValue = (uvBuffer[vIndex].toInt() and 0xff) - 128
-                r = (yValue + 1.370705f * vValue).toInt()
-                g = (yValue - 0.698001f * vValue - 0.337633f * uValue).toInt()
-                b = (yValue + 1.732446f * uValue).toInt()
-                r = clamp(r.toFloat(), 0f, 255f).toInt()
-                g = clamp(g.toFloat(), 0f, 255f).toInt()
-                b = clamp(b.toFloat(), 0f, 255f).toInt()
-//                argbArray[yIndex] = 255 shl 24 or (r and 255 shl 16) or (g and 255 shl 8) or (b and 255)
-                r_sum += r
-                g_sum += g
-                b_sum += b
-                count++
-            }
-        }
-        val rMean = r_sum.toDouble() / count
-        val gMean = g_sum.toDouble() / count
-        val bMean = b_sum.toDouble() / count
-        displayCounter()
-        val fps = if (sec > 0) {
-            (frameRate.toDouble() / sec).roundToInt()
-        } else {
-            0
-        }
-        Timber.i("RGBMean: $rMean \t $gMean \t $bMean \t TimeStamp: $timeStamp \t FPS: $fps")
-        return CameraReading(rMean, gMean, bMean, timeStamp)
-    }
-
-    private fun yuv420ToByteArrayNaive(image: Image): ByteArray {
-        val yBuffer = image.planes[0].buffer
-        val yData = yBuffer.toByteArray()
-//        if (imgCount < avgFrames) {
-//            val m = yData.indices.maxBy{ yData[it].toInt() and 0xFF } ?: -1
-//            Timber.i("MaxIndex: $m")
-//            maxIndex += m
-//        }
-        val uBuffer = image.planes[1].buffer
-        val uData = uBuffer.toByteArray()
-        val vBuffer = image.planes[2].buffer
-        val vData = vBuffer.toByteArray()
-        Timber.i("ySize: ${yData.size}, uSize: ${uData.size}, vSize: ${vData.size}")
-        return yData + vData + uData
     }
 
     private fun yuv420ToByteArray(image: Image): ByteArray {

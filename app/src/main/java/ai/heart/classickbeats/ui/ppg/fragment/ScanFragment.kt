@@ -138,7 +138,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        pixelAnalyzer = PixelAnalyzer(requireContext(), monitorViewModel)
+        pixelAnalyzer = PixelAnalyzer(requireContext())
 
         fps = monitorViewModel.fps
 
