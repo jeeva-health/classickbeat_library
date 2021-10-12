@@ -58,4 +58,11 @@ interface RecordApiService {
         @Query("start_date") startDate: String,
         @Query("end_date") endDate: String
     ): Response<GraphDataResponse>
+
+    @GET("record/history/")
+    suspend fun getHistoryListData(
+        @Query("pagination") isPaginated: Boolean,
+        @Query("start_date") startDate: String,
+        @Query("end_date") endDate: String
+    )
 }

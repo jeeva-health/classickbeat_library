@@ -98,7 +98,11 @@ class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
             }
             timeRange.text = dateRangeTxt
             graphLabel.text = "$timelineTypeStr (in ${graphData.model.getShortString()})"
-            BarGraph.draw(requireContext(), chart, graphData.valueList)
+            BarGraph.draw(
+                requireContext(),
+                chart,
+                graphData
+            )
         }
     }
 

@@ -115,3 +115,8 @@ fun Date.getDateAddedBy(diff: Int): Date {
     val requestedDateTimestamp = inputDateTimestamp + DateUtils.DAY_IN_MILLIS * diff
     return Date(requestedDateTimestamp)
 }
+
+fun Date.getDayPart(): Int {
+    val dayFormatter = SimpleDateFormat("dd", locale)
+    return dayFormatter.format(this).toInt()
+}
