@@ -41,7 +41,7 @@ object BarGraph {
         //val adjustedData1 = ArrayList<Double>(endDateIndex)
         val adjustedData1 = mutableListOf<Double>()
         var counter = 0
-        for (i in startDateIndex until endDateIndex) {
+        for (i in startDateIndex until (endDateIndex+1)) {
             var dateIndex = 100
             if (counter < dateListRev.size){
                 dateIndex = dateListRev[counter].getDayPart()
