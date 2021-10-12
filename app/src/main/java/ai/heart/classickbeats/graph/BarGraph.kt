@@ -10,6 +10,9 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
+import timber.log.Timber
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 object BarGraph {
@@ -29,17 +32,34 @@ object BarGraph {
 //        val gradientFills = ArrayList<Fill>()
 //        gradientFills.add(Fill(startColor, endColor))
 
+        //Reversing the lists because most recent data is coming first
+        val data1Rev = data1.reversed()
+        val dateListRev = dateList.reversed()
+
         val endDateIndex = endDate.getDayPart()
-        val adjustedData1 = ArrayList<Double>(endDateIndex)
-        for (i in 0..endDateIndex) {
-            val dateIndex = dateList[0].getDayPart() - 1
+        val startDateIndex = startDate.getDayPart()
+        //val adjustedData1 = ArrayList<Double>(endDateIndex)
+        val adjustedData1 = mutableListOf<Double>()
+        var counter = 0
+        for (i in startDateIndex until endDateIndex) {
+            var dateIndex = 100
+            if (counter < dateListRev.size){
+                dateIndex = dateListRev[counter].getDayPart()
+            }
             if (i == dateIndex) {
-                adjustedData1[dateIndex] = data1[0]
-                data1
+                adjustedData1.add(data1Rev[counter])
+                counter += 1
+            }
+            else{
+                adjustedData1.add(0.0)
             }
         }
-
-        data1.forEachIndexed { i, d -> values.add(BarEntry(i.toFloat(), d.toFloat())) }
+        for (i in 0 until dateList.size){
+            Timber.i("Date ${dateListRev[i].getDayPart()}")
+        }
+        Timber.i("data: ${Arrays.toString(data1Rev.toDoubleArray())}")
+        Timber.i("Adjusted data: ${Arrays.toString(adjustedData1.toDoubleArray())}")
+        adjustedData1.forEachIndexed { i, d -> values.add(BarEntry((i+1).toFloat(), d.toFloat())) }
 
         val dataSet: BarDataSet = createDataSet(chart, values)
 
