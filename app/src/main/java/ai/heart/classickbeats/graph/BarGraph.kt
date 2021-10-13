@@ -1,7 +1,10 @@
 package ai.heart.classickbeats.graph
 
 import ai.heart.classickbeats.model.GraphData
+import ai.heart.classickbeats.model.TimelineType
+import ai.heart.classickbeats.shared.util.getDayOfWeek
 import ai.heart.classickbeats.shared.util.getDayPart
+import ai.heart.classickbeats.shared.util.getNumberOfDaysInMonth
 import android.content.Context
 import android.graphics.Color
 import com.github.mikephil.charting.charts.BarChart
@@ -10,7 +13,6 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
-import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -32,34 +34,23 @@ object BarGraph {
 //        val gradientFills = ArrayList<Fill>()
 //        gradientFills.add(Fill(startColor, endColor))
 
-        //Reversing the lists because most recent data is coming first
-        val data1Rev = data1.reversed()
-        val dateListRev = dateList.reversed()
+        val duration = getDuration(timelineType, startDate)
+        val adjustedData = MutableList(duration) { 0.0 }
 
-        val endDateIndex = endDate.getDayPart()
-        val startDateIndex = startDate.getDayPart()
-        //val adjustedData1 = ArrayList<Double>(endDateIndex)
-        val adjustedData1 = mutableListOf<Double>()
-        var counter = 0
-        for (i in startDateIndex until endDateIndex) {
-            var dateIndex = 100
-            if (counter < dateListRev.size){
-                dateIndex = dateListRev[counter].getDayPart()
-            }
-            if (i == dateIndex) {
-                adjustedData1.add(data1Rev[counter])
-                counter += 1
-            }
-            else{
-                adjustedData1.add(0.0)
-            }
+        dateList.forEachIndexed { index, date ->
+            val i = getIndexForDate(timelineType, date)
+            val data = data1[index]
+            adjustedData[i] = data
         }
-        for (i in 0 until dateList.size){
-            Timber.i("Date ${dateListRev[i].getDayPart()}")
+
+        adjustedData.forEachIndexed { i, d ->
+            values.add(
+                BarEntry(
+                    (i + 1).toFloat(),
+                    d.toFloat()
+                )
+            )
         }
-        Timber.i("data: ${Arrays.toString(data1Rev.toDoubleArray())}")
-        Timber.i("Adjusted data: ${Arrays.toString(adjustedData1.toDoubleArray())}")
-        adjustedData1.forEachIndexed { i, d -> values.add(BarEntry((i+1).toFloat(), d.toFloat())) }
 
         val dataSet: BarDataSet = createDataSet(chart, values)
 
@@ -88,4 +79,22 @@ object BarGraph {
         }
         return set
     }
+
+    private fun getDuration(type: TimelineType, startDate: Date): Int =
+        when (type) {
+            TimelineType.Daily -> 1
+            TimelineType.Weekly -> 7
+            TimelineType.Monthly -> startDate.getNumberOfDaysInMonth()
+        }
+
+    private fun getIndexForDate(type: TimelineType, date: Date): Int =
+        when (type) {
+            TimelineType.Daily -> TODO()
+            TimelineType.Weekly -> {
+                date.getDayOfWeek() - 1
+            }
+            TimelineType.Monthly -> {
+                date.getDayPart() - 1
+            }
+        }
 }

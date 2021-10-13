@@ -6,10 +6,7 @@ import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.error
 import ai.heart.classickbeats.shared.result.succeeded
-import ai.heart.classickbeats.shared.util.getDateAddedBy
-import ai.heart.classickbeats.shared.util.toMonthString
-import ai.heart.classickbeats.shared.util.toOrdinalFormattedDateStringWithoutYear
-import ai.heart.classickbeats.shared.util.toWeekString
+import ai.heart.classickbeats.shared.util.*
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -96,7 +93,7 @@ class TimelineViewModel @Inject constructor(
         val diffDays = when (type) {
             TimelineType.Daily -> 1
             TimelineType.Weekly -> 7
-            TimelineType.Monthly -> 30 //TODO(Ritesh: Need to replace with proper number based on month)
+            TimelineType.Monthly -> startDate.getNumberOfDaysInMonth()
         }
         return startDate.getDateAddedBy(diffDays)
     }

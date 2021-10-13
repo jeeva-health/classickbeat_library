@@ -120,3 +120,11 @@ fun Date.getDayPart(): Int {
     val dayFormatter = SimpleDateFormat("dd", locale)
     return dayFormatter.format(this).toInt()
 }
+
+fun Date.getNumberOfDaysInMonth(): Int = 30 //TODO
+
+fun Date.getDayOfWeek(): Int {
+    val c = Calendar.getInstance()
+    c.time = this
+    return c[Calendar.DAY_OF_WEEK]
+}
