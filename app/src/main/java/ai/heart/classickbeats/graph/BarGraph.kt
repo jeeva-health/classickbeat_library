@@ -91,7 +91,7 @@ object BarGraph {
         when (type) {
             TimelineType.Daily -> TODO()
             TimelineType.Weekly -> {
-                date.getDayOfWeek() - 1
+                (date.getDayOfWeek() + 5) % 7
             }
             TimelineType.Monthly -> {
                 date.getDayPart() - 1
