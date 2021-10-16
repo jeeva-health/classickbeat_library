@@ -3,7 +3,7 @@ package ai.heart.classickbeats.model.response
 import ai.heart.classickbeats.model.HistoryRecordNetwork
 import com.squareup.moshi.Json
 
-data class MeasurementResponse(
+data class HistoryListResponse(
     @Json(name = "success")
     val successStatus: Boolean,
     @Json(name = "status_code")

@@ -44,6 +44,7 @@
         <entry key="app/src/main/res/layout/fragment_timeline.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_timeline_graph.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_upgrade_to_pro.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/itemview_graph_history.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/itemview_graph_history_date.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/itemview_history.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/itemview_history_date.xml" value="0.21203703703703702" />

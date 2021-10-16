@@ -6,7 +6,9 @@ import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.error
 import ai.heart.classickbeats.shared.result.succeeded
-import ai.heart.classickbeats.shared.util.*
+import ai.heart.classickbeats.shared.util.getDateAddedBy
+import ai.heart.classickbeats.shared.util.getNumberOfDaysInMonth
+import ai.heart.classickbeats.ui.history.Utils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,12 +40,15 @@ class TimelineViewModel @Inject constructor(
     private val _graphData = MutableLiveData<GraphData>()
     val graphData: LiveData<GraphData> = _graphData
 
+    private val _measurementData = MutableLiveData<List<HistoryItem>>()
+    val measurementData: LiveData<List<HistoryItem>> = _measurementData
+
     fun getTimelineData(type: TimelineType): Flow<PagingData<TimelineItem>> =
         recordRepository.getTimelineData(type).mapLatest { pagingData ->
             pagingData.map { timeline ->
-                convertTimelineToTimelineItem(timeline)
+                Utils.convertTimelineToTimelineItem(timeline)
             }.insertSeparators { before: TimelineItem?, after: TimelineItem? ->
-                insertDateSeparatorIfNeeded(before, after)
+                Utils.insertDateSeparatorIfNeeded(before, after)
             }
         }.cachedIn(viewModelScope)
 
@@ -61,33 +66,30 @@ class TimelineViewModel @Inject constructor(
         }
     }
 
-    private fun convertTimelineToTimelineItem(timeline: Timeline): TimelineItem {
-        return TimelineItem.LogItem(timeline)
-    }
-
-    private fun insertDateSeparatorIfNeeded(
-        leftItem: TimelineItem?,
-        rightItem: TimelineItem?
-    ): TimelineItem? {
-        val leftTimelineItem = (leftItem as TimelineItem.LogItem?)?.timeline
-        val rightTimelineItem = (rightItem as TimelineItem.LogItem?)?.timeline
-        val timelineType = leftTimelineItem?.type ?: rightTimelineItem?.type
-        val leftDate = leftTimelineItem?.date
-        val rightDate = rightTimelineItem?.date
-        return if (leftDate != rightDate && rightDate != null) {
-            val date = getDateStringByTimelineType(timelineType!!, rightDate)
-            TimelineItem.DateItem(date)
-        } else {
-            null
+    fun getMeasurementData(model: LogType, type: TimelineType, startDate: Date) {
+        viewModelScope.launch {
+            val endDate = getEndDate(startDate, type)
+            val response = recordRepository.getHistoryListData(model, startDate, endDate)
+            if (response.succeeded) {
+                val historyItemList = mutableListOf<HistoryItem>()
+                val baseLogList = response.data!!.map {
+                    Utils.convertLogEntityToHistoryItem(it)
+                }
+                for (i in baseLogList.indices) {
+                    val leftItem = baseLogList.getOrNull(i - 1)
+                    val rightItem = baseLogList.getOrNull(i)
+                    val dateItem = Utils.insertDateSeparatorIfNeeded(leftItem, rightItem)
+                    if (dateItem != null) {
+                        historyItemList.add(dateItem)
+                    }
+                    historyItemList.add(baseLogList[i])
+                }
+                _measurementData.value = historyItemList.toList()
+            } else {
+                apiError = response.error
+            }
         }
     }
-
-    private fun getDateStringByTimelineType(timelineType: TimelineType, date: Date): String =
-        when (timelineType) {
-            TimelineType.Daily -> date.toOrdinalFormattedDateStringWithoutYear()
-            TimelineType.Weekly -> date.toWeekString()
-            TimelineType.Monthly -> date.toMonthString()
-        }
 
     private fun getEndDate(startDate: Date, type: TimelineType): Date {
         val diffDays = when (type) {

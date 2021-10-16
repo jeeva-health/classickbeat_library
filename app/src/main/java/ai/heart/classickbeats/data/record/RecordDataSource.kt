@@ -1,10 +1,7 @@
 package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.model.entity.*
-import ai.heart.classickbeats.model.response.GraphDataResponse
-import ai.heart.classickbeats.model.response.LoggingListResponse
-import ai.heart.classickbeats.model.response.ScanDetailResponse
-import ai.heart.classickbeats.model.response.SdnnListResponse
+import ai.heart.classickbeats.model.response.*
 import ai.heart.classickbeats.shared.result.Result
 
 interface RecordDataSource {
@@ -33,4 +30,10 @@ interface RecordDataSource {
         startDate: String,
         endDate: String
     ): Result<List<GraphDataResponse.ResponseData>>
+
+    suspend fun getHistoryListData(
+        model: String,
+        startDate: String,
+        endDate: String
+    ): Result<HistoryListResponse.ResponseData>
 }

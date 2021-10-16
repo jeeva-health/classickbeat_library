@@ -62,7 +62,8 @@ interface RecordApiService {
     @GET("record/history/")
     suspend fun getHistoryListData(
         @Query("pagination") isPaginated: Boolean,
+        @Query("model") model: String,
         @Query("start_date") startDate: String,
         @Query("end_date") endDate: String
-    )
+    ): Response<HistoryListResponse>
 }

@@ -53,8 +53,10 @@ class RecordRepository @Inject constructor(
         val response = recordRemoteDataSource.getLoggingData()
         when (response) {
             is Result.Success -> {
-                val logEntityList = loggingListMapper.map(response.data)
-                return Result.Success(logEntityList)
+                response.data.loggingList.firstOrNull()?.let {
+                    val logEntityList = loggingListMapper.map(it)
+                    return Result.Success(logEntityList)
+                }
             }
             is Result.Error -> Timber.e(response.exception)
             Result.Loading -> throw IllegalStateException("getLoggingData response invalid state")
@@ -187,6 +189,26 @@ class RecordRepository @Inject constructor(
                 timelineMapper.map(timelineEntity)
             }
         }
+    }
+
+    suspend fun getHistoryListData(
+        model: LogType,
+        startDate: Date,
+        endDate: Date
+    ): Result<List<BaseLogEntity>> {
+        val modelStr = model.getStringValue()
+        val startDateStr = startDate.toDateStringNetwork()
+        val endDateStr = endDate.toDateStringNetwork()
+        val response = recordRemoteDataSource.getHistoryListData(modelStr, startDateStr, endDateStr)
+        when (response) {
+            is Result.Success -> {
+                val logEntityList = loggingListMapper.map(response.data.historyList)
+                return Result.Success(logEntityList)
+            }
+            is Result.Error -> Timber.e(response.exception)
+            Result.Loading -> throw IllegalStateException("getHistoryListData response invalid state")
+        }
+        return Result.Error(response.error)
     }
 
     companion object {

@@ -12,7 +12,6 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -24,23 +23,19 @@ object BarGraph {
         chart: BarChart,
         graphData: GraphData
     ) {
-
         val (model, timelineType, isDecimal, data1, data2, dateList, startDate, endDate) = graphData
 
         val values: ArrayList<BarEntry> = ArrayList()
-
-//        val startColor: Int = ContextCompat.getColor(context, R.color.holo_orange_light)
-//        val endColor: Int = ContextCompat.getColor(context, R.color.holo_purple)
-//        val gradientFills = ArrayList<Fill>()
-//        gradientFills.add(Fill(startColor, endColor))
+        val values2: ArrayList<BarEntry> = ArrayList()
 
         val duration = getDuration(timelineType, startDate)
         val adjustedData = MutableList(duration) { 0.0 }
+        val adjustedData2 = MutableList(duration) { 0.0 }
 
         dateList.forEachIndexed { index, date ->
             val i = getIndexForDate(timelineType, date)
-            val data = data1[index]
-            adjustedData[i] = data
+            adjustedData[i] = data1[index]
+            data2.getOrNull(index)?.let { adjustedData2[i] = it }
         }
 
         adjustedData.forEachIndexed { i, d ->
@@ -52,31 +47,66 @@ object BarGraph {
             )
         }
 
-        val dataSet: BarDataSet = createDataSet(chart, values)
+        adjustedData2.forEachIndexed { i, d ->
+            values2.add(
+                BarEntry(
+                    (i + 1).toFloat(),
+                    d.toFloat()
+                )
+            )
+        }
 
-        val dataSets: ArrayList<IBarDataSet> = ArrayList()
-        dataSets.add(dataSet)
-
-        val data = BarData(dataSets)
-        data.barWidth = 0.9f
-
-        chart.data = data
+        setDataSet(chart, values, values2)
     }
 
-    private fun createDataSet(chart: BarChart, values: List<BarEntry>): BarDataSet {
+    private fun setDataSet(
+        chart: BarChart,
+        values: List<BarEntry>,
+        values2: List<BarEntry>
+    ) {
         val set: BarDataSet
+        var set2: BarDataSet? = null
         if (chart.data != null && chart.data.dataSetCount > 0) {
             set = chart.data.getDataSetByIndex(0) as BarDataSet
             set.values = values
-            chart.data.notifyDataChanged()
-            chart.notifyDataSetChanged()
+            if (chart.data.dataSetCount == 2) {
+                set2 = chart.data.getDataSetByIndex(1) as BarDataSet
+                set2.values = values2
+            } else if (values2.isNotEmpty()) {
+
+            }
         } else {
-            set = BarDataSet(values, "DataSet 1")
-            set.color = Color.rgb(255, 0, 0)
-            set.axisDependency = YAxis.AxisDependency.LEFT
-            set.valueTextSize = 10f
-            set.setDrawValues(false)
+            set = createDataSet(
+                values = values,
+                label = "DataSet 1",
+                color = Color.rgb(255, 0, 0)
+            )
+            if (values2.isNotEmpty()) {
+                set2 = createDataSet(
+                    values = values2,
+                    label = "DataSet 2",
+                    color = Color.rgb(0, 255, 0)
+                )
+            }
+            val barData = BarData(set)
+            set2?.let { barData.addDataSet(it) }
+            chart.data = barData
         }
+        chart.data.notifyDataChanged()
+        chart.notifyDataSetChanged()
+    }
+
+    private fun createDataSet(
+        values: List<BarEntry>,
+        label: String,
+        color: Int
+    ): BarDataSet {
+        val set = BarDataSet(values, label)
+        set.color = color
+        set.axisDependency = YAxis.AxisDependency.LEFT
+        set.valueTextSize = 10f
+        set.setDrawValues(false)
+        set.setDrawIcons(false)
         return set
     }
 

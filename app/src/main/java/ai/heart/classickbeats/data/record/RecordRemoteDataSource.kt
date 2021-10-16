@@ -1,10 +1,7 @@
 package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.model.entity.*
-import ai.heart.classickbeats.model.response.GraphDataResponse
-import ai.heart.classickbeats.model.response.LoggingListResponse
-import ai.heart.classickbeats.model.response.ScanDetailResponse
-import ai.heart.classickbeats.model.response.SdnnListResponse
+import ai.heart.classickbeats.model.response.*
 import ai.heart.classickbeats.shared.data.BaseRemoteDataSource
 import ai.heart.classickbeats.shared.network.SessionManager
 import ai.heart.classickbeats.shared.result.Result
@@ -118,6 +115,26 @@ class RecordRemoteDataSource internal constructor(
             safeApiCall { recordApiService.getGraphData(model, type, startDate, endDate) }
         if (response.succeeded) {
             Result.Success(response.data!!.responseData!!)
+        } else {
+            Result.Error(response.error)
+        }
+    }
+
+    override suspend fun getHistoryListData(
+        model: String,
+        startDate: String,
+        endDate: String
+    ): Result<HistoryListResponse.ResponseData> = withContext(ioDispatcher) {
+        val response = safeApiCall {
+            recordApiService.getHistoryListData(
+                isPaginated = false,
+                model = model,
+                startDate = startDate,
+                endDate = endDate
+            )
+        }
+        if (response.succeeded) {
+            Result.Success(response.data!!.responseData)
         } else {
             Result.Error(response.error)
         }

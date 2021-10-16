@@ -3,12 +3,9 @@ package ai.heart.classickbeats.ui.history.fragment
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentTimelineGraphBinding
 import ai.heart.classickbeats.graph.BarGraph
-import ai.heart.classickbeats.model.GraphData
-import ai.heart.classickbeats.model.LogType
-import ai.heart.classickbeats.model.TimelineType
+import ai.heart.classickbeats.model.*
 import ai.heart.classickbeats.model.entity.BaseLogEntity
 import ai.heart.classickbeats.model.entity.PPGEntity
-import ai.heart.classickbeats.model.getShortString
 import ai.heart.classickbeats.shared.util.toDateString
 import ai.heart.classickbeats.shared.util.toMonthString
 import ai.heart.classickbeats.shared.util.toWeekString
@@ -51,6 +48,7 @@ class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
         val (logType, timelineType, startDate) = args
 
         timelineViewModel.getGraphData(logType, timelineType, startDate)
+        timelineViewModel.getMeasurementData(logType, timelineType, startDate)
 
         navController = findNavController()
 
@@ -68,6 +66,9 @@ class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
             xAxis.setDrawGridLines(false)
             legend.isEnabled = false
             setNoDataText("")
+            setDrawBarShadow(false)
+            setPinchZoom(false)
+
             invalidate()
             requestLayout()
         }
@@ -75,8 +76,14 @@ class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
         graphHistoryAdapter = GraphHistoryAdapter(requireContext(), historyItemClickListener)
 
         timelineViewModel.graphData.observe(viewLifecycleOwner, {
-            it?.let { showUI(it) }
+            it?.let { showUI(graphData = it) }
         })
+
+        timelineViewModel.measurementData.observe(viewLifecycleOwner, {
+            it?.let { showUI(listData = it) }
+        })
+
+        binding.dataRv.adapter = graphHistoryAdapter
 
         binding.backArrow.setSafeOnClickListener {
             navController.navigateUp()
@@ -86,23 +93,29 @@ class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
     override fun onResume() {
         super.onResume()
 
-        timelineViewModel.graphData.value?.let { showUI(it) }
+        timelineViewModel.graphData.value?.let { showUI(graphData = it) }
     }
 
-    private fun showUI(graphData: GraphData) {
+    private fun showUI(graphData: GraphData? = null, listData: List<HistoryItem>? = null) {
         binding.apply {
-            val (dateRangeTxt, timelineTypeStr) = when (graphData.timelineType) {
-                TimelineType.Daily -> Pair(graphData.startDate.toDateString(), "DAILY")
-                TimelineType.Weekly -> Pair(graphData.startDate.toWeekString(), "WEEKLY")
-                TimelineType.Monthly -> Pair(graphData.startDate.toMonthString(), "MONTHLY")
+            graphData?.let {
+                val (dateRangeTxt, timelineTypeStr) = when (it.timelineType) {
+                    TimelineType.Daily -> Pair(it.startDate.toDateString(), "DAILY")
+                    TimelineType.Weekly -> Pair(it.startDate.toWeekString(), "WEEKLY")
+                    TimelineType.Monthly -> Pair(it.startDate.toMonthString(), "MONTHLY")
+                }
+                timeRange.text = dateRangeTxt
+                graphLabel.text = "$timelineTypeStr (in ${it.model.getShortString()})"
+                BarGraph.draw(
+                    requireContext(),
+                    chart,
+                    it
+                )
             }
-            timeRange.text = dateRangeTxt
-            graphLabel.text = "$timelineTypeStr (in ${graphData.model.getShortString()})"
-            BarGraph.draw(
-                requireContext(),
-                chart,
-                graphData
-            )
+
+            listData?.let {
+                graphHistoryAdapter.submitList(it)
+            }
         }
     }
 

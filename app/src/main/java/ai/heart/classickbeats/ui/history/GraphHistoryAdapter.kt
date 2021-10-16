@@ -7,6 +7,7 @@ import ai.heart.classickbeats.model.HistoryItem
 import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.util.toTimeString
+import ai.heart.classickbeats.shared.util.toTimeString2
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import android.content.Context
 import android.content.res.ColorStateList
@@ -14,13 +15,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class GraphHistoryAdapter constructor(
     private val context: Context,
     private val itemClickListener: (BaseLogEntity) -> Unit
 ) :
-    PagingDataAdapter<HistoryItem, RecyclerView.ViewHolder>(HistoryItemDiffCallback()) {
+    ListAdapter<HistoryItem, RecyclerView.ViewHolder>(HistoryItemDiffCallback()) {
 
     companion object {
         const val LOG_ITEM = 0
@@ -77,7 +79,7 @@ class GraphHistoryAdapter constructor(
                     val ppgEntity = itemData as PPGEntity
                     value = ppgEntity.hr?.toInt().toString()
                     unit = context.getString(R.string.bpm)
-                    time = itemData.timeStamp?.toTimeString()
+                    time = itemData.timeStamp?.toTimeString2()
                     binding.clickArrow.visibility = View.VISIBLE
                     binding.stressTag.visibility = View.VISIBLE
                     when (ppgEntity.stressLevel ?: 1) {
