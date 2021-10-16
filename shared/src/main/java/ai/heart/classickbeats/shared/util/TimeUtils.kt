@@ -121,7 +121,7 @@ fun Date.getDayPart(): Int {
     return dayFormatter.format(this).toInt()
 }
 
-fun Date.getNumberOfDaysInMonth(): Int = 30 //TODO
+fun Date.getNumberOfDaysInMonth(): Int = 31 //TODO
 
 fun Date.getDayOfWeek(): Int {
     val c = Calendar.getInstance()

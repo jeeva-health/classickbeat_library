@@ -64,6 +64,8 @@ object BarGraph {
         values: List<BarEntry>,
         values2: List<BarEntry>
     ) {
+        chart.invalidate()
+        chart.requestLayout()
         val set: BarDataSet
         var set2: BarDataSet? = null
         if (chart.data != null && chart.data.dataSetCount > 0) {

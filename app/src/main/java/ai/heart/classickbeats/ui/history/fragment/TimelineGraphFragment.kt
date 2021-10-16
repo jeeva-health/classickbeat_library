@@ -68,7 +68,7 @@ class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
             setNoDataText("")
             setDrawBarShadow(false)
             setPinchZoom(false)
-
+            isDoubleTapToZoomEnabled = false
             invalidate()
             requestLayout()
         }
