@@ -77,6 +77,16 @@ fun String.toTimeString2(): String? {
     return date?.let { outputFormat.format(date) }
 }
 
+fun String.toDateWithSeconds(): Date? {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", locale)
+    return inputFormat.parse(this)
+}
+
+fun String.toDateWithMilli(): Date? {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale)
+    return inputFormat.parse(this)
+}
+
 fun Date.toTimeString(): String {
     val timeFormat = SimpleDateFormat("h:mm a", locale)
     return timeFormat.format(this)
@@ -118,6 +128,11 @@ fun Date.getDateAddedBy(diff: Int): Date {
 
 fun Date.getDayPart(): Int {
     val dayFormatter = SimpleDateFormat("dd", locale)
+    return dayFormatter.format(this).toInt()
+}
+
+fun Date.getHourPart(): Int {
+    val dayFormatter = SimpleDateFormat("HH", locale)
     return dayFormatter.format(this).toInt()
 }
 

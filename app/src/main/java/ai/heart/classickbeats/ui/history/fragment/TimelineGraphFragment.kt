@@ -3,6 +3,7 @@ package ai.heart.classickbeats.ui.history.fragment
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentTimelineGraphBinding
 import ai.heart.classickbeats.graph.BarGraph
+import ai.heart.classickbeats.graph.ScatterPlotGraph
 import ai.heart.classickbeats.model.*
 import ai.heart.classickbeats.model.entity.BaseLogEntity
 import ai.heart.classickbeats.model.entity.PPGEntity
@@ -22,6 +23,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.ExperimentalPagingApi
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.ScatterChart
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -42,17 +44,30 @@ class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
 
     private lateinit var barChart: BarChart
 
+    private lateinit var scatterChart: ScatterChart
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val (logType, timelineType, startDate) = args
+
+        when (timelineType) {
+            TimelineType.Daily -> {
+                binding.barChart.visibility = View.GONE
+                binding.scatterChart.visibility = View.VISIBLE
+            }
+            else -> {
+                binding.barChart.visibility = View.VISIBLE
+                binding.scatterChart.visibility = View.GONE
+            }
+        }
 
         timelineViewModel.getGraphData(logType, timelineType, startDate)
         timelineViewModel.getMeasurementData(logType, timelineType, startDate)
 
         navController = findNavController()
 
-        barChart = binding.chart.apply {
+        barChart = binding.barChart.apply {
             setDrawGridBackground(false)
             description.isEnabled = false
             axisLeft.setDrawLabels(true)
@@ -67,6 +82,28 @@ class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
             legend.isEnabled = false
             setNoDataText("")
             setDrawBarShadow(false)
+            setPinchZoom(false)
+            isDoubleTapToZoomEnabled = false
+            invalidate()
+            requestLayout()
+        }
+
+        scatterChart = binding.scatterChart.apply {
+            setDrawGridBackground(false)
+            description.isEnabled = false
+            axisLeft.setDrawLabels(true)
+            axisLeft.setDrawAxisLine(true)
+            axisLeft.setDrawGridLines(false)
+            axisRight.setDrawLabels(false)
+            axisRight.setDrawAxisLine(false)
+            axisRight.setDrawGridLines(false)
+            xAxis.axisMinimum = 0.0f
+            xAxis.axisMaximum = 24.0f
+            xAxis.setDrawLabels(true)
+            xAxis.setDrawAxisLine(true)
+            xAxis.setDrawGridLines(false)
+            legend.isEnabled = false
+            setNoDataText("")
             setPinchZoom(false)
             isDoubleTapToZoomEnabled = false
             invalidate()
@@ -93,6 +130,8 @@ class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
     override fun onResume() {
         super.onResume()
 
+        val (_, timelineType, _) = args
+
         timelineViewModel.graphData.value?.let { showUI(graphData = it) }
     }
 
@@ -106,11 +145,11 @@ class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
                 }
                 timeRange.text = dateRangeTxt
                 graphLabel.text = "$timelineTypeStr (in ${it.model.getShortString()})"
-                BarGraph.draw(
-                    requireContext(),
-                    chart,
-                    it
-                )
+                if (it.timelineType == TimelineType.Daily) {
+                    ScatterPlotGraph.draw(requireContext(), scatterChart, it)
+                } else {
+                    BarGraph.draw(requireContext(), barChart, it)
+                }
             }
 
             listData?.let {

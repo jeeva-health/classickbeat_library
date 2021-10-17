@@ -81,10 +81,18 @@
                 tools:text="Weekly (in BPM)" />
 
             <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/chart"
+                android:id="@+id/bar_chart"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginTop="32dp" />
+                android:layout_marginTop="32dp"
+                android:visibility="visible" />
+
+            <com.github.mikephil.charting.charts.ScatterChart
+                android:id="@+id/scatter_chart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="32dp"
+                android:visibility="gone" />
 
         </androidx.cardview.widget.CardView>
 

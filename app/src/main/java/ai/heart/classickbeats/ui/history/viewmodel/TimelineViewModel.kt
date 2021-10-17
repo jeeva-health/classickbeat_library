@@ -2,12 +2,15 @@ package ai.heart.classickbeats.ui.history.viewmodel
 
 import ai.heart.classickbeats.data.record.RecordRepository
 import ai.heart.classickbeats.model.*
+import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.error
 import ai.heart.classickbeats.shared.result.succeeded
 import ai.heart.classickbeats.shared.util.getDateAddedBy
 import ai.heart.classickbeats.shared.util.getNumberOfDaysInMonth
+import ai.heart.classickbeats.shared.util.toDateWithMilli
+import ai.heart.classickbeats.shared.util.toDateWithSeconds
 import ai.heart.classickbeats.ui.history.Utils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -55,12 +58,27 @@ class TimelineViewModel @Inject constructor(
     fun getGraphData(model: LogType, type: TimelineType, startDate: Date) {
         viewModelScope.launch {
             setShowLoadingTrue()
-            val endDate = getEndDate(startDate, type)
-            val response = recordRepository.getGraphData(model, type, startDate, endDate)
-            if (response.succeeded) {
-                _graphData.value = response.data
+            if (type == TimelineType.Daily) {
+                val response = recordRepository.getHistoryListData(model, startDate, startDate)
+                if (response.succeeded) {
+                    _graphData.value = convertBaseLogEntityToGraphData(
+                        model = model,
+                        timelineType = type,
+                        input = response.data!!,
+                        startDate = startDate,
+                        endDate = startDate
+                    )
+                } else {
+                    apiError = response.error
+                }
             } else {
-                apiError = response.error
+                val endDate = getEndDate(startDate, type)
+                val response = recordRepository.getGraphData(model, type, startDate, endDate)
+                if (response.succeeded) {
+                    _graphData.value = response.data
+                } else {
+                    apiError = response.error
+                }
             }
             setShowLoadingFalse()
         }
@@ -98,5 +116,60 @@ class TimelineViewModel @Inject constructor(
             TimelineType.Monthly -> startDate.getNumberOfDaysInMonth()
         }
         return startDate.getDateAddedBy(diffDays)
+    }
+
+    private fun convertBaseLogEntityToGraphData(
+        model: LogType,
+        timelineType: TimelineType,
+        input: List<BaseLogEntity>,
+        startDate: Date,
+        endDate: Date
+    ): GraphData {
+        val valueList1 = mutableListOf<Double>()
+        val valueList2 = mutableListOf<Double>()
+        val dateList = mutableListOf<Date>()
+        input.forEach { baseLogEntity ->
+            val (value1, value2, timeStamp) = when (baseLogEntity.type) {
+                LogType.BloodPressure -> Triple(
+                    (baseLogEntity as BpLogEntity).systolic,
+                    baseLogEntity.diastolic,
+                    baseLogEntity.timeStamp?.toDateWithSeconds()
+                )
+                LogType.GlucoseLevel -> Triple(
+                    (baseLogEntity as GlucoseLogEntity).glucoseLevel,
+                    null,
+                    baseLogEntity.timeStamp?.toDateWithSeconds()
+                )
+                LogType.WaterIntake -> Triple(
+                    (baseLogEntity as WaterLogEntity).quantity,
+                    null,
+                    baseLogEntity.timeStamp?.toDateWithSeconds()
+                )
+                LogType.Weight -> Triple(
+                    (baseLogEntity as WeightLogEntity).weight,
+                    null,
+                    baseLogEntity.timeStamp?.toDateWithSeconds()
+                )
+                LogType.PPG -> Triple(
+                    (baseLogEntity as PPGEntity).hr,
+                    baseLogEntity.sdnn,
+                    baseLogEntity.timeStamp?.toDateWithMilli()
+                )
+                else -> throw Exception("LogType not handled")
+            }
+            value1?.let { valueList1.add(it.toDouble()) }
+            value2?.let { valueList2.add(it.toDouble()) }
+            timeStamp?.let { dateList.add(it) }
+        }
+        return GraphData(
+            model = model,
+            timelineType = timelineType,
+            isDecimal = true,
+            valueList = valueList1,
+            valueList2 = valueList2,
+            dateList = dateList,
+            startDate = startDate,
+            endDate = endDate
+        )
     }
 }
