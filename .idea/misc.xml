@@ -32,7 +32,9 @@
         <entry key="app/src/main/res/layout/fragment_how_jeeva_works.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_hrv_info_bottom_sheet.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_invite_friend.xml" value="0.29583333333333334" />
+        <entry key="app/src/main/res/layout/fragment_log_glucose.xml" value="0.17037037037037037" />
         <entry key="app/src/main/res/layout/fragment_log_water_intake.xml" value="0.21203703703703702" />
+        <entry key="app/src/main/res/layout/fragment_log_weight.xml" value="0.17037037037037037" />
         <entry key="app/src/main/res/layout/fragment_personal_details.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/fragment_profile_home.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_profile_settings.xml" value="0.1" />
