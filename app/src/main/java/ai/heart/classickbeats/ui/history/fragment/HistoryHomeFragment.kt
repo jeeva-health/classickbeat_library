@@ -6,8 +6,8 @@ import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.entity.BaseLogEntity
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.result.EventObserver
-import ai.heart.classickbeats.ui.history.HistoryAdapter
-import ai.heart.classickbeats.ui.history.viewmodel.HistoryViewModel
+import ai.heart.classickbeats.ui.history.TimelineAdapter
+import ai.heart.classickbeats.ui.history.viewmodel.TimelineViewModel
 import ai.heart.classickbeats.utils.hideLoadingBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.showLoadingBar
@@ -32,21 +32,21 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
 
     private val binding by viewBinding(FragmentHistoryHomeBinding::bind)
 
-    private val historyViewModel: HistoryViewModel by activityViewModels()
+    private val historyViewModel: TimelineViewModel by activityViewModels()
 
     private lateinit var navController: NavController
 
-    private lateinit var historyAdapter: HistoryAdapter
+    private lateinit var timelineAdapter: TimelineAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
 
-        historyAdapter = HistoryAdapter(requireContext(), historyItemClickListener)
+        timelineAdapter = TimelineAdapter(requireContext(), historyItemClickListener)
 
         binding.apply {
-            historyRv.adapter = historyAdapter
+            historyRv.adapter = timelineAdapter
 
             seeTimeline.setSafeOnClickListener {
                 navigateToTimelineFragment()
@@ -67,7 +67,7 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
 
         lifecycleScope.launchWhenResumed {
             historyViewModel.getHistoryData().collectLatest { pagingData ->
-                historyAdapter.submitData(pagingData)
+                timelineAdapter.submitData(pagingData)
             }
         }
     }

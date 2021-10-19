@@ -10,20 +10,20 @@ import java.util.Date
 
 object Utils {
 
-    fun convertLogEntityToHistoryItem(baseLogEntity: BaseLogEntity): HistoryItem {
-        return HistoryItem.LogItem(baseLogEntity)
+    fun convertLogEntityToHistoryItem(baseLogEntity: BaseLogEntity): TimelineItem {
+        return TimelineItem.LogItem(baseLogEntity)
     }
 
-    fun convertTimelineToTimelineItem(timeline: Timeline): TimelineItem {
-        return TimelineItem.LogItem(timeline)
+    fun convertTimelineToTimelineItem(timeline: Timeline): HistoryItem {
+        return HistoryItem.LogItem(timeline)
     }
 
     fun insertDateSeparatorIfNeeded(
-        leftEntity: HistoryItem?,
-        rightEntity: HistoryItem?
-    ): HistoryItem? {
-        val leftLogEntity = (leftEntity as HistoryItem.LogItem?)?.logEntity
-        val rightLogEntity = (rightEntity as HistoryItem.LogItem?)?.logEntity
+        leftEntity: TimelineItem?,
+        rightEntity: TimelineItem?
+    ): TimelineItem? {
+        val leftLogEntity = (leftEntity as TimelineItem.LogItem?)?.logEntity
+        val rightLogEntity = (rightEntity as TimelineItem.LogItem?)?.logEntity
         val leftDate: String? = when (leftLogEntity?.type) {
             LogType.BloodPressure -> (leftLogEntity as BpLogEntity).timeStamp
             LogType.GlucoseLevel -> (leftLogEntity as GlucoseLogEntity).timeStamp
@@ -43,24 +43,24 @@ object Utils {
             else -> null
         }?.toDateStringWithoutTime()
         return if (leftDate != rightDate && rightDate != null) {
-            HistoryItem.DateItem(rightDate)
+            TimelineItem.DateItem(rightDate)
         } else {
             null
         }
     }
 
     fun insertDateSeparatorIfNeeded(
-        leftItem: TimelineItem?,
-        rightItem: TimelineItem?
-    ): TimelineItem? {
-        val leftTimelineItem = (leftItem as TimelineItem.LogItem?)?.timeline
-        val rightTimelineItem = (rightItem as TimelineItem.LogItem?)?.timeline
+        leftItem: HistoryItem?,
+        rightItem: HistoryItem?
+    ): HistoryItem? {
+        val leftTimelineItem = (leftItem as HistoryItem.LogItem?)?.timeline
+        val rightTimelineItem = (rightItem as HistoryItem.LogItem?)?.timeline
         val timelineType = leftTimelineItem?.type ?: rightTimelineItem?.type
         val leftDate = leftTimelineItem?.date
         val rightDate = rightTimelineItem?.date
         return if (leftDate != rightDate && rightDate != null) {
             val date = getDateStringByTimelineType(timelineType!!, rightDate)
-            TimelineItem.DateItem(date)
+            HistoryItem.DateItem(date)
         } else {
             null
         }

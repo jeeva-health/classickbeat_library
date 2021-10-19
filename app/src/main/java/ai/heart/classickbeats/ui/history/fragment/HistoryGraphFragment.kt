@@ -1,7 +1,7 @@
 package ai.heart.classickbeats.ui.history.fragment
 
 import ai.heart.classickbeats.R
-import ai.heart.classickbeats.databinding.FragmentTimelineGraphBinding
+import ai.heart.classickbeats.databinding.FragmentHistoryGraphBinding
 import ai.heart.classickbeats.graph.BarGraph
 import ai.heart.classickbeats.graph.ScatterPlotGraph
 import ai.heart.classickbeats.model.*
@@ -11,7 +11,7 @@ import ai.heart.classickbeats.shared.util.toDateString
 import ai.heart.classickbeats.shared.util.toMonthString
 import ai.heart.classickbeats.shared.util.toWeekString
 import ai.heart.classickbeats.ui.history.GraphHistoryAdapter
-import ai.heart.classickbeats.ui.history.viewmodel.TimelineViewModel
+import ai.heart.classickbeats.ui.history.viewmodel.HistoryViewModel
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
@@ -30,13 +30,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
+class HistoryGraphFragment : Fragment(R.layout.fragment_history_graph) {
 
-    private val binding by viewBinding(FragmentTimelineGraphBinding::bind)
+    private val binding by viewBinding(FragmentHistoryGraphBinding::bind)
 
-    private val timelineViewModel: TimelineViewModel by activityViewModels()
+    private val historyViewModel: HistoryViewModel by activityViewModels()
 
-    private val args: TimelineGraphFragmentArgs by navArgs()
+    private val args: HistoryGraphFragmentArgs by navArgs()
 
     private lateinit var navController: NavController
 
@@ -62,8 +62,8 @@ class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
             }
         }
 
-        timelineViewModel.getGraphData(logType, timelineType, startDate)
-        timelineViewModel.getMeasurementData(logType, timelineType, startDate)
+        historyViewModel.getGraphData(logType, timelineType, startDate)
+        historyViewModel.getMeasurementData(logType, timelineType, startDate)
 
         navController = findNavController()
 
@@ -112,11 +112,11 @@ class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
 
         graphHistoryAdapter = GraphHistoryAdapter(requireContext(), historyItemClickListener)
 
-        timelineViewModel.graphData.observe(viewLifecycleOwner, {
+        historyViewModel.graphData.observe(viewLifecycleOwner, {
             it?.let { showUI(graphData = it) }
         })
 
-        timelineViewModel.measurementData.observe(viewLifecycleOwner, {
+        historyViewModel.measurementData.observe(viewLifecycleOwner, {
             it?.let { showUI(listData = it) }
         })
 
@@ -132,10 +132,10 @@ class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
 
         val (_, timelineType, _) = args
 
-        timelineViewModel.graphData.value?.let { showUI(graphData = it) }
+        historyViewModel.graphData.value?.let { showUI(graphData = it) }
     }
 
-    private fun showUI(graphData: GraphData? = null, listData: List<HistoryItem>? = null) {
+    private fun showUI(graphData: GraphData? = null, listData: List<TimelineItem>? = null) {
         binding.apply {
             graphData?.let {
                 val (dateRangeTxt, timelineTypeStr) = when (it.timelineType) {
@@ -172,7 +172,7 @@ class TimelineGraphFragment : Fragment(R.layout.fragment_timeline_graph) {
 
     private fun navigateToScanResultFragment(id: Long) {
         val action =
-            TimelineGraphFragmentDirections.actionTimelineGraphFragmentToScanResultFragment(
+            HistoryGraphFragmentDirections.actionHistoryGraphFragmentToScanResultFragment(
                 showingHistory = true,
                 scanId = id
             )

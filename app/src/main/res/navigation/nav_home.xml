@@ -62,7 +62,7 @@
             app:destination="@id/scanResultFragment" />
         <action
             android:id="@+id/action_historyHomeFragment_to_timelineFragment"
-            app:destination="@id/timelineFragment" />
+            app:destination="@id/historyFragment" />
     </fragment>
 
     <fragment
@@ -233,7 +233,7 @@
         android:id="@+id/reminderListFragment"
         android:name="ai.heart.classickbeats.ui.profile.ReminderListFragment"
         android:label="fragment_reminder_list"
-        tools:layout="@layout/fragment_reminder_list" >
+        tools:layout="@layout/fragment_reminder_list">
         <action
             android:id="@+id/action_reminderListFragment_to_addReminderFragment"
             app:destination="@id/addReminderFragment" />
@@ -244,23 +244,24 @@
         android:name="ai.heart.classickbeats.ui.profile.AddReminderFragment"
         android:label="fragment_add_reminder"
         tools:layout="@layout/fragment_add_reminder" />
+
     <fragment
-        android:id="@+id/timelineFragment"
-        android:name="ai.heart.classickbeats.ui.history.fragment.TimelineFragment"
-        android:label="fragment_timeline"
-        tools:layout="@layout/fragment_timeline" >
+        android:id="@+id/historyFragment"
+        android:name="ai.heart.classickbeats.ui.history.fragment.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history">
         <action
-            android:id="@+id/action_timelineFragment_to_timelineGraphFragment"
-            app:destination="@id/timelineGraphFragment" />
+            android:id="@+id/action_historyFragment_to_historyGraphFragment"
+            app:destination="@id/historyGraphFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/timelineGraphFragment"
-        android:name="ai.heart.classickbeats.ui.history.fragment.TimelineGraphFragment"
-        android:label="fragment_timeline_graph"
-        tools:layout="@layout/fragment_timeline_graph" >
+        android:id="@+id/historyGraphFragment"
+        android:name="ai.heart.classickbeats.ui.history.fragment.HistoryGraphFragment"
+        android:label="fragment_history_graph"
+        tools:layout="@layout/fragment_history_graph">
         <action
-            android:id="@+id/action_timelineGraphFragment_to_scanResultFragment"
+            android:id="@+id/action_historyGraphFragment_to_scanResultFragment"
             app:destination="@id/scanResultFragment" />
         <argument
             android:name="log_type"

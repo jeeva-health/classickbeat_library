@@ -3,7 +3,7 @@ package ai.heart.classickbeats.ui.history
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.ItemviewGraphHistoryBinding
 import ai.heart.classickbeats.databinding.ItemviewGraphHistoryDateBinding
-import ai.heart.classickbeats.model.HistoryItem
+import ai.heart.classickbeats.model.TimelineItem
 import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.util.toTimeString
@@ -14,7 +14,6 @@ import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
@@ -22,7 +21,7 @@ class GraphHistoryAdapter constructor(
     private val context: Context,
     private val itemClickListener: (BaseLogEntity) -> Unit
 ) :
-    ListAdapter<HistoryItem, RecyclerView.ViewHolder>(HistoryItemDiffCallback()) {
+    ListAdapter<TimelineItem, RecyclerView.ViewHolder>(HistoryItemDiffCallback()) {
 
     companion object {
         const val LOG_ITEM = 0
@@ -147,20 +146,20 @@ class GraphHistoryAdapter constructor(
         val item = getItem(position)
         item?.let {
             when (it) {
-                is HistoryItem.LogItem -> (holder as HistoryItemViewHolder).bind(
+                is TimelineItem.LogItem -> (holder as HistoryItemViewHolder).bind(
                     context,
                     it.logEntity,
                     itemClickListener
                 )
-                is HistoryItem.DateItem -> (holder as DateItemViewHolder).bind(it.date)
+                is TimelineItem.DateItem -> (holder as DateItemViewHolder).bind(it.date)
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is HistoryItem.LogItem -> LOG_ITEM
-            is HistoryItem.DateItem -> DATE_ITEM
+            is TimelineItem.LogItem -> LOG_ITEM
+            is TimelineItem.DateItem -> DATE_ITEM
             null -> throw UnsupportedOperationException("Unknown view")
         }
     }

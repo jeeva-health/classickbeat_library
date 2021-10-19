@@ -1,13 +1,13 @@
 package ai.heart.classickbeats.ui.history.fragment
 
 import ai.heart.classickbeats.R
-import ai.heart.classickbeats.databinding.FragmentTimelineBinding
+import ai.heart.classickbeats.databinding.FragmentHistoryBinding
 import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.Timeline
 import ai.heart.classickbeats.model.TimelineType
 import ai.heart.classickbeats.shared.result.EventObserver
-import ai.heart.classickbeats.ui.history.TimelineAdapter
-import ai.heart.classickbeats.ui.history.viewmodel.TimelineViewModel
+import ai.heart.classickbeats.ui.history.HistoryAdapter
+import ai.heart.classickbeats.ui.history.viewmodel.HistoryViewModel
 import ai.heart.classickbeats.utils.hideLoadingBar
 import ai.heart.classickbeats.utils.showLoadingBar
 import ai.heart.classickbeats.utils.viewBinding
@@ -29,15 +29,15 @@ import java.util.*
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class TimelineFragment : Fragment(R.layout.fragment_timeline) {
+class HistoryFragment : Fragment(R.layout.fragment_history) {
 
-    private val binding by viewBinding(FragmentTimelineBinding::bind)
+    private val binding by viewBinding(FragmentHistoryBinding::bind)
 
-    private val timelineViewModel: TimelineViewModel by activityViewModels()
+    private val historyViewModel: HistoryViewModel by activityViewModels()
 
     private lateinit var navController: NavController
 
-    private lateinit var timelineAdapter: TimelineAdapter
+    private lateinit var historyAdapter: HistoryAdapter
 
     private var selectedTimelineType: TimelineType = TimelineType.Daily
 
@@ -48,10 +48,10 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
 
         navController = findNavController()
 
-        timelineAdapter = TimelineAdapter(requireContext(), timelineItemClickListener)
+        historyAdapter = HistoryAdapter(requireContext(), timelineItemClickListener)
 
         binding.apply {
-            historyRv.adapter = timelineAdapter
+            historyRv.adapter = historyAdapter
             dailyCategory.isSelected = true
             arrayOf(dailyCategory, weeklyCategory, monthlyCategory).forEach { category ->
                 category.setOnClickListener {
@@ -77,16 +77,16 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
                     }
                     job?.cancel()
                     job = lifecycleScope.launch {
-                        timelineViewModel.getTimelineData(selectedTimelineType)
+                        historyViewModel.getTimelineData(selectedTimelineType)
                             .collectLatest { pagingData ->
-                                timelineAdapter.submitData(pagingData)
+                                historyAdapter.submitData(pagingData)
                             }
                     }
                 }
             }
         }
 
-        timelineViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {
+        historyViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {
             if (it) {
                 showLoadingBar()
             } else {
@@ -100,8 +100,8 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
 
         job?.cancel()
         job = lifecycleScope.launchWhenResumed {
-            timelineViewModel.getTimelineData(selectedTimelineType).collectLatest { pagingData ->
-                timelineAdapter.submitData(pagingData)
+            historyViewModel.getTimelineData(selectedTimelineType).collectLatest { pagingData ->
+                historyAdapter.submitData(pagingData)
             }
         }
     }
@@ -118,7 +118,7 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
         timelineType: TimelineType,
         startDate: Date
     ) {
-        val action = TimelineFragmentDirections.actionTimelineFragmentToTimelineGraphFragment(
+        val action = HistoryFragmentDirections.actionHistoryFragmentToHistoryGraphFragment(
             logType = model,
             dataType = timelineType,
             startDate = startDate
