@@ -52,7 +52,7 @@ class HistoryGraphFragment : Fragment(R.layout.fragment_history_graph) {
         val (logType, timelineType, startDate) = args
 
         when (timelineType) {
-            TimelineType.Daily -> {
+            HistoryType.Daily -> {
                 binding.barChart.visibility = View.GONE
                 binding.scatterChart.visibility = View.VISIBLE
             }
@@ -139,13 +139,13 @@ class HistoryGraphFragment : Fragment(R.layout.fragment_history_graph) {
         binding.apply {
             graphData?.let {
                 val (dateRangeTxt, timelineTypeStr) = when (it.timelineType) {
-                    TimelineType.Daily -> Pair(it.startDate.toDateString(), "DAILY")
-                    TimelineType.Weekly -> Pair(it.startDate.toWeekString(), "WEEKLY")
-                    TimelineType.Monthly -> Pair(it.startDate.toMonthString(), "MONTHLY")
+                    HistoryType.Daily -> Pair(it.startDate.toDateString(), "DAILY")
+                    HistoryType.Weekly -> Pair(it.startDate.toWeekString(), "WEEKLY")
+                    HistoryType.Monthly -> Pair(it.startDate.toMonthString(), "MONTHLY")
                 }
                 timeRange.text = dateRangeTxt
                 graphLabel.text = "$timelineTypeStr (in ${it.model.getShortString()})"
-                if (it.timelineType == TimelineType.Daily) {
+                if (it.timelineType == HistoryType.Daily) {
                     ScatterPlotGraph.draw(requireContext(), scatterChart, it)
                 } else {
                     BarGraph.draw(requireContext(), barChart, it)

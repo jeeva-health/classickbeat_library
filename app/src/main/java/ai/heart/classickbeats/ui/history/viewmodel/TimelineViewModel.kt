@@ -30,10 +30,10 @@ class TimelineViewModel @Inject constructor(
     private fun setShowLoadingTrue() = _showLoading.postValue(Event(true))
     private fun setShowLoadingFalse() = _showLoading.postValue(Event(false))
 
-    fun getHistoryData(): Flow<PagingData<TimelineItem>> {
+    fun getTimelineData(): Flow<PagingData<TimelineItem>> {
         return recordRepository.getHistoryData().map { pagingData ->
             pagingData.map { baseLogEntity ->
-                Utils.convertLogEntityToHistoryItem(baseLogEntity)
+                Utils.convertLogEntityToTimelineItem(baseLogEntity)
             }.insertSeparators { before: TimelineItem?, after: TimelineItem? ->
                 Utils.insertDateSeparatorIfNeeded(before, after)
             }

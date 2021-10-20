@@ -2,7 +2,7 @@ package ai.heart.classickbeats.model
 
 import com.squareup.moshi.Json
 
-data class HistoryRecordNetwork(
+data class TimelineEntityNetwork(
     @Json(name = "pk")
     val id: Long,
     val fields: Fields,

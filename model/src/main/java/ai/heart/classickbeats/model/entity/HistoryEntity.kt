@@ -1,13 +1,13 @@
 package ai.heart.classickbeats.model.entity
 
-import ai.heart.classickbeats.model.TimelineType
+import ai.heart.classickbeats.model.HistoryType
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
-@Entity(tableName = "timeline")
-data class TimelineEntity(
+@Entity(tableName = "history_record")
+data class HistoryEntity(
     @Json(name = "date")
     val date: String?,
     @Json(name = "week")
@@ -50,6 +50,6 @@ data class TimelineEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 
-    @ColumnInfo(name = "timeline_type")
-    var type: String = TimelineType.Daily.value
+    @ColumnInfo(name = "history_type")
+    var type: String = HistoryType.Daily.value
 }

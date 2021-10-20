@@ -12,7 +12,7 @@ interface HistoryRemoteKeyDao {
     suspend fun insertAll(remoteKey: List<HistoryRemoteKey>)
 
     @Query("SELECT * FROM history_remote_keys WHERE historyId = :historyId")
-    suspend fun remoteKeysHistoryId(historyId: Long): HistoryRemoteKey?
+    suspend fun remoteKeysHistoryId(historyId: Int): HistoryRemoteKey?
 
     @Query("DELETE FROM history_remote_keys")
     suspend fun clearRemoteKeys()

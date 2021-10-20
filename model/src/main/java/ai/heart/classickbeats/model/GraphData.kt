@@ -4,7 +4,7 @@ import java.util.Date
 
 data class GraphData(
     val model: LogType,
-    val timelineType: TimelineType,
+    val timelineType: HistoryType,
     val isDecimal: Boolean = true,
     val valueList: List<Double>,
     val valueList2: List<Double>,

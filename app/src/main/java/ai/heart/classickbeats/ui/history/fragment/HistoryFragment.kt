@@ -4,7 +4,7 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentHistoryBinding
 import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.Timeline
-import ai.heart.classickbeats.model.TimelineType
+import ai.heart.classickbeats.model.HistoryType
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.history.HistoryAdapter
 import ai.heart.classickbeats.ui.history.viewmodel.HistoryViewModel
@@ -39,7 +39,7 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
 
     private lateinit var historyAdapter: HistoryAdapter
 
-    private var selectedTimelineType: TimelineType = TimelineType.Daily
+    private var selectedTimelineType: HistoryType = HistoryType.Daily
 
     private var job: Job? = null
 
@@ -63,21 +63,21 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
 
                     selectedTimelineType = when (category.id) {
                         dailyCategory.id -> {
-                            TimelineType.Daily
+                            HistoryType.Daily
                         }
                         weeklyCategory.id -> {
-                            TimelineType.Weekly
+                            HistoryType.Weekly
                         }
                         monthlyCategory.id -> {
-                            TimelineType.Monthly
+                            HistoryType.Monthly
                         }
                         else -> {
-                            TimelineType.Daily
+                            HistoryType.Daily
                         }
                     }
                     job?.cancel()
                     job = lifecycleScope.launch {
-                        historyViewModel.getTimelineData(selectedTimelineType)
+                        historyViewModel.getHistoryData(selectedTimelineType)
                             .collectLatest { pagingData ->
                                 historyAdapter.submitData(pagingData)
                             }
@@ -100,7 +100,7 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
 
         job?.cancel()
         job = lifecycleScope.launchWhenResumed {
-            historyViewModel.getTimelineData(selectedTimelineType).collectLatest { pagingData ->
+            historyViewModel.getHistoryData(selectedTimelineType).collectLatest { pagingData ->
                 historyAdapter.submitData(pagingData)
             }
         }
@@ -115,7 +115,7 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
 
     private fun navigateToGraphFragment(
         model: LogType,
-        timelineType: TimelineType,
+        timelineType: HistoryType,
         startDate: Date
     ) {
         val action = HistoryFragmentDirections.actionHistoryFragmentToHistoryGraphFragment(

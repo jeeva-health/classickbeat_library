@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.graph
 
-import ai.heart.classickbeats.model.TimelineType
+import ai.heart.classickbeats.model.HistoryType
 import ai.heart.classickbeats.shared.util.getDayOfWeek
 import ai.heart.classickbeats.shared.util.getDayPart
 import ai.heart.classickbeats.shared.util.getHourPart
@@ -9,22 +9,22 @@ import java.util.*
 
 object Utils {
 
-    fun getDuration(type: TimelineType, startDate: Date): Int =
+    fun getDuration(type: HistoryType, startDate: Date): Int =
         when (type) {
-            TimelineType.Daily -> 1
-            TimelineType.Weekly -> 7
-            TimelineType.Monthly -> startDate.getNumberOfDaysInMonth()
+            HistoryType.Daily -> 1
+            HistoryType.Weekly -> 7
+            HistoryType.Monthly -> startDate.getNumberOfDaysInMonth()
         }
 
-    fun getIndexForDate(type: TimelineType, date: Date): Int =
+    fun getIndexForDate(type: HistoryType, date: Date): Int =
         when (type) {
-            TimelineType.Daily -> {
+            HistoryType.Daily -> {
                 date.getHourPart()
             }
-            TimelineType.Weekly -> {
+            HistoryType.Weekly -> {
                 (date.getDayOfWeek() + 5) % 7
             }
-            TimelineType.Monthly -> {
+            HistoryType.Monthly -> {
                 date.getDayPart() - 1
             }
         }

@@ -1,7 +1,7 @@
 package ai.heart.classickbeats.mapper.input
 
 import ai.heart.classickbeats.mapper.Mapper
-import ai.heart.classickbeats.model.HistoryRecordDatabase
+import ai.heart.classickbeats.model.TimelineEntityDatabase
 import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.model.getLogType
@@ -9,8 +9,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class HistoryRecordMapper @Inject constructor() :
-    Mapper<HistoryRecordDatabase, BaseLogEntity> {
-    override fun map(input: HistoryRecordDatabase): BaseLogEntity {
+    Mapper<TimelineEntityDatabase, BaseLogEntity> {
+    override fun map(input: TimelineEntityDatabase): BaseLogEntity {
         val id = input.id
         val timeStamp = input.timeStamp
         return when (input.model.getLogType()) {

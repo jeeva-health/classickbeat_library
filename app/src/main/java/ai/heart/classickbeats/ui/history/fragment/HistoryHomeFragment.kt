@@ -66,7 +66,7 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
         super.onResume()
 
         lifecycleScope.launchWhenResumed {
-            historyViewModel.getHistoryData().collectLatest { pagingData ->
+            historyViewModel.getTimelineData().collectLatest { pagingData ->
                 timelineAdapter.submitData(pagingData)
             }
         }

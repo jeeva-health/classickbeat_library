@@ -46,19 +46,19 @@ class HistoryViewModel @Inject constructor(
     private val _measurementData = MutableLiveData<List<TimelineItem>>()
     val measurementData: LiveData<List<TimelineItem>> = _measurementData
 
-    fun getTimelineData(type: TimelineType): Flow<PagingData<HistoryItem>> =
-        recordRepository.getTimelineData(type).mapLatest { pagingData ->
+    fun getHistoryData(type: HistoryType): Flow<PagingData<HistoryItem>> =
+        recordRepository.getHistoryData(type).mapLatest { pagingData ->
             pagingData.map { timeline ->
-                Utils.convertTimelineToTimelineItem(timeline)
+                Utils.convertTimelineToHistoryItem(timeline)
             }.insertSeparators { before: HistoryItem?, after: HistoryItem? ->
                 Utils.insertDateSeparatorIfNeeded(before, after)
             }
         }.cachedIn(viewModelScope)
 
-    fun getGraphData(model: LogType, type: TimelineType, startDate: Date) {
+    fun getGraphData(model: LogType, type: HistoryType, startDate: Date) {
         viewModelScope.launch {
             setShowLoadingTrue()
-            if (type == TimelineType.Daily) {
+            if (type == HistoryType.Daily) {
                 val response = recordRepository.getHistoryListData(model, startDate, startDate)
                 if (response.succeeded) {
                     _graphData.value = convertBaseLogEntityToGraphData(
@@ -84,14 +84,14 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
-    fun getMeasurementData(model: LogType, type: TimelineType, startDate: Date) {
+    fun getMeasurementData(model: LogType, type: HistoryType, startDate: Date) {
         viewModelScope.launch {
             val endDate = getEndDate(startDate, type)
             val response = recordRepository.getHistoryListData(model, startDate, endDate)
             if (response.succeeded) {
                 val historyItemList = mutableListOf<TimelineItem>()
                 val baseLogList = response.data!!.map {
-                    Utils.convertLogEntityToHistoryItem(it)
+                    Utils.convertLogEntityToTimelineItem(it)
                 }
                 for (i in baseLogList.indices) {
                     val leftItem = baseLogList.getOrNull(i - 1)
@@ -109,18 +109,18 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
-    private fun getEndDate(startDate: Date, type: TimelineType): Date {
+    private fun getEndDate(startDate: Date, type: HistoryType): Date {
         val diffDays = when (type) {
-            TimelineType.Daily -> 1
-            TimelineType.Weekly -> 7
-            TimelineType.Monthly -> startDate.getNumberOfDaysInMonth()
+            HistoryType.Daily -> 1
+            HistoryType.Weekly -> 7
+            HistoryType.Monthly -> startDate.getNumberOfDaysInMonth()
         }
         return startDate.getDateAddedBy(diffDays)
     }
 
     private fun convertBaseLogEntityToGraphData(
         model: LogType,
-        timelineType: TimelineType,
+        timelineType: HistoryType,
         input: List<BaseLogEntity>,
         startDate: Date,
         endDate: Date

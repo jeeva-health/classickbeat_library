@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.model.response
 
-import ai.heart.classickbeats.model.entity.TimelineEntity
+import ai.heart.classickbeats.model.entity.HistoryEntity
 import com.squareup.moshi.Json
 
 data class TimelineResponse(
@@ -22,7 +22,7 @@ data class TimelineResponse(
             val next: String?,
             val previous: String?,
             @Json(name = "results")
-            val fields: List<TimelineEntity>
+            val fields: List<HistoryEntity>
         )
     }
 }

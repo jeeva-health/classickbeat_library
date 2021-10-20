@@ -65,21 +65,21 @@ class RecordRepository @Inject constructor(
     }
 
     fun getHistoryData(): Flow<PagingData<BaseLogEntity>> {
-        val pagingSourceFactory = { database.historyDao().loadAll() }
+        val pagingSourceFactory = { database.timelineDao().loadAll() }
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
                 maxSize = 5 * NETWORK_PAGE_SIZE,
                 enablePlaceholders = false
             ),
-            remoteMediator = HistoryRemoteMediator(
+            remoteMediator = TimelineRemoteMediator(
                 service,
                 database,
                 historyRecordNetworkDbMapper
             ),
             pagingSourceFactory = pagingSourceFactory
         ).flow.map { pagingData ->
-            pagingData.map { historyRecord: HistoryRecordDatabase ->
+            pagingData.map { historyRecord: TimelineEntityDatabase ->
                 historyMapper.map(historyRecord)
             }
         }
@@ -87,9 +87,9 @@ class RecordRepository @Inject constructor(
 
     suspend fun getPpgHistoryDataByCount(limit: Int): Result<List<PPGEntity>> {
         return try {
-            val historyRecordList: List<HistoryRecordDatabase> =
-                database.historyDao()
-                    .loadHistoryDataByModelAndCount(model = "record_data.ppg", limit = limit)
+            val historyRecordList: List<TimelineEntityDatabase> =
+                database.timelineDao()
+                    .loadTimelineDataByModelAndCount(model = "record_data.ppg", limit = limit)
             val baseLogEntities = historyRecordList.map { historyMapper.map(it) }
             val ppgEntities = baseLogEntities.map { it as PPGEntity }
             Result.Success(ppgEntities)
@@ -101,9 +101,9 @@ class RecordRepository @Inject constructor(
 
     suspend fun getPpgHistoryDataByDuration(startDate: String): Result<List<PPGEntity>> {
         return try {
-            val historyRecordList: List<HistoryRecordDatabase> =
-                database.historyDao()
-                    .loadHistoryDataByModelAndDuration(
+            val historyRecordList: List<TimelineEntityDatabase> =
+                database.timelineDao()
+                    .loadTimelineDataByModelAndDuration(
                         model = "record_data.ppg",
                         startTimeStamp = startDate
                     )
@@ -143,7 +143,7 @@ class RecordRepository @Inject constructor(
 
     suspend fun getGraphData(
         model: LogType,
-        type: TimelineType,
+        type: HistoryType,
         startDate: Date,
         endDate: Date
     ): Result<GraphData> {
@@ -170,22 +170,22 @@ class RecordRepository @Inject constructor(
         return Result.Error(response.error)
     }
 
-    fun getTimelineData(type: TimelineType): Flow<PagingData<Timeline>> {
-        val pagingSourceFactory = { database.timelineDao().loadByType(type.value) }
+    fun getHistoryData(type: HistoryType): Flow<PagingData<Timeline>> {
+        val pagingSourceFactory = { database.historyDao().loadByType(type.value) }
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
                 maxSize = 5 * NETWORK_PAGE_SIZE,
                 enablePlaceholders = false
             ),
-            remoteMediator = TimelineRemoteMediator(
+            remoteMediator = HistoryRemoteMediator(
                 type,
                 service,
                 database
             ),
             pagingSourceFactory = pagingSourceFactory
         ).flow.mapLatest { pagingData ->
-            pagingData.map { timelineEntity: TimelineEntity ->
+            pagingData.map { timelineEntity: HistoryEntity ->
                 timelineMapper.map(timelineEntity)
             }
         }

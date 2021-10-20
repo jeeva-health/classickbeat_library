@@ -3,8 +3,8 @@ package ai.heart.classickbeats.model
 import androidx.room.Entity
 import com.squareup.moshi.Json
 
-@Entity(tableName = "history_record", primaryKeys = ["id", "model"])
-data class HistoryRecordDatabase(
+@Entity(tableName = "timeline", primaryKeys = ["id", "model"])
+data class TimelineEntityDatabase(
     @Json(name = "pk")
     val id: Long,
     val model: String,

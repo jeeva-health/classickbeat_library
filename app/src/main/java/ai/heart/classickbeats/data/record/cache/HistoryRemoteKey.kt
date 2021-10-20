@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "history_remote_keys")
 data class HistoryRemoteKey(
     @PrimaryKey
-    val historyId: Long,
+    val historyId: Int,
     val prevKey: Int?,
     val nextKey: Int?
 )

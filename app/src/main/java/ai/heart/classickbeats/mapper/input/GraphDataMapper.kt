@@ -3,7 +3,7 @@ package ai.heart.classickbeats.mapper.input
 import ai.heart.classickbeats.mapper.Mapper
 import ai.heart.classickbeats.model.GraphData
 import ai.heart.classickbeats.model.LogType
-import ai.heart.classickbeats.model.TimelineType
+import ai.heart.classickbeats.model.HistoryType
 import ai.heart.classickbeats.model.response.GraphDataResponse
 import ai.heart.classickbeats.shared.util.toDate
 import java.util.*
@@ -45,7 +45,7 @@ class GraphDataMapper @Inject constructor() : Mapper<GraphDataMapper.InputData, 
 
     data class InputData(
         val model: LogType,
-        val type: TimelineType,
+        val type: HistoryType,
         val startDate: Date,
         val endDate: Date,
         val response: List<GraphDataResponse.ResponseData>

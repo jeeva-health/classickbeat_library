@@ -1,14 +1,14 @@
 package ai.heart.classickbeats.mapper.input
 
 import ai.heart.classickbeats.mapper.Mapper
-import ai.heart.classickbeats.model.HistoryRecordDatabase
-import ai.heart.classickbeats.model.HistoryRecordNetwork
+import ai.heart.classickbeats.model.TimelineEntityDatabase
+import ai.heart.classickbeats.model.TimelineEntityNetwork
 import javax.inject.Inject
 
 class HistoryRecordNetworkDbMapper @Inject constructor() :
-    Mapper<HistoryRecordNetwork, HistoryRecordDatabase> {
+    Mapper<TimelineEntityNetwork, TimelineEntityDatabase> {
 
-    override fun map(input: HistoryRecordNetwork): HistoryRecordDatabase {
+    override fun map(input: TimelineEntityNetwork): TimelineEntityDatabase {
         val id = input.id
         val model = input.model
         val diastolic = input.fields.diastolic
@@ -24,7 +24,7 @@ class HistoryRecordNetworkDbMapper @Inject constructor() :
         val waterQuantity = input.fields.water
         val weight = input.fields.weightValue
         val timestamp = input.fields.timeStamp
-        return HistoryRecordDatabase(
+        return TimelineEntityDatabase(
             id = id,
             model = model,
             diastolic = diastolic,

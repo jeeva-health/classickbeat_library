@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.model.response
 
-import ai.heart.classickbeats.model.HistoryRecordNetwork
+import ai.heart.classickbeats.model.TimelineEntityNetwork
 import com.squareup.moshi.Json
 
 data class HistoryListResponse(
@@ -15,6 +15,6 @@ data class HistoryListResponse(
 ) {
     data class ResponseData(
         @Json(name = "history_list")
-        val historyList: List<HistoryRecordNetwork>
+        val historyList: List<TimelineEntityNetwork>
     )
 }

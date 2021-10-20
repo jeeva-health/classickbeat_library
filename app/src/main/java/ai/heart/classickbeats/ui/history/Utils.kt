@@ -10,11 +10,11 @@ import java.util.Date
 
 object Utils {
 
-    fun convertLogEntityToHistoryItem(baseLogEntity: BaseLogEntity): TimelineItem {
+    fun convertLogEntityToTimelineItem(baseLogEntity: BaseLogEntity): TimelineItem {
         return TimelineItem.LogItem(baseLogEntity)
     }
 
-    fun convertTimelineToTimelineItem(timeline: Timeline): HistoryItem {
+    fun convertTimelineToHistoryItem(timeline: Timeline): HistoryItem {
         return HistoryItem.LogItem(timeline)
     }
 
@@ -66,10 +66,10 @@ object Utils {
         }
     }
 
-    private fun getDateStringByTimelineType(timelineType: TimelineType, date: Date): String =
+    private fun getDateStringByTimelineType(timelineType: HistoryType, date: Date): String =
         when (timelineType) {
-            TimelineType.Daily -> date.toOrdinalFormattedDateStringWithoutYear()
-            TimelineType.Weekly -> date.toWeekString()
-            TimelineType.Monthly -> date.toMonthString()
+            HistoryType.Daily -> date.toOrdinalFormattedDateStringWithoutYear()
+            HistoryType.Weekly -> date.toWeekString()
+            HistoryType.Monthly -> date.toMonthString()
         }
 }
