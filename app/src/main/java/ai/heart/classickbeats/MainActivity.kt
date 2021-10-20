@@ -4,7 +4,6 @@ import ai.heart.classickbeats.databinding.ActivityMainBinding
 import ai.heart.classickbeats.model.Constants
 import ai.heart.classickbeats.shared.data.login.LoginRepository
 import ai.heart.classickbeats.shared.network.SessionManager
-import ai.heart.classickbeats.ui.login.LoginViewModel
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -14,7 +13,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.WindowManager
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavController
@@ -59,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             AppBarConfiguration(
                 setOf(
                     R.id.scanFragment,
-                    R.id.historyHomeFragment,
+                    R.id.historyFragment,
                     R.id.loggingHomeFragment,
                     R.id.wellnessHomeFragment,
                     R.id.profileHomeFragment
@@ -94,8 +92,8 @@ class MainActivity : AppCompatActivity() {
 
         binding?.bottomNavigation?.setOnNavigationItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
-                R.id.historyHomeFragment -> {
-                    navController.navigate(R.id.historyHomeFragment)
+                R.id.historyFragment -> {
+                    navController.navigate(R.id.historyFragment)
                     true
                 }
                 R.id.loggingHomeFragment -> {
@@ -145,7 +143,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding?.apply {
                 when (destination.id) {
-                    R.id.scanFragment, R.id.historyHomeFragment, R.id.loggingHomeFragment, R.id.wellnessHomeFragment, R.id.profileHomeFragment -> {
+                    R.id.scanFragment, R.id.historyFragment, R.id.loggingHomeFragment, R.id.wellnessHomeFragment, R.id.profileHomeFragment -> {
                         showBottomNavigation()
                     }
                     else -> {
@@ -179,8 +177,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun navigateToHistoryFragment() {
-        if (binding?.bottomNavigation?.selectedItemId != R.id.historyHomeFragment) {
-            binding?.bottomNavigation?.selectedItemId = R.id.historyHomeFragment
+        if (binding?.bottomNavigation?.selectedItemId != R.id.historyFragment) {
+            binding?.bottomNavigation?.selectedItemId = R.id.historyFragment
         }
     }
 

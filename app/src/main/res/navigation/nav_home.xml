@@ -19,8 +19,8 @@
         android:label="fragment_heart_result"
         tools:layout="@layout/fragment_scan_result">
         <action
-            android:id="@+id/action_scanResultFragment_to_historyHomeFragment"
-            app:destination="@id/historyHomeFragment" />
+            android:id="@+id/action_scanResultFragment_to_timelineFragment"
+            app:destination="@id/timelineFragment" />
         <argument
             android:name="showing_history"
             android:defaultValue="false"
@@ -53,15 +53,15 @@
         tools:layout="@layout/fragment_log_bp" />
 
     <fragment
-        android:id="@+id/historyHomeFragment"
-        android:name="ai.heart.classickbeats.ui.history.fragment.HistoryHomeFragment"
+        android:id="@+id/timelineFragment"
+        android:name="ai.heart.classickbeats.ui.history.fragment.TimelineFragment"
         android:label="fragment_history_home"
-        tools:layout="@layout/fragment_history_home">
+        tools:layout="@layout/fragment_timeline">
         <action
-            android:id="@+id/action_historyHomeFragment_to_scanResultFragment"
+            android:id="@+id/action_timelineFragment_to_scanResultFragment"
             app:destination="@id/scanResultFragment" />
         <action
-            android:id="@+id/action_historyHomeFragment_to_timelineFragment"
+            android:id="@+id/action_timelineFragment_to_historyFragment"
             app:destination="@id/historyFragment" />
     </fragment>
 

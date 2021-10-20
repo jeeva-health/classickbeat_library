@@ -265,7 +265,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
     private fun navigateToHistoryFragment() {
         val action =
-            ScanResultFragmentDirections.actionScanResultFragmentToHistoryHomeFragment()
+            ScanResultFragmentDirections.actionScanResultFragmentToTimelineFragment()
         navController.navigate(action)
     }
 }

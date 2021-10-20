@@ -1,7 +1,7 @@
 package ai.heart.classickbeats.ui.history.fragment
 
 import ai.heart.classickbeats.R
-import ai.heart.classickbeats.databinding.FragmentHistoryHomeBinding
+import ai.heart.classickbeats.databinding.FragmentTimelineBinding
 import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.entity.BaseLogEntity
 import ai.heart.classickbeats.model.entity.PPGEntity
@@ -28,9 +28,9 @@ import kotlinx.coroutines.flow.collectLatest
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
+class TimelineFragment : Fragment(R.layout.fragment_timeline) {
 
-    private val binding by viewBinding(FragmentHistoryHomeBinding::bind)
+    private val binding by viewBinding(FragmentTimelineBinding::bind)
 
     private val historyViewModel: TimelineViewModel by activityViewModels()
 
@@ -49,7 +49,7 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
             historyRv.adapter = timelineAdapter
 
             seeTimeline.setSafeOnClickListener {
-                navigateToTimelineFragment()
+                navigateToHistoryFragment()
             }
         }
 
@@ -80,14 +80,14 @@ class HistoryHomeFragment : Fragment(R.layout.fragment_history_home) {
         }
     }
 
-    private fun navigateToTimelineFragment() {
+    private fun navigateToHistoryFragment() {
         val action =
-            HistoryHomeFragmentDirections.actionHistoryHomeFragmentToTimelineFragment()
+            TimelineFragmentDirections.actionTimelineFragmentToHistoryFragment()
         navController.navigate(action)
     }
 
     private fun navigateToScanDetailFragment(scanId: Long) {
-        val action = HistoryHomeFragmentDirections.actionHistoryHomeFragmentToScanResultFragment(
+        val action = TimelineFragmentDirections.actionTimelineFragmentToScanResultFragment(
             showingHistory = true,
             scanId = scanId
         )
