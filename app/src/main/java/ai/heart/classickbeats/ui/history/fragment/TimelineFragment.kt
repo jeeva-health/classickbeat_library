@@ -46,10 +46,12 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
         timelineAdapter = TimelineAdapter(requireContext(), historyItemClickListener)
 
         binding.apply {
-            historyRv.adapter = timelineAdapter
+            timelineRv.adapter = timelineAdapter
 
-            seeTimeline.setSafeOnClickListener {
-                navigateToHistoryFragment()
+            arrayOf(switchIcon, historyTv).forEach {
+                it.setSafeOnClickListener {
+                    navigateToHistoryFragment()
+                }
             }
         }
 
@@ -81,9 +83,7 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
     }
 
     private fun navigateToHistoryFragment() {
-        val action =
-            TimelineFragmentDirections.actionTimelineFragmentToHistoryFragment()
-        navController.navigate(action)
+        navController.navigateUp()
     }
 
     private fun navigateToScanDetailFragment(scanId: Long) {

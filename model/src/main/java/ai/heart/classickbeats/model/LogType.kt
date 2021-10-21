@@ -38,3 +38,13 @@ fun String.getLogType(): LogType =
         "record_data.ppg" -> LogType.PPG
         else -> throw Exception("Unhandled model type")
     }
+
+fun LogType.getDisplayName(): String =
+    when (this) {
+        LogType.BloodPressure -> "BLOOD PRESSURE"
+        LogType.GlucoseLevel -> "BLOOD GLUCOSE LEVEL"
+        LogType.WaterIntake -> "WATER INTAKE"
+        LogType.Weight -> "WEIGHT"
+        LogType.Medicine -> "MEDICINE"
+        LogType.PPG -> "HEART RATE"
+    }

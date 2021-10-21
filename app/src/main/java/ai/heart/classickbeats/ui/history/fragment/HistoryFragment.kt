@@ -2,13 +2,14 @@ package ai.heart.classickbeats.ui.history.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentHistoryBinding
+import ai.heart.classickbeats.model.HistoryType
 import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.Timeline
-import ai.heart.classickbeats.model.HistoryType
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.history.HistoryAdapter
 import ai.heart.classickbeats.ui.history.viewmodel.HistoryViewModel
 import ai.heart.classickbeats.utils.hideLoadingBar
+import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.showLoadingBar
 import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
@@ -84,6 +85,11 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
                     }
                 }
             }
+            arrayOf(switchIcon, timelineTv).forEach {
+                it.setSafeOnClickListener {
+                    navigateToTimelineFragment()
+                }
+            }
         }
 
         historyViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {
@@ -123,6 +129,11 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
             dataType = timelineType,
             startDate = startDate
         )
+        navController.navigate(action)
+    }
+
+    private fun navigateToTimelineFragment() {
+        val action = HistoryFragmentDirections.actionHistoryFragmentToTimelineFragment()
         navController.navigate(action)
     }
 }

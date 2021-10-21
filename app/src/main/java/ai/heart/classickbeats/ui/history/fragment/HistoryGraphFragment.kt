@@ -120,6 +120,8 @@ class HistoryGraphFragment : Fragment(R.layout.fragment_history_graph) {
             it?.let { showUI(listData = it) }
         })
 
+        binding.pageTitle.text = logType.getDisplayName()
+
         binding.dataRv.adapter = graphHistoryAdapter
 
         binding.backArrow.setSafeOnClickListener {
