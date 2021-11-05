@@ -3,6 +3,7 @@ package ai.heart.classickbeats.ui.wellness
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentWellnessCategoryBinding
 import ai.heart.classickbeats.model.WellnessType
+import ai.heart.classickbeats.utils.setDarkStatusBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
 import android.content.Intent
@@ -30,6 +31,8 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setDarkStatusBar()
+
         navController = findNavController()
 
         val wellnessCategory = args.wellnessType
@@ -44,25 +47,16 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
 
             // To handle different background image for categories
             when (wellnessCategory) {
-                WellnessType.SLEEP, WellnessType.BLOOD_PRESSURE -> {
-                    backgroundCircle1.visibility = View.GONE
-                    backgroundCircle2.visibility = View.GONE
-                    backgroundImage1.visibility = View.VISIBLE
-                    backgroundImage2.visibility = View.GONE
-                    backgroundImage1.setImageResource(getBackgroundImage(wellnessCategory))
-                }
                 WellnessType.ANGER -> {
                     backgroundCircle1.visibility = View.VISIBLE
                     backgroundCircle2.visibility = View.VISIBLE
-                    backgroundImage1.visibility = View.GONE
-                    backgroundImage2.visibility = View.GONE
+                    backgroundImage.visibility = View.GONE
                 }
-                WellnessType.STRESS, WellnessType.IMMUNITY -> {
+                else -> {
                     backgroundCircle1.visibility = View.GONE
                     backgroundCircle2.visibility = View.GONE
-                    backgroundImage1.visibility = View.GONE
-                    backgroundImage2.visibility = View.VISIBLE
-                    backgroundImage2.setImageResource(getBackgroundImage(wellnessCategory))
+                    backgroundImage.visibility = View.VISIBLE
+                    backgroundImage.setImageResource(getBackgroundImage(wellnessCategory))
                 }
             }
 
@@ -79,6 +73,8 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
             longMeditationCard.setSafeOnClickListener {
                 playLongMeditation()
             }
+
+            notificationTxt.text = getString(getReminderMessage(wellnessCategory))
         }
     }
 
@@ -91,10 +87,18 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
     }
 
     private fun getBackgroundImage(wellnessType: WellnessType) = when (wellnessType) {
-        WellnessType.SLEEP -> R.drawable.bg_star
+        WellnessType.SLEEP -> R.drawable.bg_star_2
         WellnessType.BLOOD_PRESSURE -> R.drawable.bg_curved_lines_2
         WellnessType.STRESS -> R.drawable.bg_contour_2
         WellnessType.IMMUNITY -> R.drawable.bg_shade_2
         else -> 0
+    }
+
+    private fun getReminderMessage(wellnessType: WellnessType) = when (wellnessType) {
+        WellnessType.SLEEP -> R.string.reminder_sleep_message
+        WellnessType.BLOOD_PRESSURE -> R.string.reminder_bp_message
+        WellnessType.ANGER -> R.string.reminder_anger_message
+        WellnessType.STRESS -> R.string.reminder_stress_message
+        WellnessType.IMMUNITY -> R.string.reminder_immunity_message
     }
 }

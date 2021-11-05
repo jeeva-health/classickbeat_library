@@ -77,11 +77,11 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/sleep"
-                android:textColor="?attr/colorOnMeditationCard" />
+                android:textColor="?attr/categoryNameColor" />
 
         </androidx.cardview.widget.CardView>
 
@@ -108,7 +108,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/blood_pressure"
-                android:textColor="?attr/colorOnMeditationCard" />
+                android:textColor="?attr/categoryNameColor" />
 
         </androidx.cardview.widget.CardView>
 
@@ -142,7 +142,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/anger"
-                android:textColor="?attr/colorOnMeditationCard" />
+                android:textColor="?attr/categoryNameColor" />
 
         </androidx.cardview.widget.CardView>
 
@@ -169,7 +169,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/stress"
-                android:textColor="?attr/colorOnMeditationCard" />
+                android:textColor="?attr/categoryNameColor" />
 
         </androidx.cardview.widget.CardView>
 
@@ -201,7 +201,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/immunity"
-                android:textColor="?attr/colorOnMeditationCard" />
+                android:textColor="?attr/categoryNameColor" />
 
         </androidx.cardview.widget.CardView>
 

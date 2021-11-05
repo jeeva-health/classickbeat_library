@@ -24,9 +24,9 @@ class WellnessHomeFragment : Fragment(R.layout.fragment_wellness_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        navController = findNavController()
-
         setLightStatusBar()
+
+        navController = findNavController()
 
         binding.sleepCard.setSafeOnClickListener {
             navigateToWellnessCategoryFragment()

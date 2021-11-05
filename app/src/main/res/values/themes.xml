@@ -7,7 +7,7 @@
         <item name="colorPrimaryVariant">@color/orange</item>
         <item name="colorOnPrimary">@color/white</item>
 
-        <item name="colorPrimaryDark">@color/very_dark_blue</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
 
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -33,7 +33,11 @@
         <!-- Text color -->
         <item name="pageTitleColor">@color/very_dark_grey_3</item>
         <item name="headingColor">@color/moderate_violet</item>
-        <item name="colorOnMeditationCard">@color/white</item>
+        <item name="categoryNameColor">@color/very_light_grey_3</item>
+        <item name="categoryTitleColor">@color/very_soft_violet</item>
+        <item name="explanationTextColor">@color/soft_red_2</item>
+        <item name="meditationListenTextColor">@color/bright_blue</item>
+        <item name="reminderTextColor">@color/very_light_grey_3</item>
     </style>
 
     <!--  Button-->

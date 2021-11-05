@@ -79,6 +79,11 @@
     <string name="anger_meditation_message">dummy text</string>
     <string name="stress_meditation_message">dummy text</string>
     <string name="immunity_meditation_message">dummy text</string>
+    <string name="reminder_sleep_message">Set a daily reminder to listen this meditation and sleep well</string>
+    <string name="reminder_bp_message">Set a daily reminder to listen this meditation and rest your heart</string>
+    <string name="reminder_anger_message">Set a daily reminder to listen this meditation and stay calm</string>
+    <string name="reminder_stress_message">Set a daily reminder to listen this meditation and ease your mind</string>
+    <string name="reminder_immunity_message">Set a daily reminder to listen this meditation and feel good</string>
 
     <!--    Logging-->
     <string name="hint_add_a_comment">Add note about this measurement</string>

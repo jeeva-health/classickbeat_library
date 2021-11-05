@@ -158,6 +158,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setLightStatusBar()
+
         navController = findNavController()
 
         // To make sure the bottom navigation is correctly set

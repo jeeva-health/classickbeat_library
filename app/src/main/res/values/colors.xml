@@ -55,6 +55,7 @@
     <color name="dark_blue_6">#092d86</color>
     <color name="very_dark_blue">#1C1662</color>
 
+    <color name="very_soft_violet">#cabcf0</color>
     <color name="soft_violet">#957ae1</color>
     <color name="moderate_violet">#6137d2</color>
     <color name="dark_violet">#412296</color>
@@ -72,6 +73,7 @@
 
     <color name="very_light_grey">#e6e6e6</color>
     <color name="very_light_grey_2">#fafafa</color>
+    <color name="very_light_grey_3">#fcfcfc</color>
     <color name="light_grey">#47c4c4c4</color>
     <color name="dark_grey">#979797</color>
     <color name="dark_grey_2">#999999</color>
