@@ -56,7 +56,7 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
                     backgroundCircle1.visibility = View.GONE
                     backgroundCircle2.visibility = View.GONE
                     backgroundImage.visibility = View.VISIBLE
-                    backgroundImage.setImageResource(getBackgroundImage(wellnessCategory))
+                    backgroundImage.setImageResource(wellnessCategory.getBackgroundImage())
                 }
             }
 
@@ -67,38 +67,30 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
             pageMessage.text = getString(wellnessModel.message)
 
             shortMeditationCard.setSafeOnClickListener {
-                playShortMeditation()
+                playMeditation(
+                    wellnessCategory,
+                    "https://public-sound.s3.ap-south-1.amazonaws.com/public.mp3"
+                )
             }
 
             longMeditationCard.setSafeOnClickListener {
-                playLongMeditation()
+                playMeditation(
+                    wellnessCategory,
+                    "https://public-sound.s3.ap-south-1.amazonaws.com/public.mp3"
+                )
             }
 
-            notificationTxt.text = getString(getReminderMessage(wellnessCategory))
+            notificationTxt.text = getString(wellnessCategory.getReminderMessage())
         }
     }
 
-    private fun playShortMeditation() {
-        startActivity(Intent(requireActivity(), MediaPlayerActivity::class.java))
-    }
-
-    private fun playLongMeditation() {
-        startActivity(Intent(requireActivity(), MediaPlayerActivity::class.java))
-    }
-
-    private fun getBackgroundImage(wellnessType: WellnessType) = when (wellnessType) {
-        WellnessType.SLEEP -> R.drawable.bg_star_2
-        WellnessType.BLOOD_PRESSURE -> R.drawable.bg_curved_lines_2
-        WellnessType.STRESS -> R.drawable.bg_contour_2
-        WellnessType.IMMUNITY -> R.drawable.bg_shade_2
-        else -> 0
-    }
-
-    private fun getReminderMessage(wellnessType: WellnessType) = when (wellnessType) {
-        WellnessType.SLEEP -> R.string.reminder_sleep_message
-        WellnessType.BLOOD_PRESSURE -> R.string.reminder_bp_message
-        WellnessType.ANGER -> R.string.reminder_anger_message
-        WellnessType.STRESS -> R.string.reminder_stress_message
-        WellnessType.IMMUNITY -> R.string.reminder_immunity_message
+    private fun playMeditation(wellnessCategory: WellnessType, mediaUrl: String) {
+        startActivity(
+            Intent(
+                requireActivity(),
+                MediaPlayerActivity::class.java
+            ).putExtra("wellness_category", wellnessCategory)
+                .putExtra("media_url", mediaUrl)
+        )
     }
 }

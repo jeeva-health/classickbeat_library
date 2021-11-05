@@ -2,6 +2,7 @@ package ai.heart.classickbeats.ui.wellness
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.ActivityMediaPlayerBinding
+import ai.heart.classickbeats.model.WellnessType
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import android.content.ComponentName
 import android.content.Context
@@ -10,9 +11,13 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import timber.log.Timber
 import java.util.*
 
@@ -51,10 +56,46 @@ class MediaPlayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         binding = ActivityMediaPlayerBinding.inflate(layoutInflater)
         val view = binding?.root
         setContentView(view)
+
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding?.rootLayout!!) { rootLayout: View, windowInsets: WindowInsetsCompat ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            rootLayout.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                leftMargin = insets.left
+                topMargin = 0
+                rightMargin = insets.right
+            }
+            WindowInsetsCompat.CONSUMED
+        }
+
+        val mediaUrl = intent?.getStringExtra("media_url")
+        val wellnessCategory: WellnessType =
+            intent?.getSerializableExtra("wellness_category") as WellnessType? ?: WellnessType.SLEEP
+
+        binding?.apply {
+            when (wellnessCategory) {
+                WellnessType.ANGER -> {
+                    backgroundCircle1.visibility = View.VISIBLE
+                    backgroundCircle2.visibility = View.VISIBLE
+                    backgroundImage.visibility = View.GONE
+                }
+                else -> {
+                    backgroundCircle1.visibility = View.GONE
+                    backgroundCircle2.visibility = View.GONE
+                    backgroundImage.visibility = View.VISIBLE
+                    backgroundImage.setImageResource(wellnessCategory.getBackgroundImage())
+                }
+            }
+
+            title.text = getString(wellnessCategory.getTitle())
+        }
     }
 
     override fun onStart() {
@@ -69,7 +110,6 @@ class MediaPlayerActivity : AppCompatActivity() {
         super.onResume()
         Timber.i("onResume() called")
         isActivityResumed = true
-        window.statusBarColor = ContextCompat.getColor(this, R.color.very_dark_blue)
 
         binding?.cross?.setSafeOnClickListener {
             finish()

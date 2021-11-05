@@ -58,6 +58,7 @@ android {
             buildConfigField "String", CLIENT_SECRET, apiKeyProperties['PROD_CLIENT_SECRET']
         }
     }
+
     buildFeatures {
         viewBinding true
         dataBinding true
@@ -69,11 +70,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-//    externalNativeBuild {
-//        cmake {
-//            path file('CMakeLists.txt')
-//        }
-//    }
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE.md'
