@@ -4,7 +4,6 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.shared.result.EventObserver
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -20,9 +19,6 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        requireActivity().window.statusBarColor =
-            ContextCompat.getColor(requireActivity(), R.color.very_dark_blue)
 
         navController = findNavController()
 

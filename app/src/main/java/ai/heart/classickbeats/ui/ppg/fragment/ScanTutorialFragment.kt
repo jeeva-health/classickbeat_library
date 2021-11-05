@@ -6,9 +6,9 @@ import ai.heart.classickbeats.model.ScanTutorialModel
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.ppg.ScanSlidingPagerAdapter
 import ai.heart.classickbeats.ui.ppg.viewmodel.ScanViewModel
+import ai.heart.classickbeats.utils.setDarkStatusBar
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -81,8 +81,7 @@ class ScanTutorialFragment : Fragment(R.layout.fragment_scan_tutorial) {
 
         binding = FragmentScanTutorialBinding.bind(view)
 
-        requireActivity().window.statusBarColor =
-            ContextCompat.getColor(requireActivity(), R.color.very_dark_blue)
+        setDarkStatusBar()
 
         binding?.apply {
             illustrationVp.adapter = ScanSlidingPagerAdapter(sliderData)

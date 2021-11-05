@@ -52,6 +52,9 @@ class MainActivity : AppCompatActivity() {
         val view = binding?.root
         setContentView(view)
 
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
         navController = this.findNavController(R.id.nav_host_fragment)
         appBarConfiguration =
             AppBarConfiguration(
@@ -254,35 +257,6 @@ class MainActivity : AppCompatActivity() {
 
     fun hideBottomDialog() {
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
-    }
-
-    fun setLightStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.setSystemBarsAppearance(
-                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                } else {
-                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                }
-        }
-    }
-
-    fun setDarkStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.setSystemBarsAppearance(
-                0,
-                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            window.decorView.systemUiVisibility = 0
-        }
     }
 
     override fun onDestroy() {

@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.format.DateUtils
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -85,8 +84,7 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().window.statusBarColor =
-            ContextCompat.getColor(requireActivity(), R.color.white)
+        setLightStatusBar()
 
         StringUtils.setTextViewHTML(
             binding.tnc,

@@ -1,13 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Base.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/dark_violet</item>
         <item name="colorPrimaryVariant">@color/orange</item>
         <item name="colorOnPrimary">@color/white</item>
 
-        <item name="colorPrimaryDark">@android:color/transparent</item>
+        <item name="colorPrimaryDark">@color/very_dark_blue</item>
 
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -29,6 +29,11 @@
         <!-- Text appearances -->
         <item name="textAppearanceBody2">@style/TextAppearance.Jeeva.Body2</item>
         <item name="textAppearanceButton">@style/TextAppearance.Jeeva.Button</item>
+
+        <!-- Text color -->
+        <item name="pageTitleColor">@color/very_dark_grey_3</item>
+        <item name="headingColor">@color/moderate_violet</item>
+        <item name="colorOnMeditationCard">@color/white</item>
     </style>
 
     <!--  Button-->

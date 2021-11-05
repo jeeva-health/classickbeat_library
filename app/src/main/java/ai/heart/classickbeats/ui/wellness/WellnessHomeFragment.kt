@@ -3,12 +3,12 @@ package ai.heart.classickbeats.ui.wellness
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentWellnessHomeBinding
 import ai.heart.classickbeats.model.WellnessType
+import ai.heart.classickbeats.utils.setLightStatusBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +25,8 @@ class WellnessHomeFragment : Fragment(R.layout.fragment_wellness_home) {
         super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
+
+        setLightStatusBar()
 
         binding.sleepCard.setSafeOnClickListener {
             navigateToWellnessCategoryFragment()

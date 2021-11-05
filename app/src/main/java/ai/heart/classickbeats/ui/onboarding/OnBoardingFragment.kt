@@ -4,10 +4,10 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentOnboardingBinding
 import ai.heart.classickbeats.model.OnBoardingModel
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.utils.setDarkStatusBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -87,8 +87,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
 
         binding = FragmentOnboardingBinding.bind(view)
 
-        requireActivity().window.statusBarColor =
-            ContextCompat.getColor(requireActivity(), R.color.very_dark_blue)
+        setDarkStatusBar()
 
         binding?.apply {
             illustrationVp.adapter = OnBoardingSlidingPagerAdapter(requireContext(), sliderData)

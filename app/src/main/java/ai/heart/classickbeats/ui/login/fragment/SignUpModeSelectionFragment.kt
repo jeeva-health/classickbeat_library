@@ -2,12 +2,12 @@ package ai.heart.classickbeats.ui.login.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentSignUpModeSelectionBinding
+import ai.heart.classickbeats.utils.setDarkStatusBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -28,8 +28,7 @@ class SignUpModeSelectionFragment : Fragment(R.layout.fragment_sign_up_mode_sele
 
         googleModeButton = binding.googleSignIn
 
-        requireActivity().window.statusBarColor =
-            ContextCompat.getColor(requireActivity(), R.color.very_dark_blue)
+        setDarkStatusBar()
 
         googleModeButton.setSafeOnClickListener {
             navigateGoogleSignUpFragment()

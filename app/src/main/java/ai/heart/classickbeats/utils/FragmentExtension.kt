@@ -1,14 +1,47 @@
 package ai.heart.classickbeats.utils
 
 import ai.heart.classickbeats.MainActivity
+import ai.heart.classickbeats.R
 import android.content.Context
+import android.os.Build
 import android.view.View
+import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
+fun Fragment.setLightStatusBar() {
+    val window = requireActivity().window
+    window.statusBarColor = ContextCompat.getColor(requireActivity(), R.color.white)
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        window.insetsController?.setSystemBarsAppearance(
+            APPEARANCE_LIGHT_STATUS_BARS,
+            APPEARANCE_LIGHT_STATUS_BARS
+        )
+    } else {
+        @Suppress("DEPRECATION")
+        window.decorView.systemUiVisibility = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+        } else {
+            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+    }
+}
+
+fun Fragment.setDarkStatusBar() {
+    val window = requireActivity().window
+    window.statusBarColor = ContextCompat.getColor(requireActivity(), R.color.very_dark_blue)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        window.insetsController?.setSystemBarsAppearance(0, APPEARANCE_LIGHT_STATUS_BARS)
+    } else {
+        window.decorView.systemUiVisibility = 0
+    }
+}
 
 fun Fragment.showLongToast(message: String) {
     Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
