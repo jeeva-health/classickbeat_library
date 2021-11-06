@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
                 leftMargin = insets.left
                 topMargin = 0
                 rightMargin = insets.right
+                bottomMargin = insets.bottom
             }
             WindowInsetsCompat.CONSUMED
         }

@@ -71,6 +71,7 @@ class MediaPlayerActivity : AppCompatActivity() {
                 leftMargin = insets.left
                 topMargin = 0
                 rightMargin = insets.right
+                bottomMargin = insets.bottom
             }
             WindowInsetsCompat.CONSUMED
         }
@@ -95,6 +96,8 @@ class MediaPlayerActivity : AppCompatActivity() {
             }
 
             title.text = getString(wellnessCategory.getTitle())
+
+            seekBackward.isEnabled = false
         }
     }
 
