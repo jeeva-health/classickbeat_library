@@ -89,95 +89,16 @@
             app:layout_constraintStart_toEndOf="@id/author"
             app:layout_constraintTop_toTopOf="@id/author" />
 
-        <ImageView
-            android:id="@+id/play_pause_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="80dp"
-            android:src="@drawable/ic_play"
-            app:layout_constraintBottom_toTopOf="@id/audio_progress_bar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageButton
-            android:id="@+id/seek_backward"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="52dp"
-            android:src="@drawable/ic_seek_backward"
-            app:backgroundTint="?attr/backgroundColor"
-            app:layout_constraintBottom_toBottomOf="@id/play_pause_btn"
-            app:layout_constraintEnd_toStartOf="@id/play_pause_btn"
-            app:layout_constraintTop_toTopOf="@id/play_pause_btn" />
-
-        <ImageButton
-            android:id="@+id/seek_forward"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:src="@drawable/ic_seek_forward"
-            app:backgroundTint="?attr/backgroundColor"
-            app:layout_constraintBottom_toBottomOf="@id/play_pause_btn"
-            app:layout_constraintStart_toEndOf="@id/play_pause_btn"
-            app:layout_constraintTop_toTopOf="@id/play_pause_btn" />
-
-        <TextView
-            android:id="@+id/play_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/press_play"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/play_pause_btn"
-            app:layout_constraintStart_toStartOf="@id/play_pause_btn"
-            app:layout_constraintTop_toBottomOf="@id/play_pause_btn" />
-
-        <ProgressBar
-            android:id="@+id/audio_progress_bar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        <com.google.android.exoplayer2.ui.PlayerControlView
+            android:id="@+id/player_control_view"
             android:layout_width="0dp"
-            android:layout_height="16dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="82dp"
-            android:max="100"
-            android:progressBackgroundTint="@color/very_light_grey"
-            android:progressTint="@color/soft_red_2"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="56dp"
+            app:controller_layout_id="@layout/layout_audio_media_control"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:progress="50" />
-
-        <TextView
-            android:id="@+id/played_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textColor="?attr/explanationTextColor"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@id/audio_progress_bar"
-            app:layout_constraintTop_toBottomOf="@id/audio_progress_bar"
-            tools:text="0:00" />
-
-        <TextView
-            android:id="@+id/total_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textColor="?attr/explanationTextColor"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@id/audio_progress_bar"
-            app:layout_constraintTop_toBottomOf="@id/audio_progress_bar"
-            tools:text="9:10" />
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/dim_background"
-            android:elevation="16dp"
-            android:indeterminateTint="@color/white"
-            android:padding="144dp"
-            tools:visibility="gone" />
+            app:show_timeout="0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

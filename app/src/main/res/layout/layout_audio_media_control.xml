@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/backgroundColor">
+
+    <ImageButton
+        android:id="@+id/exo_rew"
+        style="@style/ExoMediaButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="56dp"
+        android:src="@drawable/ic_seek_backward"
+        app:backgroundTint="?attr/backgroundColor"
+        app:layout_constraintBottom_toBottomOf="@id/button_placeholder"
+        app:layout_constraintEnd_toStartOf="@id/button_placeholder"
+        app:layout_constraintTop_toTopOf="@id/button_placeholder" />
+
+    <ImageView
+        android:id="@+id/exo_play"
+        style="@style/ExoMediaButton.Play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_play"
+        app:layout_constraintBottom_toBottomOf="@id/button_placeholder"
+        app:layout_constraintEnd_toEndOf="@id/button_placeholder"
+        app:layout_constraintStart_toStartOf="@id/button_placeholder"
+        app:layout_constraintTop_toTopOf="@id/button_placeholder" />
+
+    <ImageView
+        android:id="@+id/exo_pause"
+        style="@style/ExoMediaButton.Pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_pause"
+        app:layout_constraintBottom_toBottomOf="@id/button_placeholder"
+        app:layout_constraintEnd_toEndOf="@id/button_placeholder"
+        app:layout_constraintStart_toStartOf="@id/button_placeholder"
+        app:layout_constraintTop_toTopOf="@id/button_placeholder" />
+
+    <ImageView
+        android:id="@+id/button_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_play"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageButton
+        android:id="@+id/exo_ffwd"
+        style="@style/ExoMediaButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:src="@drawable/ic_seek_forward"
+        app:backgroundTint="?attr/backgroundColor"
+        app:layout_constraintBottom_toBottomOf="@id/button_placeholder"
+        app:layout_constraintStart_toEndOf="@id/button_placeholder"
+        app:layout_constraintTop_toTopOf="@id/button_placeholder" />
+
+    <View
+        android:id="@+id/exo_progress_placeholder"
+        android:layout_width="0dp"
+        android:layout_height="26dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_placeholder" />
+
+    <TextView
+        android:id="@+id/exo_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:textColor="?attr/explanationTextColor"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="0:00" />
+
+    <TextView
+        android:id="@+id/exo_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="?attr/explanationTextColor"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="9:10" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

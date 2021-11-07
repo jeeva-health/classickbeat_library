@@ -1,15 +1,9 @@
 package ai.heart.classickbeats.ui.wellness
 
-import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.ActivityMediaPlayerBinding
 import ai.heart.classickbeats.model.WellnessType
 import ai.heart.classickbeats.utils.setSafeOnClickListener
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.IBinder
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -18,41 +12,18 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 import timber.log.Timber
-import java.util.*
+
 
 class MediaPlayerActivity : AppCompatActivity() {
 
     private var binding: ActivityMediaPlayerBinding? = null
 
-    private lateinit var mService: MediaPlayerService
-
-    private var mBound: Boolean = false
-
-    private var isPlaying: Boolean = false
+    private var player: ExoPlayer? = null
 
     private var isActivityResumed = false
-
-    private val connection = object : ServiceConnection {
-
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            Timber.i("onServiceConnected() called")
-            val binder = service as MediaPlayerService.MediaPlayerBinder
-            mService = binder.getService()
-            mBound = true
-            mService.init()
-            mService.playerPrepared.observe(this@MediaPlayerActivity, {
-                if (it) {
-                    binding?.progressBar?.visibility = View.GONE
-                }
-            })
-        }
-
-        override fun onServiceDisconnected(arg0: ComponentName) {
-            Timber.i("onServiceDisconnected() called")
-            mBound = false
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +47,6 @@ class MediaPlayerActivity : AppCompatActivity() {
             WindowInsetsCompat.CONSUMED
         }
 
-        val mediaUrl = intent?.getStringExtra("media_url")
         val wellnessCategory: WellnessType =
             intent?.getSerializableExtra("wellness_category") as WellnessType? ?: WellnessType.SLEEP
 
@@ -97,16 +67,16 @@ class MediaPlayerActivity : AppCompatActivity() {
 
             title.text = getString(wellnessCategory.getTitle())
 
-            seekBackward.isEnabled = false
+//            seekBackward.isEnabled = false
         }
     }
 
     override fun onStart() {
         super.onStart()
-        Timber.i("onStart() called")
-        Intent(this, MediaPlayerService::class.java).also { intent ->
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
+
+        val mediaUrl = intent?.getStringExtra("media_url") ?: throw Exception("media_url required")
+
+        initializePlayer(mediaUrl)
     }
 
     override fun onResume() {
@@ -118,54 +88,46 @@ class MediaPlayerActivity : AppCompatActivity() {
             finish()
         }
 
-        val playButton = binding!!.playPauseBtn
-        playButton.setSafeOnClickListener(400) {
-            if (isPlaying) {
-                mService.pause()
-                isPlaying = false
-                playButton.setImageResource(R.drawable.ic_play)
-            } else {
-                mService.play()
-                binding?.playTxt?.visibility = View.GONE
-                isPlaying = true
-                playButton.setImageResource(R.drawable.ic_pause)
-                startProgress()
-            }
+//        val playButton = binding!!.playPauseBtn
+//        playButton.setSafeOnClickListener(400) {
+//            if (isPlaying) {
+//                isPlaying = false
+//                player?.pause()
+//                playButton.setImageResource(R.drawable.ic_play)
+//            } else {
+//                binding?.playTxt?.visibility = View.GONE
+//                isPlaying = true
+//                player?.play()
+//                playButton.setImageResource(R.drawable.ic_pause)
+//            }
+//        }
+    }
+
+    private fun initializePlayer(mediaUrl: String) {
+        player = ExoPlayer.Builder(this).build().also { exoPlayer ->
+            binding?.playerControlView?.player = exoPlayer
+            val mediaItem = MediaItem.fromUri(mediaUrl)
+            exoPlayer.setMediaItem(mediaItem)
+            exoPlayer.prepare()
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        isActivityResumed = false
-    }
-
-    private fun startProgress() {
-        val totalDuration = mService.getDuration()
-
-        val initialDelay = 400L
-        val period = 400L
-
-        val mTimer = Timer()
-        mTimer.schedule(object : TimerTask() {
-            override fun run() {
-                if (isActivityResumed) {
-                    runOnUiThread {
-                        val currentPosition = mService.getProgress() + period.toInt()
-                        val progress = ((currentPosition ?: 0) * 100) / (totalDuration ?: 1)
-                        Timber.i("totalDuration: $totalDuration, currentPosition: $currentPosition, progress: $progress")
-                        binding?.audioProgressBar?.setProgress(progress, true)
-                        if (progress == 100) {
-                            finish()
-                        }
-                    }
-                }
-            }
-        }, initialDelay, period)
+    private fun releasePlayer() {
+        player?.run {
+            release()
+        }
+        player = null
     }
 
     override fun onStop() {
         super.onStop()
-        unbindService(connection)
-        mBound = false
+
+        releasePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        binding = null
     }
 }

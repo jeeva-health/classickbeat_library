@@ -126,20 +126,11 @@
         android:name="ai.heart.classickbeats.ui.wellness.WellnessCategoryFragment"
         android:label="fragment_wellness_category"
         tools:layout="@layout/fragment_wellness_category">
-        <action
-            android:id="@+id/action_wellnessCategoryFragment_to_mediaPlayerFragment"
-            app:destination="@id/mediaPlayerFragment" />
         <argument
             android:name="wellness_type"
             android:defaultValue="SLEEP"
             app:argType="ai.heart.classickbeats.model.WellnessType" />
     </fragment>
-
-    <fragment
-        android:id="@+id/mediaPlayerFragment"
-        android:name="ai.heart.classickbeats.ui.wellness.MediaPlayerFragment"
-        android:label="fragment_media_player"
-        tools:layout="@layout/fragment_media_player" />
 
     <fragment
         android:id="@+id/scanTutorialFragment"
