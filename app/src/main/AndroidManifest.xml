@@ -20,8 +20,6 @@
         android:theme="@style/Base.AppTheme"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".ui.wellness.MediaPlayerActivity" />
-
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation"

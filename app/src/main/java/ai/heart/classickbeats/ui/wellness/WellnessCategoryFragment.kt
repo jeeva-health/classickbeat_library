@@ -6,7 +6,6 @@ import ai.heart.classickbeats.model.WellnessType
 import ai.heart.classickbeats.utils.setDarkStatusBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -85,12 +84,11 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
     }
 
     private fun playMeditation(wellnessCategory: WellnessType, mediaUrl: String) {
-        startActivity(
-            Intent(
-                requireActivity(),
-                MediaPlayerActivity::class.java
-            ).putExtra("wellness_category", wellnessCategory)
-                .putExtra("media_url", mediaUrl)
-        )
+        val action =
+            WellnessCategoryFragmentDirections.actionWellnessCategoryFragmentToMediaPlayerFragment(
+                mediaUrl = mediaUrl,
+                wellnessType = wellnessCategory
+            )
+        navController.navigate(action)
     }
 }
