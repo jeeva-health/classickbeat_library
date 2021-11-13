@@ -15,16 +15,26 @@ class WellnessViewModel @Inject constructor() : ViewModel() {
         message = R.string.sleep_meditation_message,
         meditationMediaList = listOf(
             MeditationMedia(
+                id = 0,
+                name = "Sound meditation",
+                category = "",
                 author = "Vipul",
                 duration = 540,
                 isShortType = true,
-                resourceUrl = "s3://public-sound/public.mp3"
+                resourceUrl = "s3://public-sound/public.mp3",
+                language = MeditationMedia.Language.None,
+                isGuided = false
             ),
             MeditationMedia(
+                id = 1,
+                name = "Sound meditation",
+                category = "",
                 author = "Vipul",
                 duration = 900,
                 isShortType = false,
-                resourceUrl = "s3://public-sound/public.mp3"
+                resourceUrl = "s3://public-sound/public.mp3",
+                language = MeditationMedia.Language.None,
+                isGuided = false
             )
         )
     )
@@ -35,16 +45,26 @@ class WellnessViewModel @Inject constructor() : ViewModel() {
         message = R.string.bp_meditation_message,
         meditationMediaList = listOf(
             MeditationMedia(
+                id = 2,
+                name = "Sound meditation",
+                category = "",
                 author = "Vipul",
                 duration = 540,
                 isShortType = true,
-                resourceUrl = "s3://public-sound/public.mp3"
+                resourceUrl = "s3://public-sound/public.mp3",
+                language = MeditationMedia.Language.None,
+                isGuided = false
             ),
             MeditationMedia(
+                id = 3,
+                name = "Sound meditation",
+                category = "",
                 author = "Vipul",
                 duration = 900,
                 isShortType = false,
-                resourceUrl = "s3://public-sound/public.mp3"
+                resourceUrl = "s3://public-sound/public.mp3",
+                language = MeditationMedia.Language.None,
+                isGuided = false
             )
         )
     )
@@ -55,16 +75,26 @@ class WellnessViewModel @Inject constructor() : ViewModel() {
         message = R.string.anger_meditation_message,
         meditationMediaList = listOf(
             MeditationMedia(
+                id = 4,
+                name = "Sound meditation",
+                category = "",
                 author = "Vipul",
                 duration = 540,
                 isShortType = true,
-                resourceUrl = "s3://public-sound/public.mp3"
+                resourceUrl = "s3://public-sound/public.mp3",
+                language = MeditationMedia.Language.None,
+                isGuided = false
             ),
             MeditationMedia(
+                id = 5,
+                name = "Sound meditation",
+                category = "",
                 author = "Vipul",
                 duration = 900,
                 isShortType = false,
-                resourceUrl = "s3://public-sound/public.mp3"
+                resourceUrl = "s3://public-sound/public.mp3",
+                language = MeditationMedia.Language.None,
+                isGuided = false
             )
         )
     )
@@ -75,16 +105,26 @@ class WellnessViewModel @Inject constructor() : ViewModel() {
         message = R.string.stress_meditation_message,
         meditationMediaList = listOf(
             MeditationMedia(
+                id = 6,
+                name = "Sound meditation",
+                category = "",
                 author = "Vipul",
                 duration = 540,
                 isShortType = true,
-                resourceUrl = "s3://public-sound/public.mp3"
+                resourceUrl = "s3://public-sound/public.mp3",
+                language = MeditationMedia.Language.None,
+                isGuided = false
             ),
             MeditationMedia(
+                id = 7,
+                name = "Sound meditation",
+                category = "",
                 author = "Vipul",
                 duration = 900,
                 isShortType = false,
-                resourceUrl = "s3://public-sound/public.mp3"
+                resourceUrl = "s3://public-sound/public.mp3",
+                language = MeditationMedia.Language.None,
+                isGuided = false
             )
         )
     )
@@ -95,16 +135,26 @@ class WellnessViewModel @Inject constructor() : ViewModel() {
         message = R.string.immunity_meditation_message,
         meditationMediaList = listOf(
             MeditationMedia(
+                id = 8,
+                name = "Sound meditation",
+                category = "",
                 author = "Vipul",
                 duration = 540,
                 isShortType = true,
-                resourceUrl = "s3://public-sound/public.mp3"
+                resourceUrl = "s3://public-sound/public.mp3",
+                language = MeditationMedia.Language.None,
+                isGuided = false
             ),
             MeditationMedia(
+                id = 9,
+                name = "Sound meditation",
+                category = "",
                 author = "Vipul",
                 duration = 900,
                 isShortType = false,
-                resourceUrl = "s3://public-sound/public.mp3"
+                resourceUrl = "s3://public-sound/public.mp3",
+                language = MeditationMedia.Language.None,
+                isGuided = false
             )
         )
     )

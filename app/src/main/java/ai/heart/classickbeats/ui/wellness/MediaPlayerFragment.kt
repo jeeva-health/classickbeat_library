@@ -5,6 +5,7 @@ import ai.heart.classickbeats.databinding.FragmentMediaPlayerBinding
 import ai.heart.classickbeats.model.WellnessType
 import ai.heart.classickbeats.utils.setDarkStatusBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
+import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -14,12 +15,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MediaPlayerFragment : Fragment(R.layout.fragment_media_player) {
 
-    private var binding: FragmentMediaPlayerBinding? = null
+    private val binding by viewBinding(FragmentMediaPlayerBinding::bind)
 
     private val args: MediaPlayerFragmentArgs by navArgs()
 
@@ -34,11 +37,9 @@ class MediaPlayerFragment : Fragment(R.layout.fragment_media_player) {
 
         navController = findNavController()
 
-        binding = FragmentMediaPlayerBinding.bind(view)
-
         val wellnessCategory = args.wellnessType
 
-        binding?.apply {
+        binding.apply {
             cross.setSafeOnClickListener {
                 navigateUp()
             }
@@ -74,6 +75,14 @@ class MediaPlayerFragment : Fragment(R.layout.fragment_media_player) {
             val mediaItem = MediaItem.fromUri(mediaUrl)
             exoPlayer.setMediaItem(mediaItem)
             exoPlayer.prepare()
+            exoPlayer.addListener(object : Player.Listener {
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    super.onPlaybackStateChanged(playbackState)
+                    if (playbackState == Player.STATE_ENDED) {
+                        navigateToFeedbackFragment()
+                    }
+                }
+            })
         }
     }
 
@@ -85,7 +94,16 @@ class MediaPlayerFragment : Fragment(R.layout.fragment_media_player) {
     }
 
     private fun navigateUp() {
-        findNavController().navigateUp()
+        navController.navigateUp()
+    }
+
+    private fun navigateToFeedbackFragment() {
+        val action =
+            MediaPlayerFragmentDirections.actionMediaPlayerFragmentToWellnessFeedbackFragment(
+                mediaId = args.mediaId,
+                wellnessType = args.wellnessType
+            )
+        navController.navigate(action)
     }
 
     override fun onStop() {
@@ -96,6 +114,5 @@ class MediaPlayerFragment : Fragment(R.layout.fragment_media_player) {
     override fun onDestroyView() {
         super.onDestroyView()
         releasePlayer()
-        binding = null
     }
 }

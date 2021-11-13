@@ -67,7 +67,7 @@
     <string name="stress">Stress</string>
     <string name="immunity">Immunity</string>
     <string name="listen_short_meditation">Listen to the short meditation clip</string>
-    <string name="listen_long_meditation">Listen to the long meditation clip</string>
+    <string name="submit_feedback">Submit meditation feedback</string>
     <string name="press_play">Press play to start</string>
     <string name="sleep_meditation_title">Sleep Well</string>
     <string name="bp_meditation_title">Rest your Heart</string>
@@ -187,5 +187,7 @@
     <string name="upgrade">Upgrade</string>
     <string name="first_week_free_message">Enjoy your first week FREE, with premium features</string>
     <string name="timeline">Timeline</string>
+    <string name="short_meditation_completion_message">Well done! You have completed a short meditation.</string>
+    <string name="meditation_feedback_question">How did the meditation make you feel?</string>
 
 </resources>

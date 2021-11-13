@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_home"
-    app:startDestination="@id/scanFragment">
+    app:startDestination="@id/wellnessHomeFragment">
 
     <action
         android:id="@+id/action_global_timePickerFragment"
@@ -278,6 +278,29 @@
         <argument
             android:name="wellness_type"
             app:argType="ai.heart.classickbeats.model.WellnessType" />
+        <action
+            android:id="@+id/action_mediaPlayerFragment_to_wellnessFeedbackFragment"
+            app:destination="@id/wellnessFeedbackFragment"
+            app:popUpTo="@id/mediaPlayerFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="media_id"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/wellnessFeedbackFragment"
+        android:name="ai.heart.classickbeats.ui.wellness.WellnessFeedbackFragment"
+        android:label="fragment_wellness_feedback"
+        tools:layout="@layout/fragment_wellness_feedback" >
+        <argument
+            android:name="media_id"
+            app:argType="long" />
+        <argument
+            android:name="wellness_type"
+            app:argType="ai.heart.classickbeats.model.WellnessType" />
+        <action
+            android:id="@+id/action_wellnessFeedbackFragment_to_wellnessHomeFragment"
+            app:destination="@id/wellnessHomeFragment" />
     </fragment>
 
 </navigation>

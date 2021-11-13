@@ -22,5 +22,11 @@
     <attr name="explanationTextColor" format="color" />
     <attr name="meditationListenTextColor" format="color" />
     <attr name="reminderTextColor" format="color" />
+    <attr name="lightCardColor" format="color" />
+    <attr name="meditationQuestionColor" format="color" />
+
+    <attr name="sliderTrackColorInactive" format="color" />
+    <attr name="sliderThumbColor" format="color" />
+    <attr name="sliderTickColor" format="color" />
 
 </resources>

@@ -68,6 +68,7 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
             shortMeditationCard.setSafeOnClickListener {
                 playMeditation(
                     wellnessCategory,
+                    0,
                     "https://public-sound.s3.ap-south-1.amazonaws.com/public.mp3"
                 )
             }
@@ -75,6 +76,7 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
             longMeditationCard.setSafeOnClickListener {
                 playMeditation(
                     wellnessCategory,
+                    0,
                     "https://public-sound.s3.ap-south-1.amazonaws.com/public.mp3"
                 )
             }
@@ -83,9 +85,10 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
         }
     }
 
-    private fun playMeditation(wellnessCategory: WellnessType, mediaUrl: String) {
+    private fun playMeditation(wellnessCategory: WellnessType, mediaId: Long, mediaUrl: String) {
         val action =
             WellnessCategoryFragmentDirections.actionWellnessCategoryFragmentToMediaPlayerFragment(
+                mediaId = mediaId,
                 mediaUrl = mediaUrl,
                 wellnessType = wellnessCategory
             )
