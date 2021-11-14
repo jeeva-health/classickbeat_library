@@ -92,6 +92,6 @@
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toBottomOf="@id/invite_friend_button"
         app:layout_constraintVertical_bias="0"
-        tools:text="Everytime your friend downloads the Jeeva app, you get 10 gems and they get 5 gems." />
+        tools:text="Everytime your friend downloads the Intealth app, you get 10 gems and they get 5 gems." />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

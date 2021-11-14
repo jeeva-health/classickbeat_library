@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Jeeva</string>
-    <string name="app_name_small_case">jeeva</string>
+    <string name="app_name">Intealth</string>
+    <string name="app_name_small_case">intealth</string>
     <string name="app_tagline">Health. Vitality. Longevity</string>
 
     <string name="rupee_amount">\u20B9 %s</string>
@@ -57,7 +57,7 @@
     <string name="hrv_message_5">5. Do not move or talk. Make sure to follow all instructions for accurate results.</string>
 
     <!--    Meditation -->
-    <string name="meditation_notification_title">Jeeva</string>
+    <string name="meditation_notification_title">Intealth</string>
     <string name="meditation_notification_message">Meditation</string>
     <string name="meditation_ticker_text">Ticker</string>
     <string name="listen_to_meditations">Listen to meditations and relax your mind and body</string>
@@ -177,8 +177,8 @@
 
     <!--    Profile-->
     <string name="earn_gems_message_1">Earn %d gems with every invite to unlock premium features</string>
-    <string name="earn_gems_message_2">Every time your friend downloads the Jeeva app, you get %d gems and they get %d gems.</string>
-    <string name="invite_message">Hey! I’m using the Jeeva app to keep a regular check of my HRV metrics and important vitals to maintain a healthy lifestyle. You can download and try it here: %s</string>
+    <string name="earn_gems_message_2">Every time your friend downloads the Intealth app, you get %d gems and they get %d gems.</string>
+    <string name="invite_message">Hey! I’m using the Intealth app to keep a regular check of my HRV metrics and important vitals to maintain a healthy lifestyle. You can download and try it here: %s</string>
     <string name="view_your_pulse_waveform">View your pulse waveform- Find how your heartbeat rhythm changed during the measurement.</string>
     <string name="view_your_hrv_metric">View your HRV metric- Learn about how the time intervals between your heart beat changed during the measurement.</string>
     <string name="upgrade_to_pro">Upgrade to PRO</string>
