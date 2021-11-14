@@ -3,7 +3,7 @@ package ai.heart.classickbeats.data.record
 import ai.heart.classickbeats.data.db.AppDatabase
 import ai.heart.classickbeats.data.record.cache.TimelineRemoteKey
 import ai.heart.classickbeats.mapper.input.HistoryRecordNetworkDbMapper
-import ai.heart.classickbeats.model.TimelineEntityDatabase
+import ai.heart.classickbeats.model.entity.TimelineEntityDatabase
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -14,6 +14,7 @@ import timber.log.Timber
 import java.io.IOException
 
 const val TIMELINE_STARTING_PAGE_INDEX = 1
+
 
 @ExperimentalPagingApi
 class TimelineRemoteMediator constructor(

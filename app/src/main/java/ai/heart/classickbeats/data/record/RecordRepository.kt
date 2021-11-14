@@ -3,7 +3,10 @@ package ai.heart.classickbeats.data.record
 import ai.heart.classickbeats.data.db.AppDatabase
 import ai.heart.classickbeats.mapper.input.*
 import ai.heart.classickbeats.model.*
-import ai.heart.classickbeats.model.entity.*
+import ai.heart.classickbeats.model.entity.BaseLogEntity
+import ai.heart.classickbeats.model.entity.HistoryEntity
+import ai.heart.classickbeats.model.entity.PPGEntity
+import ai.heart.classickbeats.model.entity.TimelineEntityDatabase
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
 import ai.heart.classickbeats.shared.util.toDateStringNetwork
@@ -17,6 +20,7 @@ import timber.log.Timber
 import java.util.Date
 import javax.inject.Inject
 
+
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 @ActivityRetainedScoped
@@ -24,7 +28,7 @@ class RecordRepository @Inject constructor(
     private val service: RecordApiService,
     private val database: AppDatabase,
     private val recordRemoteDataSource: RecordRemoteDataSource,
-    private val loggingListMapper: LoggingListMapper,
+    private val historyListMapper: HistoryListMapper,
     private val historyMapper: HistoryRecordMapper,
     private val timelineMapper: TimelineMapper,
     private val graphDataMapper: GraphDataMapper,
@@ -45,22 +49,6 @@ class RecordRepository @Inject constructor(
             }
             is Result.Error -> Timber.e(response.exception)
             Result.Loading -> throw IllegalStateException("getUser response invalid state")
-        }
-        return Result.Error(response.error)
-    }
-
-    suspend fun getLoggingData(): Result<List<BaseLogEntity>> {
-        val response = recordRemoteDataSource.getLoggingData()
-        when (response) {
-            is Result.Success -> {
-                val output: MutableList<BaseLogEntity> = mutableListOf()
-                response.data.loggingList.forEach {
-                    output.add(loggingListMapper.map(it).first())
-                }
-                return Result.Success(output.toList())
-            }
-            is Result.Error -> Timber.e(response.exception)
-            Result.Loading -> throw IllegalStateException("getLoggingData response invalid state")
         }
         return Result.Error(response.error)
     }
@@ -130,18 +118,6 @@ class RecordRepository @Inject constructor(
         return Result.Error(response.error)
     }
 
-    suspend fun recordBloodPressure(bpLogEntity: BpLogEntity): Result<Long> =
-        recordRemoteDataSource.recordBloodPressure(bpLogEntity)
-
-    suspend fun recordGlucoseLevel(glucoseLogEntity: GlucoseLogEntity): Result<Long> =
-        recordRemoteDataSource.recordGlucoseLevel(glucoseLogEntity)
-
-    suspend fun recordWaterIntake(waterLogEntity: WaterLogEntity): Result<Long> =
-        recordRemoteDataSource.recordWaterIntake(waterLogEntity)
-
-    suspend fun recordWeight(weightLogEntity: WeightLogEntity): Result<Long> =
-        recordRemoteDataSource.recordWeight(weightLogEntity)
-
     suspend fun getGraphData(
         model: LogType,
         type: HistoryType,
@@ -203,7 +179,7 @@ class RecordRepository @Inject constructor(
         val response = recordRemoteDataSource.getHistoryListData(modelStr, startDateStr, endDateStr)
         when (response) {
             is Result.Success -> {
-                val logEntityList = loggingListMapper.map(response.data.historyList)
+                val logEntityList = historyListMapper.map(response.data.historyList)
                 return Result.Success(logEntityList)
             }
             is Result.Error -> Timber.e(response.exception)

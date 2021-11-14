@@ -1,9 +1,10 @@
 package ai.heart.classickbeats.mapper.input
 
 import ai.heart.classickbeats.mapper.Mapper
-import ai.heart.classickbeats.model.TimelineEntityDatabase
-import ai.heart.classickbeats.model.TimelineEntityNetwork
+import ai.heart.classickbeats.model.entity.TimelineEntityDatabase
+import ai.heart.classickbeats.model.entity.TimelineEntityNetwork
 import javax.inject.Inject
+
 
 class HistoryRecordNetworkDbMapper @Inject constructor() :
     Mapper<TimelineEntityNetwork, TimelineEntityDatabase> {

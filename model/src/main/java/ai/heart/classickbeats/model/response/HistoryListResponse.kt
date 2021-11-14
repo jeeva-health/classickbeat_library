@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.model.response
 
-import ai.heart.classickbeats.model.TimelineEntityNetwork
+import ai.heart.classickbeats.model.entity.TimelineEntityNetwork
 import com.squareup.moshi.Json
 
 data class HistoryListResponse(

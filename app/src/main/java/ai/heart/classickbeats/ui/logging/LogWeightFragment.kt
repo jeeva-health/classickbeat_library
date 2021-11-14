@@ -6,8 +6,8 @@ import ai.heart.classickbeats.databinding.FragmentLogWeightBinding
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.widgets.DateTimePickerViewModel
 import ai.heart.classickbeats.utils.hideLoadingBar
+import ai.heart.classickbeats.utils.setLightStatusBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
-import ai.heart.classickbeats.utils.showLoadingBar
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -17,8 +17,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
+@ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @AndroidEntryPoint
 class LogWeightFragment : Fragment(R.layout.fragment_log_weight) {
@@ -35,6 +37,8 @@ class LogWeightFragment : Fragment(R.layout.fragment_log_weight) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentLogWeightBinding.bind(view)
+
+        setLightStatusBar()
 
         navController = findNavController()
 
@@ -55,14 +59,6 @@ class LogWeightFragment : Fragment(R.layout.fragment_log_weight) {
         loggingViewModel.navigateToLoggingHome.observe(viewLifecycleOwner, EventObserver {
             hideLoadingBar()
             navController.navigateUp()
-        })
-
-        loggingViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {
-            if (it) {
-                showLoadingBar()
-            } else {
-                hideLoadingBar()
-            }
         })
     }
 
@@ -92,6 +88,7 @@ class LogWeightFragment : Fragment(R.layout.fragment_log_weight) {
 
     override fun onDestroyView() {
         binding?.dateLayout?.removeOnEditTextAttachedListener(dateEditTextAttachListener)
+        binding = null
         super.onDestroyView()
     }
 }

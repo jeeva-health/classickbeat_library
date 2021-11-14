@@ -1,7 +1,8 @@
 package ai.heart.classickbeats.model.response
 
-import ai.heart.classickbeats.model.TimelineEntityNetwork
+import ai.heart.classickbeats.model.entity.LogEntityNetwork
 import com.squareup.moshi.Json
+
 
 data class LoggingListResponse(
     @Json(name = "success")
@@ -15,6 +16,6 @@ data class LoggingListResponse(
 ) {
     data class LoggingData(
         @Json(name = "logging_list")
-        val loggingList: List<List<TimelineEntityNetwork>>
+        val loggingList: List<List<LogEntityNetwork>>
     )
 }

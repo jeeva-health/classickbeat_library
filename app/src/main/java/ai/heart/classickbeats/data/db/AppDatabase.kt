@@ -2,7 +2,7 @@ package ai.heart.classickbeats.data.db
 
 import ai.heart.classickbeats.data.record.cache.*
 import ai.heart.classickbeats.data.user.cache.UserDao
-import ai.heart.classickbeats.model.TimelineEntityDatabase
+import ai.heart.classickbeats.model.entity.TimelineEntityDatabase
 import ai.heart.classickbeats.model.entity.HistoryEntity
 import ai.heart.classickbeats.model.entity.UserEntity
 import android.content.Context

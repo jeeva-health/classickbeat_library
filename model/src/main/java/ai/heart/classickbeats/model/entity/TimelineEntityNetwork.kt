@@ -1,6 +1,7 @@
-package ai.heart.classickbeats.model
+package ai.heart.classickbeats.model.entity
 
 import com.squareup.moshi.Json
+
 
 data class TimelineEntityNetwork(
     @Json(name = "pk")

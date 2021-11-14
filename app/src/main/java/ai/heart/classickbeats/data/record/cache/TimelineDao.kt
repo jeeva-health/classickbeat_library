@@ -1,8 +1,9 @@
 package ai.heart.classickbeats.data.record.cache
 
-import ai.heart.classickbeats.model.TimelineEntityDatabase
+import ai.heart.classickbeats.model.entity.TimelineEntityDatabase
 import androidx.paging.PagingSource
 import androidx.room.*
+
 
 @Dao
 interface TimelineDao {

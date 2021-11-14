@@ -1,7 +1,8 @@
-package ai.heart.classickbeats.model
+package ai.heart.classickbeats.model.entity
 
 import androidx.room.Entity
 import com.squareup.moshi.Json
+
 
 @Entity(tableName = "timeline", primaryKeys = ["id", "model"])
 data class TimelineEntityDatabase(

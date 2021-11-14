@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.ui.logging
 
-import ai.heart.classickbeats.data.record.RecordRepository
+import ai.heart.classickbeats.data.logging.LoggingRepository
 import ai.heart.classickbeats.model.Date
 import ai.heart.classickbeats.model.Time
 import ai.heart.classickbeats.model.entity.*
@@ -23,7 +23,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class LoggingViewModel @Inject constructor(
-    private val recordRepository: RecordRepository
+    private val loggingRepository: LoggingRepository
 ) : ViewModel() {
 
     var apiError: String? = null
@@ -54,15 +54,13 @@ class LoggingViewModel @Inject constructor(
 
     fun getLoggingData() {
         viewModelScope.launch {
-            setShowLoadingTrue()
-            val response = recordRepository.getLoggingData()
+            val response = loggingRepository.getLoggingData()
             if (response.succeeded) {
                 loggingData = response.data
             } else {
                 apiError = response.error
             }
             reloadLoggingHomeScreen()
-            setShowLoadingFalse()
         }
     }
 
@@ -82,7 +80,7 @@ class LoggingViewModel @Inject constructor(
                 timeStamp = timeStamp,
                 note = notes
             )
-            recordRepository.recordBloodPressure(bpLogEntity)
+            loggingRepository.recordBloodPressure(bpLogEntity)
             navigateBack()
         }
     }
@@ -103,7 +101,7 @@ class LoggingViewModel @Inject constructor(
                 timeStamp = timeStamp,
                 note = notes
             )
-            recordRepository.recordGlucoseLevel(glucoseLogEntity)
+            loggingRepository.recordGlucoseLevel(glucoseLogEntity)
             navigateBack()
         }
     }
@@ -119,7 +117,7 @@ class LoggingViewModel @Inject constructor(
             val timeStamp = getLogTimeStampString(time, date)
             val waterLogEntity =
                 WaterLogEntity(quantity = quantity, timeStamp = timeStamp, note = notes)
-            recordRepository.recordWaterIntake(waterLogEntity)
+            loggingRepository.recordWaterIntake(waterLogEntity)
             navigateBack()
         }
     }
@@ -135,7 +133,7 @@ class LoggingViewModel @Inject constructor(
             val timeStamp = getLogTimeStampString(time, date)
             val weightLogEntity =
                 WeightLogEntity(weight = weight, timeStamp = timeStamp, note = notes)
-            recordRepository.recordWeight(weightLogEntity)
+            loggingRepository.recordWeight(weightLogEntity)
             navigateBack()
         }
     }
