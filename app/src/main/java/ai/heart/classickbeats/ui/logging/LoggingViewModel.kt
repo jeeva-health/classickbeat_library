@@ -18,6 +18,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 @HiltViewModel
@@ -27,9 +28,7 @@ class LoggingViewModel @Inject constructor(
 
     var apiError: String? = null
 
-    private var _loggingData: List<BaseLogEntity>? = null
-    val loggingData: List<BaseLogEntity>?
-        get() = _loggingData
+    var loggingData: List<BaseLogEntity>? = null
 
     private val _navigateToLoggingHome = MutableLiveData<Event<Boolean>>()
     val navigateToLoggingHome: LiveData<Event<Boolean>> = _navigateToLoggingHome
@@ -58,7 +57,7 @@ class LoggingViewModel @Inject constructor(
             setShowLoadingTrue()
             val response = recordRepository.getLoggingData()
             if (response.succeeded) {
-                _loggingData = response.data
+                loggingData = response.data
             } else {
                 apiError = response.error
             }

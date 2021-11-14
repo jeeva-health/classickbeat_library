@@ -17,8 +17,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
+@ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @AndroidEntryPoint
 class LogBpFragment : Fragment(R.layout.fragment_log_bp) {

@@ -8,10 +8,7 @@ import ai.heart.classickbeats.model.entity.GlucoseLogEntity
 import ai.heart.classickbeats.model.entity.WaterLogEntity
 import ai.heart.classickbeats.model.entity.WeightLogEntity
 import ai.heart.classickbeats.shared.result.EventObserver
-import ai.heart.classickbeats.utils.hideLoadingBar
-import ai.heart.classickbeats.utils.setSafeOnClickListener
-import ai.heart.classickbeats.utils.showLoadingBar
-import ai.heart.classickbeats.utils.viewBinding
+import ai.heart.classickbeats.utils.*
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -20,8 +17,10 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
+@ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @AndroidEntryPoint
 class LoggingHomeFragment : Fragment(R.layout.fragment_logging_home) {
@@ -34,6 +33,8 @@ class LoggingHomeFragment : Fragment(R.layout.fragment_logging_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setLightStatusBar()
 
         navController = findNavController()
 
@@ -53,20 +54,8 @@ class LoggingHomeFragment : Fragment(R.layout.fragment_logging_home) {
             navigateToLogWeightFragment()
         }
 
-//        binding.medicationCard.setSafeOnClickListener {
-//            navigateToLogMedicationFragment()
-//        }
-
         loggingViewModel.reloadScreen.observe(viewLifecycleOwner, EventObserver {
             reloadCards()
-        })
-
-        loggingViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {
-            if (it) {
-                showLoadingBar()
-            } else {
-                hideLoadingBar()
-            }
         })
 
         loggingViewModel.getLoggingData()
@@ -124,10 +113,4 @@ class LoggingHomeFragment : Fragment(R.layout.fragment_logging_home) {
         val action = LoggingHomeFragmentDirections.actionLoggingHomeFragmentToLogWeightFragment()
         navController.navigate(action)
     }
-
-//    private fun navigateToLogMedicationFragment() {
-//        val action =
-//            LoggingHomeFragmentDirections.actionLoggingHomeFragmentToLogMedicationFragment()
-//        navController.navigate(action)
-//    }
 }

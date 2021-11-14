@@ -53,10 +53,11 @@ class RecordRepository @Inject constructor(
         val response = recordRemoteDataSource.getLoggingData()
         when (response) {
             is Result.Success -> {
-                response.data.loggingList.firstOrNull()?.let {
-                    val logEntityList = loggingListMapper.map(it)
-                    return Result.Success(logEntityList)
+                val output: MutableList<BaseLogEntity> = mutableListOf()
+                response.data.loggingList.forEach {
+                    output.add(loggingListMapper.map(it).first())
                 }
+                return Result.Success(output.toList())
             }
             is Result.Error -> Timber.e(response.exception)
             Result.Loading -> throw IllegalStateException("getLoggingData response invalid state")

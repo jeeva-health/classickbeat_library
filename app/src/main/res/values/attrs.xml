@@ -29,4 +29,7 @@
     <attr name="sliderThumbColor" format="color" />
     <attr name="sliderTickColor" format="color" />
 
+    <!-- Logging-->
+    <attr name="onLoggingCardColor" format="color" />
+
 </resources>

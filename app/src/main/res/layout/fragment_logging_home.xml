@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:fillViewport="true"
     tools:context=".ui.logging.LoggingHomeFragment">
 
@@ -39,17 +39,19 @@
             android:layout_marginTop="@dimen/page_top_margin"
             android:text="@string/measure"
             android:textAllCaps="true"
+            android:textColor="?attr/pageTitleColor"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/wellness_title"
+            android:id="@+id/logging_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="@string/record_question"
+            android:textColor="?attr/headingColor"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
@@ -65,7 +67,7 @@
             app:layout_constraintDimensionRatio="0.78"
             app:layout_constraintEnd_toEndOf="@id/center_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/wellness_title">
+            app:layout_constraintTop_toBottomOf="@id/logging_title">
 
             <TextView
                 android:id="@+id/bp_text"
@@ -74,7 +76,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:text="@string/blood_pressure"
-                android:textColor="@color/white"
+                android:textColor="?attr/onLoggingCardColor"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -82,7 +84,7 @@
                 android:id="@+id/bp_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="?attr/lightCardColor"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toTopOf="@id/bp_value"
                 app:layout_constraintStart_toStartOf="@id/bp_text"
@@ -92,7 +94,7 @@
                 android:id="@+id/bp_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="?attr/onLoggingCardColor"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@id/bp_unit"
                 app:layout_constraintStart_toStartOf="@id/bp_text"
@@ -104,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:text="@string/mmhg"
-                android:textColor="@color/white"
+                android:textColor="?attr/onLoggingCardColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/bp_text" />
 
@@ -137,7 +139,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:text="@string/blood_glucose_level"
-                android:textColor="@color/white"
+                android:textColor="?attr/onLoggingCardColor"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -145,7 +147,7 @@
                 android:id="@+id/glucose_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="?attr/lightCardColor"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toTopOf="@id/glucose_value"
                 app:layout_constraintStart_toStartOf="@id/glucose_text"
@@ -155,7 +157,7 @@
                 android:id="@+id/glucose_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="?attr/onLoggingCardColor"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@id/glucose_unit"
                 app:layout_constraintStart_toStartOf="@id/glucose_text"
@@ -167,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:text="@string/mg_dl"
-                android:textColor="@color/white"
+                android:textColor="?attr/onLoggingCardColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/glucose_text" />
 
@@ -201,7 +203,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:text="@string/water_intake"
-                android:textColor="@color/white"
+                android:textColor="?attr/onLoggingCardColor"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -209,7 +211,7 @@
                 android:id="@+id/water_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="?attr/lightCardColor"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toTopOf="@id/water_value"
                 app:layout_constraintStart_toStartOf="@id/water_text"
@@ -219,7 +221,7 @@
                 android:id="@+id/water_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="?attr/onLoggingCardColor"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@id/water_unit"
                 app:layout_constraintStart_toStartOf="@id/water_text"
@@ -231,7 +233,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:text="@string/ltrs"
-                android:textColor="@color/white"
+                android:textColor="?attr/onLoggingCardColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/water_text" />
 
@@ -265,7 +267,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:text="@string/weight"
-                android:textColor="@color/white"
+                android:textColor="?attr/onLoggingCardColor"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -273,7 +275,7 @@
                 android:id="@+id/weight_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="?attr/lightCardColor"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toTopOf="@id/weight_value"
                 app:layout_constraintStart_toStartOf="@id/weight_text"
@@ -283,7 +285,7 @@
                 android:id="@+id/weight_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="?attr/onLoggingCardColor"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@id/weight_unit"
                 app:layout_constraintStart_toStartOf="@id/weight_text"
@@ -295,7 +297,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:text="@string/kg"
-                android:textColor="@color/white"
+                android:textColor="?attr/onLoggingCardColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/weight_text" />
 
@@ -309,64 +311,6 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-        <!--            android:id="@+id/medication_card"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="0dp"-->
-        <!--            android:layout_marginTop="12dp"-->
-        <!--            android:layout_marginBottom="@dimen/page_navigation_bottom_margin"-->
-        <!--            android:background="@drawable/bg_gradient_rect_blue_2"-->
-        <!--            android:elevation="8dp"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintDimensionRatio="2.9"-->
-        <!--            app:layout_constraintEnd_toEndOf="@id/end_guideline"-->
-        <!--            app:layout_constraintStart_toStartOf="@id/start_guideline"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/water_card"-->
-        <!--            app:layout_constraintVertical_bias="0">-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/medication_text"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_marginStart="12dp"-->
-        <!--                android:layout_marginTop="12dp"-->
-        <!--                android:text="@string/medication"-->
-        <!--                android:textColor="@color/white"-->
-        <!--                app:layout_constraintStart_toStartOf="parent"-->
-        <!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/medication_time"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:textColor="@color/white"-->
-        <!--                android:textSize="10sp"-->
-        <!--                app:layout_constraintBottom_toTopOf="@id/medication_value"-->
-        <!--                app:layout_constraintStart_toStartOf="@id/medication_text"-->
-        <!--                tools:text="6:20 AM" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/medication_value"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_marginBottom="12dp"-->
-        <!--                android:textColor="@color/white"-->
-        <!--                android:textSize="18sp"-->
-        <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--                app:layout_constraintStart_toStartOf="@id/medication_text"-->
-        <!--                tools:text="Crocin 500 mg" />-->
-
-        <!--            <ImageView-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_marginEnd="12dp"-->
-        <!--                android:layout_marginBottom="12dp"-->
-        <!--                android:src="@drawable/ic_plus"-->
-        <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--                app:layout_constraintEnd_toEndOf="parent" />-->
-
-        <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
