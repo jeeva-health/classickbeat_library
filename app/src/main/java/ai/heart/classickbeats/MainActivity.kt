@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
@@ -160,7 +159,8 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding?.apply {
                 when (destination.id) {
-                    R.id.scanFragment, R.id.historyFragment, R.id.loggingHomeFragment, R.id.wellnessHomeFragment, R.id.profileHomeFragment -> {
+                    R.id.scanFragment, R.id.historyFragment, R.id.timelineFragment,
+                    R.id.loggingHomeFragment, R.id.wellnessHomeFragment, R.id.profileHomeFragment -> {
                         showBottomNavigation()
                     }
                     else -> {
@@ -212,16 +212,16 @@ class MainActivity : AppCompatActivity() {
     fun showLoadingBar() {
         Timber.i("showLoadingBar() called")
         binding?.progressBar?.visibility = View.VISIBLE
-        window?.setFlags(
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-        )
+//        window?.setFlags(
+//            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+//            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+//        )
     }
 
     fun hideLoadingBar() {
         Timber.i("hideLoadingBar() called")
         binding?.progressBar?.visibility = View.GONE
-        window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        //window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
     private fun createNotificationChannel() {
