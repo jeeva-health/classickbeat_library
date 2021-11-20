@@ -20,17 +20,17 @@ android {
         applicationId "ai.heart.classickbeats"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 1
-        versionName "0.01-beta"
+        versionCode 2
+        versionName "0.02-beta"
 
-        renderscriptTargetApi 23
+        renderscriptTargetApi 24
         renderscriptSupportModeEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        ndk {
-            abiFilters "armeabi-v7a", "x86"
-        }
+//        ndk {
+//            abiFilters "armeabi-v7a", "x86"
+//        }
     }
 
     buildTypes {
