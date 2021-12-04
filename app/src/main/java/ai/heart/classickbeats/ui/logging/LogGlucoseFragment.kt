@@ -5,9 +5,7 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentLogGlucoseBinding
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.widgets.DateTimePickerViewModel
-import ai.heart.classickbeats.utils.hideLoadingBar
-import ai.heart.classickbeats.utils.setSafeOnClickListener
-import ai.heart.classickbeats.utils.showLoadingBar
+import ai.heart.classickbeats.utils.*
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -17,8 +15,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
+@ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @AndroidEntryPoint
 class LogGlucoseFragment : Fragment(R.layout.fragment_log_glucose) {
@@ -34,9 +33,25 @@ class LogGlucoseFragment : Fragment(R.layout.fragment_log_glucose) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setLightStatusBar()
+
         binding = FragmentLogGlucoseBinding.bind(view)
 
         navController = findNavController()
+
+        binding?.glucoseLayout?.requestFocus()
+
+        val currentDate = getCurrentDate()
+
+        val currentTime = getCurrentTime()
+
+        dateTimePickerViewModel.setLogDate(currentDate)
+
+        dateTimePickerViewModel.setLogTime(currentTime)
+
+        binding?.dateLayout?.editText?.setText(currentDate.toString())
+
+        binding?.timeLayout?.editText?.setText(currentTime.toString())
 
         binding?.timeLayout?.addOnEditTextAttachedListener(timerEditTextAttachListener)
 

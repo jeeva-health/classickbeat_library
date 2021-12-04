@@ -24,23 +24,24 @@
         android:id="@+id/back_arrow"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginTop="32dp"
         android:padding="16dp"
         android:src="@drawable/ic_left_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/page_category"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/page_category"
         app:tint="@color/black" />
 
     <TextView
         android:id="@+id/page_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/page_top_margin"
         android:text="@string/blood_glucose_level"
         android:textAllCaps="true"
+        android:textColor="?attr/pageTitleColor"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/back_arrow"
         app:layout_constraintStart_toEndOf="@id/back_arrow"
-        app:layout_constraintTop_toTopOf="@id/back_arrow" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/info"
@@ -203,6 +204,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="start|top"
             android:hint="@string/hint_add_a_comment"
             android:minLines="3" />
 

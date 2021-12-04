@@ -5,9 +5,7 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentLogBpBinding
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.widgets.DateTimePickerViewModel
-import ai.heart.classickbeats.utils.hideLoadingBar
-import ai.heart.classickbeats.utils.setSafeOnClickListener
-import ai.heart.classickbeats.utils.showLoadingBar
+import ai.heart.classickbeats.utils.*
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -18,7 +16,6 @@ import androidx.paging.ExperimentalPagingApi
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
 
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
@@ -36,9 +33,25 @@ class LogBpFragment : Fragment(R.layout.fragment_log_bp) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setLightStatusBar()
+
         binding = FragmentLogBpBinding.bind(view)
 
         navController = findNavController()
+
+        binding?.systolicLayout?.requestFocus()
+
+        val currentDate = getCurrentDate()
+
+        val currentTime = getCurrentTime()
+
+        dateTimePickerViewModel.setLogDate(currentDate)
+
+        dateTimePickerViewModel.setLogTime(currentTime)
+
+        binding?.dateLayout?.editText?.setText(currentDate.toString())
+
+        binding?.timeLayout?.editText?.setText(currentTime.toString())
 
         binding?.timeLayout?.addOnEditTextAttachedListener(timerEditTextAttachListener)
 

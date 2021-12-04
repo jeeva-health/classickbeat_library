@@ -43,6 +43,8 @@
         <item name="meditationQuestionColor">@color/bright_red_2</item>
         <item name="onLoggingCardColor">@color/white</item>
 
+        <item name="borderColor">@color/dark_grayish_red_2</item>
+
         <item name="sliderTrackColorInactive">@color/light_grayish_red</item>
         <item name="sliderThumbColor">@color/very_light_grey_3</item>
         <item name="sliderTickColor">@color/white</item>
