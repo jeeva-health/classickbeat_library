@@ -13,8 +13,8 @@ import timber.log.Timber
 class FirebaseGoogleSignIn :
     ActivityResultContract<GoogleSignInClient, GoogleSignInAccount?>() {
 
-    override fun createIntent(context: Context, input: GoogleSignInClient?): Intent {
-        return input?.signInIntent ?: throw Exception("GoogleSignInClient is null")
+    override fun createIntent(context: Context, input: GoogleSignInClient): Intent {
+        return input.signInIntent
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): GoogleSignInAccount? {
