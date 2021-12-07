@@ -585,7 +585,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     }
 
     private fun updateScanMessage(countdownType: Int, countdownTime: Int) {
-        Timber.i("updateScanMessage countdownType: $countdownType, time: $countdownTime")
         val messageId = if (countdownType == 0) {
             R.string.scan_message_1
         } else {

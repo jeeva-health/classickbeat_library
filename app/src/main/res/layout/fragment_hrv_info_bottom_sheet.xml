@@ -64,10 +64,10 @@
             android:layout_width="128dp"
             android:layout_height="128dp"
             android:layout_marginTop="24dp"
-            android:src="@drawable/tutorial_animation_1"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/message_1" />
+            app:layout_constraintTop_toBottomOf="@id/message_1"
+            tools:src="@drawable/tutorial_animation_1" />
 
         <TextView
             android:id="@+id/message_2"
@@ -85,10 +85,10 @@
             android:layout_width="128dp"
             android:layout_height="128dp"
             android:layout_marginTop="24dp"
-            android:src="@drawable/tutorial_animation_2"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/message_2" />
+            app:layout_constraintTop_toBottomOf="@id/message_2"
+            tools:src="@drawable/tutorial_animation_2" />
 
         <TextView
             android:id="@+id/message_3"
@@ -106,10 +106,10 @@
             android:layout_width="128dp"
             android:layout_height="128dp"
             android:layout_marginTop="24dp"
-            android:src="@drawable/tutorial_animation_3"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/message_3" />
+            app:layout_constraintTop_toBottomOf="@id/message_3"
+            tools:src="@drawable/tutorial_animation_3" />
 
         <TextView
             android:id="@+id/message_4"
@@ -127,10 +127,10 @@
             android:layout_width="128dp"
             android:layout_height="128dp"
             android:layout_marginTop="24dp"
-            android:src="@drawable/tutorial_animation_4"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/message_4" />
+            app:layout_constraintTop_toBottomOf="@id/message_4"
+            tools:src="@drawable/tutorial_animation_4" />
 
         <TextView
             android:id="@+id/message_5"
@@ -149,11 +149,11 @@
             android:layout_height="128dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="@dimen/page_bottom_margin"
-            android:src="@drawable/tutorial_animation_5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/message_5" />
+            app:layout_constraintTop_toBottomOf="@id/message_5"
+            tools:src="@drawable/tutorial_animation_5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
