@@ -90,7 +90,7 @@ class ProfileSettingsFragment : Fragment(R.layout.fragment_profile_settings) {
     }
 
     private fun openHowJeevaWorksPage() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.intealth.app/"))
         startActivity(intent)
     }
 

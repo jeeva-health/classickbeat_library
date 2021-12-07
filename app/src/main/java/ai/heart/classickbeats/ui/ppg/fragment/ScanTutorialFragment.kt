@@ -16,8 +16,10 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalPagingApi
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ScanTutorialFragment : Fragment(R.layout.fragment_scan_tutorial) {
 

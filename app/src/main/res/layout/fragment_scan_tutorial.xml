@@ -52,7 +52,7 @@
         android:id="@+id/next_btn"
         android:layout_width="0dp"
         android:layout_height="@dimen/button_height"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="@dimen/page_bottom_margin"
         android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"

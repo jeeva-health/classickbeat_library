@@ -18,7 +18,7 @@
     <string name="enter_height">Enter your height</string>
     <string name="register">Register</string>
     <string name="sign_up_google">Connect with Google</string>
-    <string name="terms_and_condition">By continuing, you agree to our terms and conditions</string>
+    <string name="terms_and_condition">By continuing, you agree to our Terms &amp; Conditions</string>
 
     <!--    OnBoarding-->
     <string name="onboarding_message_1">Measure your stress level and wellness with your phone camera</string>
