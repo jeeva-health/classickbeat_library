@@ -212,7 +212,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
 
         monitorViewModel.timerProgress.observe(viewLifecycleOwner, EventObserver {
-            Timber.i("Timer: $it")
+            updateScanMessage(countdownType, it)
             if (it == 0) {
                 if (countdownType == 0) {
                     binding.countdown.visibility = View.GONE
@@ -582,5 +582,27 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private fun navigateToScanTutorialFragment() {
         val action = ScanFragmentDirections.actionScanFragmentToScanTutorialFragment()
         navController.navigate(action)
+    }
+
+    private fun updateScanMessage(countdownType: Int, countdownTime: Int) {
+        Timber.i("updateScanMessage countdownType: $countdownType, time: $countdownTime")
+        val messageId = if (countdownType == 0) {
+            R.string.scan_message_1
+        } else {
+            val time = SCAN_DURATION - countdownTime
+            when {
+                time <= 5 -> R.string.scan_message_2
+                time <= 10 -> R.string.scan_message_3
+                time <= 15 -> R.string.scan_message_4
+                time <= 22 -> R.string.scan_message_5
+                time <= 30 -> R.string.scan_message_6
+                time <= 35 -> R.string.scan_message_7
+                time <= 43 -> R.string.scan_message_8
+                time <= 50 -> R.string.scan_message_9
+                time <= 57 -> R.string.scan_message_10
+                else -> R.string.scan_message_11
+            }
+        }
+        binding.message.text = getString(messageId)
     }
 }

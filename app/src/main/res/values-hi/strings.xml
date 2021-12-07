@@ -48,6 +48,21 @@
     <string name="scan_tutorial_5">Do not move or talk. Make sure to follow all instructions for accurate results.</string>
     <string name="start_scan">Start Scanning</string>
 
+    <!--    Scan-->
+    <string name="default_heart_rate">_ _</string>
+    <string name="start">Start</string>
+    <string name="scan_message_1">Please relax and stay still. Do not move or talk.</string>
+    <string name="scan_message_2">Breath as you usually do. Do not take very deep breaths.</string>
+    <string name="scan_message_3">Maintain slight pressure on the camera with your finger.</string>
+    <string name="scan_message_4">If the dynamic graph is very noisy, please calm down and try again.</string>
+    <string name="scan_message_5">Intealth assesses your Heart Rate Variability (HRV) - the time distribution between successive heartbeats.</string>
+    <string name="scan_message_6">HRV is controlled by the Autonomic Nervous System (ANS). It quantifies the state and health of your body’s stress response.</string>
+    <string name="scan_message_7">The higher the HRV, the more relaxed your physiological state is.</string>
+    <string name="scan_message_8">With regular HRV measurements, you can keep track of how stressed you are. We recommend taking daily measurements.</string>
+    <string name="scan_message_9">Meditation and exercise have a positive effect on your mind and body, increasing your HRV.</string>
+    <string name="scan_message_10">Intealth has guided chakra meditation exercises which will allow you to achieve your health and well-being goals.</string>
+    <string name="scan_message_11">We are almost done.</string>
+
     <!--    HRV help screen-->
     <string name="how_to_scan_your_hrv">How to scan your HRV?</string>
     <string name="hrv_message_1">1. Place the tip of your finger on the camera and the flash, completely covering them.</string>
