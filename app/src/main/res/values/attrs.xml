@@ -34,4 +34,6 @@
     <!-- Logging-->
     <attr name="onLoggingCardColor" format="color" />
 
+    <attr name="scanMessageColor" format="color" />
+
 </resources>

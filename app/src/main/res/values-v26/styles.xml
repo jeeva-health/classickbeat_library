@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextAppearance.Jeeva.H2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="android:textSize">@dimen/text_size_h2</item>
+        <item name="android:fontWeight">500</item>
+    </style>
+
+</resources>

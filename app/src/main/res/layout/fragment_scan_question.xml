@@ -29,9 +29,10 @@
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="42dp"
+            android:layout_marginTop="@dimen/page_top_margin"
             android:text="@string/scan_question_text"
             android:textAppearance="@style/TextAppearance.Jeeva.H2"
+            android:textColor="?attr/scanMessageColor"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,6 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/sleep_question"
+            android:textAppearance="@style/TextAppearance.Jeeva.H5"
+            android:textColor="?attr/pageTitleColor"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -87,6 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:text="@string/mood_question"
+            android:textAppearance="@style/TextAppearance.Jeeva.H5"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/sleep_slider" />
 
@@ -132,6 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:text="@string/healthy_question"
+            android:textAppearance="@style/TextAppearance.Jeeva.H5"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/mood_slider" />
 
@@ -177,6 +182,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:text="@string/before_scanning_question"
+            android:textAppearance="@style/TextAppearance.Jeeva.H5"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/health_slider" />
 
