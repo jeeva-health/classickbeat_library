@@ -5,8 +5,11 @@ import ai.heart.classickbeats.model.Gender
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.shared.data.login.LoginRepository
 import ai.heart.classickbeats.shared.data.prefs.PreferenceStorage
+import ai.heart.classickbeats.shared.domain.prefs.OnBoardingCompleteActionUseCase
 import ai.heart.classickbeats.shared.network.SessionManager
 import ai.heart.classickbeats.shared.result.Event
+import ai.heart.classickbeats.shared.result.error
+import ai.heart.classickbeats.shared.result.succeeded
 import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -21,6 +24,7 @@ class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val sessionManager: SessionManager,
     private val preferenceStorage: PreferenceStorage,
+    private val onBoardingCompleteActionUseCase: OnBoardingCompleteActionUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -89,7 +93,12 @@ class LoginViewModel @Inject constructor(
         showLoading.postValue(true)
         viewModelScope.launch {
             val response = userRepository.registerUser(user)
-            apiResponse.postValue(Event(RequestType.REGISTER))
+            if (response.succeeded) {
+                onBoardingCompleteActionUseCase.invoke(true)
+                apiResponse.postValue(Event(RequestType.REGISTER))
+            } else {
+                apiError = response.error
+            }
             showLoading.postValue(false)
         }
     }

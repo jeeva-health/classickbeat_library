@@ -55,12 +55,11 @@ object ProcessingData {
         val envelope = Filter.hilbert(interpolatedList)
         val envelopeAverage = movAvg(envelope, windowSize)
 
-        val leveledSignal = leveling(
+        return leveling(
             interpolatedList,
             envelopeAverage,
             windowSize
         )
-        return leveledSignal
     }
 
     fun calculateIbiListAndQuality(

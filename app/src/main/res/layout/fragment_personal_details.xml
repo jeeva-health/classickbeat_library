@@ -102,6 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
             android:hint="Height"
+            app:helperText="5ft - 07in"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/gender_layout"
@@ -127,7 +128,8 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -137,6 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
             android:hint="Date of Birth"
+            app:helperText="20 / 09 / 1993"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/weight_layout">

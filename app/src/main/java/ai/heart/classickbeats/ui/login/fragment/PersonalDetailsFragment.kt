@@ -26,14 +26,13 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
     private lateinit var navController: NavController
 
     private var selectedGender: Gender? = null
-    private var heightInches: Int = 0
-    private var weightInKgs: Int = 0
-    private var dobStr: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
+
+        setLightStatusBar()
 
         binding.genderLayout.editText?.setOnClickListener {
             hideKeyboard(it)
@@ -98,6 +97,7 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
                 LoginViewModel.RequestType.LOGIN -> TODO()
                 LoginViewModel.RequestType.REGISTER -> {
                     showShortToast("Successfully Registered")
+
                     navigateToSelectionFragment()
                 }
             }
