@@ -97,8 +97,7 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
                 LoginViewModel.RequestType.LOGIN -> TODO()
                 LoginViewModel.RequestType.REGISTER -> {
                     showShortToast("Successfully Registered")
-
-                    navigateToSelectionFragment()
+                    navigateToNavHome()
                 }
             }
         })
@@ -112,7 +111,7 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
         })
     }
 
-    private fun navigateToSelectionFragment() {
+    private fun navigateToNavHome() {
         val action = PersonalDetailsFragmentDirections.actionPersonalDetailsFragmentToNavHome()
         navController.navigate(action)
     }

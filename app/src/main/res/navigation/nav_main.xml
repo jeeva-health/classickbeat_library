@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_splashFragment_to_nav_home"
             app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_splashFragment_to_personalDetailsFragment"
+            app:destination="@id/personalDetailsFragment" />
     </fragment>
 
     <fragment
@@ -34,5 +37,14 @@
     <include app:graph="@navigation/nav_login" />
 
     <include app:graph="@navigation/nav_home" />
+    <fragment
+        android:id="@+id/personalDetailsFragment"
+        android:name="ai.heart.classickbeats.ui.login.fragment.PersonalDetailsFragment"
+        android:label="fragment_personal_details"
+        tools:layout="@layout/fragment_personal_details" >
+        <action
+            android:id="@+id/action_personalDetailsFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
 
 </navigation>

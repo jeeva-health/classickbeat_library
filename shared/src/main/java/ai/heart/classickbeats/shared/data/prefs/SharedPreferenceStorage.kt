@@ -1,6 +1,5 @@
 package ai.heart.classickbeats.shared.data.prefs
 
-import ai.heart.classickbeats.model.Theme
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
@@ -11,9 +10,6 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import javax.inject.Inject
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -23,12 +19,6 @@ import kotlin.reflect.KProperty
 class SharedPreferenceStorage @Inject constructor(
     @ApplicationContext context: Context
 ) : PreferenceStorage {
-
-    private val selectedThemeChannel: ConflatedBroadcastChannel<String> by lazy {
-        ConflatedBroadcastChannel<String>().also { channel ->
-            channel.offer(selectedTheme)
-        }
-    }
 
     private val prefs: Lazy<SharedPreferences> = lazy { // Lazy to prevent IO access to main thread.
         context.applicationContext.getSharedPreferences(
@@ -43,11 +33,12 @@ class SharedPreferenceStorage @Inject constructor(
     private val changeListener = OnSharedPreferenceChangeListener { _, key ->
         when (key) {
             PREF_SNACKBAR_IS_STOPPED -> observableShowSnackbarResult.value = snackbarIsStopped
-            PREF_DARK_MODE_ENABLED -> selectedThemeChannel.offer(selectedTheme)
         }
     }
 
     override var onBoardingCompleted by BooleanPreference(prefs, PREF_ONBOARDING, false)
+
+    override var userRegistered by BooleanPreference(prefs, PREF_USER_REGISTERED, false)
 
     override var firstTimeScanCompleted by BooleanPreference(
         prefs,
@@ -100,17 +91,10 @@ class SharedPreferenceStorage @Inject constructor(
         get() = TODO("Not yet implemented")
         set(value) {}
 
-    override var selectedTheme by StringPreference(
-        prefs, PREF_DARK_MODE_ENABLED, Theme.SYSTEM.storageKey
-    )
-
-    override var observableSelectedTheme: Flow<String>
-        get() = selectedThemeChannel.asFlow()
-        set(_) = throw IllegalAccessException("This property can't be changed")
-
     companion object {
         const val PREFS_NAME = "my_prefs"
         const val PREF_ONBOARDING = "pref_onboarding"
+        const val PREF_USER_REGISTERED = "user_registerd"
         const val PREF_UI_HINTS_SHOWN = "pref_ui_hints_shown"
         const val PREF_NOTIFICATIONS_SHOWN = "pref_notifications_shown"
         const val PREF_RECEIVE_NOTIFICATIONS = "pref_receive_notifications"

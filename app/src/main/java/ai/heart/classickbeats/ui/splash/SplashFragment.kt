@@ -27,8 +27,14 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
                 LaunchDestination.ONBOARDING -> navigateToOnBoardingFragment()
                 LaunchDestination.SIGNUP -> navigateToLoginFragment()
                 LaunchDestination.HOME_SCREEN -> navigateToScanFragment()
+                LaunchDestination.REGISTER -> navigateToUserRegisterFragment()
             }
         })
+    }
+
+    private fun navigateToUserRegisterFragment() {
+        val action = SplashFragmentDirections.actionSplashFragmentToPersonalDetailsFragment()
+        navController.navigate(action)
     }
 
     private fun navigateToScanFragment() {

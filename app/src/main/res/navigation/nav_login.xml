@@ -32,16 +32,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/personalDetailsFragment"
-        android:name="ai.heart.classickbeats.ui.login.fragment.PersonalDetailsFragment"
-        android:label="fragment_personal_details"
-        tools:layout="@layout/fragment_personal_details">
-        <action
-            android:id="@+id/action_personalDetailsFragment_to_nav_home"
-            app:destination="@id/nav_home" />
-    </fragment>
-
-    <fragment
         android:id="@+id/googleSignUpFragment"
         android:name="ai.heart.classickbeats.ui.login.fragment.GoogleSignUpFragment"
         android:label="fragment_google_sign_up"
