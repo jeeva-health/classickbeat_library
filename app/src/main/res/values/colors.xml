@@ -19,6 +19,7 @@
 
     <color name="yellow">#ffff00</color>
     <color name="vivid_yellow">#e9d311</color>
+    <color name="vivid_yellow_2">#f4d00f</color>
 
     <color name="bright_orange">#f8a142</color>
 
@@ -36,6 +37,7 @@
     <color name="bright_red">#ed4545</color>
     <color name="bright_red_2">#f46a41</color>
     <color name="bright_red_3">#dc2c2c</color>
+    <color name="dark_red">#962222</color>
 
     <color name="light_grayish_orange">#F2E7DE</color>
     <color name="very_soft_orange">#FEB395</color>

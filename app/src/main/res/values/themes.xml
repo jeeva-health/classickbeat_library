@@ -51,6 +51,8 @@
         <item name="sliderTickColor">@color/white</item>
 
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
+
+        <item name="chipStyle">@style/Widget.Jeeva.App.Chip</item>
     </style>
 
     <!--  Button-->

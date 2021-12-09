@@ -202,78 +202,50 @@
                 android:id="@+id/chip_eating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkable="true"
                 android:minWidth="96dp"
-                android:text="@string/eating"
-                android:textAlignment="center"
-                app:checkedIconVisible="true"
-                app:chipCornerRadius="4dp" />
+                android:text="@string/chip_eating" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_napping"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkable="true"
                 android:minWidth="96dp"
-                android:text="@string/napping"
-                android:textAlignment="center"
-                app:checkedIconVisible="true"
-                app:chipCornerRadius="4dp" />
+                android:text="@string/chip_napping" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_working"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkable="true"
                 android:minWidth="96dp"
-                android:text="@string/working"
-                android:textAlignment="center"
-                app:checkedIconVisible="true"
-                app:chipCornerRadius="4dp" />
+                android:text="@string/chip_working" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_chilling"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkable="true"
                 android:minWidth="96dp"
-                android:text="@string/chilling"
-                android:textAlignment="center"
-                app:checkedIconVisible="true"
-                app:chipCornerRadius="4dp" />
+                android:text="@string/chip_chilling" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_woke_up"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkable="true"
                 android:minWidth="96dp"
-                android:text="@string/just_woke_up"
-                android:textAlignment="center"
-                app:checkedIconVisible="true"
-                app:chipCornerRadius="4dp" />
+                android:text="@string/chip_just_woke_up" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_workout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkable="true"
                 android:minWidth="96dp"
-                android:text="@string/workout"
-                android:textAlignment="center"
-                app:checkedIconVisible="true"
-                app:chipCornerRadius="4dp" />
+                android:text="@string/chip_workout" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkable="true"
                 android:minWidth="96dp"
-                android:text="@string/other"
-                android:textAlignment="center"
-                app:checkedIconVisible="true"
-                app:chipCornerRadius="4dp" />
+                android:text="@string/chip_other" />
 
         </com.google.android.material.chip.ChipGroup>
 

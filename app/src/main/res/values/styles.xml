@@ -130,4 +130,17 @@
         <item name="cornerSize">12dp</item>
     </style>
 
+    <style name="Widget.Jeeva.App.Chip" parent="Widget.MaterialComponents.Chip.Entry">
+        <item name="chipStrokeWidth">2dp</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="chipBackgroundColor">@color/white</item>
+        <item name="shapeAppearanceOverlay">@null</item>
+        <item name="chipCornerRadius">4dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:checkable">true</item>
+        <item name="chipIconVisible">false</item>
+        <item name="closeIconVisible">false</item>
+        <item name="chipMinHeight">36dp</item>
+    </style>
+
 </resources>
