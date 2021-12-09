@@ -114,6 +114,8 @@ class MonitorViewModel @Inject constructor(
         mean3List.clear()
         centeredSignal.clear()
         timeList.clear()
+        movAvgLarge.clear()
+        movAvgSmall.clear()
     }
 
     var leveledSignal: List<Double>? = null
