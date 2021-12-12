@@ -12,6 +12,7 @@ import ai.heart.classickbeats.shared.util.toTimeString
 import ai.heart.classickbeats.ui.ppg.viewmodel.ScanResultViewModel
 import ai.heart.classickbeats.utils.getContextColor
 import ai.heart.classickbeats.utils.setSafeOnClickListener
+import ai.heart.classickbeats.utils.showLongToast
 import ai.heart.classickbeats.utils.viewBinding
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
@@ -81,6 +82,12 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
         scanResultViewModel.scanDetails.observe(viewLifecycleOwner, EventObserver {
             showUi(it, isShowingHistory)
+        })
+
+        scanResultViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {
+            if (!it) {
+                scanResultViewModel.apiError?.let { showLongToast(it) }
+            }
         })
 
         scanResultViewModel.scanDetails.value?.let { showUi(it.peekContent(), isShowingHistory) }

@@ -15,13 +15,6 @@ data class PPGData(
         val cameraTimeStamps: List<Long>
     )
 
-    data class SurveyResponse(
-        val sleepRating: Int,
-        val moodRating: Int,
-        val healthRating: Int,
-        val scanState: String
-    )
-
     data class ScanResult(
         val bpm: Float,
         val aFib: String,

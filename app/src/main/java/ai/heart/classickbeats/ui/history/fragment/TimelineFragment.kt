@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.ui.history.fragment
 
+import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentTimelineBinding
 import ai.heart.classickbeats.model.LogType
@@ -42,6 +43,8 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
         super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
+
+        (requireActivity() as MainActivity).navigateToTimelineFragment()
 
         timelineAdapter = TimelineAdapter(requireContext(), historyItemClickListener)
 

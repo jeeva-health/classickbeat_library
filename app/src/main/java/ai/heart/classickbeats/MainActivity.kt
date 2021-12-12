@@ -106,10 +106,10 @@ class MainActivity : AppCompatActivity() {
             bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
         }
 
-        binding?.bottomNavigation?.setOnNavigationItemSelectedListener { item: MenuItem ->
+        binding?.bottomNavigation?.setOnItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
-                R.id.historyFragment -> {
-                    navController.navigate(R.id.historyFragment)
+                R.id.timelineFragment -> {
+                    navController.navigate(R.id.timelineFragment)
                     true
                 }
                 R.id.loggingHomeFragment -> {
@@ -179,9 +179,9 @@ class MainActivity : AppCompatActivity() {
         binding?.bottomNavigation?.visibility = View.GONE
     }
 
-    fun navigateToHistoryFragment() {
-        if (binding?.bottomNavigation?.selectedItemId != R.id.historyFragment) {
-            binding?.bottomNavigation?.selectedItemId = R.id.historyFragment
+    fun navigateToTimelineFragment() {
+        if (binding?.bottomNavigation?.selectedItemId != R.id.timelineFragment) {
+            binding?.bottomNavigation?.selectedItemId = R.id.timelineFragment
         }
     }
 

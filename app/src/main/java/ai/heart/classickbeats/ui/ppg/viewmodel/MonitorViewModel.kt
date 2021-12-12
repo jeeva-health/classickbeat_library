@@ -29,7 +29,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.*
-import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -42,8 +41,6 @@ class MonitorViewModel @Inject constructor(
 ) : ViewModel() {
 
     var user: User? = null
-
-    var scanResult: PPGData.ScanResult? = null
 
     private var timer: CountDownTimer? = null
 
@@ -248,8 +245,6 @@ class MonitorViewModel @Inject constructor(
         // bAgeBin goes from 0 to 5
         val bAgeBin = argmax(binProbsMAP, false)
 
-        Timber.i("TrackTime: age prediction completed")
-//
         // First and second indices is for sedantry and active probabilities, respectively.
         val activeSedantryProb = mapModeling.activeSedantryPrediction(27.0, meanNN, rmssd)
         val sedRatioLog = kotlin.math.log10(activeSedantryProb[0] / activeSedantryProb[1])
@@ -269,37 +264,12 @@ class MonitorViewModel @Inject constructor(
         else
             5
 
-        val activeStars = 6 - sedStars
-        val isActive = sedRatioLog < 0
-
-        Timber.i("TrackTime: sed ratio computation completed")
-
-        val stressProb = mapModeling.stressPrediction(meanNN, sdnn, rmssd)
-
-        Timber.i("BPM: $bpm, SDNN: $sdnn, RMSSD: $rmssd, PNN50: $pnn50, LN: $ln")
-        Timber.i("binProbsMAP: ${Arrays.toString(binProbsMAP)}")
-        Timber.i("Sedantry and Active Probs: ${Arrays.toString(activeSedantryProb.toDoubleArray())}")
-
-        val sdnnDataCount: Int
         val sdnnListResponse = recordRepository.getSdnnList()
         val stressOutput = if (sdnnListResponse.succeeded) {
             val dataArray = sdnnListResponse.data!!.toDoubleArray()
-            sdnnDataCount = dataArray.size + 1
             mapModeling.stressLevelPrediction(dataArray, sdnn)
         } else {
-            sdnnDataCount = 1
             1
-        }
-
-        Timber.i("TrackTime: stress calculation completed")
-
-        val stressResult = StressResult(stressResult = stressOutput, dataCount = sdnnDataCount)
-
-        val bioAge = BioAge.values()[bAgeBin]
-        val bioAgeResult = when {
-            age < bioAge.startRange -> -1
-            age > bioAge.endRange -> 1
-            else -> 0
         }
 
         val ppgEntity = PPGEntity(
@@ -322,31 +292,8 @@ class MonitorViewModel @Inject constructor(
 
         recordRepository.updatePPG(ppgId, ppgEntity)
 
-        Timber.i("TrackTime: api request completed")
-
-        val currentTime = Date()
-
-        scanResult =
-            PPGData.ScanResult(
-                bpm = bpm.toFloat(),
-                aFib = "Not Detected",
-                quality = qualityPercent.toFloat(),
-                ageBin = bAgeBin,
-                bioAgeResult = bioAgeResult,
-                activeStar = activeStars,
-                isActive = isActive,
-                sdnn = sdnn.toFloat(),
-                pnn50 = pnn50.toFloat(),
-                rmssd = rmssd.toFloat(),
-                stress = stressResult,
-                filteredRMean = leveledSignal ?: emptyList(),
-                timeStamp = currentTime
-            )
-
         clearGlobalData()
         outputComputed.postValue(Event(true))
-
-        Timber.i("TrackTime: output computed posted")
     }
 
     private fun clearGlobalData() {
