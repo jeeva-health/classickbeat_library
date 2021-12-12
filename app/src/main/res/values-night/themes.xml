@@ -15,6 +15,7 @@
 
 
         <!-- Text color -->
+        <item name="normalTextColor">@color/very_dark_grey_3</item>
         <item name="pageTitleColor">@color/very_dark_grey_3</item>
         <item name="headingColor">@color/moderate_violet</item>
         <item name="categoryNameColor">@color/white</item>
@@ -32,6 +33,12 @@
         <item name="sliderThumbColor">@color/very_light_grey_3</item>
         <item name="sliderTickColor">@color/white</item>
 
+        <item name="bioAgeTextColor">@color/bright_blue_2</item>
+        <item name="lifeStyleTextColor">@color/bright_red_2</item>
+
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
+
+        <item name="chipStyle">@style/Widget.Jeeva.App.Chip</item>
     </style>
 
 </resources>

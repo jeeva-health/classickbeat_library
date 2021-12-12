@@ -21,6 +21,18 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/big_guideline_margin" />
 
+    <TextView
+        android:id="@+id/page_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/page_top_margin"
+        android:text="How to measure?"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/illustration_vp"
         android:layout_width="0dp"
@@ -28,7 +40,7 @@
         app:layout_constraintBottom_toTopOf="@id/slider_indicator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/page_title"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <com.google.android.material.tabs.TabLayout

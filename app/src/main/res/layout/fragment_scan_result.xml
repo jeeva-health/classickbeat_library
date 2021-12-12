@@ -29,9 +29,10 @@
             android:id="@+id/heart_rate_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="42dp"
+            android:layout_marginTop="@dimen/page_top_margin"
             android:text="@string/heart_rate"
             android:textAllCaps="true"
+            android:textColor="?attr/pageTitleColor"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,6 +41,7 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="?attr/normalTextColor"
             android:textSize="10sp"
             app:layout_constraintBaseline_toBaselineOf="@id/heart_rate_tv"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
@@ -50,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:textColor="?attr/normalTextColor"
             android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintTop_toBottomOf="@id/date"
@@ -93,27 +96,6 @@
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             tools:text="High Stress" />
 
-        <TextView
-            android:id="@+id/quality_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="Scan Quality"
-            android:textAllCaps="true"
-            app:layout_constraintStart_toStartOf="@id/heart_rate"
-            app:layout_constraintTop_toBottomOf="@id/heart_rate" />
-
-        <TextView
-            android:id="@+id/quality"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@id/quality_tv"
-            app:layout_constraintStart_toEndOf="@id/quality_tv"
-            app:layout_constraintTop_toTopOf="@id/quality_tv"
-            tools:text="78%" />
-
         <HorizontalScrollView
             android:id="@+id/horizontal_scroll"
             android:layout_width="wrap_content"
@@ -121,8 +103,8 @@
             android:layout_marginTop="18dp"
             android:scrollbars="none"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/quality_tv"
-            tools:visibility="visible">
+            app:layout_constraintTop_toBottomOf="@id/heart_rate"
+            tools:visibility="invisible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
@@ -165,6 +147,7 @@
                             android:layout_marginTop="18dp"
                             android:text="@string/biological_age"
                             android:textAllCaps="true"
+                            android:textColor="?attr/normalTextColor"
                             android:textSize="10sp"
                             app:layout_constraintStart_toStartOf="@id/age_start_guideline"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -173,6 +156,7 @@
                             android:id="@+id/age_range"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/bioAgeTextColor"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             app:layout_constraintBaseline_toBaselineOf="@id/age_tv"
@@ -254,6 +238,7 @@
                             android:layout_marginTop="24dp"
                             android:text="@string/younger"
                             android:textAllCaps="true"
+                            android:textColor="?attr/lifeStyleTextColor"
                             android:textSize="12sp"
                             app:layout_constraintStart_toStartOf="@id/age_start_guideline"
                             app:layout_constraintTop_toBottomOf="@id/age_clock_1" />
@@ -266,7 +251,8 @@
                             app:layout_constraintBottom_toBottomOf="@id/younger_tv"
                             app:layout_constraintEnd_toStartOf="@id/older_tv"
                             app:layout_constraintStart_toEndOf="@id/younger_tv"
-                            app:layout_constraintTop_toTopOf="@id/younger_tv" />
+                            app:layout_constraintTop_toTopOf="@id/younger_tv"
+                            app:tint="?attr/lifeStyleTextColor" />
 
                         <TextView
                             android:id="@+id/older_tv"
@@ -275,6 +261,7 @@
                             android:layout_marginTop="24dp"
                             android:text="@string/older"
                             android:textAllCaps="true"
+                            android:textColor="?attr/lifeStyleTextColor"
                             android:textSize="12sp"
                             app:layout_constraintEnd_toEndOf="@id/age_end_guideline"
                             app:layout_constraintTop_toBottomOf="@id/age_clock_6" />
@@ -284,6 +271,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:textColor="?attr/bioAgeTextColor"
                             app:layout_constraintEnd_toEndOf="@id/age_end_guideline"
                             app:layout_constraintStart_toStartOf="@id/age_start_guideline"
                             app:layout_constraintTop_toBottomOf="@id/younger_tv"
@@ -309,7 +297,8 @@
                             android:layout_marginTop="10dp"
                             android:src="@drawable/ic_share"
                             app:layout_constraintStart_toEndOf="@id/age_more_info"
-                            app:layout_constraintTop_toBottomOf="@id/age_info" />
+                            app:layout_constraintTop_toBottomOf="@id/age_info"
+                            app:tint="@color/soft_blue" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -352,6 +341,7 @@
                             android:layout_marginTop="18dp"
                             android:text="@string/lifestyle"
                             android:textAllCaps="true"
+                            android:textColor="?attr/normalTextColor"
                             android:textSize="10sp"
                             app:layout_constraintStart_toStartOf="@id/lifestyle_start_guideline"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -360,6 +350,7 @@
                             android:id="@+id/lifestyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="?attr/lifeStyleTextColor"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             app:layout_constraintBaseline_toBaselineOf="@id/lifestyle_tv"
@@ -441,6 +432,7 @@
                             android:layout_marginTop="24dp"
                             android:text="@string/undesirable"
                             android:textAllCaps="true"
+                            android:textColor="?attr/bioAgeTextColor"
                             android:textSize="12sp"
                             app:layout_constraintStart_toStartOf="@id/lifestyle_start_guideline"
                             app:layout_constraintTop_toBottomOf="@id/lifestyle_1" />
@@ -453,7 +445,8 @@
                             app:layout_constraintBottom_toBottomOf="@id/undesirable_tv"
                             app:layout_constraintEnd_toStartOf="@id/desirable_tv"
                             app:layout_constraintStart_toEndOf="@id/undesirable_tv"
-                            app:layout_constraintTop_toTopOf="@id/undesirable_tv" />
+                            app:layout_constraintTop_toTopOf="@id/undesirable_tv"
+                            app:tint="?attr/bioAgeTextColor" />
 
                         <TextView
                             android:id="@+id/desirable_tv"
@@ -462,6 +455,7 @@
                             android:layout_marginTop="24dp"
                             android:text="@string/desirable"
                             android:textAllCaps="true"
+                            android:textColor="?attr/bioAgeTextColor"
                             android:textSize="12sp"
                             app:layout_constraintEnd_toEndOf="@id/lifestyle_end_guideline"
                             app:layout_constraintTop_toBottomOf="@id/lifestyle_6" />
@@ -471,6 +465,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:textColor="?attr/lifeStyleTextColor"
                             app:layout_constraintEnd_toEndOf="@id/lifestyle_end_guideline"
                             app:layout_constraintStart_toStartOf="@id/lifestyle_start_guideline"
                             app:layout_constraintTop_toBottomOf="@id/undesirable_tv"
@@ -486,7 +481,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="@id/lifestyle_start_guideline"
                             app:layout_constraintTop_toBottomOf="@id/lifestyle_info"
-                            app:tint="@color/soft_blue" />
+                            app:tint="@color/very_soft_red_2" />
 
                         <ImageView
                             android:id="@+id/lifestyle_share"
@@ -496,7 +491,8 @@
                             android:layout_marginTop="10dp"
                             android:src="@drawable/ic_share"
                             app:layout_constraintStart_toEndOf="@id/lifestyle_more_info"
-                            app:layout_constraintTop_toBottomOf="@id/lifestyle_info" />
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_info"
+                            app:tint="@color/very_soft_red_2" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -759,6 +755,17 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/quality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:textColor="?attr/normalTextColor"
+                    android:textSize="12sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/waveform_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="Quality: 75%" />
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/waveform_chart"

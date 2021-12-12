@@ -22,6 +22,8 @@ object LineGraph {
     }
 
     fun draw(chart: LineChart, data: List<Double>) {
+        chart.invalidate()
+        chart.requestLayout()
         val values: ArrayList<Entry> = ArrayList()
         data.forEachIndexed { index, d ->
             values.add(Entry(index.toFloat(), d.toFloat()))

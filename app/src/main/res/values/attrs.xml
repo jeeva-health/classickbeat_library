@@ -16,6 +16,8 @@
     <!-- Color attributes -->
     <attr name="borderColor" format="color" />
 
+    <attr name="normalTextColor" format="color" />
+
     <!-- Mediation-->
     <attr name="pageTitleColor" format="color" />
     <attr name="headingColor" format="color" />
@@ -35,5 +37,7 @@
     <attr name="onLoggingCardColor" format="color" />
 
     <attr name="scanMessageColor" format="color" />
+    <attr name="bioAgeTextColor" format="color" />
+    <attr name="lifeStyleTextColor" format="color" />
 
 </resources>

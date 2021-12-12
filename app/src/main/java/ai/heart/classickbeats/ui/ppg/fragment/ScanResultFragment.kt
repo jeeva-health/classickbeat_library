@@ -32,7 +32,6 @@ import com.github.mikephil.charting.charts.LineChart
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -158,7 +157,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             }
 
             val scanQuality = scanResult.quality
-            quality.text = "${scanQuality.toInt()} %"
+            quality.text = "Quality: ${scanQuality.toInt()} %"
 
             var stressDrawableInt = 0
             var stressSpannableString: SpannableString? = null

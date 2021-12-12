@@ -132,8 +132,6 @@ class HistoryGraphFragment : Fragment(R.layout.fragment_history_graph) {
     override fun onResume() {
         super.onResume()
 
-        val (_, timelineType, _) = args
-
         historyViewModel.graphData.value?.let { showUI(graphData = it) }
     }
 
