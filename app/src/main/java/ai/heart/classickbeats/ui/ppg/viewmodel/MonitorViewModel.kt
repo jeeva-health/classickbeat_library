@@ -284,7 +284,7 @@ class MonitorViewModel @Inject constructor(
             bAgeBin = bAgeBin,
             activeSedentaryProb = activeSedantryProb.toList()
                 .map { String.format("%.8f", it).toFloat() },
-            sedRatioLog = String.format("%.8f", qualityList[0]).toFloat(),
+            sedRatioLog = String.format("%.4f", qualityList[0]).toFloat(),
             sedStars = sedStars,
             stressLevel = stressOutput
         )

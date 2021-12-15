@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/page_top_margin"
         android:text="How to measure?"
+        android:textColor="?attr/meditationQuestionColor"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
