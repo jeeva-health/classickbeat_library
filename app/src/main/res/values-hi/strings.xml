@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Intealth</string>
-    <string name="app_name_small_case">intealth</string>
-    <string name="app_tagline">Health. Vitality. Longevity</string>
+    <string name="app_name">इंटेल्थ</string>
+    <string name="app_name_small_case">इंटेल्थ</string>
+    <string name="app_tagline">स्वास्थ्य। प्राणशक्ति। दीर्घायु।</string>
 
     <string name="rupee_amount">\u20B9 %s</string>
 
@@ -12,64 +12,64 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
-    <string name="enter_name">Enter your name</string>
-    <string name="enter_age">Enter your age</string>
-    <string name="enter_weight">Enter your weight</string>
-    <string name="enter_height">Enter your height</string>
-    <string name="register">Register</string>
-    <string name="sign_up_google">Connect with Google</string>
-    <string name="terms_and_condition">By continuing, you agree to our Terms &amp; Conditions</string>
+    <string name="enter_name">अपना नाम दर्ज करें</string>
+    <string name="enter_age">अपनी आयु दर्ज करें</string>
+    <string name="enter_weight">अपना वजन दर्ज करें</string>
+    <string name="enter_height">अपनी ऊंचाई दर्ज करें</string>
+    <string name="register">रजिस्टर करें</string>
+    <string name="sign_up_google">Google से जुड़ें</string>
+    <string name="terms_and_condition">जारी रखकर, आप हमारे Terms &amp; Conditions से सहमत होते हैं</string>
 
     <!--    OnBoarding-->
-    <string name="onboarding_message_1">Scan your pulse with your phone camera</string>
-    <string name="onboarding_message_2">Track and log your daily health vitals</string>
-    <string name="onboarding_message_3">Get a detailed analysis of your stress levels</string>
-    <string name="onboarding_message_4">Meditate and stay calm with curated sounds</string>
-    <string name="get_started">Get Started</string>
-    <string name="skip">Skip</string>
-    <string name="next">Next</string>
+    <string name="onboarding_message_1">अपने फ़ोन कैमरे से अपनी नब्ज स्कैन करें</string>
+    <string name="onboarding_message_2">अपनी दैनिक स्वास्थ्य संबंधी जानकारी को ट्रैक और लॉग करें</string>
+    <string name="onboarding_message_3">अपने तनाव के स्तर का विस्तृत विश्लेषण प्राप्त करें</string>
+    <string name="onboarding_message_4">विशेष ध्वनियों के साथ ध्यान करें और मन शांत रखें</string>
+    <string name="get_started">शुरू करें</string>
+    <string name="skip">छोड़ें</string>
+    <string name="next">अगला</string>
 
     <!--    Notification-->
     <string name="playback_channel_name">Playback</string>
     <string name="playback_channel_description">Playback channel</string>
 
     <!--    Navigation menu-->
-    <string name="history">History</string>
-    <string name="logging">Logging</string>
-    <string name="heart_rate">Heart Rate</string>
-    <string name="wellness">Wellness</string>
-    <string name="profile">Profile</string>
+    <string name="history">इतिहास</string>
+    <string name="logging">संलेखन</string>
+    <string name="heart_rate">हृदय दर</string>
+    <string name="wellness">कल्याण</string>
+    <string name="profile">प्रोफ़ाइल</string>
 
     <!--    Scan tutorial-->
-    <string name="scan_tutorial_1">Place the tip of your finger on the camera and the flash, completely covering them.</string>
-    <string name="scan_tutorial_2"> Apply gentle pressure in order to stabilize the finger.</string>
-    <string name="scan_tutorial_3">If the smartphone is large to hold it in one hand comfortably, use one hand to hold the phone and the other to take the reading.</string>
-    <string name="scan_tutorial_4">Preferably, sit down on a chair and place your arm on a table at roughly the same level as the chest.</string>
-    <string name="scan_tutorial_5">Do not move or talk. Make sure to follow all instructions for accurate results.</string>
-    <string name="start_scan">Start Scanning</string>
+    <string name="scan_tutorial_1">अपनी अंगुली की नोक को पीछे के कैमरे और फ्लैश पर रखें, उन्हें पूरी तरह से ढक दें। </string>
+    <string name="scan_tutorial_2">उंगली को स्थिर करने के लिए हल्का दबाव डालें। </string>
+    <string name="scan_tutorial_3">अगर स्मार्टफोन एक हाथ में आराम से पकड़ने के लिए बड़ा है, तो एक हाथ से फोन को पकड़ें और दूसरे को रीडिंग लेने के लिए इस्तेमाल करें। </string>
+    <string name="scan_tutorial_4">एक कुर्सी पर बैठें और अपनी भुजा को छाती के समान स्तर पर एक मेज पर रखें। </string>
+    <string name="scan_tutorial_5">कृपया हिलें या बात न करें। सटीक परिणामों के लिए सभी निर्देशों का पालन करना सुनिश्चित करें। </string>
+    <string name="start_scan">स्कैनिंग शुरू करें</string>
 
     <!--    Scan-->
     <string name="default_heart_rate">_ _</string>
-    <string name="start">Start</string>
-    <string name="scan_message_1">Please relax and stay still. Do not move or talk.</string>
-    <string name="scan_message_2">Breath as you usually do. Do not take very deep breaths.</string>
-    <string name="scan_message_3">Maintain slight pressure on the camera with your finger.</string>
-    <string name="scan_message_4">If the dynamic graph is very noisy, please calm down and try again.</string>
-    <string name="scan_message_5">Intealth assesses your Heart Rate Variability (HRV) - the time distribution between successive heartbeats.</string>
-    <string name="scan_message_6">HRV is controlled by the Autonomic Nervous System (ANS). It quantifies the state and health of your body’s stress response.</string>
-    <string name="scan_message_7">The higher the HRV, the more relaxed your physiological state is.</string>
-    <string name="scan_message_8">With regular HRV measurements, you can keep track of how stressed you are. We recommend taking daily measurements.</string>
-    <string name="scan_message_9">Meditation and exercise have a positive effect on your mind and body, increasing your HRV.</string>
-    <string name="scan_message_10">Intealth has guided chakra meditation exercises which will allow you to achieve your health and well-being goals.</string>
-    <string name="scan_message_11">We are almost done.</string>
+    <string name="start">शुरू करें</string>
+    <string name="scan_message_1">कृपया आराम करें और स्थिर रहें। हिलें या बात नहीं करें।</string>
+    <string name="scan_message_2">सांस लें जैसा आप आमतौर पर करते हैं। बहुत गहरी सांसें न लें।</string>
+    <string name="scan_message_3">अपनी अंगुली से कैमरे पर हल्का दबाव बनाए रखें।</string>
+    <string name="scan_message_4">यदि ग्राफ़ व्यवस्थित नहीं है, तो कृपया शांत हो जाएं और पुनः प्रयास करें।</string>
+    <string name="scan_message_5">Intealth आपके हृदय गति परिवर्तनशीलता (HRV) का आकलन करता है - क्रमिक दिल की धड़कनों के बीच का समय वितरण।</string>
+    <string name="scan_message_6">HRV को ऑटोनोमिक नर्वस सिस्टम (ANS) द्वारा नियंत्रित किया जाता है। यह आपके शरीर की तनाव प्रतिक्रिया की स्थिति और स्वास्थ्य की मात्रा निर्धारित करता है।</string>
+    <string name="scan_message_7">HRV जितना अधिक होगा, आपकी शारीरिक स्थिति उतनी ही अधिक शिथिल होगी।</string>
+    <string name="scan_message_8">नियमित HRV माप के साथ, आप ट्रैक कर सकते हैं कि आप कितने तनावग्रस्त हैं। हम दैनिक माप लेने की सलाह देते हैं।</string>
+    <string name="scan_message_9">ध्यान और व्यायाम आपके मन और शरीर पर सकारात्मक प्रभाव डालते हैं, जिससे आपका HRV बढ़ता है।</string>
+    <string name="scan_message_10">Intealth ने चक्र ध्यान अभ्यासों को निर्देशित किया है जो आपको अपने स्वास्थ्य और कल्याण के लक्ष्यों को प्राप्त करने मे सहायता करेगा।</string>
+    <string name="scan_message_11">आपकी स्कैनिंग समाप्त होने वाली है।</string>
 
     <!--    HRV help screen-->
-    <string name="how_to_scan_your_hrv">How to scan your HRV?</string>
-    <string name="hrv_message_1">1. Place the tip of your finger on the camera and the flash, completely covering them.</string>
-    <string name="hrv_message_2">2. Apply gentle pressure in order to stabilize the finger.</string>
-    <string name="hrv_message_3">3. If the smartphone is large to hold it in one hand comfortably, use one hand to hold the phone and the other to take the reading.</string>
-    <string name="hrv_message_4">4. Preferably, sit down on a chair and place your arm on a table at roughly the same level as the chest.</string>
-    <string name="hrv_message_5">5. Do not move or talk. Make sure to follow all instructions for accurate results.</string>
+    <string name="how_to_scan_your_hrv">अपने HRV को कैसे स्कैन करें?</string>
+    <string name="hrv_message_1">1. अपनी अंगुली की नोक को पीछे के कैमरे और फ्लैश पर रखें, उन्हें पूरी तरह से ढक दें।</string>
+    <string name="hrv_message_2">2. उंगली को स्थिर करने के लिए हल्का दबाव डालें।</string>
+    <string name="hrv_message_3">3. अगर स्मार्टफोन एक हाथ में आराम से पकड़ने के लिए बड़ा है, तो फोन को एक हाथ से पकड़ें और दूसरे हाथ से रीडिंग लेने के लिए उपयोग करें।</string>
+    <string name="hrv_message_4">4. एक कुर्सी पर बैठें और अपनी भुजा को छाती के समान स्तर पर एक मेज पर रखें।</string>
+    <string name="hrv_message_5">5. कृपया हिलें या बात न करें। सटीक परिणामों के लिए सभी निर्देशों का पालन करना सुनिश्चित करें।q</string>
 
     <!--    Meditation -->
     <string name="meditation_notification_title">Intealth</string>

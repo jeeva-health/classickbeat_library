@@ -41,11 +41,11 @@
     <string name="profile">Profile</string>
 
     <!--    Scan tutorial-->
-    <string name="scan_tutorial_1">Place the tip of your finger on the camera and the flash, completely covering them.</string>
+    <string name="scan_tutorial_1">Place the tip of your finger on the back camera and the flash, completely covering them.</string>
     <string name="scan_tutorial_2">Apply gentle pressure in order to stabilize the finger.</string>
     <string name="scan_tutorial_3">If the smartphone is too large to hold it in one hand comfortably, use one hand to hold the phone and the other to take the reading.</string>
     <string name="scan_tutorial_4">Preferably, sit down on a chair and place your arm on a table at roughly the same level as the chest.</string>
-    <string name="scan_tutorial_5">Do not move or talk. Breath normally and do not take deep breaths. Make sure to follow all instructions for accurate results.</string>
+    <string name="scan_tutorial_5">Please Do not move or talk. Breath normally and do not take deep breaths. Make sure to follow all instructions for accurate results.</string>
     <string name="start_scan">Start Scanning</string>
 
     <!--    Scan-->
@@ -60,13 +60,13 @@
     <string name="scan_message_7">The higher the HRV, the more relaxed your physiological state is.</string>
     <string name="scan_message_8">With regular HRV measurements, you can keep track of how stressed you are. We recommend taking daily measurements.</string>
     <string name="scan_message_9">Meditation and exercise have a positive effect on your mind and body, increasing your HRV.</string>
-    <string name="scan_message_10">Intealth has guided chakra meditation exercises which will allow you to achieve your health and well-being goals.</string>
+    <string name="scan_message_10">Intealth has guided chakra meditation exercises that helps you to achieve your health and well-being goals.</string>
     <string name="scan_message_11">We are almost done.</string>
 
 
     <!--    HRV help screen-->
     <string name="how_to_scan_your_hrv">How to scan your HRV?</string>
-    <string name="hrv_message_1">1. Place the tip of your finger on the camera and the flash, completely covering them.</string>
+    <string name="hrv_message_1">1. Place the tip of your finger on the back camera and the flash, completely covering them.</string>
     <string name="hrv_message_2">2. Apply gentle pressure in order to stabilize the finger.</string>
     <string name="hrv_message_3">3. If the smartphone is too large to hold it in one hand comfortably, use one hand to hold the phone and the other to take the reading.</string>
     <string name="hrv_message_4">4. Preferably, sit down on a chair and place your arm on a table at roughly the same level as the chest.</string>
