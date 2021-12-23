@@ -77,9 +77,6 @@
             android:id="@+id/action_loggingHomeFragment_to_logGlucoseFragment"
             app:destination="@id/logGlucoseFragment" />
         <action
-            android:id="@+id/action_loggingHomeFragment_to_logMedicationFragment"
-            app:destination="@id/logMedicationFragment" />
-        <action
             android:id="@+id/action_loggingHomeFragment_to_logWaterIntakeFragment"
             app:destination="@id/logWaterIntakeFragment" />
     </fragment>
@@ -154,12 +151,6 @@
         android:name="ai.heart.classickbeats.ui.logging.LogGlucoseFragment"
         android:label="fragment_log_glucose"
         tools:layout="@layout/fragment_log_glucose" />
-
-    <fragment
-        android:id="@+id/logMedicationFragment"
-        android:name="ai.heart.classickbeats.ui.logging.LogMedicationFragment"
-        android:label="fragment_log_medication"
-        tools:layout="@layout/fragment_log_medication" />
 
     <fragment
         android:id="@+id/logWaterIntakeFragment"
@@ -273,7 +264,7 @@
         android:id="@+id/mediaPlayerFragment"
         android:name="ai.heart.classickbeats.ui.wellness.MediaPlayerFragment"
         android:label="fragment_media_player"
-        tools:layout="@layout/fragment_media_player" >
+        tools:layout="@layout/fragment_media_player">
         <argument
             android:name="media_url"
             app:argType="string" />
@@ -293,7 +284,7 @@
         android:id="@+id/wellnessFeedbackFragment"
         android:name="ai.heart.classickbeats.ui.wellness.WellnessFeedbackFragment"
         android:label="fragment_wellness_feedback"
-        tools:layout="@layout/fragment_wellness_feedback" >
+        tools:layout="@layout/fragment_wellness_feedback">
         <argument
             android:name="media_id"
             app:argType="long" />
@@ -304,5 +295,21 @@
             android:id="@+id/action_wellnessFeedbackFragment_to_wellnessHomeFragment"
             app:destination="@id/wellnessHomeFragment" />
     </fragment>
+
+    <action
+        android:id="@+id/action_global_historyFragment"
+        app:destination="@id/historyFragment" />
+
+    <action
+        android:id="@+id/action_global_scanFragment"
+        app:destination="@id/scanFragment" />
+
+    <action
+        android:id="@+id/action_global_wellnessHomeFragment"
+        app:destination="@id/wellnessHomeFragment" />
+
+    <action
+        android:id="@+id/action_global_profileHomeFragment"
+        app:destination="@id/profileHomeFragment" />
 
 </navigation>

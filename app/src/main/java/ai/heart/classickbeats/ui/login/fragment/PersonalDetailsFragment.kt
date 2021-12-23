@@ -1,9 +1,7 @@
 package ai.heart.classickbeats.ui.login.fragment
 
-import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentPersonalDetailsBinding
-import ai.heart.classickbeats.model.Gender
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.shared.formattedinput.MaskedEditText
 import ai.heart.classickbeats.shared.result.EventObserver
@@ -25,8 +23,6 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
 
     private lateinit var navController: NavController
 
-    private var selectedGender: Gender? = null
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -41,7 +37,7 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
 
         binding.continueBtn.setSafeOnClickListener {
             val name = binding.nameLayout.editText?.text?.toString() ?: ""
-            val gender = selectedGender
+            val gender = logInViewModel.selectedGender
             val weight = binding.weightLayout.editText?.text?.toString()?.toDoubleOrNull()
             val isHeightValid =
                 (binding.heightLayout.editText as MaskedEditText?)?.isValid() ?: false
@@ -117,16 +113,8 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
     }
 
     private fun openGenderSelectionDialog() {
-        (requireActivity() as MainActivity).showBottomDialog(
-            "Gender",
-            logInViewModel.genderListStr,
-            genderSelectorFun
-        )
-    }
-
-    private val genderSelectorFun = fun(index: Int) {
-        selectedGender = logInViewModel.genderList[index]
-        binding.genderLayout.editText?.setText(selectedGender!!.displayStr)
-        (requireActivity() as MainActivity).hideBottomDialog()
+        val action =
+            PersonalDetailsFragmentDirections.actionPersonalDetailsFragmentToGenderSelectionBottomSheetFragment()
+        navController.navigate(action)
     }
 }

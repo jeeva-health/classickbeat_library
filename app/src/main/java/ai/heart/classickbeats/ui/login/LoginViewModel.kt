@@ -41,6 +41,8 @@ class LoginViewModel @Inject constructor(
 
     val genderListStr = genderList.map { it.displayStr }
 
+    var selectedGender: Gender? = null
+
     var currentFirebaseUser: FirebaseUser? = null
 
     var isUserRegistered: Boolean = false

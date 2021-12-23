@@ -13,7 +13,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -26,7 +25,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -43,8 +41,6 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var sessionManager: SessionManager
-
-    private var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>? = null
 
     private lateinit var bottomSheetCallback: BottomSheetBehavior.BottomSheetCallback
 
@@ -84,27 +80,11 @@ class MainActivity : AppCompatActivity() {
 //            appBarConfiguration
 //        )
 
-        binding?.bottomNavigation?.setOnNavigationItemReselectedListener { menuItem ->
+        binding?.bottomNavigation?.setOnItemSelectedListener { menuItem ->
             menuItem.onNavDestinationSelected(navController)
         }
 
         createNotificationChannel()
-
-        bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            }
-        }
-
-        binding?.bottomSheet?.let {
-            bottomSheetBehavior = BottomSheetBehavior.from(it)
-            bottomSheetBehavior?.addBottomSheetCallback(bottomSheetCallback)
-        }
 
         binding?.bottomNavigation?.setOnItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
@@ -153,8 +133,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
-
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding?.apply {
@@ -238,29 +216,5 @@ class MainActivity : AppCompatActivity() {
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
-    }
-
-    fun showBottomDialog(
-        title: String,
-        items: List<String>,
-        itemClickListener: (Int) -> Unit = {},
-        textSize: Float = 24.0f
-    ) {
-        val bottomSheetStringAdapter =
-            BottomSheetStringAdapter(itemClickListener = itemClickListener)
-        binding?.bottomSheetTitle?.text = title
-        bottomSheetStringAdapter.updateTextSize(textSize)
-        binding?.bottomSheetListItem?.adapter = bottomSheetStringAdapter
-        bottomSheetStringAdapter.submitList(items)
-        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
-    }
-
-    fun hideBottomDialog() {
-        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
-    }
-
-    override fun onDestroy() {
-        bottomSheetBehavior?.removeBottomSheetCallback(bottomSheetCallback)
-        super.onDestroy()
     }
 }
