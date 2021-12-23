@@ -87,6 +87,7 @@ class LoggingHomeFragment : Fragment(R.layout.fragment_logging_home) {
                         weightValue.text = weight
                     }
                     LogType.Medicine -> TODO()
+                    LogType.PPG -> TODO()
                 }
             }
         }
