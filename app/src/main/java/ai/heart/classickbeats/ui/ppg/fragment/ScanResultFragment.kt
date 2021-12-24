@@ -224,7 +224,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             stressMessage.text = stressSpannableString
 
             saveBtn.setSafeOnClickListener {
-                navigateToHistoryFragment()
+                navigateToTimelineFragment()
             }
 
             if (isShowingHistory) {
@@ -269,7 +269,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         return message
     }
 
-    private fun navigateToHistoryFragment() {
+    private fun navigateToTimelineFragment() {
         val action =
             ScanResultFragmentDirections.actionScanResultFragmentToTimelineFragment()
         navController.navigate(action)

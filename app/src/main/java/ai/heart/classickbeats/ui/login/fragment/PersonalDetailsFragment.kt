@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 
@@ -37,7 +38,7 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
 
         binding.continueBtn.setSafeOnClickListener {
             val name = binding.nameLayout.editText?.text?.toString() ?: ""
-            val gender = logInViewModel.selectedGender
+            val gender = logInViewModel.selectedGender.value
             val weight = binding.weightLayout.editText?.text?.toString()?.toDoubleOrNull()
             val isHeightValid =
                 (binding.heightLayout.editText as MaskedEditText?)?.isValid() ?: false
@@ -87,6 +88,10 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
                 logInViewModel.registerUser(user)
             }
         }
+
+        logInViewModel.selectedGender.observe(viewLifecycleOwner, Observer {
+            binding.genderLayout.editText?.setText(it.displayStr)
+        })
 
         logInViewModel.apiResponse.observe(viewLifecycleOwner, EventObserver {
             when (it) {

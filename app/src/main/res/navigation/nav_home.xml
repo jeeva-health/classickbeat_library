@@ -55,11 +55,17 @@
     <fragment
         android:id="@+id/timelineFragment"
         android:name="ai.heart.classickbeats.ui.history.fragment.TimelineFragment"
-        android:label="fragment_history_home"
+        android:label="fragment_timeline"
         tools:layout="@layout/fragment_timeline">
         <action
             android:id="@+id/action_timelineFragment_to_scanResultFragment"
             app:destination="@id/scanResultFragment" />
+        <action
+            android:id="@+id/action_timelineFragment_to_historyFragment"
+            app:destination="@id/historyFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/timelineFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -201,6 +207,7 @@
         android:name="ai.heart.classickbeats.ui.profile.InviteFriendFragment"
         android:label="fragment_invite_friend"
         tools:layout="@layout/fragment_invite_friend" />
+
     <fragment
         android:id="@+id/upgradeToProFragment"
         android:name="ai.heart.classickbeats.ui.profile.UpgradeToProFragment"
@@ -232,7 +239,7 @@
     <fragment
         android:id="@+id/historyFragment"
         android:name="ai.heart.classickbeats.ui.history.fragment.HistoryFragment"
-        android:label="fragment_history"
+        android:label="fragment_history_home"
         tools:layout="@layout/fragment_history">
         <action
             android:id="@+id/action_historyFragment_to_historyGraphFragment"
@@ -260,6 +267,7 @@
             android:name="start_date"
             app:argType="java.util.Date" />
     </fragment>
+
     <fragment
         android:id="@+id/mediaPlayerFragment"
         android:name="ai.heart.classickbeats.ui.wellness.MediaPlayerFragment"
@@ -280,6 +288,7 @@
             android:name="media_id"
             app:argType="long" />
     </fragment>
+
     <fragment
         android:id="@+id/wellnessFeedbackFragment"
         android:name="ai.heart.classickbeats.ui.wellness.WellnessFeedbackFragment"

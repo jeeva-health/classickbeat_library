@@ -196,5 +196,6 @@
     <string name="timeline">Timeline</string>
     <string name="short_meditation_completion_message">Well done! You have completed a short meditation.</string>
     <string name="meditation_feedback_question">How did the meditation make you feel?</string>
+    <string name="gender">Gender</string>
 
 </resources>

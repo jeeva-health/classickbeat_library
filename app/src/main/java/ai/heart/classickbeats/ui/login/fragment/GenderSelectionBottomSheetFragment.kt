@@ -2,7 +2,6 @@ package ai.heart.classickbeats.ui.login.fragment
 
 import ai.heart.classickbeats.BottomSheetStringAdapter
 import ai.heart.classickbeats.databinding.FragmentGenderSelectionBottomSheetBinding
-import ai.heart.classickbeats.model.Gender
 import ai.heart.classickbeats.ui.login.LoginViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,10 +16,8 @@ class GenderSelectionBottomSheetFragment : BottomSheetDialogFragment() {
 
     private val logInViewModel by activityViewModels<LoginViewModel>()
 
-    private var selectedGender: Gender? = null
-
     private val genderSelectorFun = fun(index: Int) {
-        selectedGender = logInViewModel.genderList[index]
+        logInViewModel.selectedGender.value = logInViewModel.genderList[index]
         dismiss()
     }
 

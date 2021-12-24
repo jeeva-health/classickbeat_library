@@ -88,8 +88,8 @@ class MainActivity : AppCompatActivity() {
 
         binding?.bottomNavigation?.setOnItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
-                R.id.timelineFragment -> {
-                    navController.navigate(R.id.timelineFragment)
+                R.id.historyFragment -> {
+                    navController.navigate(R.id.historyFragment)
                     true
                 }
                 R.id.loggingHomeFragment -> {
@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding?.apply {
                 when (destination.id) {
-                    R.id.scanFragment, R.id.historyFragment, R.id.timelineFragment,
+                    R.id.scanFragment, R.id.historyFragment,
                     R.id.loggingHomeFragment, R.id.wellnessHomeFragment, R.id.profileHomeFragment -> {
                         showBottomNavigation()
                     }
@@ -157,9 +157,9 @@ class MainActivity : AppCompatActivity() {
         binding?.bottomNavigation?.visibility = View.GONE
     }
 
-    fun navigateToTimelineFragment() {
-        if (binding?.bottomNavigation?.selectedItemId != R.id.timelineFragment) {
-            binding?.bottomNavigation?.selectedItemId = R.id.timelineFragment
+    fun selectHistoryFragmentInBottomNavigation() {
+        if (binding?.bottomNavigation?.selectedItemId != R.id.historyFragment) {
+            binding?.bottomNavigation?.selectedItemId = R.id.historyFragment
         }
     }
 

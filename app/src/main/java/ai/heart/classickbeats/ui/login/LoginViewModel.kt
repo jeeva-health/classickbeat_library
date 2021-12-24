@@ -41,7 +41,7 @@ class LoginViewModel @Inject constructor(
 
     val genderListStr = genderList.map { it.displayStr }
 
-    var selectedGender: Gender? = null
+    var selectedGender = MutableLiveData<Gender>()
 
     var currentFirebaseUser: FirebaseUser? = null
 
