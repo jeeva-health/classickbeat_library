@@ -79,8 +79,8 @@ android {
 
 dependencies {
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.8.0-alpha01'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.31"
+    implementation 'androidx.core:core-ktx:1.8.0-alpha02'
     implementation 'androidx.activity:activity-ktx:1.4.0'
     implementation 'androidx.fragment:fragment-ktx:1.4.0'
     implementation 'androidx.appcompat:appcompat:1.4.0'
@@ -110,9 +110,9 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     // CameraX
-    implementation "androidx.camera:camera-camera2:1.1.0-alpha11"
-    implementation "androidx.camera:camera-lifecycle:1.1.0-alpha11"
-    implementation 'androidx.camera:camera-view:1.0.0-alpha31'
+    implementation "androidx.camera:camera-camera2:1.1.0-alpha12"
+    implementation "androidx.camera:camera-lifecycle:1.1.0-alpha12"
+    implementation 'androidx.camera:camera-view:1.0.0-alpha32'
 
     //Lottie
     implementation 'com.airbnb.android:lottie:3.7.1'
@@ -137,7 +137,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    implementation 'com.google.android.gms:play-services-auth:20.0.0'
     implementation 'com.google.firebase:firebase-messaging:23.0.0'
 
     implementation 'com.google.android.play:core-ktx:1.8.1'

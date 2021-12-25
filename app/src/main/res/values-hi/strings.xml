@@ -5,13 +5,6 @@
 
     <string name="rupee_amount">\u20B9 %s</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_main_borrowed">MainActivityBorrowed</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Square World!</string>
     <string name="enter_name">अपना नाम दर्ज करें</string>
     <string name="enter_age">अपनी आयु दर्ज करें</string>
     <string name="enter_weight">अपना वजन दर्ज करें</string>
@@ -203,5 +196,6 @@
     <string name="timeline">Timeline</string>
     <string name="short_meditation_completion_message">Well done! You have completed a short meditation.</string>
     <string name="meditation_feedback_question">How did the meditation make you feel?</string>
+    <string name="gender">Gender</string>
 
 </resources>

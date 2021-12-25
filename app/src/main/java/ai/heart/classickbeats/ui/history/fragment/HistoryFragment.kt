@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.ui.history.fragment
 
+import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentHistoryBinding
 import ai.heart.classickbeats.model.HistoryType
@@ -50,6 +51,8 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
         navController = findNavController()
 
         historyAdapter = HistoryAdapter(requireContext(), timelineItemClickListener)
+
+        (requireActivity() as MainActivity).selectHistoryFragmentInBottomNavigation()
 
         binding.apply {
             historyRv.adapter = historyAdapter
