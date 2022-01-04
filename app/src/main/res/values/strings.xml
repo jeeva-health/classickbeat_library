@@ -82,11 +82,11 @@
     <string name="anger_meditation_title">Stay Calm</string>
     <string name="stress_meditation_title">Ease your Mind</string>
     <string name="immunity_meditation_title">Feel Good</string>
-    <string name="sleep_meditation_message">Nothing feels more frustrating than not getting sleep when you are tired and exhausted. Relax your mind and body with a meditation exercise that puts you into a place of complete rest.</string>
-    <string name="bp_meditation_message">Nothing feels more frustrating than not getting sleep when you are tired and exhausted. Relax your mind and body with a meditation exercise that puts you into a place of complete rest.</string>
-    <string name="anger_meditation_message">Nothing feels more frustrating than not getting sleep when you are tired and exhausted. Relax your mind and body with a meditation exercise that puts you into a place of complete rest.</string>
-    <string name="stress_meditation_message">Nothing feels more frustrating than not getting sleep when you are tired and exhausted. Relax your mind and body with a meditation exercise that puts you into a place of complete rest.</string>
-    <string name="immunity_meditation_message">Nothing feels more frustrating than not getting sleep when you are tired and exhausted. Relax your mind and body with a meditation exercise that puts you into a place of complete rest.</string>
+    <string name="sleep_meditation_message">Meditation lowers the heart rate by encouraging slower and deeper breaths and prepares us for a sound sleep. Let\'s use this exercise to put our body and mind in a completely relaxed state to improve sleep quality. </string>
+    <string name="bp_meditation_message">Sound meditation that helps calm the mind can also lower the blood pressure. With an exercise aimed at improving the health of our heart, let\'s reach a state of \"restful alertness\".</string>
+    <string name="anger_meditation_message">Several studies have confirmed that meditation can reduce signs of anger and frustration. Through this exercise, let\'s learn to identify our emotions associated with rage and anger and slow down our reactions to them.</string>
+    <string name="stress_meditation_message">Meditation is one of the most popular ways to relieve stress. Let\'s be more mindful and build our resilience to stress with this chakra meditation aimed at easing your mind.</string>
+    <string name="immunity_meditation_message">Research has shown a positive correlation between regular meditation and improved immune system response. Let\'s practice this chakra meditation exercise to improve our body\'s ability to ward off diseases.</string>
     <string name="reminder_sleep_message">Set a daily reminder to listen this meditation and sleep well</string>
     <string name="reminder_bp_message">Set a daily reminder to listen this meditation and rest your heart</string>
     <string name="reminder_anger_message">Set a daily reminder to listen this meditation and stay calm</string>

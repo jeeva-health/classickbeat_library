@@ -29,7 +29,7 @@ class WellnessHomeFragment : Fragment(R.layout.fragment_wellness_home) {
         navController = findNavController()
 
         binding.sleepCard.setSafeOnClickListener {
-            navigateToWellnessCategoryFragment()
+            navigateToWellnessCategoryFragment(WellnessType.SLEEP)
         }
 
         binding.angerCard.setSafeOnClickListener {
