@@ -72,6 +72,7 @@ fun String.toTimeString(): String? {
 
 fun String.toTimeString2(): String? {
     val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale)
+    inputFormat.timeZone = TimeZone.getTimeZone("GMT")
     val date = inputFormat.parse(this)
     val outputFormat = SimpleDateFormat("h:mm a", locale)
     return date?.let { outputFormat.format(date) }
@@ -97,8 +98,15 @@ fun String.toDate(): Date? {
     return dateFormat.parse(this)
 }
 
+fun String.toPPGDate(): Date? {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", locale)
+    dateFormat.timeZone = TimeZone.getTimeZone("GMT")
+    return dateFormat.parse(this)
+}
+
 fun String.toDateStringWithoutTime(): String {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", locale)
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale)
+    dateFormat.timeZone = TimeZone.getTimeZone("GMT")
     val dateFormat2 = SimpleDateFormat("dd MMM yyyy", locale)
     return dateFormat2.format(let { dateFormat.parse(it)!! })
 }

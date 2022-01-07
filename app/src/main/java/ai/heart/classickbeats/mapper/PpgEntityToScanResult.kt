@@ -4,7 +4,7 @@ import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.model.PPGData
 import ai.heart.classickbeats.model.StressResult
 import ai.heart.classickbeats.model.entity.PPGEntity
-import ai.heart.classickbeats.shared.util.toDate
+import ai.heart.classickbeats.shared.util.toPPGDate
 import java.util.*
 
 object PpgEntityToScanResult {
@@ -40,7 +40,7 @@ object PpgEntityToScanResult {
             isActive = isActive,
             stress = StressResult(stressResult = ppgEntity.stressLevel ?: 0, dataCount = 0),
             filteredRMean = ppgEntity.filteredRMeans ?: emptyList(),
-            timeStamp = ppgEntity.timeStamp?.toDate() ?: Date()
+            timeStamp = ppgEntity.timeStamp?.toPPGDate() ?: Date()
         )
     }
 }
