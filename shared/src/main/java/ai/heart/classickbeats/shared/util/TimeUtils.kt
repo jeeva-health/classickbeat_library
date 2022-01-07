@@ -2,6 +2,7 @@ package ai.heart.classickbeats.shared.util
 
 import android.annotation.SuppressLint
 import android.text.format.DateUtils
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -105,10 +106,17 @@ fun String.toPPGDate(): Date? {
 }
 
 fun String.toDateStringWithoutTime(): String {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale)
-    dateFormat.timeZone = TimeZone.getTimeZone("GMT")
-    val dateFormat2 = SimpleDateFormat("dd MMM yyyy", locale)
-    return dateFormat2.format(let { dateFormat.parse(it)!! })
+    return try {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale)
+        dateFormat.timeZone = TimeZone.getTimeZone("GMT")
+        val dateFormat2 = SimpleDateFormat("dd MMM yyyy", locale)
+        dateFormat2.format(let { dateFormat.parse(it)!! })
+    } catch (e: ParseException) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", locale)
+        dateFormat.timeZone = TimeZone.getTimeZone("GMT")
+        val dateFormat2 = SimpleDateFormat("dd MMM yyyy", locale)
+        dateFormat2.format(let { dateFormat.parse(it)!! })
+    }
 }
 
 fun Date.toWeekString(): String {
