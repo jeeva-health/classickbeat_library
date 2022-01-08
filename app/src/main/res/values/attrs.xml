@@ -39,5 +39,6 @@
     <attr name="scanMessageColor" format="color" />
     <attr name="bioAgeTextColor" format="color" />
     <attr name="lifeStyleTextColor" format="color" />
+    <attr name="timeTextColor" format="color" />
 
 </resources>

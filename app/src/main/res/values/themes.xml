@@ -45,6 +45,8 @@
         <item name="onLoggingCardColor">@color/white</item>
         <item name="scanMessageColor">@color/very_dark_violet</item>
 
+        <item name="timeTextColor">@color/dark_grey_5</item>
+
         <item name="borderColor">@color/dark_grayish_red_2</item>
 
         <item name="sliderTrackColorInactive">@color/light_grayish_red</item>

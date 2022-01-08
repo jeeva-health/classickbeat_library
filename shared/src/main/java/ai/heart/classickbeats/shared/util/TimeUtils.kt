@@ -151,12 +151,12 @@ fun String.toDateStringWithoutTime(): String {
     return try {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale)
         dateFormat.timeZone = TimeZone.getTimeZone("GMT")
-        val dateFormat2 = SimpleDateFormat("dd MMM yyyy", locale)
+        val dateFormat2 = SimpleDateFormat("dd MMM, yy", locale)
         dateFormat2.format(let { dateFormat.parse(it)!! })
     } catch (e: ParseException) {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", locale)
         dateFormat.timeZone = TimeZone.getTimeZone("GMT")
-        val dateFormat2 = SimpleDateFormat("dd MMM yyyy", locale)
+        val dateFormat2 = SimpleDateFormat("dd MMM, yy", locale)
         dateFormat2.format(let { dateFormat.parse(it)!! })
     }
 }
