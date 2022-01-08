@@ -64,59 +64,9 @@ fun Date.toDbFormatString(): String {
     return dateFormat.format(this)
 }
 
-fun String.toTimeString(): String? {
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", locale)
-    val date = inputFormat.parse(this)
-    val outputFormat = SimpleDateFormat("h:mm a", locale)
-    return date?.let { outputFormat.format(date) }
-}
-
-fun String.toTimeString2(): String? {
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale)
-    inputFormat.timeZone = TimeZone.getTimeZone("GMT")
-    val date = inputFormat.parse(this)
-    val outputFormat = SimpleDateFormat("h:mm a", locale)
-    return date?.let { outputFormat.format(date) }
-}
-
-fun String.toDateWithSeconds(): Date? {
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", locale)
-    return inputFormat.parse(this)
-}
-
-fun String.toDateWithMilli(): Date? {
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale)
-    return inputFormat.parse(this)
-}
-
 fun Date.toTimeString(): String {
     val timeFormat = SimpleDateFormat("h:mm a", locale)
     return timeFormat.format(this)
-}
-
-fun String.toDate(): Date? {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd", locale)
-    return dateFormat.parse(this)
-}
-
-fun String.toPPGDate(): Date? {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", locale)
-    dateFormat.timeZone = TimeZone.getTimeZone("GMT")
-    return dateFormat.parse(this)
-}
-
-fun String.toDateStringWithoutTime(): String {
-    return try {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale)
-        dateFormat.timeZone = TimeZone.getTimeZone("GMT")
-        val dateFormat2 = SimpleDateFormat("dd MMM yyyy", locale)
-        dateFormat2.format(let { dateFormat.parse(it)!! })
-    } catch (e: ParseException) {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", locale)
-        dateFormat.timeZone = TimeZone.getTimeZone("GMT")
-        val dateFormat2 = SimpleDateFormat("dd MMM yyyy", locale)
-        dateFormat2.format(let { dateFormat.parse(it)!! })
-    }
 }
 
 fun Date.toWeekString(): String {
@@ -158,4 +108,55 @@ fun Date.getDayOfWeek(): Int {
     val c = Calendar.getInstance()
     c.time = this
     return c[Calendar.DAY_OF_WEEK]
+}
+
+fun String.toTimeString(): String? {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", locale)
+    inputFormat.timeZone = TimeZone.getTimeZone("GMT")
+    val date = inputFormat.parse(this)
+    val outputFormat = SimpleDateFormat("h:mm a", locale)
+    return date?.let { outputFormat.format(date) }
+}
+
+fun String.toTimeString2(): String? {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale)
+    inputFormat.timeZone = TimeZone.getTimeZone("GMT")
+    val date = inputFormat.parse(this)
+    val outputFormat = SimpleDateFormat("h:mm a", locale)
+    return date?.let { outputFormat.format(date) }
+}
+
+fun String.toDateWithSeconds(): Date? {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", locale)
+    return inputFormat.parse(this)
+}
+
+fun String.toDateWithMilli(): Date? {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale)
+    return inputFormat.parse(this)
+}
+
+fun String.toDate(): Date? {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd", locale)
+    return dateFormat.parse(this)
+}
+
+fun String.toPPGDate(): Date? {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", locale)
+    dateFormat.timeZone = TimeZone.getTimeZone("GMT")
+    return dateFormat.parse(this)
+}
+
+fun String.toDateStringWithoutTime(): String {
+    return try {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale)
+        dateFormat.timeZone = TimeZone.getTimeZone("GMT")
+        val dateFormat2 = SimpleDateFormat("dd MMM yyyy", locale)
+        dateFormat2.format(let { dateFormat.parse(it)!! })
+    } catch (e: ParseException) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", locale)
+        dateFormat.timeZone = TimeZone.getTimeZone("GMT")
+        val dateFormat2 = SimpleDateFormat("dd MMM yyyy", locale)
+        dateFormat2.format(let { dateFormat.parse(it)!! })
+    }
 }

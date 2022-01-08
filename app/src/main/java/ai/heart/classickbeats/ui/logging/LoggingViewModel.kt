@@ -8,6 +8,7 @@ import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.error
 import ai.heart.classickbeats.shared.result.succeeded
+import ai.heart.classickbeats.shared.util.toDbFormatString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,6 +17,8 @@ import androidx.paging.ExperimentalPagingApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 
@@ -141,6 +144,33 @@ class LoggingViewModel @Inject constructor(
     private fun getLogTimeStampString(timeInput: Time?, dateInput: Date?): String {
         val time = timeInput ?: Time(0, 0)
         val date = dateInput ?: throw Exception("Date must be set")
-        return "${date.year}-${date.month}-${date.day} ${time.hourOfDay}:${time.minute}"
+        val timeStampStr =
+            "${date.year}" +
+                    "-${
+                        String.format(
+                            "%02d",
+                            date.month
+                        )
+                    }-${
+                        String.format(
+                            "%02d",
+                            date.day
+                        )
+                    } ${
+                        String.format(
+                            "%02d",
+                            time.hourOfDay
+                        )
+                    }:${
+                        String.format(
+                            "%02d",
+                            time.minute
+                        )
+                    }"
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        inputFormat.timeZone = TimeZone.getDefault()
+        val timeStamp = inputFormat.parse(timeStampStr)
+        val timeStampUTC = Date(timeStamp.time - TimeZone.getDefault().rawOffset)
+        return timeStampUTC.toDbFormatString()
     }
 }
