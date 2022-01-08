@@ -83,7 +83,8 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
     }
 
     private fun navigateToHistoryFragment() {
-        navController.navigateUp()
+        val action = TimelineFragmentDirections.actionTimelineFragmentToHistoryFragment()
+        navController.navigate(action)
     }
 
     private fun navigateToScanDetailFragment(scanId: Long) {
