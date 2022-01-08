@@ -40,5 +40,6 @@
     <attr name="bioAgeTextColor" format="color" />
     <attr name="lifeStyleTextColor" format="color" />
     <attr name="timeTextColor" format="color" />
+    <attr name="timelineColor" format="color" />
 
 </resources>

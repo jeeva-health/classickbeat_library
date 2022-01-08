@@ -48,10 +48,8 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
         binding.apply {
             timelineRv.adapter = timelineAdapter
 
-            arrayOf(switchIcon, historyTv).forEach {
-                it.setSafeOnClickListener {
-                    navigateToHistoryFragment()
-                }
+            backArrow.setSafeOnClickListener {
+                navigateToHistoryFragment()
             }
         }
 
