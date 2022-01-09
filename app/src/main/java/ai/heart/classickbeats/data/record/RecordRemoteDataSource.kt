@@ -12,15 +12,14 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-
 class RecordRemoteDataSource internal constructor(
-    private val recordApiService: RecordApiService,
+    private val apiService: RecordApiService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     sessionManager: SessionManager
 ) : BaseRemoteDataSource(sessionManager), RecordDataSource {
 
     override suspend fun recordPPG(ppgEntity: PPGEntity): Result<Long> {
-        val response = safeApiCall { recordApiService.recordPPG(ppgEntity) }
+        val response = safeApiCall { apiService.recordPPG(ppgEntity) }
         if (response.succeeded) {
             val ppgId = response.data?.responseData?.id ?: -1L
             return Result.Success(ppgId)
@@ -29,7 +28,7 @@ class RecordRemoteDataSource internal constructor(
     }
 
     override suspend fun updatePPG(ppgId: Long, ppgEntity: PPGEntity): Result<Boolean> {
-        val response = safeApiCall { recordApiService.updatePPG(ppgId, ppgEntity) }
+        val response = safeApiCall { apiService.updatePPG(ppgId, ppgEntity) }
         if (response.succeeded) {
             return Result.Success(true)
         }
@@ -37,7 +36,7 @@ class RecordRemoteDataSource internal constructor(
     }
 
     override suspend fun getSdnnList(): Result<SdnnListResponse.Data> {
-        val response = safeApiCall { recordApiService.getSdnnList() }
+        val response = safeApiCall { apiService.getSdnnList() }
         if (response.succeeded) {
             val data = response.data!!.responseData
             return Result.Success(data)
@@ -46,7 +45,7 @@ class RecordRemoteDataSource internal constructor(
     }
 
     override suspend fun getScanDetails(id: Long): Result<ScanDetailResponse.ResponseData> {
-        val response = safeApiCall { recordApiService.getScanDetail(id) }
+        val response = safeApiCall { apiService.getScanDetail(id) }
         if (response.succeeded) {
             val data = response.data!!.responseData
             return Result.Success(data)
@@ -55,7 +54,7 @@ class RecordRemoteDataSource internal constructor(
     }
 
     override suspend fun getLoggingData(): Result<LoggingListResponse.LoggingData> {
-        val response = safeApiCall { recordApiService.getLoggingData() }
+        val response = safeApiCall { apiService.getLoggingData() }
         if (response.succeeded) {
             val data = response.data!!.responseData
             return Result.Success(data)
@@ -65,7 +64,7 @@ class RecordRemoteDataSource internal constructor(
 
     override suspend fun recordBloodPressure(bpLogEntity: BpLogEntity): Result<Long> =
         withContext(ioDispatcher) {
-            val response = safeApiCall { recordApiService.recordBloodPressure(bpLogEntity) }
+            val response = safeApiCall { apiService.recordBloodPressure(bpLogEntity) }
             if (response.succeeded) {
                 val id = response.data?.responseData?.id ?: -1L
                 return@withContext Result.Success(id)
@@ -76,7 +75,7 @@ class RecordRemoteDataSource internal constructor(
 
     override suspend fun recordGlucoseLevel(glucoseLogEntity: GlucoseLogEntity): Result<Long> =
         withContext(ioDispatcher) {
-            val response = safeApiCall { recordApiService.recordGlucoseLevel(glucoseLogEntity) }
+            val response = safeApiCall { apiService.recordGlucoseLevel(glucoseLogEntity) }
             if (response.succeeded) {
                 val id = response.data?.responseData?.id ?: -1L
                 return@withContext Result.Success(id)
@@ -87,7 +86,7 @@ class RecordRemoteDataSource internal constructor(
 
     override suspend fun recordWaterIntake(waterLogEntity: WaterLogEntity): Result<Long> =
         withContext(ioDispatcher) {
-            val response = safeApiCall { recordApiService.recordWaterIntake(waterLogEntity) }
+            val response = safeApiCall { apiService.recordWaterIntake(waterLogEntity) }
             if (response.succeeded) {
                 val id = response.data?.responseData?.id ?: -1L
                 return@withContext Result.Success(id)
@@ -98,7 +97,7 @@ class RecordRemoteDataSource internal constructor(
 
     override suspend fun recordWeight(weightLogEntity: WeightLogEntity): Result<Long> =
         withContext(ioDispatcher) {
-            val response = safeApiCall { recordApiService.recordWeight(weightLogEntity) }
+            val response = safeApiCall { apiService.recordWeight(weightLogEntity) }
             if (response.succeeded) {
                 val id = response.data?.responseData?.id ?: -1L
                 return@withContext Result.Success(id)
@@ -113,7 +112,7 @@ class RecordRemoteDataSource internal constructor(
         endDate: String
     ): Result<List<GraphDataResponse.ResponseData>> = withContext(ioDispatcher) {
         val response =
-            safeApiCall { recordApiService.getGraphData(model, type, startDate, endDate) }
+            safeApiCall { apiService.getGraphData(model, type, startDate, endDate) }
         if (response.succeeded) {
             Result.Success(response.data!!.responseData!!)
         } else {
@@ -127,7 +126,7 @@ class RecordRemoteDataSource internal constructor(
         endDate: String
     ): Result<HistoryListResponse.ResponseData> = withContext(ioDispatcher) {
         val response = safeApiCall {
-            recordApiService.getHistoryListData(
+            apiService.getHistoryListData(
                 isPaginated = false,
                 model = model,
                 startDate = startDate,

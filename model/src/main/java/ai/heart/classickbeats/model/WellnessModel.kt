@@ -5,5 +5,4 @@ data class WellnessModel(
     val type: WellnessType,
     val title: Int,
     val message: Int,
-    val meditationMediaList: List<MeditationMedia>
 )

@@ -9,6 +9,7 @@ import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,6 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class WellnessHomeFragment : Fragment(R.layout.fragment_wellness_home) {
 
     private val binding by viewBinding(FragmentWellnessHomeBinding::bind)
+
+    private val wellnessViewModel: WellnessViewModel by activityViewModels()
 
     private lateinit var navController: NavController
 
@@ -47,6 +50,8 @@ class WellnessHomeFragment : Fragment(R.layout.fragment_wellness_home) {
         binding.immunityCard.setSafeOnClickListener {
             navigateToWellnessCategoryFragment(WellnessType.IMMUNITY)
         }
+
+        wellnessViewModel.getMeditationList()
     }
 
     private fun navigateToWellnessCategoryFragment(wellnessType: WellnessType = WellnessType.SLEEP) {

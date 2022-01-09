@@ -28,6 +28,7 @@
         <entry key="app/src/main/res/drawable/ic_flower_design.xml" value="0.24351851851851852" />
         <entry key="app/src/main/res/drawable/ic_info.xml" value="0.22685185185185186" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.22685185185185186" />
+        <entry key="app/src/main/res/drawable/ic_left_arrow.xml" value="0.3260416666666667" />
         <entry key="app/src/main/res/drawable/ic_name_logo.xml" value="0.24074074074074073" />
         <entry key="app/src/main/res/drawable/ic_plus.xml" value="0.13240740740740742" />
         <entry key="app/src/main/res/drawable/rounded_dialog.xml" value="0.24537037037037038" />
@@ -75,6 +76,7 @@
         <entry key="app/src/main/res/layout/itemview_history.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/itemview_history_date.xml" value="0.21203703703703702" />
         <entry key="app/src/main/res/layout/itemview_history_small.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/itemview_meditation.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/itemview_onboarding.xml" value="0.21203703703703702" />
         <entry key="app/src/main/res/layout/itemview_reminder.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/itemview_scan_tutorial.xml" value="0.21203703703703702" />

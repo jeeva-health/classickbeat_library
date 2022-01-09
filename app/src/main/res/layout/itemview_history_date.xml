@@ -14,7 +14,6 @@
         android:textAllCaps="false"
         android:textColor="?attr/normalTextColor"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

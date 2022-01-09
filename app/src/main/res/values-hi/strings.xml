@@ -65,6 +65,11 @@
     <string name="hrv_message_5">5. कृपया हिलें या बात न करें। सटीक परिणामों के लिए सभी निर्देशों का पालन करना सुनिश्चित करें।</string>
 
     <!--    Meditation -->
+    <string name="english_lang">English</string>
+    <string name="hindi_lang">Hindi</string>
+    <string name="guided_meditation">Guided</string>
+    <string name="self_guided_meditation">Self-guided</string>
+    <string name="minutes_short">mins</string>
     <string name="meditation_notification_title">इंटेल्थ</string>
     <string name="meditation_notification_message">ध्यान</string>
     <string name="meditation_ticker_text">Ticker</string>

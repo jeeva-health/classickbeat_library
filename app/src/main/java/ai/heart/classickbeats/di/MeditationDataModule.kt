@@ -1,7 +1,7 @@
 package ai.heart.classickbeats.di
 
-import ai.heart.classickbeats.data.record.RecordApiService
-import ai.heart.classickbeats.data.record.RecordRemoteDataSource
+import ai.heart.classickbeats.data.meditation.MeditationApiService
+import ai.heart.classickbeats.data.meditation.MeditationRemoteDataSource
 import ai.heart.classickbeats.shared.network.SessionManager
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
@@ -14,29 +14,29 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 @InstallIn(SingletonComponent::class)
 @Module
-object RecordDataModule {
+object MeditationDataModule {
 
     @Provides
-    fun provideRecordApiService(
+    fun provideMeditationApiService(
         moshiConverterFactory: MoshiConverterFactory,
         okHttpClient: OkHttpClient
-    ): RecordApiService {
+    ): MeditationApiService {
         return Retrofit.Builder()
             .addConverterFactory(moshiConverterFactory)
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .baseUrl(RecordApiService.ENDPOINT)
+            .baseUrl(MeditationApiService.ENDPOINT)
             .client(okHttpClient)
             .build()
-            .create(RecordApiService::class.java)
+            .create(MeditationApiService::class.java)
     }
 
     @Provides
-    fun provideRecordRemoteDataSource(
-        recordApiService: RecordApiService,
+    fun provideMeditationRemoteDataSource(
+        apiService: MeditationApiService,
         sessionManager: SessionManager
-    ): RecordRemoteDataSource {
-        return RecordRemoteDataSource(
-            apiService = recordApiService,
+    ): MeditationRemoteDataSource {
+        return MeditationRemoteDataSource(
+            apiService = apiService,
             sessionManager = sessionManager
         )
     }

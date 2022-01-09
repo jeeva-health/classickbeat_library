@@ -20,7 +20,6 @@ import timber.log.Timber
 import java.util.Date
 import javax.inject.Inject
 
-
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 @ActivityRetainedScoped
