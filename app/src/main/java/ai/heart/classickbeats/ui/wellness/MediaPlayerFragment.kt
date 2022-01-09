@@ -3,6 +3,7 @@ package ai.heart.classickbeats.ui.wellness
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentMediaPlayerBinding
 import ai.heart.classickbeats.model.WellnessType
+import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.utils.setDarkStatusBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
@@ -10,6 +11,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -18,11 +20,12 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class MediaPlayerFragment : Fragment(R.layout.fragment_media_player) {
 
     private val binding by viewBinding(FragmentMediaPlayerBinding::bind)
+
+    private val wellnessViewModel: WellnessViewModel by activityViewModels()
 
     private val args: MediaPlayerFragmentArgs by navArgs()
 
@@ -38,6 +41,15 @@ class MediaPlayerFragment : Fragment(R.layout.fragment_media_player) {
         navController = findNavController()
 
         val wellnessCategory = args.wellnessType
+
+        val mediaUrl: String? = args.mediaUrl
+
+        if (mediaUrl != null) {
+            initializePlayer(mediaUrl)
+        } else {
+            val mediaId = args.mediaId
+            wellnessViewModel.getMeditationFile(mediaId)
+        }
 
         binding.apply {
             cross.setSafeOnClickListener {
@@ -61,7 +73,9 @@ class MediaPlayerFragment : Fragment(R.layout.fragment_media_player) {
             title.text = getString(wellnessCategory.getTitle())
         }
 
-        initializePlayer(args.mediaUrl)
+        wellnessViewModel.meditationFile.observe(viewLifecycleOwner, EventObserver {
+            initializePlayer(it.resourceUrl)
+        })
     }
 
     override fun onStart() {
@@ -71,7 +85,7 @@ class MediaPlayerFragment : Fragment(R.layout.fragment_media_player) {
 
     private fun initializePlayer(mediaUrl: String) {
         player = ExoPlayer.Builder(requireActivity()).build().also { exoPlayer ->
-            binding?.playerControlView?.player = exoPlayer
+            binding.playerControlView.player = exoPlayer
             val mediaItem = MediaItem.fromUri(mediaUrl)
             exoPlayer.setMediaItem(mediaItem)
             exoPlayer.prepare()

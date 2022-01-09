@@ -109,13 +109,17 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
         val action =
             WellnessCategoryFragmentDirections.actionWellnessCategoryFragmentToMediaPlayerFragment(
                 mediaId = mediaId,
-                mediaUrl = mediaUrl,
-                wellnessType = wellnessCategory
+                wellnessType = wellnessCategory,
+                mediaUrl = mediaUrl
             )
         navController.navigate(action)
     }
 
     private val itemClickListener = fun(item: MeditationMedia) {
-
+        playMeditation(
+            wellnessCategory = item.wellnessType,
+            mediaId = item.id,
+            mediaUrl = item.resourceUrl
+        )
     }
 }

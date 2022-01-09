@@ -275,7 +275,8 @@
         tools:layout="@layout/fragment_media_player">
         <argument
             android:name="media_url"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="wellness_type"
             app:argType="ai.heart.classickbeats.model.WellnessType" />

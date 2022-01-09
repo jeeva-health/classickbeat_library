@@ -5,6 +5,7 @@ import ai.heart.classickbeats.data.meditation.MeditationRepository
 import ai.heart.classickbeats.model.MeditationMedia
 import ai.heart.classickbeats.model.WellnessModel
 import ai.heart.classickbeats.model.WellnessType
+import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.error
 import ai.heart.classickbeats.shared.result.succeeded
@@ -22,7 +23,7 @@ class WellnessViewModel @Inject constructor(
 
     var meditationList: List<MeditationMedia>? = null
 
-    val meditationFile = MutableLiveData<MeditationMedia>()
+    val meditationFile = MutableLiveData<Event<MeditationMedia>>()
 
     val showLoading = MutableLiveData(false)
 
@@ -46,7 +47,7 @@ class WellnessViewModel @Inject constructor(
             showLoading.postValue(true)
             val result = meditationRepository.getMeditationFile(meditationId)
             if (result.succeeded) {
-                meditationFile.postValue(result.data!!)
+                meditationFile.postValue(Event(result.data!!))
             } else {
                 apiError = result.error
             }
