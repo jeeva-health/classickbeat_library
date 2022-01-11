@@ -43,7 +43,7 @@
         <item name="lightCardColor">@color/very_light_grey_3</item>
         <item name="meditationQuestionColor">@color/bright_red_2</item>
         <item name="onLoggingCardColor">@color/white</item>
-        <item name="scanMessageColor">@color/very_dark_violet</item>
+        <item name="scanMessageColor">@color/white</item>
 
         <item name="timeTextColor">@color/dark_grey_5</item>
         <item name="timelineColor">@color/dark_violet</item>

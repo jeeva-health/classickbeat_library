@@ -164,7 +164,7 @@ object ProcessingData {
         val x0 = xArray[0]
         val pXDouble = xArray.map { (it - x0).toDouble() }
         val xMax = pXDouble.last()
-        Timber.i("Max time recorded: $xMax")
+        Timber.i("Max time recorded:size = (xMax / timePerSample).toInt() $xMax")
         val size = (xMax / timePerSample).toInt()
 
         val polynomialFunction =
