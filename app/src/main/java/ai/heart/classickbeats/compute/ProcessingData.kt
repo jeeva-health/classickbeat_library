@@ -1,35 +1,178 @@
 package ai.heart.classickbeats.compute
 
+import ai.heart.classickbeats.model.Constants.SCAN_DURATION
 import org.apache.commons.math3.analysis.interpolation.AkimaSplineInterpolator
 import timber.log.Timber
-import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.math.ln
 import kotlin.math.pow
 import kotlin.math.sqrt
 
 
-class ProcessingData {
+object ProcessingData {
 
-    fun median(l: List<Double>) = l.sorted().let { (it[it.size / 2] + it[(it.size - 1) / 2]) / 2 }
+    fun sd(data: DoubleArray): Double {
+        val mean = data.average()
+        return data
+            .fold(0.0, { accumulator, next -> accumulator + (next - mean).pow(2.0) })
+            .let {
+                sqrt(it / data.size)
+            }
+    }
 
-    fun interpolate(xArray: Array<Int>, yArray: Array<Double>): List<Double> {
+    fun runningMovAvg(windowSize: Int, dataList: List<Double>): Double? {
+        val average = if (dataList.size >= windowSize) {
+            dataList.takeLast(windowSize).average()
+        } else {
+            null
+        }
+        return average
+    }
+
+    fun computeLeveledSignal(
+        timeList: List<Int>,
+        centeredSignalList: List<Double>,
+        smallWindowOffset: Int = 2,
+        largeWindowOffset: Int = 15,
+        windowSize: Int = 101,
+        fInterpolate: Double = 100.0
+    ): List<Double> {
+
+        val time = timeList.subList(
+            smallWindowOffset + largeWindowOffset,
+            timeList.size - largeWindowOffset
+        )
+
+        assert(time.size == centeredSignalList.size)
+
+        // TODO: Vipul remove interpolated list
+        val interpolatedList = interpolate(
+            time,
+            centeredSignalList,
+            fInterpolate
+        )
+
+        val envelope = Filter.hilbert(interpolatedList)
+        val envelopeAverage = movAvg(envelope, windowSize)
+
+        return leveling(
+            interpolatedList,
+            envelopeAverage,
+            windowSize
+        )
+    }
+
+    fun calculateIbiListAndQuality(
+        inputSignal: List<Double>,
+        fInterpolate: Double
+    ): Pair<List<Double>, Double> {
+        val (peaks, quality) = Filter.peakDetection(inputSignal)
+        val ibiList = computeIBI(peaks, fInterpolate)
+        return Pair(ibiList, quality)
+    }
+
+    fun calculatePulseStats(ibiList: List<Double>): List<Double> {
+
+        val ibiListMutable = ibiList.toMutableList()
+
+        var ibiMedian = median(ibiListMutable)
+        var i = 0
+        while (i < ibiListMutable.size - 1) {
+            if (ibiListMutable[i] + ibiListMutable[i + 1] < 1.5 * ibiMedian) {
+                ibiListMutable[i] = ibiListMutable[i] + ibiListMutable[i + 1]
+                ibiListMutable.removeAt(i + 1)
+            }
+            i++
+        }
+
+        ibiMedian = median(ibiListMutable)
+        i = 0
+        while (i < ibiListMutable.size - 1) {
+            if (ibiListMutable[i] + ibiListMutable[i + 1] < 1.5 * ibiMedian) {
+                ibiListMutable[i] = ibiListMutable[i] + ibiListMutable[i + 1]
+                ibiListMutable.removeAt(i + 1)
+            }
+            i++
+        }
+
+        ibiMedian = median(ibiListMutable)
+        val filteredIbiList = ibiListMutable.filter { it > 0.8 * ibiMedian && it < 1.2 * ibiMedian }
+        val ibiAvg2 = filteredIbiList.average()
+
+        val SDNN = sd(filteredIbiList.toDoubleArray())
+        var rmssd = 0.0
+        var nn50 = 0
+        val ibiSize = filteredIbiList.size - 1
+        for (i in 0 until ibiSize) {
+            val diffRR = (filteredIbiList[i] - filteredIbiList[i + 1]).absoluteValue
+            rmssd += diffRR.pow(2)
+            if (diffRR >= 50) {
+                nn50 += 1
+            }
+        }
+        rmssd = sqrt(rmssd / ibiSize)
+        val pnn50 = (100.0 * nn50) / ibiSize
+
+        return listOf(ibiAvg2, SDNN, rmssd, pnn50, ln(rmssd))
+    }
+
+    fun qualityPercent(quality: Double): Double {
+        /*
+        The following block defines the main idea of qualityPercent:
+            quality <= 1e-5 -> "PERFECT Quality Recording, Good job!"
+            quality <= 1e-4 -> "Good Quality Recording, Good job!"
+            quality <= 1e-3 -> "Decent Quality Recording!"
+            ------ Anything > 0.001 is rejected --------------------
+            quality <= 1e-2 -> "Poor Quality Recording. Please record again!"
+            else -> "Extremely poor signal quality. Please record again!"
+         */
+        val highQualThres = 95.0
+        val lowQualThres = 0.0
+        val midQualThres = 70.0
+        val lowQual = 2.0
+        val midQual = 3.0
+        val highQual = 5.0
+
+        var qualityPercent = 0.0
+        if (quality == 0.0) {
+            qualityPercent = 100.0
+        } else {
+            qualityPercent = -1.0 * kotlin.math.log10(quality)
+            if (qualityPercent >= highQual) {
+                qualityPercent = 100 - (100 - highQualThres) * ((highQual / qualityPercent).pow(2))
+            } else if (qualityPercent >= midQual) {
+                qualityPercent =
+                    (highQualThres - midQualThres) * (qualityPercent - midQual) + midQualThres
+            } else if (qualityPercent >= lowQual) {
+                qualityPercent =
+                    (midQualThres - lowQualThres) * (qualityPercent - lowQual) + lowQualThres
+            } else {
+                qualityPercent = lowQualThres
+            }
+        }
+        Timber.i("QualityPERCENT: $qualityPercent")
+        return qualityPercent
+    }
+
+    private fun median(l: List<Double>) =
+        l.sorted().let { (it[it.size / 2] + it[(it.size - 1) / 2]) / 2 }
+
+    private fun interpolate(xArray: List<Int>, yArray: List<Double>, f: Double): List<Double> {
         Timber.i("Sizes X, Y in interpolator $xArray.size, $yArray.size")
+        val timePerSample = 1000.0 / f
         val akimaSplineInterpolator = AkimaSplineInterpolator()
         val x0 = xArray[0]
         val pXDouble = xArray.map { (it - x0).toDouble() }
-        val xMax = pXDouble.maxOrNull()!!
-        Timber.i("Max time recorded: $xMax")
-        val size = (xMax / 10).toInt()
+        val xMax = pXDouble.last()
+        Timber.i("Max time recorded:size = (xMax / timePerSample).toInt() $xMax")
+        val size = (xMax / timePerSample).toInt()
 
         val polynomialFunction =
             akimaSplineInterpolator.interpolate(pXDouble.toDoubleArray(), yArray.toDoubleArray())
 
-        val inputList = (0 until size).map { it * 10.0 }
-        val outputList = mutableListOf<Double>()
-        for (i in inputList) {
-            outputList.add(polynomialFunction.value(i))
-        }
+        val inputList = (0 until size).map { it * timePerSample }
+        val outputList = inputList.map { polynomialFunction.value(it) }
+        Timber.i("Interpolation done! Output size: ${outputList.size}")
         return outputList
     }
 
@@ -58,7 +201,8 @@ class ProcessingData {
         val polynomialFunction =
             akimaSplineInterpolator.interpolate(
                 filteredDataIndex.map { it.toDouble() }.toDoubleArray(),
-                X.toList().filterIndexed { index, d -> filteredDataIndex.contains(index) }.toDoubleArray()
+                X.toList().filterIndexed { index, d -> filteredDataIndex.contains(index) }
+                    .toDoubleArray()
             )
 
         val withoutSpikesData = mutableListOf<Double>()
@@ -69,117 +213,29 @@ class ProcessingData {
         return withoutSpikesData
     }
 
-    fun movAvg(X: Array<Double>, window_size: Int): List<Double> {
-        return X.toMutableList().windowed(
+    // TODO: modify it to remove unnecessary list to array conversion
+    private fun movAvg(X: DoubleArray, window_size: Int): Array<Double> {
+        return X.toList().windowed(
             size = window_size,
             step = 1,
             partialWindows = false
-        ) { window -> window.average() }
-//        val movingWindow = mutableListOf<Double>()
-//        val y = mutableListOf<Double>()
-//        for (i in 0 until X.size) {
-//            if (i < window) {
-//                movingWindow.add(X[i])
-//            } else {
-//                movingWindow.removeAt(0)
-//                movingWindow.add(X[i])
-//            }
-//            y.add(movingWindow.average())
-//
-//        }
+        ) { window -> window.average() }.toTypedArray()
     }
 
-    fun runningMovAvg(value: Double, windowSize: Int, movingWindow: MutableList<Double>, movingAvg: MutableList<Double>){
-        if (movingWindow.size < windowSize-1) {
-            movingWindow.add(value)
-        } else {
-            movingWindow.add(value)
-            movingAvg.add(movingWindow.average())
-            movingWindow.removeAt(0)
-        }
-    }
-
-    fun runningCentering(X: MutableList<Double>, movAvg: MutableList<Double>, output: MutableList<Double>, windowSize: Int){
-        val offset = (windowSize - 1) / 2
-        if (X.size > offset && output.size == movAvg.size-1){
-            output.add(X.last() - movAvg.last())
-        }
-    }
-
-    fun centering(X: Array<Double>, movAvg: Array<Double>, window_size: Int): List<Double> {
+    private fun leveling(X: List<Double>, movAvg: Array<Double>, window_size: Int): List<Double> {
         val offset = (window_size - 1) / 2
-        val differ = X.toMutableList().subList(offset, X.size - offset).zip(movAvg, Double::minus)
-        return differ
+        return X.subList(offset, X.size - offset).zip(movAvg, Double::div)
     }
 
-    fun leveling(X: Array<Double>, movAvg: Array<Double>, window_size: Int): List<Double> {
-        val offset = (window_size - 1) / 2
-        val differ = X.toMutableList().subList(offset, X.size - offset).zip(movAvg, Double::div)
-        return differ
-    }
+    private fun computeIBI(peaks: List<Int>, f: Double): MutableList<Double> {
 
-    fun sd(data: DoubleArray): Double {
-        val mean = data.average()
-        return data
-            .fold(0.0, { accumulator, next -> accumulator + (next - mean).pow(2.0) })
-            .let {
-                sqrt(it / data.size)
-            }
-    }
-
-    fun heartRateAndHRV(peaks: List<Int>, scanDuration: Int): List<Double> {
-
-        val time = (0 until 100 * scanDuration).toList()
+        val time = (0 until 100 * SCAN_DURATION).toList()
         val ibiList = mutableListOf<Double>() //Time in milliseconds
 
+        val timePerSample = 1000.0 / f
         for (i in 0 until peaks.size - 1) {
-            ibiList.add((time[peaks[i + 1]] - time[peaks[i]]) * 10.0)
+            ibiList.add((time[peaks[i + 1]] - time[peaks[i]]) * timePerSample)
         }
-        var ibiMedian = median(ibiList)
-        Timber.i("Size, Median, ibiList: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
-        var i = 0
-        while (i < ibiList.size-1){
-            if (ibiList[i] + ibiList[i+1] < 1.5 * ibiMedian){
-                ibiList[i] = ibiList[i] + ibiList[i+1]
-                ibiList.removeAt(i+1)
-            }
-            i++
-        }
-        ibiMedian = median(ibiList)
-        Timber.i("Size, Median, ibiList2: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
-
-        i = 0
-        while (i < ibiList.size-1){
-            if (ibiList[i] + ibiList[i+1] < 1.5 * ibiMedian){
-                ibiList[i] = ibiList[i] + ibiList[i+1]
-                ibiList.removeAt(i+1)
-            }
-            i++
-        }
-        ibiMedian = median(ibiList)
-        Timber.i("Size, Median, ibiList3: ${ibiList.size}, $ibiMedian, ${Arrays.toString(ibiList.toDoubleArray())}")
-
-        val filteredIbiList = ibiList.filter { it > 0.8 * ibiMedian && it < 1.2 * ibiMedian }
-        val ibiAvg2 = filteredIbiList.average()
-        Timber.i(
-            "Size, Avg, filteredIbiList: ${filteredIbiList.size}, $ibiAvg2, " +
-                    "${Arrays.toString(filteredIbiList.toDoubleArray())}"
-        )
-        val SDNN = sd(filteredIbiList.toDoubleArray())
-        var rmssd = 0.0
-        var nn50 = 0
-        val ibiSize = filteredIbiList.size - 1
-        for (i in 0 until ibiSize){
-            val diffRR = (filteredIbiList[i] - filteredIbiList[i+1]).absoluteValue
-            rmssd += diffRR.pow(2)
-            if (diffRR >= 50){
-                nn50 += 1
-            }
-        }
-        rmssd = sqrt(rmssd/ibiSize)
-        val pnn50 = (100.0*nn50)/ibiSize
-        val pulseStats = listOf(ibiAvg2, SDNN, rmssd, pnn50, ln(rmssd))
-
-        return pulseStats
+        return ibiList
     }
 }

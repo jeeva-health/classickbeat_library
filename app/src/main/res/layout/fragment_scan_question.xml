@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.ppg.fragment.ScanQuestionFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/start_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/big_guideline_margin" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/end_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/big_guideline_margin" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/page_top_margin"
+            android:text="@string/scan_question_text"
+            android:textAppearance="@style/TextAppearance.Jeeva.H2"
+            android:textColor="?attr/scanMessageColor"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/sleep_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/sleep_question"
+            android:textAppearance="@style/TextAppearance.Jeeva.H5"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😖"
+            android:textSize="@dimen/emoji_size"
+            app:layout_constraintBottom_toBottomOf="@id/sleep_slider"
+            app:layout_constraintEnd_toStartOf="@id/sleep_slider"
+            app:layout_constraintTop_toTopOf="@id/sleep_slider" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/sleep_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="4"
+            app:haloRadius="0dp"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/sleep_question"
+            app:thumbColor="@color/white"
+            app:thumbRadius="12dp"
+            app:tickColor="@color/white"
+            app:trackColorInactive="@color/light_grayish_red"
+            app:trackHeight="22dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😊"
+            android:textSize="@dimen/emoji_size"
+            app:layout_constraintBottom_toBottomOf="@id/sleep_slider"
+            app:layout_constraintStart_toEndOf="@id/sleep_slider"
+            app:layout_constraintTop_toTopOf="@id/sleep_slider" />
+
+        <TextView
+            android:id="@+id/mood_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="@string/mood_question"
+            android:textAppearance="@style/TextAppearance.Jeeva.H5"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/sleep_slider" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😖"
+            android:textSize="@dimen/emoji_size"
+            app:layout_constraintBottom_toBottomOf="@id/mood_slider"
+            app:layout_constraintEnd_toStartOf="@id/mood_slider"
+            app:layout_constraintTop_toTopOf="@id/mood_slider" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/mood_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="4"
+            app:haloRadius="0dp"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/mood_question"
+            app:thumbColor="@color/white"
+            app:thumbRadius="12dp"
+            app:tickColor="@color/white"
+            app:trackColorInactive="@color/light_grayish_red"
+            app:trackHeight="22dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😊"
+            android:textSize="@dimen/emoji_size"
+            app:layout_constraintBottom_toBottomOf="@id/mood_slider"
+            app:layout_constraintStart_toEndOf="@id/mood_slider"
+            app:layout_constraintTop_toTopOf="@id/mood_slider" />
+
+        <TextView
+            android:id="@+id/health_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="@string/healthy_question"
+            android:textAppearance="@style/TextAppearance.Jeeva.H5"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/mood_slider" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🤒"
+            android:textSize="@dimen/emoji_size"
+            app:layout_constraintBottom_toBottomOf="@id/health_slider"
+            app:layout_constraintEnd_toStartOf="@id/health_slider"
+            app:layout_constraintTop_toTopOf="@id/health_slider" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/health_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="4"
+            app:haloRadius="0dp"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/health_question"
+            app:thumbColor="@color/white"
+            app:thumbRadius="12dp"
+            app:tickColor="@color/white"
+            app:trackColorInactive="@color/light_grayish_red"
+            app:trackHeight="22dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="😊"
+            android:textSize="@dimen/emoji_size"
+            app:layout_constraintBottom_toBottomOf="@id/health_slider"
+            app:layout_constraintStart_toEndOf="@id/health_slider"
+            app:layout_constraintTop_toTopOf="@id/health_slider" />
+
+        <TextView
+            android:id="@+id/before_scan_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="@string/before_scanning_question"
+            android:textAppearance="@style/TextAppearance.Jeeva.H5"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/health_slider" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/before_scan_chip_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:chipSpacingHorizontal="12dp"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/before_scan_question"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_eating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="96dp"
+                android:text="@string/chip_eating" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_napping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="96dp"
+                android:text="@string/chip_napping" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_working"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="96dp"
+                android:text="@string/chip_working" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_chilling"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="96dp"
+                android:text="@string/chip_chilling" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_woke_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="96dp"
+                android:text="@string/chip_just_woke_up" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_workout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="96dp"
+                android:text="@string/chip_workout" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="96dp"
+                android:text="@string/chip_other" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <Button
+            android:id="@+id/save_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_semi_rounded_rectangle"
+            android:text="@string/view_result"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/before_scan_chip_group"
+            app:layout_constraintVertical_bias="1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

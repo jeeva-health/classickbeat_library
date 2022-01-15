@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/historyFragment"
+        android:icon="@drawable/ic_three_bars"
+        android:title="@string/history" />
+
+    <item
+        android:id="@+id/loggingHomeFragment"
+        android:icon="@drawable/ic_plus_bars"
+        android:title="@string/logging" />
+
+    <item
+        android:id="@+id/scanFragment"
+        android:icon="@drawable/ic_heart_with_beat"
+        android:title="@string/measure" />
+
+    <item
+        android:id="@+id/wellnessHomeFragment"
+        android:icon="@drawable/ic_flower_design"
+        android:title="@string/wellness" />
+
+    <item
+        android:id="@+id/profileHomeFragment"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile" />
+
+</menu>

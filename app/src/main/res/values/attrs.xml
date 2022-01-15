@@ -12,4 +12,34 @@
         <attr name="progressbarColorBackground" format="color" />
         <attr name="progressBarThickness" format="dimension" />
     </declare-styleable>
+
+    <!-- Color attributes -->
+    <attr name="borderColor" format="color" />
+
+    <attr name="normalTextColor" format="color" />
+
+    <!-- Mediation-->
+    <attr name="pageTitleColor" format="color" />
+    <attr name="headingColor" format="color" />
+    <attr name="categoryNameColor" format="color" />
+    <attr name="categoryTitleColor" format="color" />
+    <attr name="explanationTextColor" format="color" />
+    <attr name="meditationListenTextColor" format="color" />
+    <attr name="reminderTextColor" format="color" />
+    <attr name="lightCardColor" format="color" />
+    <attr name="meditationQuestionColor" format="color" />
+
+    <attr name="sliderTrackColorInactive" format="color" />
+    <attr name="sliderThumbColor" format="color" />
+    <attr name="sliderTickColor" format="color" />
+
+    <!-- Logging-->
+    <attr name="onLoggingCardColor" format="color" />
+
+    <attr name="scanMessageColor" format="color" />
+    <attr name="bioAgeTextColor" format="color" />
+    <attr name="lifeStyleTextColor" format="color" />
+    <attr name="timeTextColor" format="color" />
+    <attr name="timelineColor" format="color" />
+
 </resources>

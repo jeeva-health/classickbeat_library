@@ -1,23 +1,30 @@
 package ai.heart.classickbeats.ui.login
 
-import ai.heart.classickbeats.data.LoginRepository
-import ai.heart.classickbeats.network.SessionManager
-import ai.heart.classickbeats.storage.SharedPreferenceStorage
-import ai.heart.classickbeats.utils.Event
+import ai.heart.classickbeats.data.user.UserRepository
+import ai.heart.classickbeats.model.Gender
+import ai.heart.classickbeats.model.User
+import ai.heart.classickbeats.shared.data.login.LoginRepository
+import ai.heart.classickbeats.shared.data.prefs.PreferenceStorage
+import ai.heart.classickbeats.shared.domain.prefs.UserRegisteredActionUseCase
+import ai.heart.classickbeats.shared.network.SessionManager
+import ai.heart.classickbeats.shared.result.Event
+import ai.heart.classickbeats.shared.result.error
+import ai.heart.classickbeats.shared.result.succeeded
 import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
+    private val userRepository: UserRepository,
     private val sessionManager: SessionManager,
-    private val sharedPreferenceStorage: SharedPreferenceStorage,
+    private val preferenceStorage: PreferenceStorage,
+    private val userRegisteredActionUseCase: UserRegisteredActionUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -30,13 +37,17 @@ class LoginViewModel @Inject constructor(
         AUTHENTICATED, UNAUTHENTICATED, INVALID_AUTHENTICATION
     }
 
+    val genderList = Gender.values().toList()
+
+    val genderListStr = genderList.map { it.displayStr }
+
+    var selectedGender = MutableLiveData<Gender>()
+
     var currentFirebaseUser: FirebaseUser? = null
 
     var isUserRegistered: Boolean = false
 
     val showLoading = MutableLiveData<Boolean>(false)
-
-    val refreshTokenStatusLiveData = RefreshTokenStatusLiveData(sessionManager.sharedPreferences)
 
     val firebaseAuthenticationState: LiveData<Event<AuthenticationState>> =
         Transformations.map(FirebaseUserLiveData()) { user ->
@@ -55,9 +66,11 @@ class LoginViewModel @Inject constructor(
     var apiError: String? = null
 
     fun logoutUser() {
-        Firebase.auth.signOut()
-        sessionManager.removeAuthToken()
-        sharedPreferenceStorage.removeAllUserProps()
+        viewModelScope.launch {
+            Firebase.auth.signOut()
+            sessionManager.removeAuthToken()
+            preferenceStorage.removeAllUserProps()
+        }
     }
 
     fun isUserLoggedIn(): Boolean {
@@ -68,27 +81,27 @@ class LoginViewModel @Inject constructor(
         sessionManager.saveRefreshTokenStatus(true)
     }
 
-    fun loginUser() {
+    fun loginUser(firebaseToken: String) {
         showLoading.postValue(true)
         viewModelScope.launch {
-            val firebaseToken = currentFirebaseUser?.getIdToken(false)?.result?.token
-            Timber.i("FirebaseToken: $firebaseToken")
-            if (firebaseToken == null) {
-                // TODO:: handle this case
-            } else {
-                val (loginResponse, isUserRegistered) = loginRepository.loginUser(firebaseToken)
-                this@LoginViewModel.isUserRegistered = isUserRegistered
-                loginState.postValue(Event(loginResponse))
-            }
+            val (loginResponse, isUserRegistered) = loginRepository.loginUser(firebaseToken)
+            this@LoginViewModel.isUserRegistered = isUserRegistered
+            userRegisteredActionUseCase.invoke(isUserRegistered)
+            loginState.postValue(Event(loginResponse))
             showLoading.postValue(false)
         }
     }
 
-    fun registerUser(fullName: String) {
+    fun registerUser(user: User) {
         showLoading.postValue(true)
         viewModelScope.launch {
-            val response = loginRepository.registerUser(fullName)
-            apiResponse.postValue(Event(RequestType.REGISTER))
+            val response = userRepository.registerUser(user)
+            if (response.succeeded) {
+                userRegisteredActionUseCase.invoke(true)
+                apiResponse.postValue(Event(RequestType.REGISTER))
+            } else {
+                apiError = response.error
+            }
             showLoading.postValue(false)
         }
     }

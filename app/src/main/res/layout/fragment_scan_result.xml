@@ -1,0 +1,1039 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.ppg.fragment.ScanResultFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/start_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/end_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="20dp" />
+
+        <TextView
+            android:id="@+id/heart_rate_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/page_top_margin"
+            android:text="@string/heart_rate"
+            android:textAllCaps="true"
+            android:textColor="?attr/pageTitleColor"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/normalTextColor"
+            android:textSize="10sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/heart_rate_tv"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            tools:text="15th April, 2020" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="?attr/normalTextColor"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintTop_toBottomOf="@id/date"
+            tools:text="3:30 PM" />
+
+        <TextView
+            android:id="@+id/heart_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="_ _"
+            android:textAppearance="@style/TextAppearance.Jeeva.HeartRate"
+            app:layout_constraintStart_toStartOf="@id/heart_rate_tv"
+            app:layout_constraintTop_toBottomOf="@id/heart_rate_tv"
+            tools:text="76" />
+
+        <TextView
+            android:id="@+id/bpm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/bpm"
+            android:textAppearance="@style/TextAppearance.Jeeva.HeartRate"
+            android:textSize="16sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/heart_rate"
+            app:layout_constraintStart_toEndOf="@id/heart_rate" />
+
+        <TextView
+            android:id="@+id/stress_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_rectangle_borderless_small"
+            android:backgroundTint="@color/red"
+            android:gravity="center"
+            android:minWidth="104dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/bpm"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            tools:text="High Stress" />
+
+        <HorizontalScrollView
+            android:id="@+id/horizontal_scroll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:scrollbars="none"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/heart_rate"
+            tools:visibility="invisible">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/age_card"
+                    android:layout_width="328dp"
+                    android:layout_height="0dp"
+                    android:layout_marginVertical="2dp"
+                    android:layout_marginStart="12dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintBottom_toBottomOf="@id/lifestyle_card"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/age_start_guideline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_begin="16dp" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/age_end_guideline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_end="16dp" />
+
+                        <TextView
+                            android:id="@+id/age_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:text="@string/biological_age"
+                            android:textAllCaps="true"
+                            android:textColor="?attr/normalTextColor"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/age_start_guideline"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/age_range"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/bioAgeTextColor"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBaseline_toBaselineOf="@id/age_tv"
+                            app:layout_constraintEnd_toEndOf="@id/age_end_guideline"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="35 - 45 years" />
+
+                        <ImageView
+                            android:id="@+id/age_clock_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_clock"
+                            app:layout_constraintEnd_toStartOf="@id/age_clock_2"
+                            app:layout_constraintHorizontal_chainStyle="spread_inside"
+                            app:layout_constraintStart_toStartOf="@id/age_start_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/age_tv" />
+
+                        <ImageView
+                            android:id="@+id/age_clock_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_clock"
+                            app:layout_constraintEnd_toStartOf="@id/age_clock_3"
+                            app:layout_constraintHorizontal_chainStyle="spread_inside"
+                            app:layout_constraintStart_toEndOf="@id/age_clock_1"
+                            app:layout_constraintTop_toBottomOf="@id/age_tv"
+                            app:tint="@color/very_soft_blue" />
+
+                        <ImageView
+                            android:id="@+id/age_clock_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_clock"
+                            app:layout_constraintEnd_toStartOf="@id/age_clock_4"
+                            app:layout_constraintStart_toEndOf="@id/age_clock_2"
+                            app:layout_constraintTop_toBottomOf="@id/age_tv"
+                            app:tint="@color/very_soft_blue" />
+
+                        <ImageView
+                            android:id="@+id/age_clock_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_clock"
+                            app:layout_constraintEnd_toStartOf="@id/age_clock_5"
+                            app:layout_constraintStart_toEndOf="@id/age_clock_3"
+                            app:layout_constraintTop_toBottomOf="@id/age_tv"
+                            app:tint="@color/very_soft_blue" />
+
+                        <ImageView
+                            android:id="@+id/age_clock_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_clock"
+                            app:layout_constraintEnd_toStartOf="@id/age_clock_6"
+                            app:layout_constraintStart_toEndOf="@id/age_clock_4"
+                            app:layout_constraintTop_toBottomOf="@id/age_tv"
+                            app:tint="@color/very_soft_blue" />
+
+                        <ImageView
+                            android:id="@+id/age_clock_6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_clock"
+                            app:layout_constraintEnd_toEndOf="@id/age_end_guideline"
+                            app:layout_constraintStart_toEndOf="@id/age_clock_5"
+                            app:layout_constraintTop_toBottomOf="@id/age_tv"
+                            app:tint="@color/very_soft_blue" />
+
+                        <TextView
+                            android:id="@+id/younger_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="@string/younger"
+                            android:textAllCaps="true"
+                            android:textColor="?attr/lifeStyleTextColor"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toStartOf="@id/age_start_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/age_clock_1" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:src="@drawable/ic_line_arrow"
+                            app:layout_constraintBottom_toBottomOf="@id/younger_tv"
+                            app:layout_constraintEnd_toStartOf="@id/older_tv"
+                            app:layout_constraintStart_toEndOf="@id/younger_tv"
+                            app:layout_constraintTop_toTopOf="@id/younger_tv"
+                            app:tint="?attr/lifeStyleTextColor" />
+
+                        <TextView
+                            android:id="@+id/older_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="@string/older"
+                            android:textAllCaps="true"
+                            android:textColor="?attr/lifeStyleTextColor"
+                            android:textSize="12sp"
+                            app:layout_constraintEnd_toEndOf="@id/age_end_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/age_clock_6" />
+
+                        <TextView
+                            android:id="@+id/age_info"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:textColor="?attr/bioAgeTextColor"
+                            app:layout_constraintEnd_toEndOf="@id/age_end_guideline"
+                            app:layout_constraintStart_toStartOf="@id/age_start_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/younger_tv"
+                            tools:text="You are currently older compared to the world population of your age" />
+
+                        <ImageView
+                            android:id="@+id/age_more_info"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="8dp"
+                            android:src="@drawable/ic_info"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/age_start_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/age_info"
+                            app:tint="@color/soft_blue" />
+
+                        <ImageView
+                            android:id="@+id/age_share"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/ic_share"
+                            app:layout_constraintStart_toEndOf="@id/age_more_info"
+                            app:layout_constraintTop_toBottomOf="@id/age_info"
+                            app:tint="@color/soft_blue" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/lifestyle_card"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/age_card"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/lifestyle_start_guideline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_begin="18dp" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/lifestyle_end_guideline"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_end="18dp" />
+
+                        <TextView
+                            android:id="@+id/lifestyle_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:text="@string/lifestyle"
+                            android:textAllCaps="true"
+                            android:textColor="?attr/normalTextColor"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@id/lifestyle_start_guideline"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/lifestyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/lifeStyleTextColor"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBaseline_toBaselineOf="@id/lifestyle_tv"
+                            app:layout_constraintEnd_toEndOf="@id/lifestyle_end_guideline"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Sedentary" />
+
+                        <ImageView
+                            android:id="@+id/lifestyle_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_lifestyle"
+                            app:layout_constraintEnd_toStartOf="@id/lifestyle_2"
+                            app:layout_constraintHorizontal_chainStyle="spread_inside"
+                            app:layout_constraintStart_toStartOf="@id/lifestyle_start_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv" />
+
+                        <ImageView
+                            android:id="@+id/lifestyle_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_lifestyle"
+                            app:layout_constraintEnd_toStartOf="@id/lifestyle_3"
+                            app:layout_constraintHorizontal_chainStyle="spread_inside"
+                            app:layout_constraintStart_toEndOf="@id/lifestyle_1"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv"
+                            app:tint="@color/very_soft_red_2" />
+
+                        <ImageView
+                            android:id="@+id/lifestyle_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_lifestyle"
+                            app:layout_constraintEnd_toStartOf="@id/lifestyle_4"
+                            app:layout_constraintStart_toEndOf="@id/lifestyle_2"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv"
+                            app:tint="@color/very_soft_red_2" />
+
+                        <ImageView
+                            android:id="@+id/lifestyle_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_lifestyle"
+                            app:layout_constraintEnd_toStartOf="@id/lifestyle_5"
+                            app:layout_constraintStart_toEndOf="@id/lifestyle_3"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv"
+                            app:tint="@color/very_soft_red_2" />
+
+                        <ImageView
+                            android:id="@+id/lifestyle_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_lifestyle"
+                            app:layout_constraintEnd_toStartOf="@id/lifestyle_6"
+                            app:layout_constraintStart_toEndOf="@id/lifestyle_4"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv"
+                            app:tint="@color/very_soft_red_2" />
+
+                        <ImageView
+                            android:id="@+id/lifestyle_6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/ic_lifestyle"
+                            app:layout_constraintEnd_toEndOf="@id/lifestyle_end_guideline"
+                            app:layout_constraintStart_toEndOf="@id/lifestyle_5"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_tv"
+                            app:tint="@color/very_soft_red_2" />
+
+                        <TextView
+                            android:id="@+id/undesirable_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="@string/undesirable"
+                            android:textAllCaps="true"
+                            android:textColor="?attr/bioAgeTextColor"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toStartOf="@id/lifestyle_start_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_1" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:src="@drawable/ic_line_arrow"
+                            app:layout_constraintBottom_toBottomOf="@id/undesirable_tv"
+                            app:layout_constraintEnd_toStartOf="@id/desirable_tv"
+                            app:layout_constraintStart_toEndOf="@id/undesirable_tv"
+                            app:layout_constraintTop_toTopOf="@id/undesirable_tv"
+                            app:tint="?attr/bioAgeTextColor" />
+
+                        <TextView
+                            android:id="@+id/desirable_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="@string/desirable"
+                            android:textAllCaps="true"
+                            android:textColor="?attr/bioAgeTextColor"
+                            android:textSize="12sp"
+                            app:layout_constraintEnd_toEndOf="@id/lifestyle_end_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_6" />
+
+                        <TextView
+                            android:id="@+id/lifestyle_info"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:textColor="?attr/lifeStyleTextColor"
+                            app:layout_constraintEnd_toEndOf="@id/lifestyle_end_guideline"
+                            app:layout_constraintStart_toStartOf="@id/lifestyle_start_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/undesirable_tv"
+                            tools:text="You have a higher sedentary lifestyle compared to the world population of your age" />
+
+                        <ImageView
+                            android:id="@+id/lifestyle_more_info"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="8dp"
+                            android:src="@drawable/ic_info"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/lifestyle_start_guideline"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_info"
+                            app:tint="@color/very_soft_red_2" />
+
+                        <ImageView
+                            android:id="@+id/lifestyle_share"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/ic_share"
+                            app:layout_constraintStart_toEndOf="@id/lifestyle_more_info"
+                            app:layout_constraintTop_toBottomOf="@id/lifestyle_info"
+                            app:tint="@color/very_soft_red_2" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </HorizontalScrollView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/stress_graph_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/horizontal_scroll">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/graph_start_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="18dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/graph_end_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="18dp" />
+
+                <TextView
+                    android:id="@+id/stress_graph_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/stress_levels"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/stress_graph"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="12dp"
+                    android:scaleX="1.2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:src="@drawable/graph_less_stress" />
+
+                <TextView
+                    android:id="@+id/more_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/more"
+                    android:textAllCaps="true"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="@id/graph_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/graph_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/stress_graph_tv" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/dotted_line"
+                    app:layout_constraintBottom_toBottomOf="@id/normal_tv"
+                    app:layout_constraintEnd_toStartOf="@id/normal_tv"
+                    app:layout_constraintStart_toStartOf="@id/graph_start_guideline"
+                    app:layout_constraintTop_toTopOf="@id/normal_tv" />
+
+                <TextView
+                    android:id="@+id/normal_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/normal"
+                    android:textAllCaps="true"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toTopOf="@id/less_tv"
+                    app:layout_constraintEnd_toEndOf="@id/graph_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/graph_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/more_tv" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/dotted_line"
+                    app:layout_constraintBottom_toBottomOf="@id/normal_tv"
+                    app:layout_constraintEnd_toEndOf="@id/graph_end_guideline"
+                    app:layout_constraintStart_toEndOf="@id/normal_tv"
+                    app:layout_constraintTop_toTopOf="@id/normal_tv" />
+
+                <TextView
+                    android:id="@+id/less_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/less"
+                    android:textAllCaps="true"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toTopOf="@id/stress_message"
+                    app:layout_constraintEnd_toEndOf="@id/graph_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/graph_start_guideline" />
+
+                <TextView
+                    android:id="@+id/stress_message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/graph_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/graph_start_guideline"
+                    tools:text="Your are MORE STRESSED than usual" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/stress_insufficient_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:visibility="gone"
+            app:cardCornerRadius="8dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/horizontal_scroll">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/stress_start_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="18dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/stress_end_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="18dp" />
+
+                <TextView
+                    android:id="@+id/stress_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/stress_levels"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/stress_progress"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="12dp"
+                    android:max="10"
+                    android:progressBackgroundTint="@color/very_light_grey"
+                    android:progressTint="@color/moderate_green_2"
+                    app:layout_constraintEnd_toStartOf="@id/progress_text"
+                    app:layout_constraintStart_toStartOf="@id/stress_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/stress_tv"
+                    tools:progress="5" />
+
+                <TextView
+                    android:id="@+id/progress_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/stress_progress"
+                    app:layout_constraintEnd_toEndOf="@id/stress_end_guideline"
+                    app:layout_constraintStart_toEndOf="@id/stress_progress"
+                    app:layout_constraintTop_toTopOf="@id/stress_progress"
+                    tools:text="5/10" />
+
+                <TextView
+                    android:id="@+id/insufficient_stress_data"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="16dp"
+                    android:text="@string/insufficient_heart_rate_data"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/stress_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/stress_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/stress_progress" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/stress_card_barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="stress_insufficient_card,stress_graph_card" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/waveform_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/stress_card_barrier">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/wave_start_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="18dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/wave_end_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="18dp" />
+
+                <TextView
+                    android:id="@+id/waveform_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Waveform"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/quality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:textColor="?attr/normalTextColor"
+                    android:textSize="12sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/waveform_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="Quality: 75%" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/waveform_chart"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_marginVertical="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/waveform_tv" />
+
+                <ImageView
+                    android:id="@+id/waveform_info_icon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginVertical="12dp"
+                    android:src="@drawable/ic_info"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/wave_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/waveform_chart"
+                    app:tint="@color/soft_violet" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/waveform_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="42dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/waveform_non_medical"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/waveform_card" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/hrv_metric_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="36dp"
+            app:cardCornerRadius="8dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toTopOf="@id/save_btn"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/waveform_message">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/hrv_start_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="18dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/hrv_end_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="18dp" />
+
+                <TextView
+                    android:id="@+id/hrv_metric_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/hrv_metrics"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/sdnn_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/sdnn"
+                    android:textAllCaps="true"
+                    app:layout_constraintStart_toStartOf="@id/hrv_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/hrv_metric_tv" />
+
+                <TextView
+                    android:id="@+id/sdnn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_rounded_rectangle_borderless_small"
+                    android:backgroundTint="@color/moderate_green_2"
+                    android:gravity="center"
+                    android:minWidth="80dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="6dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintBaseline_toBaselineOf="@id/sdnn_tv"
+                    app:layout_constraintEnd_toEndOf="@id/hrv_end_guideline"
+                    tools:text="104 ms" />
+
+                <TextView
+                    android:id="@+id/sdnn_normal_range"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/normal_range_sdnn"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/hrv_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/hrv_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/sdnn_tv" />
+
+                <TextView
+                    android:id="@+id/sdnn_explanation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/explanation_sdnn"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/hrv_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/hrv_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/sdnn_normal_range" />
+
+                <View
+                    android:id="@+id/sdnn_vertical_sep"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/bright_red_2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/sdnn_explanation" />
+
+                <TextView
+                    android:id="@+id/pnn_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/pnn50"
+                    app:layout_constraintStart_toStartOf="@id/hrv_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/sdnn_vertical_sep" />
+
+                <TextView
+                    android:id="@+id/pnn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_rounded_rectangle_borderless_small"
+                    android:backgroundTint="@color/moderate_green_2"
+                    android:gravity="center"
+                    android:minWidth="80dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="6dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintBaseline_toBaselineOf="@id/pnn_tv"
+                    app:layout_constraintEnd_toEndOf="@id/hrv_end_guideline"
+                    tools:text="32 %" />
+
+                <TextView
+                    android:id="@+id/pnn_normal_range"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/normal_range_pnn"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/hrv_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/hrv_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/pnn_tv" />
+
+                <TextView
+                    android:id="@+id/pnn_explanation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/explanation_pnn"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/hrv_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/hrv_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/pnn_normal_range" />
+
+                <View
+                    android:id="@+id/pnn_vertical_sep"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/bright_red_2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/pnn_explanation" />
+
+                <TextView
+                    android:id="@+id/mssd_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/rmssd"
+                    app:layout_constraintStart_toStartOf="@id/hrv_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/pnn_vertical_sep" />
+
+                <TextView
+                    android:id="@+id/mssd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_rounded_rectangle_borderless_small"
+                    android:backgroundTint="@color/moderate_green_2"
+                    android:gravity="center"
+                    android:minWidth="80dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="6dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintBaseline_toBaselineOf="@id/mssd_tv"
+                    app:layout_constraintEnd_toEndOf="@id/hrv_end_guideline"
+                    tools:text="29 ms" />
+
+                <TextView
+                    android:id="@+id/mssd_normal_range"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/normal_range_rmssd"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/hrv_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/hrv_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/mssd_tv" />
+
+                <TextView
+                    android:id="@+id/mssd_explanation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/explanation_rmssd"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/hrv_end_guideline"
+                    app:layout_constraintStart_toStartOf="@id/hrv_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/mssd_normal_range" />
+
+                <ImageView
+                    android:id="@+id/info_icon"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginVertical="16dp"
+                    android:src="@drawable/ic_info"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/hrv_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/mssd_explanation"
+                    app:tint="@color/soft_red_2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/save_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_semi_rounded_rectangle"
+            android:text="@string/done"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/stress_insufficient_card"
+            app:layout_constraintVertical_bias="1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

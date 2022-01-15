@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="ai.heart.classickbeats.ui.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_nav_login"
+            app:destination="@id/nav_login" />
+        <action
+            android:id="@+id/action_splashFragment_to_onBoardingFragment"
+            app:destination="@id/onBoardingFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_splashFragment_to_personalDetailsFragment"
+            app:destination="@id/personalDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="ai.heart.classickbeats.ui.onboarding.OnBoardingFragment"
+        android:label="fragment_onboarding"
+        tools:layout="@layout/fragment_onboarding">
+        <action
+            android:id="@+id/action_onBoardingFragment_to_nav_login"
+            app:destination="@id/nav_login" />
+    </fragment>
+
+    <include app:graph="@navigation/nav_login" />
+
+    <include app:graph="@navigation/nav_home" />
+    <fragment
+        android:id="@+id/personalDetailsFragment"
+        android:name="ai.heart.classickbeats.ui.login.fragment.PersonalDetailsFragment"
+        android:label="fragment_personal_details"
+        tools:layout="@layout/fragment_personal_details">
+        <action
+            android:id="@+id/action_personalDetailsFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_personalDetailsFragment_to_genderSelectionBottomSheetFragment"
+            app:destination="@id/genderSelectionBottomSheetFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/genderSelectionBottomSheetFragment"
+        android:name="ai.heart.classickbeats.ui.login.fragment.GenderSelectionBottomSheetFragment"
+        android:label="fragment_gender_selection_bottom_sheet"
+        tools:layout="@layout/fragment_gender_selection_bottom_sheet" />
+
+</navigation>

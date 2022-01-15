@@ -1,42 +1,132 @@
 package ai.heart.classickbeats.ui.logging
 
+import ai.heart.classickbeats.NavHomeDirections
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentLogBpBinding
-import ai.heart.classickbeats.utils.setSafeOnClickListener
-import ai.heart.classickbeats.utils.viewBinding
+import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.ui.widgets.DateTimePickerViewModel
+import ai.heart.classickbeats.utils.*
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.paging.ExperimentalPagingApi
+import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
+@ExperimentalCoroutinesApi
+@ExperimentalPagingApi
 @AndroidEntryPoint
 class LogBpFragment : Fragment(R.layout.fragment_log_bp) {
 
-    private val binding by viewBinding(FragmentLogBpBinding::bind)
+    private var binding: FragmentLogBpBinding? = null
+
+    private val loggingViewModel: LoggingViewModel by activityViewModels()
+
+    private val dateTimePickerViewModel: DateTimePickerViewModel by activityViewModels()
 
     private lateinit var navController: NavController
-
-    private lateinit var cameraButton: AppCompatImageView
-
-    private lateinit var submitButton: AppCompatButton
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setLightStatusBar()
+
+        binding = FragmentLogBpBinding.bind(view)
+
         navController = findNavController()
 
-        cameraButton = binding.camera
+        binding?.systolicLayout?.requestFocus()
 
-        submitButton = binding.submitBtn
+        val currentDate = getCurrentDate()
 
-        submitButton.setSafeOnClickListener {
+        val currentTime = getCurrentTime()
+
+        dateTimePickerViewModel.setLogDate(currentDate)
+
+        dateTimePickerViewModel.setLogTime(currentTime)
+
+        binding?.dateLayout?.editText?.setText(currentDate.toString())
+
+        binding?.timeLayout?.editText?.setText(currentTime.toString())
+
+        binding?.timeLayout?.addOnEditTextAttachedListener(timerEditTextAttachListener)
+
+        binding?.dateLayout?.addOnEditTextAttachedListener(dateEditTextAttachListener)
+
+        binding?.saveBtn?.setSafeOnClickListener {
+            saveBpLog()
+        }
+
+        binding?.backArrow?.setSafeOnClickListener {
             navController.navigateUp()
+        }
+
+        dateTimePickerViewModel.selectedLogDate.observe(viewLifecycleOwner, EventObserver {
+            binding?.dateLayout?.editText?.setText(it.toString())
+        })
+
+        dateTimePickerViewModel.selectedLogTime.observe(viewLifecycleOwner, EventObserver {
+            binding?.timeLayout?.editText?.setText(it.toString())
+        })
+
+        loggingViewModel.navigateToLoggingHome.observe(viewLifecycleOwner, EventObserver {
+            hideLoadingBar()
+            navController.navigateUp()
+        })
+
+        loggingViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {
+            if (it) {
+                showLoadingBar()
+            } else {
+                hideLoadingBar()
+            }
+        })
+    }
+
+    private val timerEditTextAttachListener = TextInputLayout.OnEditTextAttachedListener {
+        it.editText?.setOnClickListener {
+            openTimePickerDialog()
         }
     }
 
+    private val dateEditTextAttachListener = TextInputLayout.OnEditTextAttachedListener {
+        it.editText?.setOnClickListener {
+            openDatePickerDialog()
+        }
+    }
+
+    private fun openDatePickerDialog() {
+        val action = NavHomeDirections.actionGlobalDatePickerFragment()
+        navController.navigate(action)
+    }
+
+    private fun openTimePickerDialog() {
+        val action = NavHomeDirections.actionGlobalTimePickerFragment()
+        navController.navigate(action)
+    }
+
+    private fun saveBpLog() {
+        binding?.apply {
+            val systolicPressure = systolicLayout.editText?.text?.toString()?.toInt() ?: -1
+            val diastolicPressure = diastolicLayout.editText?.text?.toString()?.toInt() ?: -1
+            val note = notesLayout.editText?.text?.toString()
+            loggingViewModel.uploadBloodPressureEntry(
+                systolic = systolicPressure,
+                diastolic = diastolicPressure,
+                notes = note,
+                time = dateTimePickerViewModel.selectedLogTime.value?.peekContent(),
+                date = dateTimePickerViewModel.selectedLogDate.value?.peekContent()
+            )
+        }
+    }
+
+    override fun onDestroyView() {
+        binding?.timeLayout?.removeOnEditTextAttachedListener(timerEditTextAttachListener)
+        binding?.dateLayout?.removeOnEditTextAttachedListener(dateEditTextAttachListener)
+        super.onDestroyView()
+    }
 }

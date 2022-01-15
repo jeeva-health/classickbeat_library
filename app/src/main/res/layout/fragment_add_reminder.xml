@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_semi_rounded_rectangle"
+    android:outlineProvider="background"
+    tools:context=".ui.profile.AddReminderFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="36dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="36dp" />
+
+    <TextView
+        android:id="@+id/reminder_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Set a reminder"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/cross"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_cross"
+        app:layout_constraintBottom_toBottomOf="@id/reminder_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/reminder_tv" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/name_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="Add Name"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/reminder_tv">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/time_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="Select Time"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/name_layout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/frequency_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Set reminder frequency"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/time_layout" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/frequency_chip_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:chipSpacingHorizontal="12dp"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/frequency_tv"
+        app:selectionRequired="true"
+        app:singleSelection="false">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_monday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:minWidth="96dp"
+            android:text="Monday"
+            android:textAlignment="center"
+            app:checkedIconVisible="true"
+            app:chipCornerRadius="4dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_tuesday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:minWidth="96dp"
+            android:text="Tuesday"
+            android:textAlignment="center"
+            app:checkedIconVisible="true"
+            app:chipCornerRadius="4dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_wednesday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:minWidth="96dp"
+            android:text="Wednesday"
+            android:textAlignment="center"
+            app:checkedIconVisible="true"
+            app:chipCornerRadius="4dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_thursday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:minWidth="96dp"
+            android:text="Thursday"
+            android:textAlignment="center"
+            app:checkedIconVisible="true"
+            app:chipCornerRadius="4dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_friday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:minWidth="96dp"
+            android:text="Friday"
+            android:textAlignment="center"
+            app:checkedIconVisible="true"
+            app:chipCornerRadius="4dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_saturday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:minWidth="96dp"
+            android:text="Saturday"
+            android:textAlignment="center"
+            app:checkedIconVisible="true"
+            app:chipCornerRadius="4dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_sunday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:minWidth="96dp"
+            android:text="Sunday"
+            android:textAlignment="center"
+            app:checkedIconVisible="true"
+            app:chipCornerRadius="4dp" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <Button
+        android:id="@+id/delete_btn"
+        style="@style/Widget.Jeeva.Button.Negative"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_height"
+        android:text="Delete"
+        android:textColor="@color/design_default_color_error"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@id/save_btn"
+        app:layout_constraintStart_toStartOf="@id/start_guideline" />
+
+    <Button
+        android:id="@+id/save_btn"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="24dp"
+        android:text="Save Reminder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toEndOf="@id/delete_btn"
+        app:layout_constraintTop_toBottomOf="@id/frequency_chip_group"
+        app:layout_constraintVertical_bias="1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

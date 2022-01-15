@@ -1,7 +1,6 @@
 package ai.heart.classickbeats.ui.widgets
 
 import ai.heart.classickbeats.R
-import ai.heart.classickbeats.ui.monitor.SCAN_DURATION
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Canvas
@@ -11,6 +10,7 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import androidx.annotation.Keep
 import androidx.core.content.ContextCompat
 
 class CircleProgressBar @JvmOverloads constructor(
@@ -26,8 +26,8 @@ class CircleProgressBar @JvmOverloads constructor(
      * Start the progress at 12 o'clock
      */
     private val startAngle = -90f
-    private var mForegroundColor = ContextCompat.getColor(context, R.color.progressPositive)
-    private var mBackgroundColor = ContextCompat.getColor(context, R.color.progressNegative)
+    private var mForegroundColor = ContextCompat.getColor(context, R.color.bright_blue_2)
+    private var mBackgroundColor = ContextCompat.getColor(context, R.color.very_soft_blue)
     private var rectF: RectF = RectF()
     private var backgroundPaint: Paint
     private var foregroundPaint: Paint
@@ -37,9 +37,11 @@ class CircleProgressBar @JvmOverloads constructor(
         return progress
     }
 
+    @Keep
     fun setProgress(progress: Float) {
         this.progress = progress
         invalidate()
+        requestLayout()
     }
 
     fun getMin(): Int {
@@ -49,6 +51,7 @@ class CircleProgressBar @JvmOverloads constructor(
     fun setMin(min: Int) {
         this.min = min
         invalidate()
+        requestLayout()
     }
 
     fun getMax(): Int {
@@ -58,6 +61,7 @@ class CircleProgressBar @JvmOverloads constructor(
     fun setMax(max: Int) {
         this.max = max
         invalidate()
+        requestLayout()
     }
 
     fun setColor(foregroundColor: Int, backgroundColor: Int) {
@@ -97,7 +101,7 @@ class CircleProgressBar @JvmOverloads constructor(
         backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = mBackgroundColor
             style = Paint.Style.STROKE
-            strokeWidth = mStrokeWidth
+            strokeWidth = 4f
         }
 
         foregroundPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -119,10 +123,10 @@ class CircleProgressBar @JvmOverloads constructor(
         canvas.drawOval(rectF, backgroundPaint)
         val angle = 360 * progress / max
         canvas.drawArc(rectF, startAngle, angle, false, foregroundPaint)
-        val textStr = ((100 - progress) * SCAN_DURATION / 100).toInt().toString()
-        val xPos = rectF.centerX()
-        val yPos = rectF.centerY() + textPaint.textSize / 4
-        canvas.drawText(textStr, xPos, yPos, textPaint)
+//        val textStr = ((100 - progress) * SCAN_DURATION / 100).toInt().toString()
+//        val xPos = rectF.centerX()
+//        val yPos = rectF.centerY() + textPaint.textSize / 4
+//        canvas.drawText(textStr, xPos, yPos, textPaint)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

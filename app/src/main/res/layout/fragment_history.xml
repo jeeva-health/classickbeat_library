@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.history.fragment.HistoryFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/small_guideline_marin" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/small_guideline_marin" />
+
+    <TextView
+        android:id="@+id/history_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/page_top_margin"
+        android:text="@string/history"
+        android:textAllCaps="true"
+        android:textColor="?attr/pageTitleColor"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/switch_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/ic_baseline_swap"
+        app:layout_constraintBottom_toBottomOf="@id/timeline_tv"
+        app:layout_constraintEnd_toStartOf="@id/timeline_tv"
+        app:layout_constraintTop_toTopOf="@id/timeline_tv" />
+
+    <TextView
+        android:id="@+id/timeline_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/timeline"
+        android:textColor="?attr/pageTitleColor"
+        app:layout_constraintBaseline_toBaselineOf="@id/history_tv"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline" />
+
+    <LinearLayout
+        android:id="@+id/history_category_ll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_rounded_rectangle_borderless_small"
+        android:backgroundTint="@color/very_soft_violet"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/history_tv">
+
+        <TextView
+            android:id="@+id/daily_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rounded_rectangle_borderless_small"
+            android:backgroundTint="@color/history_timeline_category_bg_selector"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="@string/daily" />
+
+        <TextView
+            android:id="@+id/weekly_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rounded_rectangle_borderless_small"
+            android:backgroundTint="@color/history_timeline_category_bg_selector"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="@string/weekly" />
+
+        <TextView
+            android:id="@+id/monthly_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rounded_rectangle_borderless_small"
+            android:backgroundTint="@color/history_timeline_category_bg_selector"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="@string/monthly" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/history_rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="16dp"
+        android:paddingBottom="@dimen/page_navigation_bottom_margin"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/history_category_ll"
+        app:layout_constraintVertical_bias="0"
+        tools:itemCount="4"
+        tools:listitem="@layout/itemview_history" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
