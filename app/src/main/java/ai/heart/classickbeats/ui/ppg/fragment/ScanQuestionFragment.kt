@@ -7,7 +7,10 @@ import ai.heart.classickbeats.domain.getText
 import ai.heart.classickbeats.model.ScanState
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.ppg.viewmodel.MonitorViewModel
-import ai.heart.classickbeats.utils.*
+import ai.heart.classickbeats.utils.hideLoadingBar
+import ai.heart.classickbeats.utils.setLightStatusBar
+import ai.heart.classickbeats.utils.setSafeOnClickListener
+import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -25,8 +28,6 @@ class ScanQuestionFragment : Fragment(R.layout.fragment_scan_question) {
     private val binding by viewBinding(FragmentScanQuestionBinding::bind)
 
     private val monitorViewModel: MonitorViewModel by activityViewModels()
-
-    private var isWaiting = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -111,21 +112,9 @@ class ScanQuestionFragment : Fragment(R.layout.fragment_scan_question) {
                     healthRating,
                     scanState.getText(requireContext())
                 )
-                if (monitorViewModel.outputComputed.value?.peekContent() == true) {
-                    isWaiting = false
-                    navigateToScanResultFragment()
-                } else {
-                    isWaiting = true
-                    showLoadingBar()
-                }
-            }
-        }
-
-        monitorViewModel.outputComputed.observe(viewLifecycleOwner, EventObserver {
-            if (it && isWaiting) {
                 navigateToScanResultFragment()
             }
-        })
+        }
     }
 
     private fun resetAllChips() {

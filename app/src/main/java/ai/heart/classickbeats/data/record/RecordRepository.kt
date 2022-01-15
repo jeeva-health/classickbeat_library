@@ -39,19 +39,6 @@ class RecordRepository @Inject constructor(
     suspend fun updatePPG(ppgId: Long, ppgEntity: PPGEntity): Result<Boolean> =
         recordRemoteDataSource.updatePPG(ppgId, ppgEntity)
 
-    suspend fun getSdnnList(): Result<List<Double>> {
-        val response = recordRemoteDataSource.getSdnnList()
-        when (response) {
-            is Result.Success -> {
-                val doubleList = response.data.sdnn_list.map { it.toDouble() }
-                return Result.Success(doubleList)
-            }
-            is Result.Error -> Timber.e(response.exception)
-            Result.Loading -> throw IllegalStateException("getUser response invalid state")
-        }
-        return Result.Error(response.error)
-    }
-
     fun getHistoryData(): Flow<PagingData<BaseLogEntity>> {
         val pagingSourceFactory = { database.timelineDao().loadAll() }
         return Pager(

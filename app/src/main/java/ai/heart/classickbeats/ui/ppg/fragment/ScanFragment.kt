@@ -7,7 +7,6 @@ import ai.heart.classickbeats.databinding.FragmentScanBinding
 import ai.heart.classickbeats.domain.CameraReading
 import ai.heart.classickbeats.graph.RunningGraph
 import ai.heart.classickbeats.model.Constants.SCAN_DURATION
-import ai.heart.classickbeats.model.Constants.SPLIT_SCAN_DURATION
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.ppg.AccelerometerListener
 import ai.heart.classickbeats.ui.ppg.PixelAnalyzer
@@ -68,8 +67,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private var mAccelerometer: Sensor? = null
 
     private var countdownType: Int = 0
-
-    private var isIntermediatedProcessing = false
 
     private var camera: CameraDevice? = null
     private var session: CameraCaptureSession? = null
@@ -222,9 +219,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         endScanning()
                     }
                 }
-            } else if (it == SPLIT_SCAN_DURATION && !isIntermediatedProcessing) {
-                isIntermediatedProcessing = true
-                endSplitScanning()
             } else {
                 if (countdownType == 0) {
                     binding.countdown.text = it.toString()
@@ -457,15 +451,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             monitorViewModel.resetReadings()
             monitorViewModel.isProcessing = true
             monitorViewModel.startTimer()
-        }
-    }
-
-    private fun endSplitScanning() {
-        lifecycleScope.launchWhenResumed {
-            Timber.i("TrackTime: endSplitScanning called")
-            val timeListImmutable = monitorViewModel.timeList.toList()
-            val centeredSignalListImmutable = monitorViewModel.centeredSignal.toList()
-            monitorViewModel.calculateResultSplit(timeListImmutable, centeredSignalListImmutable)
         }
     }
 

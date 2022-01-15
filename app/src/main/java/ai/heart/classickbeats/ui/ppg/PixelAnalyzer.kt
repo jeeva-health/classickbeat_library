@@ -8,13 +8,11 @@ import android.renderscript.*
 import android.text.format.DateUtils
 import androidx.paging.ExperimentalPagingApi
 import timber.log.Timber
-import java.nio.ByteBuffer
 import java.nio.ReadOnlyBufferException
 import kotlin.experimental.inv
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
-
 
 @ExperimentalPagingApi
 class PixelAnalyzer constructor(
@@ -33,13 +31,6 @@ class PixelAnalyzer constructor(
     private var frameRate = 0
     private var firstSec = true
     private var secondSec = true
-
-    private fun ByteBuffer.toByteArray(): ByteArray {
-        rewind()
-        val data = ByteArray(remaining())
-        get(data)
-        return data
-    }
 
     private fun displayCounter() {
         val currentTime = SystemClock.elapsedRealtime()
