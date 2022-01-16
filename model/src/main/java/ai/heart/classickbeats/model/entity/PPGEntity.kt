@@ -1,7 +1,6 @@
 package ai.heart.classickbeats.model.entity
 
 import ai.heart.classickbeats.model.LogType
-import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
@@ -24,6 +23,18 @@ data class PPGEntity(
 
     @Json(name = "camera_timestamp")
     val cameraTimeStamps: List<Long>? = null,
+
+    @Json(name = "acceleration_1")
+    val xAcceleration: List<Float>? = null,
+
+    @Json(name = "acceleration_2")
+    val yAcceleration: List<Float>? = null,
+
+    @Json(name = "acceleration_3")
+    val zAcceleration: List<Float>? = null,
+
+    @Json(name = "acceleration_timestamp")
+    val accelerationTimestamp: List<Long>? = null,
 
     @Json(name = "filtered_r_means")
     val filteredRMeans: List<Double>? = null,

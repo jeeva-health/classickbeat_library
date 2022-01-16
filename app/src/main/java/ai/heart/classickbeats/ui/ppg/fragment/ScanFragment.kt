@@ -147,7 +147,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             TODO("No Accelerometer found")
         }
 
-        accelerometerListener = AccelerometerListener(handleAcceleration)
+        accelerometerListener = AccelerometerListener(
+            accelerationHandler = handleAcceleration,
+            recordValue = recordAccelerationValue
+        )
 
         monitorViewModel.fetchUser()
     }
@@ -524,6 +527,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             Timber.i("Moving too much!")
             showLongToast("Moving too much!")
             endIncompleteScanning()
+        }
+    }
+
+    private val recordAccelerationValue = fun(x: Float, y: Float, z: Float, timeStamp: Long) {
+        if (monitorViewModel.isProcessing) {
+            monitorViewModel.addAccelerationReading(x, y, z, timeStamp)
         }
     }
 

@@ -43,6 +43,11 @@ class MonitorViewModel @Inject constructor(
     val centeredSignal = mutableListOf<Double>()
     val timeList = mutableListOf<Int>()
 
+    private val xAccelerationList = mutableListOf<Float>()
+    private val yAccelerationList = mutableListOf<Float>()
+    private val zAccelerationList = mutableListOf<Float>()
+    private val accelerationTimeList = mutableListOf<Long>()
+
     private val movAvgSmall = mutableListOf<Double>()
     private val movAvgLarge = mutableListOf<Double>()
 
@@ -93,8 +98,15 @@ class MonitorViewModel @Inject constructor(
         mean1List.clear()
         mean2List.clear()
         mean3List.clear()
+
         centeredSignal.clear()
         timeList.clear()
+
+        xAccelerationList.clear()
+        yAccelerationList.clear()
+        zAccelerationList.clear()
+        accelerationTimeList.clear()
+
         movAvgLarge.clear()
         movAvgSmall.clear()
     }
@@ -119,11 +131,16 @@ class MonitorViewModel @Inject constructor(
 
     private suspend fun uploadRawData() {
         val timeStamp0 = timeList.firstOrNull() ?: 0
+        val accelerationTime0 = accelerationTimeList.firstOrNull() ?: 0
         val ppgEntity = PPGEntity(
             rMeans = mean1List.toList().map { String.format("%.4f", it).toFloat() },
             gMeans = mean2List.toList().map { String.format("%.4f", it).toFloat() },
             bMeans = mean3List.toList().map { String.format("%.4f", it).toFloat() },
             cameraTimeStamps = timeList.toList().map { it.toLong() - timeStamp0.toLong() },
+            xAcceleration = xAccelerationList.toList().map { String.format("%.2f", it).toFloat() },
+            yAcceleration = yAccelerationList.toList().map { String.format("%.2f", it).toFloat() },
+            zAcceleration = zAccelerationList.toList().map { String.format("%.2f", it).toFloat() },
+            accelerationTimestamp = accelerationTimeList.toList().map { it - accelerationTime0 }
         )
         val result = recordRepository.recordPPG(ppgEntity)
         Timber.i("TrackTime: upload raw upload completed id: ${result.data}")
@@ -140,6 +157,13 @@ class MonitorViewModel @Inject constructor(
         mean2List.add(green)
         mean3List.add(blue)
         timeList.add(timeStamp)
+    }
+
+    fun addAccelerationReading(x: Float, y: Float, z: Float, timestamp: Long) {
+        xAccelerationList.add(x)
+        yAccelerationList.add(y)
+        zAccelerationList.add(z)
+        accelerationTimeList.add(timestamp)
     }
 
     fun calculateCenteredSignal() {
