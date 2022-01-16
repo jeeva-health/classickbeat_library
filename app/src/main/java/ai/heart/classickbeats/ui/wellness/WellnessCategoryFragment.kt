@@ -75,19 +75,11 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
                 }
             }
 
-            pageCategory.text = wellnessCategory.name
+            pageCategory.text = getString(wellnessCategory.getName())
 
             pageTitle.text = getString(wellnessModel.title)
 
             pageMessage.text = getString(wellnessModel.message)
-
-//            longMeditationCard.setSafeOnClickListener {
-//                playMeditation(
-//                    wellnessCategory,
-//                    0,
-//                    "https://public-sound.s3.ap-south-1.amazonaws.com/public.mp3"
-//                )
-//            }
 
             notificationTxt.text = getString(wellnessCategory.getReminderMessage())
 
