@@ -93,8 +93,20 @@
         android:label="fragment_profile_home"
         tools:layout="@layout/fragment_profile_home">
         <action
-            android:id="@+id/action_profileHomeFragment_to_profileSettingsFragment"
-            app:destination="@id/profileSettingsFragment" />
+            android:id="@+id/action_profileHomeFragment_to_signOutDialogFragment"
+            app:destination="@id/signOutDialogFragment" />
+        <action
+            android:id="@+id/action_profileHomeFragment_to_inviteFriendFragment"
+            app:destination="@id/inviteFriendFragment" />
+        <action
+            android:id="@+id/action_profileHomeFragment_to_upgradeToProFragment"
+            app:destination="@id/upgradeToProFragment" />
+        <action
+            android:id="@+id/action_profileHomeFragment_to_feedbackDialogFragment"
+            app:destination="@id/feedbackDialogFragment" />
+        <action
+            android:id="@+id/action_profileHomeFragment_to_reminderListFragment"
+            app:destination="@id/reminderListFragment" />
     </fragment>
 
     <fragment
@@ -173,28 +185,6 @@
         android:id="@+id/datePickerFragment"
         android:name="ai.heart.classickbeats.ui.widgets.DatePickerFragment"
         android:label="fragment_date_picker_dialog" />
-
-    <fragment
-        android:id="@+id/profileSettingsFragment"
-        android:name="ai.heart.classickbeats.ui.profile.ProfileSettingsFragment"
-        android:label="fragment_profile_settings"
-        tools:layout="@layout/fragment_profile_settings">
-        <action
-            android:id="@+id/action_profileSettingsFragment_to_signOutDialogFragment"
-            app:destination="@id/signOutDialogFragment" />
-        <action
-            android:id="@+id/action_profileSettingsFragment_to_inviteFriendFragment"
-            app:destination="@id/inviteFriendFragment" />
-        <action
-            android:id="@+id/action_profileSettingsFragment_to_upgradeToProFragment"
-            app:destination="@id/upgradeToProFragment" />
-        <action
-            android:id="@+id/action_profileSettingsFragment_to_feedbackDialogFragment"
-            app:destination="@id/feedbackDialogFragment" />
-        <action
-            android:id="@+id/action_profileSettingsFragment_to_reminderListFragment"
-            app:destination="@id/reminderListFragment" />
-    </fragment>
 
     <dialog
         android:id="@+id/signOutDialogFragment"
