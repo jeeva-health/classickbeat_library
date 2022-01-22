@@ -8,6 +8,9 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import timber.log.Timber
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 object BarGraph {
@@ -18,6 +21,7 @@ object BarGraph {
         graphData: GraphData
     ) {
         val (model, timelineType, isDecimal, data1, data2, dateList, startDate, endDate) = graphData
+//        Timber.i("Data1: ${data1.size}, ${Arrays.toString(data1)}")
 
         val values: ArrayList<BarEntry> = ArrayList()
         val values2: ArrayList<BarEntry> = ArrayList()
@@ -41,13 +45,15 @@ object BarGraph {
             )
         }
 
-        adjustedData2.forEachIndexed { i, d ->
-            values2.add(
-                BarEntry(
-                    (i + 1).toFloat(),
-                    d.toFloat()
+        if (data2.isNotEmpty()){
+            adjustedData2.forEachIndexed { i, d ->
+                values2.add(
+                    BarEntry(
+                        (i + 1).toFloat(),
+                        d.toFloat()
+                    )
                 )
-            )
+            }
         }
 
         setDataSet(chart, values, values2)

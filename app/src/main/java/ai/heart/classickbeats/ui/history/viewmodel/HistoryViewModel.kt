@@ -59,7 +59,8 @@ class HistoryViewModel @Inject constructor(
         viewModelScope.launch {
             setShowLoadingTrue()
             if (type == HistoryType.Daily) {
-                val response = recordRepository.getHistoryListData(model, startDate, startDate)
+                val endDate = startDate.getDateAddedBy(1)
+                val response = recordRepository.getHistoryListData(model, startDate, endDate)
                 if (response.succeeded) {
                     _graphData.value = convertBaseLogEntityToGraphData(
                         model = model,
