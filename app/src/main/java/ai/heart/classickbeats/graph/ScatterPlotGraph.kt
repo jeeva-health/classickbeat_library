@@ -5,10 +5,27 @@ import ai.heart.classickbeats.shared.util.toDailyMinutes
 import android.content.Context
 import android.graphics.Color
 import com.github.mikephil.charting.charts.ScatterChart
+import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.ScatterData
 import com.github.mikephil.charting.data.ScatterDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet
+
+class DailyXAxisFormatter : ValueFormatter() {
+    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+        val hours = (value/60.0).toInt()
+        var hh = hours.toString().padStart(2, '0')
+        val mm = (value.toInt() % 60).toString().padStart(2, '0')
+        var ifAM = " AM"
+        if (hours >= 12){
+            ifAM = " PM"
+            hh = (hours - 12).toString().padStart(2, '0')
+        }
+        return hh.plus(":").plus(mm).plus(ifAM)
+    }
+}
 
 
 object ScatterPlotGraph {
@@ -57,6 +74,9 @@ object ScatterPlotGraph {
             }
         }
 
+        chart.xAxis.valueFormatter = DailyXAxisFormatter()
+        chart.xAxis.labelRotationAngle = 90.0f
+        chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         chart.invalidate()
         chart.requestLayout()
 

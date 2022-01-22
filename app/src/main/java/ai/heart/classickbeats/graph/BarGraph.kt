@@ -17,7 +17,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.formatter.ValueFormatter
 
 
-class MyXAxisFormatter : ValueFormatter() {
+class WeeklyXAxisFormatter : ValueFormatter() {
     private val days = arrayOf("Mo", "Tu", "We", "Th", "Fr", "Sa", "Su")
     override fun getAxisLabel(value: Float, axis: AxisBase?): String {
         return days.getOrNull((value-1).toInt()) ?: value.toString()
@@ -70,7 +70,7 @@ object BarGraph {
         }
 
         if (timelineType == HistoryType.Weekly){
-            chart.xAxis.valueFormatter = MyXAxisFormatter()
+            chart.xAxis.valueFormatter = WeeklyXAxisFormatter()
         }
 
         setDataSet(chart, values, values2)
