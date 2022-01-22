@@ -114,7 +114,7 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
     }
 
     private fun openHowJeevaWorksPage() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.intealth.app/"))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://intealth.app/HowIntealthWorks"))
         startActivity(intent)
     }
 

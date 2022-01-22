@@ -511,7 +511,8 @@
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/horizontal_scroll">
+            app:layout_constraintTop_toBottomOf="@id/horizontal_scroll"
+            tools:visibility="gone">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -635,7 +636,8 @@
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/horizontal_scroll">
+            app:layout_constraintTop_toBottomOf="@id/horizontal_scroll"
+            tools:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -682,6 +684,21 @@
                     app:layout_constraintTop_toBottomOf="@id/stress_tv"
                     tools:progress="5" />
 
+                <ProgressBar
+                    android:id="@+id/stress_progress_2"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="8dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="12dp"
+                    android:max="7"
+                    android:progressBackgroundTint="@color/very_light_grey"
+                    android:progressTint="@color/moderate_green_2"
+                    app:layout_constraintEnd_toStartOf="@id/progress_text"
+                    app:layout_constraintStart_toStartOf="@id/stress_start_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/stress_progress"
+                    tools:progress="5" />
+
                 <TextView
                     android:id="@+id/progress_text"
                     android:layout_width="wrap_content"
@@ -694,6 +711,17 @@
                     tools:text="5/10" />
 
                 <TextView
+                    android:id="@+id/progress_text_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/stress_progress_2"
+                    app:layout_constraintEnd_toEndOf="@id/stress_end_guideline"
+                    app:layout_constraintStart_toEndOf="@id/stress_progress_2"
+                    app:layout_constraintTop_toTopOf="@id/stress_progress_2"
+                    tools:text="5/10" />
+
+                <TextView
                     android:id="@+id/insufficient_stress_data"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -702,7 +730,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/stress_end_guideline"
                     app:layout_constraintStart_toStartOf="@id/stress_start_guideline"
-                    app:layout_constraintTop_toBottomOf="@id/stress_progress" />
+                    app:layout_constraintTop_toBottomOf="@id/stress_progress_2" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

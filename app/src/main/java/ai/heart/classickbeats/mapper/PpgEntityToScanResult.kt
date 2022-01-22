@@ -38,9 +38,14 @@ object PpgEntityToScanResult {
             pnn50 = ppgEntity.pnn50 ?: 0.0f,
             rmssd = ppgEntity.rmssd ?: 0.0f,
             isActive = isActive,
-            stress = StressResult(stressResult = ppgEntity.stressLevel ?: 0, dataCount = 0),
+            stress = StressResult(
+                stressResult = ppgEntity.stressLevel ?: 0,
+                dataCount = ppgEntity.ppgCount ?: 0,
+                distinctDataCount = ppgEntity.ppgDistinctDays ?: 0
+            ),
             filteredRMean = ppgEntity.filteredRMeans ?: emptyList(),
-            timeStamp = ppgEntity.timeStamp?.toPPGDate() ?: Date()
+            timeStamp = ppgEntity.timeStamp?.toPPGDate() ?: Date(),
+            isBaselineSet = ppgEntity.isBaselineSet,
         )
     }
 }

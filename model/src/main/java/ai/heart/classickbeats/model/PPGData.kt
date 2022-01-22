@@ -33,6 +33,7 @@ data class PPGData(
         val isActive: Boolean,
         val stress: StressResult,
         val filteredRMean: List<Double>,
-        val timeStamp: Date
+        val timeStamp: Date,
+        val isBaselineSet: Boolean,
     )
 }
