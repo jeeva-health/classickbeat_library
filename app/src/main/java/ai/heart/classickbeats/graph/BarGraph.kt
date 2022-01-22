@@ -1,9 +1,11 @@
 package ai.heart.classickbeats.graph
 
 import ai.heart.classickbeats.model.GraphData
+import ai.heart.classickbeats.model.HistoryType
 import android.content.Context
 import android.graphics.Color
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -11,6 +13,17 @@ import com.github.mikephil.charting.data.BarEntry
 import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.formatter.ValueFormatter
+
+
+class MyXAxisFormatter : ValueFormatter() {
+    private val days = arrayOf("Mo", "Tu", "We", "Th", "Fr", "Sa", "Su")
+    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+        return days.getOrNull((value-1).toInt()) ?: value.toString()
+    }
+}
+
 
 
 object BarGraph {
@@ -56,13 +69,17 @@ object BarGraph {
             }
         }
 
+        if (timelineType == HistoryType.Weekly){
+            chart.xAxis.valueFormatter = MyXAxisFormatter()
+        }
+
         setDataSet(chart, values, values2)
     }
 
     private fun setDataSet(
         chart: BarChart,
         values: List<BarEntry>,
-        values2: List<BarEntry>
+        values2: List<BarEntry>,
     ) {
         chart.invalidate()
         chart.requestLayout()
