@@ -202,7 +202,7 @@
     <string name="short_meditation_completion_message">Well done! You have completed a short meditation.</string>
     <string name="meditation_feedback_question">How did the meditation make you feel?</string>
     <string name="gender">Gender</string>
-    <string name="how_to_measure_your_pulse">How to measure your pulse?</string>
+    <string name="how_to_measure_your_pulse">अपनी नाड़ी कैसे मापें?</string>
 
     <!--    Reminder-->
     <string name="set_a_reminder">Set a reminder</string>
