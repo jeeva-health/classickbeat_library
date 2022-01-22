@@ -81,7 +81,7 @@ class GraphHistoryAdapter constructor(
                     time = itemData.timeStamp?.toTimeString2()
                     binding.clickArrow.visibility = View.VISIBLE
                     binding.stressTag.visibility = View.VISIBLE
-                    when (ppgEntity.stressLevel ?: 1) {
+                    when (ppgEntity.stressLevel ?: 0) {
                         1 -> {
                             binding.stressTag.text = context.getString(R.string.low_stress)
                             binding.stressTag.backgroundTintList =
@@ -92,10 +92,13 @@ class GraphHistoryAdapter constructor(
                             binding.stressTag.backgroundTintList =
                                 ColorStateList.valueOf(context.getColor(R.color.vivid_yellow))
                         }
-                        else -> {
+                        3 -> {
                             binding.stressTag.text = context.getString(R.string.high_stress)
                             binding.stressTag.backgroundTintList =
                                 ColorStateList.valueOf(context.getColor(R.color.bright_red_3))
+                        }
+                        else -> {
+                            binding.stressTag.visibility = View.GONE
                         }
                     }
                 }
