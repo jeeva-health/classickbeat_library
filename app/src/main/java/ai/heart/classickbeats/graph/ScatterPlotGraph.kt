@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.graph
 
 import ai.heart.classickbeats.model.GraphData
+import ai.heart.classickbeats.shared.util.toDailyMinutes
 import android.content.Context
 import com.github.mikephil.charting.charts.ScatterChart
 import com.github.mikephil.charting.data.Entry
@@ -17,16 +18,17 @@ object ScatterPlotGraph {
         chart: ScatterChart,
         graphData: GraphData
     ) {
-        val (model, timelineType, isDecimal, data1, data2, dateList, startDate, endDate) = graphData
+        val (_, _, _, data1, data2, dateList, _, _) = graphData
 
         val values: ArrayList<Entry> = ArrayList()
 
-        val duration = Utils.getDuration(timelineType, startDate)
+        val duration = 24 * 60
         val adjustedData = MutableList(duration) { 0.0 }
+        val adjustedData2 = MutableList(duration) { 0.0 }
 
         dateList.forEachIndexed { index, date ->
-            val i = Utils.getIndexForDate(timelineType, date)
-            adjustedData[i] = data1[index]
+            val dailyMinutes = date.toDailyMinutes()
+            adjustedData[dailyMinutes] = data1[index]
         }
 
         adjustedData.forEachIndexed { i, d ->

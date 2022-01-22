@@ -69,6 +69,13 @@ fun Date.toTimeString(): String {
     return timeFormat.format(this)
 }
 
+fun Date.toDailyMinutes(): Int {
+    val timeFormat = SimpleDateFormat("HH:mm", locale)
+    val time = timeFormat.format(this)
+    val (hour, minute) = time.split(":")
+    return hour.toInt() * 24 + minute.toInt()
+}
+
 fun Date.toWeekString(): String {
     val startDate = this
     val endDate = Date(this.time + DateUtils.DAY_IN_MILLIS * 6 + DateUtils.HOUR_IN_MILLIS * 12)
