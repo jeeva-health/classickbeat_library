@@ -98,7 +98,7 @@ class HistoryGraphFragment : Fragment(R.layout.fragment_history_graph) {
             axisRight.setDrawAxisLine(false)
             axisRight.setDrawGridLines(false)
             xAxis.axisMinimum = 0.0f
-            xAxis.axisMaximum = 24.0f
+            xAxis.axisMaximum = 1440.0f
             xAxis.setDrawLabels(true)
             xAxis.setDrawAxisLine(true)
             xAxis.setDrawGridLines(false)
