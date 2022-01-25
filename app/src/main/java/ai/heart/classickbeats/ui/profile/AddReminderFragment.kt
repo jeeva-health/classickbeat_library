@@ -8,6 +8,7 @@ import ai.heart.classickbeats.model.Time
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.widgets.DateTimePickerViewModel
 import ai.heart.classickbeats.utils.setSafeOnClickListener
+import ai.heart.classickbeats.utils.toName
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,7 +20,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class AddReminderFragment : BottomSheetDialogFragment() {
@@ -47,7 +47,7 @@ class AddReminderFragment : BottomSheetDialogFragment() {
         navController = findNavController()
 
         dateTimePickerViewModel.selectedLogTime.observe(viewLifecycleOwner, EventObserver {
-            binding?.timeLayout?.editText?.setText(it.toString())
+            binding?.timeLayout?.editText?.setText(it.toDisplayString())
         })
 
         reminderViewModel.reminderSaved.observe(viewLifecycleOwner, EventObserver {
@@ -85,9 +85,9 @@ class AddReminderFragment : BottomSheetDialogFragment() {
         }
 
         reminderViewModel.selectedReminder?.apply {
-            binding?.nameLayout?.editText?.setText(this.name)
+            binding?.nameLayout?.editText?.setText(this.type.toName(requireContext()))
             if (this.isReminderSet) {
-                binding?.timeLayout?.editText?.setText(this.time.toString())
+                binding?.timeLayout?.editText?.setText(this.time.toDisplayString())
                 this.frequency.forEach {
                     when (it) {
                         Reminder.DayOfWeek.Monday -> binding?.chipMonday?.isChecked = true

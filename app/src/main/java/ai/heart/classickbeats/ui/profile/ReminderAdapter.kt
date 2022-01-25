@@ -2,8 +2,10 @@ package ai.heart.classickbeats.ui.profile
 
 import ai.heart.classickbeats.databinding.ItemviewReminderBinding
 import ai.heart.classickbeats.model.Reminder
-import ai.heart.classickbeats.model.toDisplayString
 import ai.heart.classickbeats.utils.setSafeOnClickListener
+import ai.heart.classickbeats.utils.toDisplayString
+import ai.heart.classickbeats.utils.toName
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class ReminderAdapter constructor(
+    private val context: Context,
     private val itemClickListener: (Reminder) -> Unit,
     private val toggleClickListener: (Reminder, Boolean) -> Unit
 ) :
@@ -21,16 +24,17 @@ class ReminderAdapter constructor(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
+            context: Context,
             itemData: Reminder,
             itemClickListener: (Reminder) -> Unit,
             toggleClickListener: (Reminder, Boolean) -> Unit
         ) {
-            binding.name.text = itemData.name
+            binding.name.text = itemData.type.toName(context)
             if (itemData.isReminderSet) {
                 binding.time.visibility = View.VISIBLE
-                binding.time.text = itemData.time.toString()
+                binding.time.text = itemData.time.toDisplayString()
                 binding.time.visibility = View.VISIBLE
-                binding.frequency.text = itemData.frequency.toDisplayString()
+                binding.frequency.text = itemData.frequency.toDisplayString(context)
                 binding.toggleSwitch.isChecked = itemData.isReminderActive
                 binding.toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
                     toggleClickListener.invoke(itemData, isChecked)
@@ -61,7 +65,7 @@ class ReminderAdapter constructor(
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = getItem(position)
         item?.let {
-            holder.bind(it, itemClickListener, toggleClickListener)
+            holder.bind(context, it, itemClickListener, toggleClickListener)
         }
     }
 }
@@ -72,7 +76,7 @@ class ReminderItemDiffCallback : DiffUtil.ItemCallback<Reminder>() {
 
     override fun areContentsTheSame(oldItem: Reminder, newItem: Reminder): Boolean =
         oldItem._id == newItem._id &&
-                oldItem.name == newItem.name &&
+                oldItem.type == newItem.type &&
                 oldItem.time == newItem.time &&
-                newItem.frequency.toDisplayString() == oldItem.frequency.toDisplayString()
+                oldItem.frequency == newItem.frequency
 }

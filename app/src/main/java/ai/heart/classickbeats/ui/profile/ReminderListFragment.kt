@@ -30,7 +30,11 @@ class ReminderListFragment : Fragment(R.layout.fragment_reminder_list) {
 
         navController = findNavController()
 
-        reminderAdapter = ReminderAdapter(reminderItemClickListener, reminderToggleClickListener)
+        reminderAdapter = ReminderAdapter(
+            context = requireContext(),
+            itemClickListener = reminderItemClickListener,
+            toggleClickListener = reminderToggleClickListener
+        )
 
         binding.reminderRv.adapter = reminderAdapter
 

@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.ui.ppg.viewmodel
 
-import ai.heart.classickbeats.domain.GetScanDetailsUseCase
+import ai.heart.classickbeats.domain.usecase.GetScanDetailsUseCase
 import ai.heart.classickbeats.model.PPGData
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data

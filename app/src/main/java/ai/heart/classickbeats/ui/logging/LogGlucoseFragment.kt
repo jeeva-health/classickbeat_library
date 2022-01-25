@@ -51,7 +51,7 @@ class LogGlucoseFragment : Fragment(R.layout.fragment_log_glucose) {
 
         binding?.dateLayout?.editText?.setText(currentDate.toString())
 
-        binding?.timeLayout?.editText?.setText(currentTime.toString())
+        binding?.timeLayout?.editText?.setText(currentTime.toDisplayString())
 
         binding?.timeLayout?.addOnEditTextAttachedListener(timerEditTextAttachListener)
 
@@ -70,7 +70,7 @@ class LogGlucoseFragment : Fragment(R.layout.fragment_log_glucose) {
         })
 
         dateTimePickerViewModel.selectedLogTime.observe(viewLifecycleOwner, EventObserver {
-            binding?.timeLayout?.editText?.setText(it.toString())
+            binding?.timeLayout?.editText?.setText(it.toDisplayString())
         })
 
         loggingViewModel.navigateToLoggingHome.observe(viewLifecycleOwner, EventObserver {

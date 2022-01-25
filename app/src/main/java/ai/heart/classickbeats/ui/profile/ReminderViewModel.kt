@@ -33,12 +33,13 @@ class ReminderViewModel @Inject constructor() : ViewModel() {
         val localRandomNumber = UUID.randomUUID().mostSignificantBits and Long.MAX_VALUE
         val reminder = Reminder(
             _id = localRandomNumber,
-            name = name,
+            type = Reminder.Type.PPG,
             time = time,
             frequency = frequency,
             isReminderSet = true,
             isReminderActive = true
         )
+        TODO("Fix add reminder")
         addReminder(reminder)
         setReminderUpdated()
     }
@@ -51,12 +52,13 @@ class ReminderViewModel @Inject constructor() : ViewModel() {
     ) {
         val updatedReminder = Reminder(
             _id = reminder._id,
-            name = name,
+            type = Reminder.Type.PPG,
             time = time ?: reminder.time,
             frequency = frequency,
             isReminderSet = true,
             isReminderActive = true
         )
+        TODO("Fix update reminder")
         updateReminder(updatedReminder)
         setReminderUpdated()
     }
