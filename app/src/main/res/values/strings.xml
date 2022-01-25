@@ -139,7 +139,7 @@
     <string name="desirable">Desirable</string>
     <string name="active">Active</string>
     <string name="sedentary">Sedentary</string>
-    <string name="insufficient_heart_rate_data">Insufficient heart rate readings. Complete 10 HRV scans to set your baseline and get a detailed stress analysis report</string>
+    <string name="insufficient_heart_rate_data">Insufficient pulse scans. Complete 10 scans across 7 unique days to set up your baseline and get detailed insights on stress.</string>
     <string name="collect_more_gems"><![CDATA[Collect 20 HRV gems to get a detailed stress analysis report >]]></string>
     <string name="hrv_metrics">HRV Metrics</string>
     <string name="sdnn">SDNN</string>
