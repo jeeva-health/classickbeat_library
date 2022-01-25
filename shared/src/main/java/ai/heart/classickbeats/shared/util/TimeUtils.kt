@@ -55,7 +55,7 @@ fun Date.toDateString(): String {
 }
 
 fun Date.toDateStringNetwork(): String {
-    val timeFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss z", locale)
+    val timeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ", locale)
     return timeFormat.format(this)
 }
 

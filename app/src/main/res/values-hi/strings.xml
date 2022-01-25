@@ -210,13 +210,27 @@
     <string name="select_time">Select Time</string>
     <string name="set_reminder_frequency">Set reminder frequency</string>
     <string name="monday">Monday</string>
+    <string name="monday_short">M</string>
     <string name="tuesday">Tuesday</string>
+    <string name="tuesday_short">Tu</string>
     <string name="wednesday">Wednesday</string>
+    <string name="wednesday_short">W</string>
     <string name="thursday">Thursday</string>
+    <string name="thursday_short">Th</string>
     <string name="friday">Friday</string>
+    <string name="friday_short">F</string>
     <string name="saturday">Saturday</string>
+    <string name="saturday_short">Sa</string>
     <string name="sunday">Sunday</string>
+    <string name="sunday_short">Su</string>
     <string name="delete">Delete</string>
     <string name="save_reminder">Save Reminder</string>
+    <string name="reminder_ppg">Scan Hear Rate</string>
+    <string name="reminder_meditation">Meditate</string>
+    <string name="reminder_blood_pressure">Log Blood Pressure</string>
+    <string name="reminder_blood_glucose">Log Blood Glucose Level</string>
+    <string name="reminder_water_intake">Log Water Intake</string>
+    <string name="reminder_weight">Log Weight</string>
+    <string name="reminder_medicine">Log Medicine</string>
 
 </resources>

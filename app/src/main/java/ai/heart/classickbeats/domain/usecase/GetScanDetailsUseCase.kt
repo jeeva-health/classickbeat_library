@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.domain
+package ai.heart.classickbeats.domain.usecase
 
 import ai.heart.classickbeats.data.record.RecordRepository
 import ai.heart.classickbeats.data.user.UserRepository

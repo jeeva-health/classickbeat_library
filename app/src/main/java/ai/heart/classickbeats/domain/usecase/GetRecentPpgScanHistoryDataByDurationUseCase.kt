@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.domain
+package ai.heart.classickbeats.domain.usecase
 
 import ai.heart.classickbeats.data.record.RecordRepository
 import ai.heart.classickbeats.model.entity.PPGEntity
@@ -12,13 +12,13 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
-class GetRecentPpgScanHistoryDataByCountUseCase @Inject constructor(
+class GetRecentPpgScanHistoryDataByDurationUseCase @Inject constructor(
     private val repository: RecordRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) :
-    UseCase<Int, List<PPGEntity>>(dispatcher) {
+    UseCase<String, List<PPGEntity>>(dispatcher) {
 
-    override suspend fun execute(parameters: Int): List<PPGEntity> {
-        return repository.getPpgHistoryDataByCount(parameters).data ?: emptyList()
+    override suspend fun execute(parameters: String): List<PPGEntity> {
+        return repository.getPpgHistoryDataByDuration(parameters).data ?: emptyList()
     }
 }

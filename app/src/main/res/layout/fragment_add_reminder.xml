@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Set a reminder"
+        android:text="@string/set_a_reminder"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
@@ -49,7 +49,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="Add Name"
+        android:hint="@string/add_name"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toBottomOf="@id/reminder_tv">
@@ -64,7 +64,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="Select Time"
+        android:hint="@string/select_time"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toBottomOf="@id/name_layout">
@@ -79,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Set reminder frequency"
+        android:text="@string/set_reminder_frequency"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toBottomOf="@id/time_layout" />
@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:minWidth="96dp"
-            android:text="Monday"
+            android:text="@string/monday"
             android:textAlignment="center"
             app:checkedIconVisible="true"
             app:chipCornerRadius="4dp" />
@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:minWidth="96dp"
-            android:text="Tuesday"
+            android:text="@string/tuesday"
             android:textAlignment="center"
             app:checkedIconVisible="true"
             app:chipCornerRadius="4dp" />
@@ -124,7 +124,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:minWidth="96dp"
-            android:text="Wednesday"
+            android:text="@string/wednesday"
             android:textAlignment="center"
             app:checkedIconVisible="true"
             app:chipCornerRadius="4dp" />
@@ -135,7 +135,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:minWidth="96dp"
-            android:text="Thursday"
+            android:text="@string/thursday"
             android:textAlignment="center"
             app:checkedIconVisible="true"
             app:chipCornerRadius="4dp" />
@@ -146,7 +146,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:minWidth="96dp"
-            android:text="Friday"
+            android:text="@string/friday"
             android:textAlignment="center"
             app:checkedIconVisible="true"
             app:chipCornerRadius="4dp" />
@@ -157,7 +157,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:minWidth="96dp"
-            android:text="Saturday"
+            android:text="@string/saturday"
             android:textAlignment="center"
             app:checkedIconVisible="true"
             app:chipCornerRadius="4dp" />
@@ -168,7 +168,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:minWidth="96dp"
-            android:text="Sunday"
+            android:text="@string/sunday"
             android:textAlignment="center"
             app:checkedIconVisible="true"
             app:chipCornerRadius="4dp" />
@@ -180,7 +180,7 @@
         style="@style/Widget.Jeeva.Button.Negative"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/button_height"
-        android:text="Delete"
+        android:text="@string/delete"
         android:textColor="@color/design_default_color_error"
         android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@id/save_btn"
@@ -193,7 +193,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
         android:layout_marginBottom="24dp"
-        android:text="Save Reminder"
+        android:text="@string/save_reminder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toEndOf="@id/delete_btn"
