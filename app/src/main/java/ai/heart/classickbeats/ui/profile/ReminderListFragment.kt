@@ -13,7 +13,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class ReminderListFragment : Fragment(R.layout.fragment_reminder_list) {
 
@@ -43,13 +42,13 @@ class ReminderListFragment : Fragment(R.layout.fragment_reminder_list) {
             openAddReminderDialog()
         }
 
-        reminderViewModel.dialogDismissed.observe(viewLifecycleOwner, {
-            if (it) {
-                val reminders = reminderViewModel.getAllReminders()
-                reminderAdapter.submitList(reminders)
-                reminderAdapter.notifyDataSetChanged()
-            }
-        })
+//        reminderViewModel.dialogDismissed.observe(viewLifecycleOwner, {
+//            if (it) {
+//                val reminders = reminderViewModel.getAllReminders()
+//                reminderAdapter.submitList(reminders)
+//                reminderAdapter.notifyDataSetChanged()
+//            }
+//        })
     }
 
     private fun openAddReminderDialog() {

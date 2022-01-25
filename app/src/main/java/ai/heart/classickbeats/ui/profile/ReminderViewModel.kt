@@ -19,12 +19,6 @@ class ReminderViewModel @Inject constructor() : ViewModel() {
         _reminderSaved.postValue(Event(true))
     }
 
-    private val _dialogDismissed = MutableLiveData(false)
-    val dialogDismissed: LiveData<Boolean> = _dialogDismissed
-    fun setDialogDismissed() {
-        _dialogDismissed.postValue(true)
-    }
-
     private val localReminders = mutableListOf<Reminder>()
 
     var selectedReminder: Reminder? = null

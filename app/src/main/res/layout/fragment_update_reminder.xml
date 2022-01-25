@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.profile.AddReminderFragment">
+    android:background="@drawable/bg_semi_rounded_rectangle"
+    android:outlineProvider="background"
+    tools:context=".ui.profile.UpdateReminderFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start_guideline"
@@ -24,9 +26,8 @@
         android:id="@+id/reminder_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/page_top_margin"
+        android:layout_marginTop="30dp"
         android:text="@string/set_a_reminder"
-        android:textColor="?attr/pageTitleColor"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
@@ -79,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/set_reminder_frequency"
-        android:textColor="?attr/normalTextColor"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toBottomOf="@id/time_layout" />
 
@@ -88,75 +89,89 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        app:chipSpacingHorizontal="1000dp"
+        app:chipSpacingHorizontal="12dp"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toBottomOf="@id/frequency_tv"
-        app:selectionRequired="false"
+        app:selectionRequired="true"
         app:singleSelection="false">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_monday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:minWidth="96dp"
             android:text="@string/monday"
-            android:textColor="@color/moderate_green_2"
-            app:chipStrokeColor="@color/moderate_green_2" />
+            android:textAlignment="center"
+            app:checkedIconVisible="true"
+            app:chipCornerRadius="4dp" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_tuesday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:minWidth="96dp"
             android:text="@string/tuesday"
-            android:textColor="@color/bright_red_2"
-            app:chipStrokeColor="@color/bright_red_2" />
+            android:textAlignment="center"
+            app:checkedIconVisible="true"
+            app:chipCornerRadius="4dp" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_wednesday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:minWidth="96dp"
             android:text="@string/wednesday"
-            android:textColor="@color/soft_blue"
-            app:chipStrokeColor="@color/soft_blue" />
+            android:textAlignment="center"
+            app:checkedIconVisible="true"
+            app:chipCornerRadius="4dp" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_thursday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:minWidth="96dp"
             android:text="@string/thursday"
-            android:textColor="@color/very_soft_red_2"
-            app:chipStrokeColor="@color/soft_red_2" />
+            android:textAlignment="center"
+            app:checkedIconVisible="true"
+            app:chipCornerRadius="4dp" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_friday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:minWidth="96dp"
             android:text="@string/friday"
-            android:textColor="@color/dark_red"
-            app:chipStrokeColor="@color/dark_red" />
+            android:textAlignment="center"
+            app:checkedIconVisible="true"
+            app:chipCornerRadius="4dp" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_saturday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:minWidth="96dp"
             android:text="@string/saturday"
-            android:textColor="@color/moderate_violet"
-            app:chipStrokeColor="@color/moderate_violet" />
+            android:textAlignment="center"
+            app:checkedIconVisible="true"
+            app:chipCornerRadius="4dp" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_sunday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:minWidth="96dp"
             android:text="@string/sunday"
-            android:textColor="@color/vivid_yellow_2"
-            app:chipStrokeColor="@color/vivid_yellow_2" />
+            android:textAlignment="center"
+            app:checkedIconVisible="true"
+            app:chipCornerRadius="4dp" />
 
     </com.google.android.material.chip.ChipGroup>
 
