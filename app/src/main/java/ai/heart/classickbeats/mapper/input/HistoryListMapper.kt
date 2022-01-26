@@ -5,7 +5,6 @@ import ai.heart.classickbeats.model.entity.BaseLogEntity
 import ai.heart.classickbeats.model.entity.TimelineEntityNetwork
 import javax.inject.Inject
 
-
 class HistoryListMapper @Inject constructor(
     private val loggingDataMapper: HistoryRecordMapper,
     private val historyRecordNetworkDbMapper: HistoryRecordNetworkDbMapper

@@ -15,18 +15,19 @@ import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet
 
 class DailyXAxisFormatter : ValueFormatter() {
     override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-        val hours = (value/60.0).toInt()
+        val hours = (value / 60.0).toInt()
         var hh = hours.toString().padStart(2, '0')
         val mm = (value.toInt() % 60).toString().padStart(2, '0')
         var ifAM = " AM"
-        if (hours >= 12){
+        if (hours > 12) {
             ifAM = " PM"
             hh = (hours - 12).toString().padStart(2, '0')
+        } else if (hours == 12) {
+            ifAM = "PM"
         }
         return hh.plus(":").plus(mm).plus(ifAM)
     }
 }
-
 
 object ScatterPlotGraph {
 
@@ -61,7 +62,7 @@ object ScatterPlotGraph {
             }
         }
 
-        if (data2.isNotEmpty()){
+        if (data2.isNotEmpty()) {
             adjustedData2.forEachIndexed { i, d ->
                 if (d != 0.0) {
                     values2.add(
