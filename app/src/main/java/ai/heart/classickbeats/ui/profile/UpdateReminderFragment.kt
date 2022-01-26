@@ -13,15 +13,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddReminderFragment : Fragment() {
+class UpdateReminderFragment : BottomSheetDialogFragment() {
 
     private var binding: FragmentAddReminderBinding? = null
 
@@ -51,99 +51,16 @@ class AddReminderFragment : Fragment() {
 
         reminderViewModel.reminderSaved.observe(viewLifecycleOwner, EventObserver {
             if (it) {
-                navigateBack()
+                dismiss()
             }
         })
 
         binding?.timeLayout?.addOnEditTextAttachedListener(timerEditTextAttachListener)
 
         binding?.apply {
-
-            arrayOf(
-                chipMonday,
-                chipTuesday,
-                chipWednesday,
-                chipThursday,
-                chipFriday,
-                chipSaturday,
-                chipSunday
-            ).forEach {
-                it.setSafeOnClickListener { view ->
-
-                    when (view) {
-                        chipMonday -> {
-                            if (frequencyChipGroup.checkedChipIds.contains(chipMonday.id)) {
-                                chipMonday.setTextColor(requireContext().getColor(R.color.white))
-                                chipMonday.setChipBackgroundColorResource(R.color.moderate_green_2)
-                            } else {
-                                chipMonday.setTextColor(requireContext().getColor(R.color.moderate_green_2))
-                                chipMonday.setChipBackgroundColorResource(R.color.white)
-                            }
-                        }
-                        chipTuesday -> {
-                            if (frequencyChipGroup.checkedChipIds.contains(chipTuesday.id)) {
-                                chipTuesday.setTextColor(requireContext().getColor(R.color.white))
-                                chipTuesday.setChipBackgroundColorResource(R.color.bright_red_2)
-                            } else {
-                                chipTuesday.setTextColor(requireContext().getColor(R.color.bright_red_2))
-                                chipTuesday.setChipBackgroundColorResource(R.color.white)
-                            }
-                        }
-                        chipWednesday -> {
-                            if (frequencyChipGroup.checkedChipIds.contains(chipWednesday.id)) {
-                                chipWednesday.setTextColor(requireContext().getColor(R.color.white))
-                                chipWednesday.setChipBackgroundColorResource(R.color.soft_blue)
-                            } else {
-                                chipWednesday.setTextColor(requireContext().getColor(R.color.soft_blue))
-                                chipWednesday.setChipBackgroundColorResource(R.color.white)
-                            }
-                        }
-                        chipThursday -> {
-                            if (frequencyChipGroup.checkedChipIds.contains(chipThursday.id)) {
-                                chipThursday.setTextColor(requireContext().getColor(R.color.white))
-                                chipThursday.setChipBackgroundColorResource(R.color.very_soft_red_2)
-                            } else {
-                                chipThursday.setTextColor(requireContext().getColor(R.color.very_soft_red_2))
-                                chipThursday.setChipBackgroundColorResource(R.color.white)
-                            }
-                        }
-                        chipFriday -> {
-                            if (frequencyChipGroup.checkedChipIds.contains(chipFriday.id)) {
-                                chipFriday.setTextColor(requireContext().getColor(R.color.white))
-                                chipFriday.setChipBackgroundColorResource(R.color.dark_red)
-                            } else {
-                                chipFriday.setTextColor(requireContext().getColor(R.color.dark_red))
-                                chipFriday.setChipBackgroundColorResource(R.color.white)
-                            }
-                        }
-                        chipSaturday -> {
-                            if (frequencyChipGroup.checkedChipIds.contains(chipSaturday.id)) {
-                                chipSaturday.setTextColor(requireContext().getColor(R.color.white))
-                                chipSaturday.setChipBackgroundColorResource(R.color.moderate_violet)
-                            } else {
-                                chipSaturday.setTextColor(requireContext().getColor(R.color.moderate_violet))
-                                chipSaturday.setChipBackgroundColorResource(R.color.white)
-                            }
-                        }
-                        chipSunday -> {
-                            if (frequencyChipGroup.checkedChipIds.contains(chipSunday.id)) {
-                                chipSunday.setTextColor(requireContext().getColor(R.color.white))
-                                chipSunday.setChipBackgroundColorResource(R.color.vivid_yellow_2)
-                            } else {
-                                chipSunday.setTextColor(requireContext().getColor(R.color.vivid_yellow_2))
-                                chipSunday.setChipBackgroundColorResource(R.color.white)
-                            }
-                        }
-                        else -> throw Exception("Unknown viewId: ${it.id}")
-                    }
-                }
-            }
-
-
             cross.setSafeOnClickListener {
-                navigateBack()
+                dismiss()
             }
-
             saveBtn.setSafeOnClickListener {
                 val name: String = nameLayout.editText?.text?.toString() ?: "Reminder"
                 val time: Time? = dateTimePickerViewModel.selectedLogTime.value?.peekContent()
@@ -161,7 +78,6 @@ class AddReminderFragment : Fragment() {
                     reminderViewModel.addReminder(name, time!!, selectedDayList)
                 }
             }
-
             deleteBtn.setSafeOnClickListener {
                 reminderViewModel.deleteReminder(reminderViewModel.selectedReminder!!)
             }
@@ -207,10 +123,6 @@ class AddReminderFragment : Fragment() {
     private fun openTimePickerDialog() {
         val action = NavHomeDirections.actionGlobalTimePickerFragment()
         navController.navigate(action)
-    }
-
-    private fun navigateBack() {
-
     }
 
     override fun onDestroyView() {

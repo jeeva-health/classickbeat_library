@@ -218,13 +218,27 @@
         <action
             android:id="@+id/action_reminderListFragment_to_addReminderFragment"
             app:destination="@id/addReminderFragment" />
+        <action
+            android:id="@+id/action_reminderListFragment_to_updateReminderFragment"
+            app:destination="@id/updateReminderFragment" />
     </fragment>
 
-    <dialog
+    <fragment
         android:id="@+id/addReminderFragment"
         android:name="ai.heart.classickbeats.ui.profile.AddReminderFragment"
         android:label="fragment_add_reminder"
         tools:layout="@layout/fragment_add_reminder" />
+
+    <dialog
+        android:id="@+id/updateReminderFragment"
+        android:name="ai.heart.classickbeats.ui.profile.UpdateReminderFragment"
+        android:label="fragment_update_reminder"
+        tools:layout="@layout/fragment_update_reminder" >
+        <argument
+            android:name="type"
+            app:argType="ai.heart.classickbeats.model.Reminder$Type"
+            android:defaultValue="PPG" />
+    </dialog>
 
     <fragment
         android:id="@+id/historyFragment"

@@ -10,6 +10,7 @@ import ai.heart.classickbeats.model.entity.TimelineEntityDatabase
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
 import ai.heart.classickbeats.shared.util.toDateStringNetwork
+import ai.heart.classickbeats.shared.util.toDateStringNetworkWithoutTime
 import androidx.paging.*
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -112,8 +113,8 @@ class RecordRepository @Inject constructor(
     ): Result<GraphData> {
         val modelStr = model.getStringValue()
         val typeStr = type.value
-        val startDateStr = startDate.toDateStringNetwork()
-        val endDateStr = endDate.toDateStringNetwork()
+        val startDateStr = startDate.toDateStringNetworkWithoutTime()
+        val endDateStr = endDate.toDateStringNetworkWithoutTime()
         val response =
             recordRemoteDataSource.getGraphData(modelStr, typeStr, startDateStr, endDateStr)
         when (response) {

@@ -2,10 +2,9 @@ package ai.heart.classickbeats.ui.ppg.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanQuestionBinding
-import ai.heart.classickbeats.domain.getColor
-import ai.heart.classickbeats.domain.getText
+import ai.heart.classickbeats.utils.getColor
+import ai.heart.classickbeats.utils.getText
 import ai.heart.classickbeats.model.ScanState
-import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.ppg.viewmodel.MonitorViewModel
 import ai.heart.classickbeats.utils.hideLoadingBar
 import ai.heart.classickbeats.utils.setLightStatusBar
