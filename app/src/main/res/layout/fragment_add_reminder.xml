@@ -88,7 +88,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        app:chipSpacingHorizontal="1000dp"
+        app:chipSpacingHorizontal="64dp"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toBottomOf="@id/frequency_tv"
@@ -99,7 +99,7 @@
             android:id="@+id/chip_monday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="96dp"
+            android:minWidth="126dp"
             android:text="@string/monday"
             android:textColor="@color/moderate_green_2"
             app:chipStrokeColor="@color/moderate_green_2" />
@@ -108,7 +108,7 @@
             android:id="@+id/chip_tuesday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="96dp"
+            android:minWidth="126dp"
             android:text="@string/tuesday"
             android:textColor="@color/bright_red_2"
             app:chipStrokeColor="@color/bright_red_2" />
@@ -117,7 +117,7 @@
             android:id="@+id/chip_wednesday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="96dp"
+            android:minWidth="126dp"
             android:text="@string/wednesday"
             android:textColor="@color/soft_blue"
             app:chipStrokeColor="@color/soft_blue" />
@@ -126,16 +126,16 @@
             android:id="@+id/chip_thursday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="96dp"
+            android:minWidth="126dp"
             android:text="@string/thursday"
             android:textColor="@color/very_soft_red_2"
-            app:chipStrokeColor="@color/soft_red_2" />
+            app:chipStrokeColor="@color/very_soft_red_2" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_friday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="96dp"
+            android:minWidth="126dp"
             android:text="@string/friday"
             android:textColor="@color/dark_red"
             app:chipStrokeColor="@color/dark_red" />
@@ -144,7 +144,7 @@
             android:id="@+id/chip_saturday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="96dp"
+            android:minWidth="126dp"
             android:text="@string/saturday"
             android:textColor="@color/moderate_violet"
             app:chipStrokeColor="@color/moderate_violet" />
@@ -153,7 +153,7 @@
             android:id="@+id/chip_sunday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="96dp"
+            android:minWidth="126dp"
             android:text="@string/sunday"
             android:textColor="@color/vivid_yellow_2"
             app:chipStrokeColor="@color/vivid_yellow_2" />

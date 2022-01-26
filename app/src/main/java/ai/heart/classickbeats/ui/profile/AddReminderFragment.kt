@@ -58,7 +58,6 @@ class AddReminderFragment : Fragment() {
         binding?.timeLayout?.addOnEditTextAttachedListener(timerEditTextAttachListener)
 
         binding?.apply {
-
             arrayOf(
                 chipMonday,
                 chipTuesday,
@@ -68,8 +67,7 @@ class AddReminderFragment : Fragment() {
                 chipSaturday,
                 chipSunday
             ).forEach {
-                it.setSafeOnClickListener { view ->
-
+                it.setOnClickListener { view ->
                     when (view) {
                         chipMonday -> {
                             if (frequencyChipGroup.checkedChipIds.contains(chipMonday.id)) {
