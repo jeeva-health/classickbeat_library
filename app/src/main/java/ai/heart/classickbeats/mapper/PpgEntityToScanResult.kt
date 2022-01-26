@@ -45,7 +45,7 @@ object PpgEntityToScanResult {
             ),
             filteredRMean = ppgEntity.filteredRMeans ?: emptyList(),
             timeStamp = ppgEntity.timeStamp?.toPPGDate() ?: Date(),
-            isBaselineSet = ppgEntity.isBaselineSet,
+            isBaselineSet = ppgEntity.isBaselineSet ?: false,
         )
     }
 }

@@ -90,6 +90,6 @@ data class PPGEntity(
     val ppgDistinctDays: Int? = null,
 
     @Json(name = "this_ppg_baseline_set")
-    val isBaselineSet: Boolean = false
+    val isBaselineSet: Boolean? = null
 
 ) : BaseLogEntity(LogType.PPG)
