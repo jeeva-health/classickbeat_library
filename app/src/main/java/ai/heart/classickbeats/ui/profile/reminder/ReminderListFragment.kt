@@ -38,8 +38,7 @@ class ReminderListFragment : Fragment(R.layout.fragment_reminder_list) {
         binding.reminderRv.adapter = reminderAdapter
 
         binding.addReminder.setSafeOnClickListener {
-            reminderViewModel.selectedReminder = null
-            openAddReminderDialog()
+            openAddReminderFragment()
         }
 
         reminderViewModel.reminderList.observe(viewLifecycleOwner) {
@@ -54,15 +53,22 @@ class ReminderListFragment : Fragment(R.layout.fragment_reminder_list) {
         reminderViewModel.getAllReminders()
     }
 
-    private fun openAddReminderDialog() {
+    private fun openAddReminderFragment() {
         val action =
             ReminderListFragmentDirections.actionReminderListFragmentToAddReminderFragment()
         navController.navigate(action)
     }
 
+    private fun openUpdateReminderFragment(reminderId: Long) {
+        val action =
+            ReminderListFragmentDirections.actionReminderListFragmentToUpdateReminderFragment(
+                reminderId
+            )
+        navController.navigate(action)
+    }
+
     private val reminderItemClickListener = fun(item: Reminder) {
-        reminderViewModel.selectedReminder = item
-        openAddReminderDialog()
+        openUpdateReminderFragment(item._id)
     }
 
     private val reminderToggleClickListener = fun(item: Reminder, isChecked: Boolean) {

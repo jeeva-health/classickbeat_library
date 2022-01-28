@@ -239,9 +239,8 @@
         android:label="fragment_update_reminder"
         tools:layout="@layout/fragment_update_reminder">
         <argument
-            android:name="type"
-            android:defaultValue="PPG"
-            app:argType="ai.heart.classickbeats.model.Reminder$Type" />
+            android:name="reminder_id"
+            app:argType="long" />
     </dialog>
 
     <fragment

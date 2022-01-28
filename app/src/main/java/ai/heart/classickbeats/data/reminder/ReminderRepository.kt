@@ -53,6 +53,17 @@ class ReminderRepository @Inject constructor(
         }
     }
 
+    suspend fun getReminder(reminderId: Long): Result<Reminder> {
+        val response = localDataSource.getReminder(reminderId)
+        return if (response.succeeded) {
+            val entity = response.data!!
+            val reminder = reminderInMapper.map(entity)
+            Result.Success(reminder)
+        } else {
+            Result.Error(response.error)
+        }
+    }
+
     suspend fun getReminderList(): Result<List<Reminder>> {
         val response = remoteDataSource.getAllReminder()
         return if (response.succeeded) {

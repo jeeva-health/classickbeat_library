@@ -42,12 +42,25 @@ class ReminderViewModel @Inject constructor(
     private val _reminderList = MutableLiveData<List<Reminder>>(emptyList())
     val reminderList: LiveData<List<Reminder>> = _reminderList
 
-    var selectedReminder: Reminder? = null
+    private val _selectedReminder = MutableLiveData<Reminder>()
+    val selectedReminder: LiveData<Reminder> = _selectedReminder
 
     private val _reminderType = MutableLiveData(Reminder.Type.PPG)
     val reminderType: LiveData<Reminder.Type> = _reminderType
     fun updateReminderType(reminderType: Reminder.Type) {
         _reminderType.postValue(reminderType)
+    }
+
+    fun getReminder(reminderId: Long) {
+        viewModelScope.launch {
+            val response = reminderRepository.getReminder(reminderId)
+            if (response.succeeded) {
+                val reminder = response.data!!
+                _selectedReminder.postValue(reminder)
+            } else {
+                apiError = response.error
+            }
+        }
     }
 
     fun addReminder(time: Time, frequency: List<Reminder.DayOfWeek>) {
@@ -70,10 +83,10 @@ class ReminderViewModel @Inject constructor(
     }
 
     fun updateReminder(
-        reminder: Reminder,
         time: Time?,
         frequency: List<Reminder.DayOfWeek>
     ) {
+        val reminder = selectedReminder.value!!
         val updatedReminder = Reminder(
             _id = reminder._id,
             type = reminderType.value!!,
@@ -93,8 +106,9 @@ class ReminderViewModel @Inject constructor(
         setReminderUpdated()
     }
 
-    fun deleteReminder(reminder: Reminder) {
+    fun deleteReminder() {
         viewModelScope.launch {
+            val reminder = selectedReminder.value!!
             setShowLoadingTrue()
             val response = reminderRepository.deleteReminder(reminder)
             if (!response.succeeded) {

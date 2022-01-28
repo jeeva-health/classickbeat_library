@@ -52,6 +52,16 @@ class ReminderLocalDataSource internal constructor(
             }
         }
 
+    suspend fun getReminder(reminderId: Long): Result<ReminderEntity> =
+        withContext(ioDispatcher) {
+            try {
+                val entity = reminderDao.selectNetwork(reminderId).first()
+                Result.Success(entity)
+            } catch (e: Exception) {
+                Result.Error(e.message)
+            }
+        }
+
     suspend fun insertAllReminder(reminderList: List<ReminderEntity>): Result<Unit> =
         withContext(ioDispatcher) {
             try {
