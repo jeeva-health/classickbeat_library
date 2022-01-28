@@ -20,7 +20,7 @@ interface ReminderDao {
     suspend fun selectLocal(localId: Long): ReminderEntity
 
     @Query("SELECT * FROM reminders WHERE id = :id")
-    suspend fun selectNetwork(id: Int): List<ReminderEntity>
+    suspend fun selectNetwork(id: Long): List<ReminderEntity>
 
     @Query("SELECT * FROM reminders")
     suspend fun getAll(): List<ReminderEntity>

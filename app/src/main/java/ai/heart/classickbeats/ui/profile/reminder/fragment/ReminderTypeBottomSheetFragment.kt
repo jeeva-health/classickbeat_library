@@ -1,8 +1,9 @@
-package ai.heart.classickbeats.ui.profile.reminder
+package ai.heart.classickbeats.ui.profile.reminder.fragment
 
 import ai.heart.classickbeats.BottomSheetStringAdapter
 import ai.heart.classickbeats.databinding.FragmentReminderTypeBottomSheetBinding
 import ai.heart.classickbeats.model.Reminder
+import ai.heart.classickbeats.ui.profile.reminder.ReminderViewModel
 import ai.heart.classickbeats.utils.toName
 import android.os.Bundle
 import android.view.LayoutInflater

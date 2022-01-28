@@ -28,10 +28,12 @@ class ReminderRemoteDataSource internal constructor(
             }
         }
 
-    override suspend fun updateReminder(reminderEntity: ReminderEntity): Result<ReminderEntity> =
+    override suspend fun updateReminder(
+        reminderId: Long,
+        reminderEntity: ReminderEntity
+    ): Result<ReminderEntity> =
         withContext(ioDispatcher) {
-            val id = reminderEntity.id!!
-            val response = safeApiCall { apiService.update(id, reminderEntity) }
+            val response = safeApiCall { apiService.update(reminderId, reminderEntity) }
             if (response.succeeded) {
                 val entity = response.data!!.responseData!!
                 Result.Success(entity)
@@ -40,9 +42,12 @@ class ReminderRemoteDataSource internal constructor(
             }
         }
 
-    override suspend fun deleteReminder(reminderEntity: ReminderEntity): Result<ReminderEntity> =
+    override suspend fun deleteReminder(
+        reminderId: Long,
+        reminderEntity: ReminderEntity
+    ): Result<ReminderEntity> =
         withContext(ioDispatcher) {
-            val id = reminderEntity.id!!
+            val id = reminderId
             val response = safeApiCall { apiService.delete(id) }
             if (response.succeeded) {
                 val entity = response.data!!.responseData!!

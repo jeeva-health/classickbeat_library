@@ -7,9 +7,15 @@ interface ReminderDataSource {
 
     suspend fun addReminder(reminderEntity: ReminderEntity): Result<ReminderEntity>
 
-    suspend fun updateReminder(reminderEntity: ReminderEntity): Result<ReminderEntity>
+    suspend fun updateReminder(
+        reminderId: Long,
+        reminderEntity: ReminderEntity
+    ): Result<ReminderEntity>
 
-    suspend fun deleteReminder(reminderEntity: ReminderEntity): Result<ReminderEntity>
+    suspend fun deleteReminder(
+        reminderId: Long,
+        reminderEntity: ReminderEntity
+    ): Result<ReminderEntity>
 
     suspend fun getAllReminder(): Result<List<ReminderEntity>>
 }

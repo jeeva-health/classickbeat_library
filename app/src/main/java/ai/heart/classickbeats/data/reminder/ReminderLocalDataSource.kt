@@ -22,7 +22,10 @@ class ReminderLocalDataSource internal constructor(
             }
         }
 
-    override suspend fun updateReminder(reminderEntity: ReminderEntity): Result<ReminderEntity> =
+    override suspend fun updateReminder(
+        reminderId: Long,
+        reminderEntity: ReminderEntity
+    ): Result<ReminderEntity> =
         withContext(ioDispatcher) {
             try {
                 reminderDao.update(reminderEntity)
@@ -32,7 +35,10 @@ class ReminderLocalDataSource internal constructor(
             }
         }
 
-    override suspend fun deleteReminder(reminderEntity: ReminderEntity): Result<ReminderEntity> =
+    override suspend fun deleteReminder(
+        reminderId: Long,
+        reminderEntity: ReminderEntity
+    ): Result<ReminderEntity> =
         withContext(ioDispatcher) {
             try {
                 reminderDao.delete(reminderEntity)
@@ -47,6 +53,16 @@ class ReminderLocalDataSource internal constructor(
             try {
                 val reminderList = reminderDao.getAll()
                 Result.Success(reminderList)
+            } catch (e: Exception) {
+                Result.Error(e.message)
+            }
+        }
+
+    suspend fun getReminder(reminderId: Long): Result<ReminderEntity> =
+        withContext(ioDispatcher) {
+            try {
+                val entity = reminderDao.selectNetwork(reminderId).first()
+                Result.Success(entity)
             } catch (e: Exception) {
                 Result.Error(e.message)
             }
