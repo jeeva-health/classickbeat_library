@@ -22,7 +22,10 @@ class ReminderLocalDataSource internal constructor(
             }
         }
 
-    override suspend fun updateReminder(reminderEntity: ReminderEntity): Result<ReminderEntity> =
+    override suspend fun updateReminder(
+        reminderId: Long,
+        reminderEntity: ReminderEntity
+    ): Result<ReminderEntity> =
         withContext(ioDispatcher) {
             try {
                 reminderDao.update(reminderEntity)
@@ -32,7 +35,10 @@ class ReminderLocalDataSource internal constructor(
             }
         }
 
-    override suspend fun deleteReminder(reminderEntity: ReminderEntity): Result<ReminderEntity> =
+    override suspend fun deleteReminder(
+        reminderId: Long,
+        reminderEntity: ReminderEntity
+    ): Result<ReminderEntity> =
         withContext(ioDispatcher) {
             try {
                 reminderDao.delete(reminderEntity)

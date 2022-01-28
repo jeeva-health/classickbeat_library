@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.profile.reminder
+package ai.heart.classickbeats.ui.profile.reminder.fragment
 
 import ai.heart.classickbeats.NavHomeDirections
 import ai.heart.classickbeats.R
@@ -6,15 +6,14 @@ import ai.heart.classickbeats.databinding.FragmentAddReminderBinding
 import ai.heart.classickbeats.model.Reminder
 import ai.heart.classickbeats.model.Time
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.ui.profile.reminder.ReminderViewModel
 import ai.heart.classickbeats.ui.widgets.DateTimePickerViewModel
 import ai.heart.classickbeats.utils.hideKeyboard
-import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.toName
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController

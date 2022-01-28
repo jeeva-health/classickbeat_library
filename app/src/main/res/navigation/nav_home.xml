@@ -212,7 +212,7 @@
 
     <fragment
         android:id="@+id/reminderListFragment"
-        android:name="ai.heart.classickbeats.ui.profile.reminder.ReminderListFragment"
+        android:name="ai.heart.classickbeats.ui.profile.reminder.fragment.ReminderListFragment"
         android:label="fragment_reminder_list"
         tools:layout="@layout/fragment_reminder_list">
         <action
@@ -225,7 +225,7 @@
 
     <fragment
         android:id="@+id/addReminderFragment"
-        android:name="ai.heart.classickbeats.ui.profile.reminder.AddReminderFragment"
+        android:name="ai.heart.classickbeats.ui.profile.reminder.fragment.AddReminderFragment"
         android:label="fragment_add_reminder"
         tools:layout="@layout/fragment_add_reminder">
         <action
@@ -235,7 +235,7 @@
 
     <dialog
         android:id="@+id/updateReminderFragment"
-        android:name="ai.heart.classickbeats.ui.profile.reminder.UpdateReminderFragment"
+        android:name="ai.heart.classickbeats.ui.profile.reminder.fragment.UpdateReminderFragment"
         android:label="fragment_update_reminder"
         tools:layout="@layout/fragment_update_reminder">
         <argument
@@ -331,7 +331,7 @@
 
     <dialog
         android:id="@+id/reminderTypeBottomSheetFragment"
-        android:name="ai.heart.classickbeats.ui.profile.reminder.ReminderTypeBottomSheetFragment"
+        android:name="ai.heart.classickbeats.ui.profile.reminder.fragment.ReminderTypeBottomSheetFragment"
         android:label="ReminderTypeBottomSheetFragment"
         tools:layout="@layout/fragment_reminder_type_bottom_sheet" />
 

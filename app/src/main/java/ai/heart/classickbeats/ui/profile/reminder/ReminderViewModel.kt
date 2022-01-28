@@ -78,8 +78,8 @@ class ReminderViewModel @Inject constructor(
                 apiError = response.error
             }
             setShowLoadingFalse()
+            setReminderUpdated()
         }
-        setReminderUpdated()
     }
 
     fun updateReminder(
@@ -102,8 +102,8 @@ class ReminderViewModel @Inject constructor(
                 apiError = response.error
             }
             setShowLoadingFalse()
+            setReminderUpdated()
         }
-        setReminderUpdated()
     }
 
     fun deleteReminder() {
@@ -115,6 +115,7 @@ class ReminderViewModel @Inject constructor(
                 apiError = response.error
             }
             setShowLoadingFalse()
+            setReminderUpdated()
         }
     }
 

@@ -31,10 +31,10 @@ class ReminderRepository @Inject constructor(
 
     suspend fun updateReminder(reminder: Reminder): Result<Unit> {
         val entity = reminderOutMapper.map(reminder)
-        val response = remoteDataSource.updateReminder(entity)
+        val response = remoteDataSource.updateReminder(reminder._id, entity)
         return if (response.succeeded) {
             val data = response.data!!
-            localDataSource.updateReminder(data)
+            localDataSource.updateReminder(reminder._id, data)
             Result.Success(Unit)
         } else {
             Result.Error(response.error)
@@ -43,10 +43,10 @@ class ReminderRepository @Inject constructor(
 
     suspend fun deleteReminder(reminder: Reminder): Result<Unit> {
         val entity = reminderOutMapper.map(reminder)
-        val response = remoteDataSource.deleteReminder(entity)
+        val response = remoteDataSource.deleteReminder(reminder._id, entity)
         return if (response.succeeded) {
             val data = response.data!!
-            localDataSource.deleteReminder(data)
+            localDataSource.deleteReminder(reminder._id, data)
             Result.Success(Unit)
         } else {
             Result.Error(response.error)
