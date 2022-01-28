@@ -23,7 +23,7 @@ class DailyXAxisFormatter : ValueFormatter() {
             ifAM = " PM"
             hh = (hours - 12).toString().padStart(2, '0')
         } else if (hours == 12) {
-            ifAM = "PM"
+            ifAM = " PM"
         }
         return hh.plus(":").plus(mm).plus(ifAM)
     }
