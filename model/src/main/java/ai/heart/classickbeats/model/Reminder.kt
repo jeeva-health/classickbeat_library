@@ -61,7 +61,7 @@ fun Reminder.DayOfWeek.toInt(): Int =
         Reminder.DayOfWeek.Thursday -> 4
         Reminder.DayOfWeek.Friday -> 5
         Reminder.DayOfWeek.Saturday -> 6
-        Reminder.DayOfWeek.Sunday -> 6
+        Reminder.DayOfWeek.Sunday -> 7
     }
 
 fun Int.toReminderDayOfWeek(): Reminder.DayOfWeek =

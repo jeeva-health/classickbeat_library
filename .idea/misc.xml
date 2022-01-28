@@ -34,7 +34,7 @@
         <entry key="app/src/main/res/drawable/rounded_dialog.xml" value="0.24537037037037038" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/activity_media_player.xml" value="0.30512820512820515" />
-        <entry key="app/src/main/res/layout/fragment_add_reminder.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_add_reminder.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_feedback_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_gender_selection_bottom_sheet.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_goal_selection.xml" value="0.23710208562019758" />
@@ -58,6 +58,7 @@
         <entry key="app/src/main/res/layout/fragment_profile_home.xml" value="0.281437125748503" />
         <entry key="app/src/main/res/layout/fragment_profile_settings.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_reminder_list.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/fragment_reminder_type_bottom_sheet.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/fragment_scan.xml" value="0.20277777777777778" />
         <entry key="app/src/main/res/layout/fragment_scan_question.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_scan_result.xml" value="0.30512820512820515" />

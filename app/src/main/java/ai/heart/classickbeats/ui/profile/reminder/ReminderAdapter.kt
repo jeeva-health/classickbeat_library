@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.profile
+package ai.heart.classickbeats.ui.profile.reminder
 
 import ai.heart.classickbeats.databinding.ItemviewReminderBinding
 import ai.heart.classickbeats.model.Reminder

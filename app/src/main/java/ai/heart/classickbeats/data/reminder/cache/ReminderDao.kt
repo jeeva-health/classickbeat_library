@@ -8,13 +8,13 @@ import androidx.room.*
 interface ReminderDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(reminderEntity: ReminderEntity): Long
+    suspend fun insert(reminderEntity: ReminderEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(reminderEntityList: List<ReminderEntity>): List<Long>
+    suspend fun insertAll(reminderEntityList: List<ReminderEntity>)
 
     @Update
-    suspend fun update(reminderEntity: ReminderEntity): Long
+    suspend fun update(reminderEntity: ReminderEntity)
 
     @Query("SELECT * FROM reminders WHERE local_id = :localId")
     suspend fun selectLocal(localId: Long): ReminderEntity

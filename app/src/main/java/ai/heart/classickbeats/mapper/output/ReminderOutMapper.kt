@@ -10,7 +10,7 @@ class ReminderOutMapper @Inject constructor() : Mapper<Reminder, ReminderEntity>
 
     override fun map(input: Reminder): ReminderEntity {
         return ReminderEntity(
-            id = input._id,
+            id = null,
             dayOfWeek = input.frequency.map { it.toInt() },
             isActive = input.isReminderActive,
             isSet = input.isReminderSet,

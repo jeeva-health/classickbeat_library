@@ -9,10 +9,10 @@ data class Time(val hourOfDay: Int, val minute: Int) {
         return "$displayHour:$displayMinute $hourPeriod"
     }
 
-    fun toSerializeString(): String = "$hourOfDay-$minute"
+    fun toSerializeString(): String = "$hourOfDay:$minute"
 }
 
 fun String.serializeStringToTime(): Time {
-    val (hour, minute) = this.split("-")
+    val (hour, minute) = this.split(":")
     return Time(hourOfDay = hour.toInt(), minute = minute.toInt())
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.profile.AddReminderFragment">
+    tools:context=".ui.profile.reminder.AddReminderFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start_guideline"
@@ -55,7 +55,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="false"
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -70,7 +73,10 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="false"
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -92,8 +98,42 @@
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toBottomOf="@id/frequency_tv"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_daily"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="126dp"
+            android:text="@string/daily"
+            android:textColor="@color/very_dark_grey_3"
+            app:chipStrokeColor="@color/very_dark_grey_3" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_custom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="126dp"
+            android:text="@string/custom"
+            android:textColor="@color/very_dark_grey_3"
+            app:chipStrokeColor="@color/very_dark_grey_3" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/frequency_day_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+        app:chipSpacingHorizontal="64dp"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@id/frequency_chip_group"
         app:selectionRequired="false"
-        app:singleSelection="false">
+        app:singleSelection="false"
+        tools:visibility="visible">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_monday"

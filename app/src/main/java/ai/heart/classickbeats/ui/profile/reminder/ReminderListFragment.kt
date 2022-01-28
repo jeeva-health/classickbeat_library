@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.profile
+package ai.heart.classickbeats.ui.profile.reminder
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentReminderListBinding
@@ -42,13 +42,16 @@ class ReminderListFragment : Fragment(R.layout.fragment_reminder_list) {
             openAddReminderDialog()
         }
 
-//        reminderViewModel.dialogDismissed.observe(viewLifecycleOwner, {
-//            if (it) {
-//                val reminders = reminderViewModel.getAllReminders()
-//                reminderAdapter.submitList(reminders)
-//                reminderAdapter.notifyDataSetChanged()
-//            }
-//        })
+        reminderViewModel.reminderList.observe(viewLifecycleOwner) {
+            reminderAdapter.submitList(it)
+            reminderAdapter.notifyDataSetChanged()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        reminderViewModel.getAllReminders()
     }
 
     private fun openAddReminderDialog() {

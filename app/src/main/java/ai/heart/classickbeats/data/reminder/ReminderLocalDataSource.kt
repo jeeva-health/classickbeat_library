@@ -15,8 +15,8 @@ class ReminderLocalDataSource internal constructor(
     override suspend fun addReminder(reminderEntity: ReminderEntity): Result<ReminderEntity> =
         withContext(ioDispatcher) {
             try {
-                val localId = reminderDao.insert(reminderEntity)
-                Result.Success(reminderDao.selectLocal(localId))
+                reminderDao.insert(reminderEntity)
+                Result.Success(reminderEntity)
             } catch (e: Exception) {
                 Result.Error(e.message)
             }
@@ -25,12 +25,8 @@ class ReminderLocalDataSource internal constructor(
     override suspend fun updateReminder(reminderEntity: ReminderEntity): Result<ReminderEntity> =
         withContext(ioDispatcher) {
             try {
-                val count = reminderDao.update(reminderEntity)
-                if (count == 1L) {
-                    Result.Success(reminderEntity)
-                } else {
-                    Result.Error("Number of rows updated: $count, should be 1")
-                }
+                reminderDao.update(reminderEntity)
+                Result.Success(reminderEntity)
             } catch (e: Exception) {
                 Result.Error(e.message)
             }

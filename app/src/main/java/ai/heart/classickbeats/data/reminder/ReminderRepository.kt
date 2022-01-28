@@ -1,5 +1,7 @@
 package ai.heart.classickbeats.data.reminder
 
+import ai.heart.classickbeats.di.ReminderDataModule.LocalDataSource
+import ai.heart.classickbeats.di.ReminderDataModule.RemoteDataSource
 import ai.heart.classickbeats.mapper.input.ReminderInMapper
 import ai.heart.classickbeats.mapper.output.ReminderOutMapper
 import ai.heart.classickbeats.model.Reminder
@@ -10,12 +12,11 @@ import ai.heart.classickbeats.shared.result.succeeded
 import javax.inject.Inject
 
 class ReminderRepository @Inject constructor(
-    private val remoteDataSource: ReminderRemoteDataSource,
-    private val localDataSource: ReminderLocalDataSource,
+    @RemoteDataSource private val remoteDataSource: ReminderRemoteDataSource,
+    @LocalDataSource private val localDataSource: ReminderLocalDataSource,
     private val reminderInMapper: ReminderInMapper,
     private val reminderOutMapper: ReminderOutMapper
 ) {
-
     suspend fun addReminder(reminder: Reminder): Result<Unit> {
         val entity = reminderOutMapper.map(reminder)
         val response = remoteDataSource.addReminder(entity)

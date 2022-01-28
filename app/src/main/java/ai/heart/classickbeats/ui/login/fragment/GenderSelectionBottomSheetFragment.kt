@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class GenderSelectionBottomSheetFragment : BottomSheetDialogFragment() {
 
     private var binding: FragmentGenderSelectionBottomSheetBinding? = null

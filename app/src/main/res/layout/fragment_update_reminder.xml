@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_semi_rounded_rectangle"
     android:outlineProvider="background"
-    tools:context=".ui.profile.UpdateReminderFragment">
+    tools:context=".ui.profile.reminder.UpdateReminderFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/start_guideline"

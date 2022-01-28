@@ -12,14 +12,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class ReminderRemoteDataSource internal constructor(
-    private val reminderApiService: ReminderApiService,
+    private val apiService: ReminderApiService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     sessionManager: SessionManager
 ) : BaseRemoteDataSource(sessionManager), ReminderDataSource {
 
     override suspend fun addReminder(reminderEntity: ReminderEntity): Result<ReminderEntity> =
         withContext(ioDispatcher) {
-            val response = safeApiCall { reminderApiService.add(reminderEntity) }
+            val response = safeApiCall { apiService.add(reminderEntity) }
             if (response.succeeded) {
                 val entity = response.data!!.responseData!!
                 Result.Success(entity)
@@ -31,7 +31,7 @@ class ReminderRemoteDataSource internal constructor(
     override suspend fun updateReminder(reminderEntity: ReminderEntity): Result<ReminderEntity> =
         withContext(ioDispatcher) {
             val id = reminderEntity.id!!
-            val response = safeApiCall { reminderApiService.update(id, reminderEntity) }
+            val response = safeApiCall { apiService.update(id, reminderEntity) }
             if (response.succeeded) {
                 val entity = response.data!!.responseData!!
                 Result.Success(entity)
@@ -43,7 +43,7 @@ class ReminderRemoteDataSource internal constructor(
     override suspend fun deleteReminder(reminderEntity: ReminderEntity): Result<ReminderEntity> =
         withContext(ioDispatcher) {
             val id = reminderEntity.id!!
-            val response = safeApiCall { reminderApiService.delete(id) }
+            val response = safeApiCall { apiService.delete(id) }
             if (response.succeeded) {
                 val entity = response.data!!.responseData!!
                 Result.Success(entity)
@@ -54,7 +54,7 @@ class ReminderRemoteDataSource internal constructor(
 
     override suspend fun getAllReminder(): Result<List<ReminderEntity>> =
         withContext(ioDispatcher) {
-            val response = safeApiCall { reminderApiService.getAll() }
+            val response = safeApiCall { apiService.getAll() }
             if (response.succeeded) {
                 val entries = response.data!!.responseData!!
                 Result.Success(entries)

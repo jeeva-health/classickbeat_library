@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.profile
+package ai.heart.classickbeats.ui.profile.reminder
 
 import ai.heart.classickbeats.NavHomeDirections
 import ai.heart.classickbeats.R
@@ -62,7 +62,6 @@ class UpdateReminderFragment : BottomSheetDialogFragment() {
                 dismiss()
             }
             saveBtn.setSafeOnClickListener {
-                val name: String = nameLayout.editText?.text?.toString() ?: "Reminder"
                 val time: Time? = dateTimePickerViewModel.selectedLogTime.value?.peekContent()
                 val selectedDayList = frequencyChipGroup.checkedChipIds.map {
                     mapChipIdToDayOfWeek(it)
@@ -70,12 +69,11 @@ class UpdateReminderFragment : BottomSheetDialogFragment() {
                 if (reminderViewModel.selectedReminder != null) {
                     reminderViewModel.updateReminder(
                         reminderViewModel.selectedReminder!!,
-                        name,
                         time,
                         selectedDayList
                     )
                 } else {
-                    reminderViewModel.addReminder(name, time!!, selectedDayList)
+                    reminderViewModel.addReminder(time!!, selectedDayList)
                 }
             }
             deleteBtn.setSafeOnClickListener {
