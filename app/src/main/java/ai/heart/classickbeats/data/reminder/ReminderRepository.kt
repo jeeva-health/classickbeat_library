@@ -9,6 +9,7 @@ import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.error
 import ai.heart.classickbeats.shared.result.succeeded
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ReminderRepository @Inject constructor(
@@ -64,15 +65,15 @@ class ReminderRepository @Inject constructor(
         }
     }
 
-    suspend fun getReminderList(): Result<List<Reminder>> {
+    fun getReminderLocalList() =
+        localDataSource.getAllReminder().map { it.map { reminderInMapper.map(it) } }
+
+
+    suspend fun getReminderList() {
         val response = remoteDataSource.getAllReminder()
-        return if (response.succeeded) {
+        if (response.succeeded) {
             val entityList = response.data!!
             localDataSource.insertAllReminder(entityList)
-            val reminderList = entityList.map { reminderInMapper.map(it) }
-            Result.Success(reminderList)
-        } else {
-            Result.Error(response.error)
         }
     }
 }

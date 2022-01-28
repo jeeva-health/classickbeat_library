@@ -2,10 +2,11 @@ package ai.heart.classickbeats.model.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
-@Entity(tableName = "reminders")
+@Entity(tableName = "reminders", indices = [Index(value = ["id"], unique = true)])
 data class ReminderEntity(
     val id: Long?,
     @Json(name = "day_of_week")

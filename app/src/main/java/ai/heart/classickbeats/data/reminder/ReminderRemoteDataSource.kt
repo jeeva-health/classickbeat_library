@@ -57,7 +57,7 @@ class ReminderRemoteDataSource internal constructor(
             }
         }
 
-    override suspend fun getAllReminder(): Result<List<ReminderEntity>> =
+    suspend fun getAllReminder(): Result<List<ReminderEntity>> =
         withContext(ioDispatcher) {
             val response = safeApiCall { apiService.getAll() }
             if (response.succeeded) {

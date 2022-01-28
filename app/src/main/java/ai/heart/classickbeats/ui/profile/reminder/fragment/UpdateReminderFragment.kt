@@ -9,11 +9,13 @@ import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.profile.reminder.ReminderViewModel
 import ai.heart.classickbeats.ui.widgets.DateTimePickerViewModel
 import ai.heart.classickbeats.utils.hideKeyboard
+import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.toName
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -74,7 +76,7 @@ class UpdateReminderFragment : BottomSheetDialogFragment() {
                 reminderViewModel.setIsDaily(true)
             }
 
-            reminderViewModel.isDaily.observe(viewLifecycleOwner) { isDaily ->
+            reminderViewModel.isDaily.observe(viewLifecycleOwner, EventObserver { isDaily ->
                 if (isDaily) {
                     frequencyDayGroup.isVisible = false
                     chipDaily.setTextColor(requireContext().getColor(R.color.white))
@@ -88,6 +90,85 @@ class UpdateReminderFragment : BottomSheetDialogFragment() {
                     chipDaily.setTextColor(requireContext().getColor(R.color.very_dark_grey_3))
                     chipDaily.setChipBackgroundColorResource(R.color.white)
                 }
+            })
+
+            arrayOf(
+                chipMonday,
+                chipTuesday,
+                chipWednesday,
+                chipThursday,
+                chipFriday,
+                chipSaturday,
+                chipSunday
+            ).forEach {
+                it.setOnClickListener { view ->
+                    when (view) {
+                        chipMonday -> {
+                            if (frequencyDayGroup.checkedChipIds.contains(chipMonday.id)) {
+                                chipMonday.setTextColor(requireContext().getColor(R.color.white))
+                                chipMonday.setChipBackgroundColorResource(R.color.moderate_green_2)
+                            } else {
+                                chipMonday.setTextColor(requireContext().getColor(R.color.moderate_green_2))
+                                chipMonday.setChipBackgroundColorResource(R.color.white)
+                            }
+                        }
+                        chipTuesday -> {
+                            if (frequencyDayGroup.checkedChipIds.contains(chipTuesday.id)) {
+                                chipTuesday.setTextColor(requireContext().getColor(R.color.white))
+                                chipTuesday.setChipBackgroundColorResource(R.color.bright_red_2)
+                            } else {
+                                chipTuesday.setTextColor(requireContext().getColor(R.color.bright_red_2))
+                                chipTuesday.setChipBackgroundColorResource(R.color.white)
+                            }
+                        }
+                        chipWednesday -> {
+                            if (frequencyDayGroup.checkedChipIds.contains(chipWednesday.id)) {
+                                chipWednesday.setTextColor(requireContext().getColor(R.color.white))
+                                chipWednesday.setChipBackgroundColorResource(R.color.soft_blue)
+                            } else {
+                                chipWednesday.setTextColor(requireContext().getColor(R.color.soft_blue))
+                                chipWednesday.setChipBackgroundColorResource(R.color.white)
+                            }
+                        }
+                        chipThursday -> {
+                            if (frequencyDayGroup.checkedChipIds.contains(chipThursday.id)) {
+                                chipThursday.setTextColor(requireContext().getColor(R.color.white))
+                                chipThursday.setChipBackgroundColorResource(R.color.very_soft_red_2)
+                            } else {
+                                chipThursday.setTextColor(requireContext().getColor(R.color.very_soft_red_2))
+                                chipThursday.setChipBackgroundColorResource(R.color.white)
+                            }
+                        }
+                        chipFriday -> {
+                            if (frequencyDayGroup.checkedChipIds.contains(chipFriday.id)) {
+                                chipFriday.setTextColor(requireContext().getColor(R.color.white))
+                                chipFriday.setChipBackgroundColorResource(R.color.dark_red)
+                            } else {
+                                chipFriday.setTextColor(requireContext().getColor(R.color.dark_red))
+                                chipFriday.setChipBackgroundColorResource(R.color.white)
+                            }
+                        }
+                        chipSaturday -> {
+                            if (frequencyDayGroup.checkedChipIds.contains(chipSaturday.id)) {
+                                chipSaturday.setTextColor(requireContext().getColor(R.color.white))
+                                chipSaturday.setChipBackgroundColorResource(R.color.moderate_violet)
+                            } else {
+                                chipSaturday.setTextColor(requireContext().getColor(R.color.moderate_violet))
+                                chipSaturday.setChipBackgroundColorResource(R.color.white)
+                            }
+                        }
+                        chipSunday -> {
+                            if (frequencyDayGroup.checkedChipIds.contains(chipSunday.id)) {
+                                chipSunday.setTextColor(requireContext().getColor(R.color.white))
+                                chipSunday.setChipBackgroundColorResource(R.color.vivid_yellow_2)
+                            } else {
+                                chipSunday.setTextColor(requireContext().getColor(R.color.vivid_yellow_2))
+                                chipSunday.setChipBackgroundColorResource(R.color.white)
+                            }
+                        }
+                        else -> throw Exception("Unknown viewId: ${it.id}")
+                    }
+                }
             }
 
             cross.setSafeOnClickListener {
@@ -96,7 +177,7 @@ class UpdateReminderFragment : BottomSheetDialogFragment() {
 
             saveBtn.setSafeOnClickListener {
                 val time: Time? = dateTimePickerViewModel.selectedLogTime.value?.peekContent()
-                val selectedDayList = if (reminderViewModel.isDaily.value == true) {
+                val selectedDayList = if (reminderViewModel.isDaily.value?.peekContent() == true) {
                     Reminder.DayOfWeek.values().toList()
                 } else {
                     frequencyDayGroup.checkedChipIds.map {

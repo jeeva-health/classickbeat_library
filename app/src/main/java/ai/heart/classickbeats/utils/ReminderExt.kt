@@ -16,6 +16,8 @@ fun List<Reminder.DayOfWeek>.toDisplayString(context: Context): String =
             Reminder.DayOfWeek.Sunday -> R.string.sunday
         }
         context.getString(stringResId)
+    } else if (this.size == 7) {
+        context.getString(R.string.daily)
     } else {
         this.joinToString {
             val stringResId = when (it) {

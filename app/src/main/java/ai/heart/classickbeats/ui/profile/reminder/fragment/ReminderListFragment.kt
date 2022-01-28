@@ -5,14 +5,17 @@ import ai.heart.classickbeats.databinding.FragmentReminderListBinding
 import ai.heart.classickbeats.model.Reminder
 import ai.heart.classickbeats.ui.profile.reminder.ReminderAdapter
 import ai.heart.classickbeats.ui.profile.reminder.ReminderViewModel
+import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ReminderListFragment : Fragment(R.layout.fragment_reminder_list) {
@@ -42,14 +45,12 @@ class ReminderListFragment : Fragment(R.layout.fragment_reminder_list) {
             openAddReminderFragment()
         }
 
-        reminderViewModel.reminderList.observe(viewLifecycleOwner) {
-            reminderAdapter.submitList(it)
-            reminderAdapter.notifyDataSetChanged()
+        lifecycleScope.launchWhenResumed {
+            reminderViewModel.getAllLocalReminders().collectLatest {
+                reminderAdapter.submitList(it)
+                reminderAdapter.notifyDataSetChanged()
+            }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         reminderViewModel.getAllReminders()
     }

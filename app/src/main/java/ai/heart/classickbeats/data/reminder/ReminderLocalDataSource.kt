@@ -5,6 +5,7 @@ import ai.heart.classickbeats.model.entity.ReminderEntity
 import ai.heart.classickbeats.shared.result.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class ReminderLocalDataSource internal constructor(
@@ -48,14 +49,13 @@ class ReminderLocalDataSource internal constructor(
             }
         }
 
-    override suspend fun getAllReminder(): Result<List<ReminderEntity>> =
-        withContext(ioDispatcher) {
-            try {
-                val reminderList = reminderDao.getAll()
-                Result.Success(reminderList)
-            } catch (e: Exception) {
-                Result.Error(e.message)
-            }
+    fun getAllReminder(): Flow<List<ReminderEntity>> =
+        try {
+            val reminderList = reminderDao.getAll()
+            reminderList
+        } catch (e: Exception) {
+            throw Exception("Error fetching reminder list from database")
+
         }
 
     suspend fun getReminder(reminderId: Long): Result<ReminderEntity> =

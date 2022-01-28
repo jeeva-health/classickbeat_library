@@ -2,6 +2,7 @@ package ai.heart.classickbeats.data.reminder.cache
 
 import ai.heart.classickbeats.model.entity.ReminderEntity
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -23,7 +24,7 @@ interface ReminderDao {
     suspend fun selectNetwork(id: Long): List<ReminderEntity>
 
     @Query("SELECT * FROM reminders")
-    suspend fun getAll(): List<ReminderEntity>
+    fun getAll(): Flow<List<ReminderEntity>>
 
     @Delete
     suspend fun delete(reminderEntity: ReminderEntity)

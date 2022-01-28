@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,10 +28,10 @@ class ReminderViewModel @Inject constructor(
     private fun setShowLoadingTrue() = _showLoading.postValue(Event(true))
     private fun setShowLoadingFalse() = _showLoading.postValue(Event(false))
 
-    private val _isDaily = MutableLiveData<Boolean>(true)
-    val isDaily: LiveData<Boolean> = _isDaily
+    private val _isDaily = MutableLiveData(Event(true))
+    val isDaily: LiveData<Event<Boolean>> = _isDaily
     fun setIsDaily(boolean: Boolean) {
-        _isDaily.postValue(boolean)
+        _isDaily.postValue(Event(boolean))
     }
 
     private val _reminderSaved = MutableLiveData(Event(false))
@@ -45,10 +46,10 @@ class ReminderViewModel @Inject constructor(
     private val _selectedReminder = MutableLiveData<Reminder>()
     val selectedReminder: LiveData<Reminder> = _selectedReminder
 
-    private val _reminderType = MutableLiveData(Reminder.Type.PPG)
-    val reminderType: LiveData<Reminder.Type> = _reminderType
+    private val _reminderType = MutableLiveData<Event<Reminder.Type>>()
+    val reminderType: LiveData<Event<Reminder.Type>> = _reminderType
     fun updateReminderType(reminderType: Reminder.Type) {
-        _reminderType.postValue(reminderType)
+        _reminderType.postValue(Event(reminderType))
     }
 
     fun getReminder(reminderId: Long) {
@@ -65,7 +66,7 @@ class ReminderViewModel @Inject constructor(
 
     fun addReminder(time: Time, frequency: List<Reminder.DayOfWeek>) {
         val reminder = Reminder(
-            type = reminderType.value!!,
+            type = reminderType.value?.peekContent() ?: Reminder.Type.PPG,
             time = time,
             frequency = frequency,
             isReminderSet = true,
@@ -89,7 +90,7 @@ class ReminderViewModel @Inject constructor(
         val reminder = selectedReminder.value!!
         val updatedReminder = Reminder(
             _id = reminder._id,
-            type = reminderType.value!!,
+            type = reminderType.value?.peekContent() ?: Reminder.Type.PPG,
             time = time ?: reminder.time,
             frequency = frequency,
             isReminderSet = true,
@@ -119,17 +120,12 @@ class ReminderViewModel @Inject constructor(
         }
     }
 
+    fun getAllLocalReminders(): Flow<List<Reminder>> =
+        reminderRepository.getReminderLocalList()
+
     fun getAllReminders() {
         viewModelScope.launch {
-            setShowLoadingTrue()
-            val response = reminderRepository.getReminderList()
-            if (response.succeeded) {
-                val list = response.data!!
-                _reminderList.postValue(list)
-            } else {
-                apiError = response.error
-            }
-            setShowLoadingFalse()
+            reminderRepository.getReminderList()
         }
     }
 }

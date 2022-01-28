@@ -9,11 +9,13 @@ import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.profile.reminder.ReminderViewModel
 import ai.heart.classickbeats.ui.widgets.DateTimePickerViewModel
 import ai.heart.classickbeats.utils.hideKeyboard
+import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.toName
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -73,7 +75,7 @@ class AddReminderFragment : Fragment() {
                 reminderViewModel.setIsDaily(true)
             }
 
-            reminderViewModel.isDaily.observe(viewLifecycleOwner) { isDaily ->
+            reminderViewModel.isDaily.observe(viewLifecycleOwner, EventObserver { isDaily ->
                 if (isDaily) {
                     frequencyDayGroup.isVisible = false
                     chipDaily.setTextColor(requireContext().getColor(R.color.white))
@@ -87,7 +89,7 @@ class AddReminderFragment : Fragment() {
                     chipDaily.setTextColor(requireContext().getColor(R.color.very_dark_grey_3))
                     chipDaily.setChipBackgroundColorResource(R.color.white)
                 }
-            }
+            })
 
             arrayOf(
                 chipMonday,
@@ -177,15 +179,15 @@ class AddReminderFragment : Fragment() {
             }
         }
 
-        reminderViewModel.reminderType.observe(viewLifecycleOwner) {
+        reminderViewModel.reminderType.observe(viewLifecycleOwner, EventObserver {
             val reminderName = it.toName(requireContext())
             binding?.nameLayout?.editText?.setText(reminderName)
-        }
+        })
     }
 
     private fun FragmentAddReminderBinding.saveReminder() {
         val time: Time? = dateTimePickerViewModel.selectedLogTime.value?.peekContent()
-        val selectedDayList = if (reminderViewModel.isDaily.value == true) {
+        val selectedDayList = if (reminderViewModel.isDaily.value?.peekContent() == true) {
             Reminder.DayOfWeek.values().toList()
         } else {
             frequencyDayGroup.checkedChipIds.map {

@@ -16,6 +16,4 @@ interface ReminderDataSource {
         reminderId: Long,
         reminderEntity: ReminderEntity
     ): Result<ReminderEntity>
-
-    suspend fun getAllReminder(): Result<List<ReminderEntity>>
 }
