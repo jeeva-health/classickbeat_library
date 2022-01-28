@@ -41,7 +41,7 @@ fun Reminder.Type.toName(context: Context): String {
         Reminder.Type.BloodPressure -> R.string.reminder_blood_pressure
         Reminder.Type.Glucose -> R.string.reminder_blood_glucose
         Reminder.Type.Weight -> R.string.reminder_weight
-        Reminder.Type.Medication -> R.string.reminder_meditation
+        Reminder.Type.Medication -> R.string.reminder_medicine
     }
     return context.getString(stringResId)
 }

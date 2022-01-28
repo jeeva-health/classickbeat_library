@@ -83,7 +83,7 @@
     <string name="submit_feedback">Submit meditation feedback</string>
     <string name="press_play">Press play to start</string>
     <string name="sleep_meditation_title">Sleep Well</string>
-    <string name="bp_meditation_title">Rest your Heart</string>
+    <string name="bp_meditation_title">Release the Pressure</string>
     <string name="anger_meditation_title">Stay Calm</string>
     <string name="stress_meditation_title">Ease your Mind</string>
     <string name="immunity_meditation_title">Feel Good</string>
@@ -105,8 +105,8 @@
     <string name="date">Date</string>
     <string name="notes">Notes</string>
     <string name="save">Save</string>
-    <string name="systolic">Systolic</string>
-    <string name="diastolic">Diastolic</string>
+    <string name="systolic">Systolic (High)</string>
+    <string name="diastolic">Diastolic (Low)</string>
     <string name="time">Time</string>
     <string name="amount">Amount</string>
     <string name="blood_glucose_level">Blood Glucose Level</string>
@@ -227,7 +227,7 @@
     <string name="sunday_short">Su</string>
     <string name="delete">Delete</string>
     <string name="save_reminder">Save Reminder</string>
-    <string name="reminder_ppg">Scan Hear Rate</string>
+    <string name="reminder_ppg">Scan Heart  Rate</string>
     <string name="reminder_meditation">Meditate</string>
     <string name="reminder_blood_pressure">Log Blood Pressure</string>
     <string name="reminder_blood_glucose">Log Blood Glucose Level</string>
