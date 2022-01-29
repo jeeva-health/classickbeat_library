@@ -2,6 +2,8 @@ package ai.heart.classickbeats.ui.wellness
 
 import ai.heart.classickbeats.databinding.ItemviewMeditationBinding
 import ai.heart.classickbeats.model.MeditationMedia
+import ai.heart.classickbeats.utils.getCategoryName
+import ai.heart.classickbeats.utils.getDurationString
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import android.content.Context
 import android.view.LayoutInflater

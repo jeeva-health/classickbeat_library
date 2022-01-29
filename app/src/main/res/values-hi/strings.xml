@@ -137,8 +137,10 @@
     <string name="lifestyle">जीवनशैली</string>
     <string name="undesirable">अनुपयुक्त</string>
     <string name="desirable">उपयुक्त</string>
-    <string name="active">सक्रिय</string>
     <string name="sedentary">गतिहीन</string>
+    <string name="moderately_active">Moderately Active</string>
+    <string name="active">सक्रिय</string>
+    <string name="very_active">Very Active</string>
     <string name="insufficient_heart_rate_data">अपर्याप्त नाड़ी स्कैन। अपनी बेसलाइन निर्धारित करने और तनाव पर विस्तृत जानकारी प्राप्त करने के लिए 7 अलग-अलग दिनों में कुल 10 स्कैन पूरे करें।</string>
     <string name="collect_more_gems"><![CDATA[विस्तृत तनाव विश्लेषण रिपोर्ट प्राप्त करने के लिए 20 HRV रत्न एकत्रित करें। >]]></string>
     <string name="hrv_metrics">HRV मीटर</string>
@@ -237,9 +239,10 @@
     <string name="scans">scans</string>
     <string name="days">days</string>
 
+    <!--    Feedback-->
     <string name="send_feedback">Send Feedback</string>
     <string name="feedback_message">Tell us what you love about the app or what we could be doing better</string>
     <string name="write_here">Write Here</string>
-    <string name="feeback_submitted">Feedback submitted</string>
+    <string name="feedback_submitted">Feedback submitted</string>
 
 </resources>

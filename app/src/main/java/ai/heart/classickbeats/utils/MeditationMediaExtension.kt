@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.wellness
+package ai.heart.classickbeats.utils
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.model.MeditationMedia

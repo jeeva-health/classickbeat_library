@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.wellness
+package ai.heart.classickbeats.utils
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.model.WellnessType
@@ -11,7 +11,7 @@ fun WellnessType.getTitle() = when (this) {
     WellnessType.IMMUNITY -> R.string.immunity_meditation_title
 }
 
-fun WellnessType.getName() = when(this) {
+fun WellnessType.getName() = when (this) {
     WellnessType.SLEEP -> R.string.sleep
     WellnessType.BLOOD_PRESSURE -> R.string.blood_pressure
     WellnessType.ANGER -> R.string.anger

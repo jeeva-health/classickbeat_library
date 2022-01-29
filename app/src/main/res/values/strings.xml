@@ -137,8 +137,10 @@
     <string name="lifestyle">Lifestyle</string>
     <string name="undesirable">Undesirable</string>
     <string name="desirable">Desirable</string>
-    <string name="active">Active</string>
     <string name="sedentary">Sedentary</string>
+    <string name="moderately_active">Moderately Active</string>
+    <string name="active">Active</string>
+    <string name="very_active">Very Active</string>
     <string name="insufficient_heart_rate_data">Insufficient pulse scans. Complete a total of 10 scans across 7 different days to set up your baseline and get detailed insights on stress.</string>
     <string name="collect_more_gems"><![CDATA[Collect 20 HRV gems to get a detailed stress analysis report >]]></string>
     <string name="hrv_metrics">HRV Metrics</string>
@@ -238,8 +240,10 @@
     <string name="scans">scans</string>
     <string name="days">days</string>
 
+    <!--    Feedback-->
     <string name="send_feedback">Send Feedback</string>
     <string name="feedback_message">Tell us what you love about the app or what we could be doing better</string>
     <string name="write_here">Write Here</string>
-    <string name="feeback_submitted">Feedback submitted</string>
+    <string name="feedback_submitted">Feedback submitted</string>
+    
 </resources>

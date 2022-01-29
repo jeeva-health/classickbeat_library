@@ -4,6 +4,7 @@ import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.model.PPGData
 import ai.heart.classickbeats.model.StressResult
 import ai.heart.classickbeats.model.entity.PPGEntity
+import ai.heart.classickbeats.model.toLifestyleCategory
 import ai.heart.classickbeats.shared.util.toPPGDate
 import java.util.*
 
@@ -34,6 +35,8 @@ object PpgEntityToScanResult {
             ageBin = ppgEntity.bAgeBin ?: 0,
             bioAgeResult = bioAgeResult,
             activeStar = 6 - (ppgEntity.sedStars ?: 0),
+            lifestyleCategory = ppgEntity.lifeStyleCategory?.toLifestyleCategory()
+                ?: PPGData.ScanResult.LifestyleCategory.ModeratelyActive,
             sdnn = ppgEntity.sdnn ?: 0.0f,
             pnn50 = ppgEntity.pnn50 ?: 0.0f,
             rmssd = ppgEntity.rmssd ?: 0.0f,

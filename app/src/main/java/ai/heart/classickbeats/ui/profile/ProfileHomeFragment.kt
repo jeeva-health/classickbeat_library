@@ -61,7 +61,7 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
 
         profileViewModel.feedbackSubmitted.observe(viewLifecycleOwner) {
             if (it) {
-                showSnackbar(getString(R.string.feeback_submitted))
+                showSnackbar(getString(R.string.feedback_submitted))
                 profileViewModel.resetFeedbackSubmitted()
             }
         }

@@ -90,6 +90,12 @@ data class PPGEntity(
     val ppgDistinctDays: Int? = null,
 
     @Json(name = "this_ppg_baseline_set")
-    val isBaselineSet: Boolean? = null
+    val isBaselineSet: Boolean? = null,
 
-) : BaseLogEntity(LogType.PPG)
+    @Json(name = "is_calculation_complete")
+    val isCalculationComplete: Boolean? = null,
+
+    @Json(name = "lifestyleCategory")
+    val lifeStyleCategory: Int? = null,
+
+    ) : BaseLogEntity(LogType.PPG)

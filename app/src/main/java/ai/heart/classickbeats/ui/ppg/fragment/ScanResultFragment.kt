@@ -10,10 +10,7 @@ import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.shared.util.toOrdinalFormattedDateString
 import ai.heart.classickbeats.shared.util.toTimeString
 import ai.heart.classickbeats.ui.ppg.viewmodel.ScanResultViewModel
-import ai.heart.classickbeats.utils.getContextColor
-import ai.heart.classickbeats.utils.setSafeOnClickListener
-import ai.heart.classickbeats.utils.showLongToast
-import ai.heart.classickbeats.utils.viewBinding
+import ai.heart.classickbeats.utils.*
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.Typeface
@@ -103,8 +100,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         }
 
         val activeStarCount = scanResult.activeStar
-        val lifeStyleText =
-            if (scanResult.isActive) getString(R.string.active) else getString(R.string.sedentary)
+        val lifeStyleText = scanResult.lifestyleCategory.toLifestyleText(requireContext())
         val lifeStyleInfoText = if (scanResult.isActive)
             setBoldSpan(SpannableString.valueOf(getString(R.string.active_lifestyle)), 93, 104)
         else
