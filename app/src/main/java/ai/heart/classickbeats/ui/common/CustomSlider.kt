@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.widgets
+package ai.heart.classickbeats.ui.common
 
 import android.content.Context
 import android.util.AttributeSet

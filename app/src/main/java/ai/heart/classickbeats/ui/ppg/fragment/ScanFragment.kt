@@ -12,7 +12,7 @@ import ai.heart.classickbeats.ui.ppg.AccelerometerListener
 import ai.heart.classickbeats.ui.ppg.PixelAnalyzer
 import ai.heart.classickbeats.ui.ppg.viewmodel.MonitorViewModel
 import ai.heart.classickbeats.ui.ppg.viewmodel.ScanViewModel
-import ai.heart.classickbeats.ui.widgets.CircleProgressBar
+import ai.heart.classickbeats.ui.common.CircleProgressBar
 import ai.heart.classickbeats.utils.*
 import android.Manifest
 import android.annotation.SuppressLint
@@ -45,7 +45,6 @@ import com.github.mikephil.charting.charts.LineChart
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import timber.log.Timber
-import java.util.*
 
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi

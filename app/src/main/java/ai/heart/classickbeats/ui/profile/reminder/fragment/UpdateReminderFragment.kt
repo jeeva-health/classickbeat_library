@@ -7,7 +7,7 @@ import ai.heart.classickbeats.model.Reminder
 import ai.heart.classickbeats.model.Time
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.profile.reminder.ReminderViewModel
-import ai.heart.classickbeats.ui.widgets.DateTimePickerViewModel
+import ai.heart.classickbeats.ui.common.DateTimePickerViewModel
 import ai.heart.classickbeats.utils.hideKeyboard
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.toName

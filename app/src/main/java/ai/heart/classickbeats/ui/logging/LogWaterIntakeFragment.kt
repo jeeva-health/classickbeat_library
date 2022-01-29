@@ -4,7 +4,7 @@ import ai.heart.classickbeats.NavHomeDirections
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentLogWaterIntakeBinding
 import ai.heart.classickbeats.shared.result.EventObserver
-import ai.heart.classickbeats.ui.widgets.DateTimePickerViewModel
+import ai.heart.classickbeats.ui.common.DateTimePickerViewModel
 import ai.heart.classickbeats.utils.*
 import android.os.Bundle
 import android.view.View

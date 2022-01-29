@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.widgets
+package ai.heart.classickbeats.ui.common
 
 import ai.heart.classickbeats.model.Date
 import android.app.DatePickerDialog

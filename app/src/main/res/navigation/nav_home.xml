@@ -178,12 +178,12 @@
 
     <dialog
         android:id="@+id/timePickerFragment"
-        android:name="ai.heart.classickbeats.ui.widgets.TimePickerFragment"
+        android:name="ai.heart.classickbeats.ui.common.TimePickerFragment"
         android:label="fragment_time_picker_dialog" />
 
     <dialog
         android:id="@+id/datePickerFragment"
-        android:name="ai.heart.classickbeats.ui.widgets.DatePickerFragment"
+        android:name="ai.heart.classickbeats.ui.common.DatePickerFragment"
         android:label="fragment_date_picker_dialog" />
 
     <dialog
