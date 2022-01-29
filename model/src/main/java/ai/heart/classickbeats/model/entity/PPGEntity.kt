@@ -54,16 +54,9 @@ data class PPGEntity(
 
     val quality: Float? = null,
 
-    val binProbsMAP: List<Float>? = null,
-
     val bAgeBin: Int? = null,
 
-    @Json(name = "activeSedantryProb")
-    val activeSedentaryProb: List<Float>? = null,
-
-    val sedRatioLog: Float? = null,
-
-    val sedStars: Int? = null,
+    val activeStars: Int? = null,
 
     val stressLevel: Int? = null,
 
@@ -80,8 +73,6 @@ data class PPGEntity(
     val scanState: String? = null,
 
     val timeStamp: String? = null,
-
-    val isUploaded: Boolean = false,
 
     @Json(name = "this_ppg_count")
     val ppgCount: Int? = null,

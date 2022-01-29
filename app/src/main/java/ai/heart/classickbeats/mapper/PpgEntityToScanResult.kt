@@ -25,8 +25,8 @@ object PpgEntityToScanResult {
         } else {
             0
         }
-
-        val isActive = ppgEntity.sedRatioLog ?: 0f < 0
+        val activeStars = ppgEntity.activeStars ?: 2
+        val isActive = activeStars > 3
 
         return PPGData.ScanResult(
             bpm = ppgEntity.hr ?: 0.0f,
@@ -34,7 +34,7 @@ object PpgEntityToScanResult {
             quality = ppgEntity.quality ?: 0.0f,
             ageBin = ppgEntity.bAgeBin ?: 0,
             bioAgeResult = bioAgeResult,
-            activeStar = 6 - (ppgEntity.sedStars ?: 0),
+            activeStar = activeStars,
             lifestyleCategory = ppgEntity.lifeStyleCategory?.toLifestyleCategory()
                 ?: PPGData.ScanResult.LifestyleCategory.ModeratelyActive,
             sdnn = ppgEntity.sdnn ?: 0.0f,
