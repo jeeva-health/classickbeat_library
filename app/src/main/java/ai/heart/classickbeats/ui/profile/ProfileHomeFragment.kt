@@ -59,6 +59,13 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
             }
         })
 
+        profileViewModel.feedbackSubmitted.observe(viewLifecycleOwner) {
+            if (it) {
+                showSnackbar(getString(R.string.feeback_submitted))
+                profileViewModel.resetFeedbackSubmitted()
+            }
+        }
+
         binding.reminder.setSafeOnClickListener {
             navigateToReminderListFragment()
         }

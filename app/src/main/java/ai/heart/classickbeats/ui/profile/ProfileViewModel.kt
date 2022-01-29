@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository
@@ -34,10 +33,10 @@ class ProfileViewModel @Inject constructor(
         _showLoading.postValue(Event(false))
     }
 
-    private val _dismissDialog = MutableLiveData(Event(false))
-    val dismissDialog: LiveData<Event<Boolean>> = _dismissDialog
-    fun setDismissDialogTrue() {
-        _dismissDialog.postValue(Event(true))
+    private val _feedbackSubmitted = MutableLiveData(false)
+    val feedbackSubmitted: LiveData<Boolean> = _feedbackSubmitted
+    fun resetFeedbackSubmitted() {
+        _feedbackSubmitted.postValue(false)
     }
 
     fun getUser() {
@@ -48,15 +47,20 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun submitFeedback(feedback: String) {
+        viewModelScope.launch {
+            setShowLoadingTrue()
+            userRepository.submitFeedback(feedback)
+            setShowLoadingFalse()
+            _feedbackSubmitted.postValue(true)
+        }
+    }
+
     fun getReferralGemReward(): Pair<Int, Int> {
         return Pair(10, 5)
     }
 
     fun getProPricing(): Triple<Int, Int, Int> {
         return Triple(2500, 208, 350)
-    }
-
-    fun submitFeedback(feedback: String) {
-        setDismissDialogTrue()
     }
 }

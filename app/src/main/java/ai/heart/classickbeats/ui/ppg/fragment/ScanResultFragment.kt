@@ -221,8 +221,11 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
                 val scanTargetCount = scanResult.stress.targetDataCount
                 val completedDistinctScanCount = scanResult.stress.distinctDataCount
                 val targetDistinctCount = scanResult.stress.targetDistinctDataCount
-                progressText.text = "$completedScanCount/$scanTargetCount"
-                progressText2.text = "$completedDistinctScanCount/$targetDistinctCount"
+                val scanCount = "$completedScanCount/$scanTargetCount " + getString(R.string.scans)
+                val dayCount =
+                    "$completedDistinctScanCount/$targetDistinctCount " + getString(R.string.days)
+                progressText.text = scanCount
+                progressText2.text = dayCount
                 stressProgress.setProgress(completedScanCount, true)
                 stressProgress2.setProgress(completedDistinctScanCount, true)
             }

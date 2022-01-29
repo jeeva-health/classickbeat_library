@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.data.user.remote
 
 import ai.heart.classickbeats.model.entity.UserEntity
+import ai.heart.classickbeats.model.request.FeedbackRequest
 import ai.heart.classickbeats.model.request.FirebaseTokenRequest
 import ai.heart.classickbeats.model.response.GetUserResponse
 import ai.heart.classickbeats.model.response.RegisterResponse
@@ -25,4 +26,7 @@ interface UserApiService {
 
     @POST("/devices/")
     suspend fun registerFirebaseToken(@Body request: FirebaseTokenRequest): Response<Unit>
+
+    @POST("/user/feedback/")
+    suspend fun submitUserFeedback(@Body request: FeedbackRequest): Response<Unit>
 }

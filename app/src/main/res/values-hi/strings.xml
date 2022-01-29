@@ -234,5 +234,12 @@
     <string name="reminder_weight">Log Weight</string>
     <string name="reminder_medicine">Log Medicine</string>
     <string name="reminder_type">Select type of Reminder</string>
+    <string name="scans">scans</string>
+    <string name="days">days</string>
+
+    <string name="send_feedback">Send Feedback</string>
+    <string name="feedback_message">Tell us what you love about the app or what we could be doing better</string>
+    <string name="write_here">Write Here</string>
+    <string name="feeback_submitted">Feedback submitted</string>
 
 </resources>

@@ -22,6 +22,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
@@ -146,6 +148,13 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    fun showSnackbar(message: String) {
+        binding?.apply {
+            Snackbar.make(bottomNavigation, message, LENGTH_SHORT)
+                .apply { anchorView = bottomNavigation }.show()
         }
     }
 

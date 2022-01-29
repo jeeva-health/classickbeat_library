@@ -70,6 +70,9 @@ class UserRepository @Inject constructor(
     suspend fun registerFirebaseToken(firebaseToken: String): Result<Unit> =
         userRemoteDataSource.registerFirebaseToken(firebaseToken)
 
+    suspend fun submitFeedback(feedback: String): Result<Unit> =
+        userRemoteDataSource.submitFeedback(feedback)
+
     private suspend fun refreshUser() {
         // Check if user data was fetched recently.
         val userExists = userDao.hasUser(FRESH_TIMEOUT) > 0
