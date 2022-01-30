@@ -2,8 +2,8 @@ package ai.heart.classickbeats.data.reminder
 
 import ai.heart.classickbeats.di.ReminderDataModule.LocalDataSource
 import ai.heart.classickbeats.di.ReminderDataModule.RemoteDataSource
-import ai.heart.classickbeats.mapper.input.ReminderInMapper
-import ai.heart.classickbeats.mapper.output.ReminderOutMapper
+import ai.heart.classickbeats.shared.mapper.input.ReminderInMapper
+import ai.heart.classickbeats.shared.mapper.output.ReminderOutMapper
 import ai.heart.classickbeats.model.Reminder
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.data

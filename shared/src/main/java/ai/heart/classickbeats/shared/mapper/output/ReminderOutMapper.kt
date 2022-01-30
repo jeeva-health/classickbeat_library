@@ -1,6 +1,6 @@
-package ai.heart.classickbeats.mapper.output
+package ai.heart.classickbeats.shared.mapper.output
 
-import ai.heart.classickbeats.mapper.Mapper
+import ai.heart.classickbeats.shared.mapper.Mapper
 import ai.heart.classickbeats.model.Reminder
 import ai.heart.classickbeats.model.entity.ReminderEntity
 import ai.heart.classickbeats.model.toInt

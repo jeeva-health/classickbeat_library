@@ -5,7 +5,7 @@ import ai.heart.classickbeats.data.user.UserRepository
 import ai.heart.classickbeats.domain.exception.AgeException
 import ai.heart.classickbeats.domain.exception.PpgEntityException
 import ai.heart.classickbeats.domain.exception.UserException
-import ai.heart.classickbeats.mapper.PpgEntityToScanResult
+import ai.heart.classickbeats.shared.mapper.PpgEntityToScanResult
 import ai.heart.classickbeats.model.PPGData
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.di.IoDispatcher

@@ -31,6 +31,10 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
 
         setLightStatusBar()
 
+        logInViewModel.currentUser?.let {
+            binding.nameLayout.editText?.setText(it.fullName)
+        }
+
         binding.genderLayout.editText?.setOnClickListener {
             hideKeyboard(it)
             openGenderSelectionDialog()
@@ -103,13 +107,13 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
             }
         })
 
-        logInViewModel.showLoading.observe(viewLifecycleOwner, {
+        logInViewModel.showLoading.observe(viewLifecycleOwner) {
             if (it) {
                 showLoadingBar()
             } else {
                 hideLoadingBar()
             }
-        })
+        }
     }
 
     private fun navigateToNavHome() {

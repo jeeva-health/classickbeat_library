@@ -1,8 +1,8 @@
-package ai.heart.classickbeats.mapper.input
+package ai.heart.classickbeats.shared.mapper.input
 
-import ai.heart.classickbeats.mapper.Mapper
 import ai.heart.classickbeats.model.*
 import ai.heart.classickbeats.model.entity.UserEntity
+import ai.heart.classickbeats.shared.mapper.Mapper
 import javax.inject.Inject
 
 class UserInMapper @Inject constructor() : Mapper<UserEntity, User> {
@@ -17,6 +17,11 @@ class UserInMapper @Inject constructor() : Mapper<UserEntity, User> {
         val isHeightInches = HeightUnits.CMS.valueToEnum(input.heightUnit)
         val dob = input.dob ?: ""
         val isRegistered = input.isRegistered ?: false
+        val profilePicUrl: String = input.googleProfileUrl ?: when (gender) {
+            Gender.MALE -> "https://public-images-profile.s3.ap-south-1.amazonaws.com/man.png"
+            Gender.FEMALE -> "https://public-images-profile.s3.ap-south-1.amazonaws.com/business-women.png"
+            Gender.OTHERS -> "https://public-images-profile.s3.ap-south-1.amazonaws.com/man.png"
+        }
 
         return User(
             fullName = fullName,
@@ -27,7 +32,8 @@ class UserInMapper @Inject constructor() : Mapper<UserEntity, User> {
             heightUnit = isHeightInches,
             dob = dob,
             emailAddress = email,
-            isRegistered = isRegistered
+            isRegistered = isRegistered,
+            profilePicUrl = profilePicUrl
         )
     }
 }

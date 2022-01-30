@@ -1,7 +1,7 @@
 package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.data.db.AppDatabase
-import ai.heart.classickbeats.mapper.input.*
+import ai.heart.classickbeats.shared.mapper.input.*
 import ai.heart.classickbeats.model.*
 import ai.heart.classickbeats.model.entity.BaseLogEntity
 import ai.heart.classickbeats.model.entity.HistoryEntity

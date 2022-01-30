@@ -1,8 +1,10 @@
 package ai.heart.classickbeats.shared.data.login
 
+import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.model.request.LoginRequest
 import ai.heart.classickbeats.model.request.RefreshTokenRequest
 import ai.heart.classickbeats.shared.BuildConfig
+import ai.heart.classickbeats.shared.mapper.input.UserInMapper
 import ai.heart.classickbeats.shared.network.LoginRepositoryHolder
 import ai.heart.classickbeats.shared.network.SessionManager
 import ai.heart.classickbeats.shared.result.Result
@@ -13,6 +15,7 @@ import javax.inject.Inject
 @ActivityRetainedScoped
 class LoginRepository @Inject constructor(
     private val loginRemoteDataSource: LoginRemoteDataSource,
+    private val userInMapper: UserInMapper,
     private val sessionManager: SessionManager,
     loginRepositoryHolder: LoginRepositoryHolder
 ) {
@@ -22,7 +25,7 @@ class LoginRepository @Inject constructor(
 
     var loginError: String = "Login failed. Please try again"
 
-    suspend fun loginUser(firebaseToken: String): Pair<Boolean, Boolean> {
+    suspend fun loginUser(firebaseToken: String): Pair<User?, Boolean> {
         val loginRequest = LoginRequest(
             clientId = BuildConfig.CLIENT_ID,
             clientSecret = BuildConfig.CLIENT_SECRET,
@@ -30,14 +33,16 @@ class LoginRepository @Inject constructor(
         )
         val response = loginRemoteDataSource.login(loginRequest)
         if (response is Result.Success) {
-            val isUserRegistered = response.data.user?.isRegistered ?: false
-            val accessToken = response.data.accessToken ?: ""
-            val refreshToken = response.data.refreshToken ?: ""
+            val data = response.data
+            val isUserRegistered = data.user?.isRegistered ?: false
+            val accessToken = data.accessToken ?: ""
+            val refreshToken = data.refreshToken ?: ""
             sessionManager.saveAuthToken(accessToken, refreshToken)
-            return Pair(true, isUserRegistered)
+            val user = userInMapper.map(data.user!!)
+            return Pair(user, isUserRegistered)
         }
         loginError = (response as Result.Error).exception!!
-        return Pair(false, second = false)
+        return Pair(null, second = false)
     }
 
     suspend fun refreshToken(): Boolean {

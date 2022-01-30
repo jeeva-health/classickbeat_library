@@ -76,7 +76,7 @@
 # To keep data model and mapper class
 -keep class ai.heart.classickbeats.model.** { *; }
 -keep class ai.heart.classickbeats.domain.CameraReading
--keep class ai.heart.classickbeats.mapper.** { *; }
+-keep class ai.heart.classickbeats.shared.mapper.** { *; }
 
 
 # Glilde

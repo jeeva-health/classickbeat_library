@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.mapper
+package ai.heart.classickbeats.shared.mapper
 
 import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.model.PPGData

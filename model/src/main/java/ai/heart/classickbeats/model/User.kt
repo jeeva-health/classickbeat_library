@@ -10,5 +10,6 @@ data class User(
     val dob: String,
     val emailAddress: String? = null,
     val isRegistered: Boolean = false,
-    val isUpgradedPro: Boolean = true
+    val isUpgradedPro: Boolean = true,
+    val profilePicUrl: String = ""
 )

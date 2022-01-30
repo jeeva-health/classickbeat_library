@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.roundToInt
 
@@ -49,6 +50,9 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
             binding.name.text = userName
             binding.details.text =
                 "${age} yrs, ${weight} $weightUnit, ${heightFeet}ft ${heightInches}in"
+            Glide.with(binding.profilePic)
+                .load(it.profilePicUrl)
+                .into(binding.profilePic)
         })
 
         profileViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {

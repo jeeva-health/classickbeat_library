@@ -73,13 +73,13 @@ class GoogleSignUpFragment : Fragment(R.layout.fragment_google_sign_up) {
                 }
             })
 
-            showLoading.observe(viewLifecycleOwner, {
+            showLoading.observe(viewLifecycleOwner) {
                 if (it) {
                     showLoadingBar()
                 } else {
                     hideLoadingBar()
                 }
-            })
+            }
         }
     }
 

@@ -1,6 +1,6 @@
-package ai.heart.classickbeats.mapper.input
+package ai.heart.classickbeats.shared.mapper.input
 
-import ai.heart.classickbeats.mapper.Mapper
+import ai.heart.classickbeats.shared.mapper.Mapper
 import ai.heart.classickbeats.model.MeditationMedia
 import ai.heart.classickbeats.model.entity.MeditationEntity
 import ai.heart.classickbeats.model.getMeditationLanguage

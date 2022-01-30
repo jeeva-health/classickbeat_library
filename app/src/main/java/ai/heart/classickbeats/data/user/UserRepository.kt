@@ -3,10 +3,10 @@ package ai.heart.classickbeats.data.user
 import ai.heart.classickbeats.data.user.cache.UserDao
 import ai.heart.classickbeats.data.user.remote.UserRemoteDataSource
 import ai.heart.classickbeats.domain.exception.UserException
-import ai.heart.classickbeats.mapper.input.UserInMapper
-import ai.heart.classickbeats.mapper.output.UserOutMapper
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.model.entity.UserEntity
+import ai.heart.classickbeats.shared.mapper.input.UserInMapper
+import ai.heart.classickbeats.shared.mapper.output.UserOutMapper
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.error
@@ -96,6 +96,6 @@ class UserRepository @Inject constructor(
     }
 
     companion object {
-        val FRESH_TIMEOUT = TimeUnit.DAYS.toMillis(1)
+        val FRESH_TIMEOUT = TimeUnit.MINUTES.toMillis(1)
     }
 }
