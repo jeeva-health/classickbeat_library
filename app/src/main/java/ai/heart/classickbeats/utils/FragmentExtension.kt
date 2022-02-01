@@ -47,8 +47,8 @@ fun Fragment.showShortToast(message: String) {
     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 }
 
-fun Fragment.showSnackbar(message: String) {
-    (requireActivity() as MainActivity).showSnackbar(message)
+fun Fragment.showSnackbar(message: String, isShort: Boolean = true) {
+    (requireActivity() as MainActivity).showSnackbar(message, isShort)
 }
 
 fun Fragment.hideKeyboard(view: View) {

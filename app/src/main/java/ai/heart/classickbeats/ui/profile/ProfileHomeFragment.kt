@@ -52,6 +52,7 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
                 "${age} yrs, ${weight} $weightUnit, ${heightFeet}ft ${heightInches}in"
             Glide.with(binding.profilePic)
                 .load(it.profilePicUrl)
+                .circleCrop()
                 .into(binding.profilePic)
         })
 
@@ -104,7 +105,7 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
 
     private fun openUpgradeFragment() {
         if (profileViewModel.userData.value?.peekContent()?.isUpgradedPro == true) {
-            showLongToast("Already a PRO User")
+            showSnackbar("Already a PRO User")
         } else {
             val action =
                 ProfileHomeFragmentDirections.actionProfileHomeFragmentToUpgradeToProFragment()
