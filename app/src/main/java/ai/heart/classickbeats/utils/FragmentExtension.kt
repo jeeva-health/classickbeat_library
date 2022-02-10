@@ -47,6 +47,10 @@ fun Fragment.showShortToast(message: String) {
     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 }
 
+fun Fragment.showSnackbar(message: String, isShort: Boolean = true) {
+    (requireActivity() as MainActivity).showSnackbar(message, isShort)
+}
+
 fun Fragment.hideKeyboard(view: View) {
     val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(view.windowToken, 0)

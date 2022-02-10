@@ -1,7 +1,6 @@
 package ai.heart.classickbeats.model.entity
 
 import ai.heart.classickbeats.model.LogType
-import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
@@ -25,6 +24,18 @@ data class PPGEntity(
     @Json(name = "camera_timestamp")
     val cameraTimeStamps: List<Long>? = null,
 
+    @Json(name = "acceleration_1")
+    val xAcceleration: List<Float>? = null,
+
+    @Json(name = "acceleration_2")
+    val yAcceleration: List<Float>? = null,
+
+    @Json(name = "acceleration_3")
+    val zAcceleration: List<Float>? = null,
+
+    @Json(name = "acceleration_timestamp")
+    val accelerationTimestamp: List<Long>? = null,
+
     @Json(name = "filtered_r_means")
     val filteredRMeans: List<Double>? = null,
 
@@ -43,16 +54,9 @@ data class PPGEntity(
 
     val quality: Float? = null,
 
-    val binProbsMAP: List<Float>? = null,
-
     val bAgeBin: Int? = null,
 
-    @Json(name = "activeSedantryProb")
-    val activeSedentaryProb: List<Float>? = null,
-
-    val sedRatioLog: Float? = null,
-
-    val sedStars: Int? = null,
+    val activeStars: Int? = null,
 
     val stressLevel: Int? = null,
 
@@ -70,6 +74,19 @@ data class PPGEntity(
 
     val timeStamp: String? = null,
 
-    val isUploaded: Boolean = false
+    @Json(name = "this_ppg_count")
+    val ppgCount: Int? = null,
 
-) : BaseLogEntity(LogType.PPG)
+    @Json(name = "this_ppg_distinct_days")
+    val ppgDistinctDays: Int? = null,
+
+    @Json(name = "this_ppg_baseline_set")
+    val isBaselineSet: Boolean? = null,
+
+    @Json(name = "is_calculation_complete")
+    val isCalculationComplete: Boolean? = null,
+
+    @Json(name = "lifestyleCategory")
+    val lifeStyleCategory: Int? = null,
+
+    ) : BaseLogEntity(LogType.PPG)

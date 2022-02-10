@@ -2,7 +2,9 @@ package ai.heart.classickbeats.ui.profile
 
 import ai.heart.classickbeats.databinding.FragmentFeedbackDialogBinding
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.utils.hideLoadingBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
+import ai.heart.classickbeats.utils.showLoadingBar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +12,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class FeedbackDialogFragment : DialogFragment() {
@@ -36,16 +37,23 @@ class FeedbackDialogFragment : DialogFragment() {
             profileViewModel.submitFeedback(feedback)
         }
 
-        profileViewModel.dismissDialog.observe(viewLifecycleOwner, EventObserver {
+        profileViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {
+            if (it) {
+                showLoadingBar()
+            } else {
+                hideLoadingBar()
+            }
+        })
+
+        profileViewModel.feedbackSubmitted.observe(viewLifecycleOwner) {
             if (it) {
                 dismiss()
             }
-        })
+        }
     }
 
     override fun onDestroy() {
         binding = null
         super.onDestroy()
     }
-
 }

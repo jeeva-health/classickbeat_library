@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.data.logging
 
-import ai.heart.classickbeats.mapper.input.LoggingListMapper
+import ai.heart.classickbeats.shared.mapper.input.LoggingListMapper
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error

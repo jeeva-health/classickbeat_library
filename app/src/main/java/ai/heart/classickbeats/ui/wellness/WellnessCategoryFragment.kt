@@ -4,9 +4,7 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentWellnessCategoryBinding
 import ai.heart.classickbeats.model.MeditationMedia
 import ai.heart.classickbeats.model.WellnessType
-import ai.heart.classickbeats.utils.setDarkStatusBar
-import ai.heart.classickbeats.utils.setSafeOnClickListener
-import ai.heart.classickbeats.utils.viewBinding
+import ai.heart.classickbeats.utils.*
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -75,19 +73,11 @@ class WellnessCategoryFragment : Fragment(R.layout.fragment_wellness_category) {
                 }
             }
 
-            pageCategory.text = wellnessCategory.name
+            pageCategory.text = getString(wellnessCategory.getName())
 
             pageTitle.text = getString(wellnessModel.title)
 
             pageMessage.text = getString(wellnessModel.message)
-
-//            longMeditationCard.setSafeOnClickListener {
-//                playMeditation(
-//                    wellnessCategory,
-//                    0,
-//                    "https://public-sound.s3.ap-south-1.amazonaws.com/public.mp3"
-//                )
-//            }
 
             notificationTxt.text = getString(wellnessCategory.getReminderMessage())
 

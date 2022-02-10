@@ -2,6 +2,7 @@ package ai.heart.classickbeats.data.user.remote
 
 import ai.heart.classickbeats.data.user.UserDataSource
 import ai.heart.classickbeats.model.entity.UserEntity
+import ai.heart.classickbeats.model.request.FeedbackRequest
 import ai.heart.classickbeats.model.request.FirebaseTokenRequest
 import ai.heart.classickbeats.model.response.GetUserResponse
 import ai.heart.classickbeats.model.response.RegisterResponse
@@ -45,5 +46,15 @@ class UserRemoteDataSource internal constructor(
             Result.Success(Unit)
         else
             Result.Error(response.error!!)
+    }
+
+    override suspend fun submitFeedback(feedback: String): Result<Unit> {
+        val feedbackRequest = FeedbackRequest(feedback = feedback)
+        val response = safeApiCall { userApiService.submitUserFeedback(feedbackRequest) }
+        return if (response.succeeded) {
+            Result.Success(Unit)
+        } else {
+            Result.Error(response.error)
+        }
     }
 }

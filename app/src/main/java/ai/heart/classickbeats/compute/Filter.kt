@@ -1,6 +1,5 @@
 package ai.heart.classickbeats.compute
 
-import com.github.psambit9791.jdsp.filter.Chebyshev
 import com.github.psambit9791.jdsp.signal.peaks.FindPeak
 import com.github.psambit9791.jdsp.transform.Hilbert
 import timber.log.Timber
@@ -8,36 +7,7 @@ import java.util.*
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-
 object Filter {
-
-    fun reverseArray(X: DoubleArray): DoubleArray {
-        var out = mutableListOf<Double>()
-        val N = X.size
-        for (i in 0 until N) {
-            out.add(X[N - i - 1])
-        }
-        return out.toDoubleArray()
-    }
-
-    fun chebyBandpass(X: Array<Double>): List<Double> {
-        val rf = 0.5
-        val cheby = Chebyshev(X.toDoubleArray(), 100.0, rf, 2)
-        val fX = cheby.bandPassFilter(4, 0.4, 4.0)
-        val fXR = reverseArray(fX)
-
-        val cheby2 = Chebyshev(fXR, 100.0, rf, 2)
-        val ffXR = cheby2.bandPassFilter(4, 0.4, 4.0)
-        val ffXRR = reverseArray(ffXR)
-
-        return ffXRR.toMutableList()
-    }
-
-    fun chebyBandpassSimple(X: Array<Double>): List<Double> {
-        val cheby = Chebyshev(X.toDoubleArray(), 100.0, 1.0, 2)
-        val y = cheby.bandPassFilter(4, 0.4, 4.0)
-        return y.toMutableList()
-    }
 
     fun hilbert(X: List<Double>): DoubleArray {
 //        Timber.i("TrackTime: Hilbert starting (fn)")

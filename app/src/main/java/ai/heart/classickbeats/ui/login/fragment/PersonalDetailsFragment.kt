@@ -31,6 +31,10 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
 
         setLightStatusBar()
 
+        logInViewModel.currentUser?.let {
+            binding.nameLayout.editText?.setText(it.fullName)
+        }
+
         binding.genderLayout.editText?.setOnClickListener {
             hideKeyboard(it)
             openGenderSelectionDialog()
@@ -71,7 +75,7 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
             }
 
             if (isError) {
-                showLongToast("Invalid details")
+                showSnackbar("Invalid details", false)
             } else {
                 val height =
                     (binding.heightLayout.editText as MaskedEditText?)?.getParsedText()
@@ -97,19 +101,19 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
             when (it) {
                 LoginViewModel.RequestType.LOGIN -> TODO()
                 LoginViewModel.RequestType.REGISTER -> {
-                    showShortToast("Successfully Registered")
+                    showSnackbar("Successfully Registered")
                     navigateToNavHome()
                 }
             }
         })
 
-        logInViewModel.showLoading.observe(viewLifecycleOwner, {
+        logInViewModel.showLoading.observe(viewLifecycleOwner) {
             if (it) {
                 showLoadingBar()
             } else {
                 hideLoadingBar()
             }
-        })
+        }
     }
 
     private fun navigateToNavHome() {

@@ -3,6 +3,7 @@ package ai.heart.classickbeats.ui.wellness
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentWellnessFeedbackBinding
 import ai.heart.classickbeats.model.WellnessType
+import ai.heart.classickbeats.utils.getBackgroundImage
 import ai.heart.classickbeats.utils.setDarkStatusBar
 import ai.heart.classickbeats.utils.setSafeOnClickListener
 import ai.heart.classickbeats.utils.viewBinding

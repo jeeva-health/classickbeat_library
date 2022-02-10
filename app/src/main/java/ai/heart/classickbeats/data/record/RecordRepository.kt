@@ -1,7 +1,7 @@
 package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.data.db.AppDatabase
-import ai.heart.classickbeats.mapper.input.*
+import ai.heart.classickbeats.shared.mapper.input.*
 import ai.heart.classickbeats.model.*
 import ai.heart.classickbeats.model.entity.BaseLogEntity
 import ai.heart.classickbeats.model.entity.HistoryEntity
@@ -10,6 +10,7 @@ import ai.heart.classickbeats.model.entity.TimelineEntityDatabase
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
 import ai.heart.classickbeats.shared.util.toDateStringNetwork
+import ai.heart.classickbeats.shared.util.toDateStringNetworkWithoutTime
 import androidx.paging.*
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,19 +39,6 @@ class RecordRepository @Inject constructor(
 
     suspend fun updatePPG(ppgId: Long, ppgEntity: PPGEntity): Result<Boolean> =
         recordRemoteDataSource.updatePPG(ppgId, ppgEntity)
-
-    suspend fun getSdnnList(): Result<List<Double>> {
-        val response = recordRemoteDataSource.getSdnnList()
-        when (response) {
-            is Result.Success -> {
-                val doubleList = response.data.sdnn_list.map { it.toDouble() }
-                return Result.Success(doubleList)
-            }
-            is Result.Error -> Timber.e(response.exception)
-            Result.Loading -> throw IllegalStateException("getUser response invalid state")
-        }
-        return Result.Error(response.error)
-    }
 
     fun getHistoryData(): Flow<PagingData<BaseLogEntity>> {
         val pagingSourceFactory = { database.timelineDao().loadAll() }
@@ -125,8 +113,8 @@ class RecordRepository @Inject constructor(
     ): Result<GraphData> {
         val modelStr = model.getStringValue()
         val typeStr = type.value
-        val startDateStr = startDate.toDateStringNetwork()
-        val endDateStr = endDate.toDateStringNetwork()
+        val startDateStr = startDate.toDateStringNetworkWithoutTime()
+        val endDateStr = endDate.toDateStringNetworkWithoutTime()
         val response =
             recordRemoteDataSource.getGraphData(modelStr, typeStr, startDateStr, endDateStr)
         when (response) {

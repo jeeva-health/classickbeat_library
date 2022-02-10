@@ -24,10 +24,10 @@ interface ReminderApiService {
     ): Response<AddReminderResponse>
 
     @GET("reminder/get/{reminderId}")
-    suspend fun get(@Path("reminderId") reminderId: Long): Response<ApiResponse>
+    suspend fun get(@Path("reminderId") reminderId: Long): Response<AddReminderResponse>
 
     @DELETE("reminder/get/{reminderId}")
-    suspend fun delete(@Path("reminderId") reminderId: Long): Response<ApiResponse>
+    suspend fun delete(@Path("reminderId") reminderId: Long): Response<AddReminderResponse>
 
     @GET("reminder/list")
     suspend fun getAll(): Response<ReminderListResponse>

@@ -2,7 +2,7 @@ package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.data.db.AppDatabase
 import ai.heart.classickbeats.data.record.cache.TimelineRemoteKey
-import ai.heart.classickbeats.mapper.input.HistoryRecordNetworkDbMapper
+import ai.heart.classickbeats.shared.mapper.input.HistoryRecordNetworkDbMapper
 import ai.heart.classickbeats.model.entity.TimelineEntityDatabase
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType

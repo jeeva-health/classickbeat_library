@@ -7,13 +7,12 @@ import ai.heart.classickbeats.databinding.FragmentScanBinding
 import ai.heart.classickbeats.domain.CameraReading
 import ai.heart.classickbeats.graph.RunningGraph
 import ai.heart.classickbeats.model.Constants.SCAN_DURATION
-import ai.heart.classickbeats.model.Constants.SPLIT_SCAN_DURATION
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.ppg.AccelerometerListener
 import ai.heart.classickbeats.ui.ppg.PixelAnalyzer
 import ai.heart.classickbeats.ui.ppg.viewmodel.MonitorViewModel
 import ai.heart.classickbeats.ui.ppg.viewmodel.ScanViewModel
-import ai.heart.classickbeats.ui.widgets.CircleProgressBar
+import ai.heart.classickbeats.ui.common.CircleProgressBar
 import ai.heart.classickbeats.utils.*
 import android.Manifest
 import android.annotation.SuppressLint
@@ -46,7 +45,6 @@ import com.github.mikephil.charting.charts.LineChart
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import timber.log.Timber
-import java.util.*
 
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
@@ -68,8 +66,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private var mAccelerometer: Sensor? = null
 
     private var countdownType: Int = 0
-
-    private var isIntermediatedProcessing = false
 
     private var camera: CameraDevice? = null
     private var session: CameraCaptureSession? = null
@@ -150,7 +146,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             TODO("No Accelerometer found")
         }
 
-        accelerometerListener = AccelerometerListener(handleAcceleration)
+        accelerometerListener = AccelerometerListener(
+            accelerationHandler = handleAcceleration,
+            recordValue = recordAccelerationValue
+        )
 
         monitorViewModel.fetchUser()
     }
@@ -222,9 +221,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                         endScanning()
                     }
                 }
-            } else if (it == SPLIT_SCAN_DURATION && !isIntermediatedProcessing) {
-                isIntermediatedProcessing = true
-                endSplitScanning()
             } else {
                 if (countdownType == 0) {
                     binding.countdown.text = it.toString()
@@ -460,15 +456,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
     }
 
-    private fun endSplitScanning() {
-        lifecycleScope.launchWhenResumed {
-            Timber.i("TrackTime: endSplitScanning called")
-            val timeListImmutable = monitorViewModel.timeList.toList()
-            val centeredSignalListImmutable = monitorViewModel.centeredSignal.toList()
-            monitorViewModel.calculateResultSplit(timeListImmutable, centeredSignalListImmutable)
-        }
-    }
-
     private fun endScanning() {
         Timber.i("endScanning called")
         monitorViewModel.isProcessing = false
@@ -539,6 +526,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             Timber.i("Moving too much!")
             showLongToast("Moving too much!")
             endIncompleteScanning()
+        }
+    }
+
+    private val recordAccelerationValue = fun(x: Float, y: Float, z: Float, timeStamp: Long) {
+        if (monitorViewModel.isProcessing) {
+            monitorViewModel.addAccelerationReading(x, y, z, timeStamp)
         }
     }
 

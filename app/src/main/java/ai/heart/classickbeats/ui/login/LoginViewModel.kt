@@ -45,6 +45,8 @@ class LoginViewModel @Inject constructor(
 
     var currentFirebaseUser: FirebaseUser? = null
 
+    var currentUser: User? = null
+
     var isUserRegistered: Boolean = false
 
     val showLoading = MutableLiveData<Boolean>(false)
@@ -84,10 +86,11 @@ class LoginViewModel @Inject constructor(
     fun loginUser(firebaseToken: String) {
         showLoading.postValue(true)
         viewModelScope.launch {
-            val (loginResponse, isUserRegistered) = loginRepository.loginUser(firebaseToken)
+            val (user, isUserRegistered) = loginRepository.loginUser(firebaseToken)
             this@LoginViewModel.isUserRegistered = isUserRegistered
             userRegisteredActionUseCase.invoke(isUserRegistered)
-            loginState.postValue(Event(loginResponse))
+            loginState.postValue(Event(user != null))
+            currentUser = user
             showLoading.postValue(false)
         }
     }

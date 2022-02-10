@@ -12,4 +12,6 @@ interface UserDataSource {
     suspend fun getUser(): Result<GetUserResponse.Data>
 
     suspend fun registerFirebaseToken(firebaseToken: String): Result<Unit>
+
+    suspend fun submitFeedback(feedback: String): Result<Unit>
 }

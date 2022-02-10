@@ -4,9 +4,7 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentMediaPlayerBinding
 import ai.heart.classickbeats.model.WellnessType
 import ai.heart.classickbeats.shared.result.EventObserver
-import ai.heart.classickbeats.utils.setDarkStatusBar
-import ai.heart.classickbeats.utils.setSafeOnClickListener
-import ai.heart.classickbeats.utils.viewBinding
+import ai.heart.classickbeats.utils.*
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager

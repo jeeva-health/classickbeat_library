@@ -183,7 +183,7 @@ class PhoneSignUpFragment : Fragment(R.layout.fragment_phone_sign_up) {
                 } else {
                     Timber.w("signInWithCredential:failure ${task.exception}")
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        showLongToast("Incorrect OTP")
+                        showSnackbar("Incorrect OTP", false)
                     } else {
                         showLongToast("Error occurred!!!")
                     }

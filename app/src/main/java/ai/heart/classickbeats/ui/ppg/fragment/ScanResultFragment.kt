@@ -10,10 +10,7 @@ import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.shared.util.toOrdinalFormattedDateString
 import ai.heart.classickbeats.shared.util.toTimeString
 import ai.heart.classickbeats.ui.ppg.viewmodel.ScanResultViewModel
-import ai.heart.classickbeats.utils.getContextColor
-import ai.heart.classickbeats.utils.setSafeOnClickListener
-import ai.heart.classickbeats.utils.showLongToast
-import ai.heart.classickbeats.utils.viewBinding
+import ai.heart.classickbeats.utils.*
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.Typeface
@@ -103,8 +100,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         }
 
         val activeStarCount = scanResult.activeStar
-        val lifeStyleText =
-            if (scanResult.isActive) getString(R.string.active) else getString(R.string.sedentary)
+        val lifeStyleText = scanResult.lifestyleCategory.toLifestyleText(requireContext())
         val lifeStyleInfoText = if (scanResult.isActive)
             setBoldSpan(SpannableString.valueOf(getString(R.string.active_lifestyle)), 93, 104)
         else
@@ -169,55 +165,65 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             var stressDrawableInt = 0
             var stressSpannableString: SpannableString? = null
 
-            when (scanResult.stress.stressResult) {
-                1 -> {
-                    stressDrawableInt = R.drawable.graph_less_stress
-                    stressSpannableString = SpannableString(getString(R.string.less_stress_msg))
-                    setStressMessageSpan(
-                        stressSpannableString,
-                        9,
-                        22,
-                        getContextColor(R.color.moderate_green_2)
-                    )
-                    stressTag.text = getString(R.string.low_stress)
-                    stressTag.backgroundTintList =
-                        ColorStateList.valueOf(getContextColor(R.color.moderate_green_2))
+            if (scanResult.isBaselineSet) {
+                val stress = scanResult.stress
+                when (stress.stressResult) {
+                    1 -> {
+                        stressDrawableInt = R.drawable.graph_less_stress
+                        stressSpannableString = SpannableString(getString(R.string.less_stress_msg))
+                        setStressMessageSpan(
+                            stressSpannableString,
+                            8,
+                            21,
+                            getContextColor(R.color.moderate_green_2)
+                        )
+                        stressTag.text = getString(R.string.low_stress)
+                        stressTag.backgroundTintList =
+                            ColorStateList.valueOf(getContextColor(R.color.moderate_green_2))
+                    }
+                    2 -> {
+                        stressDrawableInt = R.drawable.graph_medium_stress
+                        stressSpannableString =
+                            SpannableString(getString(R.string.normal_stress_msg))
+                        setStressMessageSpan(
+                            stressSpannableString,
+                            8,
+                            16,
+                            getContextColor(R.color.vivid_yellow)
+                        )
+                        stressTag.text = getString(R.string.normal_stress)
+                        stressTag.backgroundTintList =
+                            ColorStateList.valueOf(getContextColor(R.color.vivid_yellow))
+                    }
+                    3 -> {
+                        stressDrawableInt = R.drawable.graph_high_stress
+                        stressSpannableString = SpannableString(getString(R.string.high_stress_msg))
+                        setStressMessageSpan(
+                            stressSpannableString,
+                            8,
+                            21,
+                            getContextColor(R.color.bright_red_3)
+                        )
+                        stressTag.text = getString(R.string.high_stress)
+                        stressTag.backgroundTintList =
+                            ColorStateList.valueOf(getContextColor(R.color.bright_red_3))
+                    }
                 }
-                2 -> {
-                    stressDrawableInt = R.drawable.graph_medium_stress
-                    stressSpannableString = SpannableString(getString(R.string.normal_stress_msg))
-                    setStressMessageSpan(
-                        stressSpannableString,
-                        9,
-                        17,
-                        getContextColor(R.color.vivid_yellow)
-                    )
-                    stressTag.text = getString(R.string.normal_stress)
-                    stressTag.backgroundTintList =
-                        ColorStateList.valueOf(getContextColor(R.color.vivid_yellow))
-                }
-                3 -> {
-                    stressDrawableInt = R.drawable.graph_high_stress
-                    stressSpannableString = SpannableString(getString(R.string.high_stress_msg))
-                    setStressMessageSpan(
-                        stressSpannableString,
-                        9,
-                        22,
-                        getContextColor(R.color.bright_red_3)
-                    )
-                    stressTag.text = getString(R.string.high_stress)
-                    stressTag.backgroundTintList =
-                        ColorStateList.valueOf(getContextColor(R.color.bright_red_3))
-                }
-                else -> {
-                    stressTag.visibility = View.GONE
-                    stressGraphCard.visibility = View.GONE
-                    stressInsufficientCard.visibility = View.VISIBLE
-                    val completedScanCount = scanResult.stress.dataCount
-                    val scanTargetCount = scanResult.stress.targetDataCount
-                    progressText.text = "$completedScanCount/$scanTargetCount"
-                    stressProgress.setProgress(completedScanCount, true)
-                }
+            } else {
+                stressTag.visibility = View.GONE
+                stressGraphCard.visibility = View.GONE
+                stressInsufficientCard.visibility = View.VISIBLE
+                val completedScanCount = scanResult.stress.dataCount
+                val scanTargetCount = scanResult.stress.targetDataCount
+                val completedDistinctScanCount = scanResult.stress.distinctDataCount
+                val targetDistinctCount = scanResult.stress.targetDistinctDataCount
+                val scanCount = "$completedScanCount/$scanTargetCount " + getString(R.string.scans)
+                val dayCount =
+                    "$completedDistinctScanCount/$targetDistinctCount " + getString(R.string.days)
+                progressText.text = scanCount
+                progressText2.text = dayCount
+                stressProgress.setProgress(completedScanCount, true)
+                stressProgress2.setProgress(completedDistinctScanCount, true)
             }
 
             stressGraph.setImageResource(stressDrawableInt)

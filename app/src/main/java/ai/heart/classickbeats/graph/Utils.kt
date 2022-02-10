@@ -11,7 +11,7 @@ object Utils {
 
     fun getDuration(type: HistoryType, startDate: Date): Int =
         when (type) {
-            HistoryType.Daily -> 1
+            HistoryType.Daily -> 1440 // Granularity of one minute
             HistoryType.Weekly -> 7
             HistoryType.Monthly -> startDate.getNumberOfDaysInMonth()
         }

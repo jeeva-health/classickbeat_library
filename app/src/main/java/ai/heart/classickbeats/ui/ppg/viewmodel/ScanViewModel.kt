@@ -1,7 +1,7 @@
 package ai.heart.classickbeats.ui.ppg.viewmodel
 
-import ai.heart.classickbeats.domain.GetRecentPpgScanHistoryDataByCountUseCase
-import ai.heart.classickbeats.domain.GetRecentPpgScanHistoryDataByDurationUseCase
+import ai.heart.classickbeats.domain.usecase.GetRecentPpgScanHistoryDataByCountUseCase
+import ai.heart.classickbeats.domain.usecase.GetRecentPpgScanHistoryDataByDurationUseCase
 import ai.heart.classickbeats.domain.prefs.FirstScanCompleteActionUseCase
 import ai.heart.classickbeats.domain.prefs.FistScanCompletedUseCase
 import ai.heart.classickbeats.model.entity.PPGEntity

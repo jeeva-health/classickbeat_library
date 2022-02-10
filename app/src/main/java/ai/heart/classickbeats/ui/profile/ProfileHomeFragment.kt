@@ -6,19 +6,18 @@ import ai.heart.classickbeats.model.WeightUnits
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.shared.util.computeAge
 import ai.heart.classickbeats.shared.util.toDate
-import ai.heart.classickbeats.utils.hideLoadingBar
-import ai.heart.classickbeats.utils.setSafeOnClickListener
-import ai.heart.classickbeats.utils.showLoadingBar
-import ai.heart.classickbeats.utils.viewBinding
+import ai.heart.classickbeats.utils.*
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.roundToInt
-
 
 @AndroidEntryPoint
 class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
@@ -38,10 +37,6 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
 
         binding.profilePic.clipToOutline = true
 
-        binding.settings.setSafeOnClickListener {
-            navigateToProfileSettingsFragment()
-        }
-
         profileViewModel.userData.observe(viewLifecycleOwner, EventObserver {
             val userName = it.fullName
             val weight = it.weight.roundToInt()
@@ -55,6 +50,10 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
             binding.name.text = userName
             binding.details.text =
                 "${age} yrs, ${weight} $weightUnit, ${heightFeet}ft ${heightInches}in"
+            Glide.with(binding.profilePic)
+                .load(it.profilePicUrl)
+                .circleCrop()
+                .into(binding.profilePic)
         })
 
         profileViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {
@@ -64,11 +63,76 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
                 hideLoadingBar()
             }
         })
+
+        profileViewModel.feedbackSubmitted.observe(viewLifecycleOwner) {
+            if (it) {
+                showSnackbar(getString(R.string.feedback_submitted))
+                profileViewModel.resetFeedbackSubmitted()
+            }
+        }
+
+        binding.reminder.setSafeOnClickListener {
+            navigateToReminderListFragment()
+        }
+
+        binding.inviteFriend.setSafeOnClickListener {
+            navigateToReferralFragment()
+        }
+
+        binding.upgrade.setSafeOnClickListener {
+            openUpgradeFragment()
+        }
+
+        binding.jeevaWork.setSafeOnClickListener {
+            openHowJeevaWorksPage()
+        }
+
+        binding.feedback.setSafeOnClickListener {
+            showFeedbackDialog()
+        }
+
+        binding.signOut.setSafeOnClickListener {
+            showSignOutConfirmDialog()
+        }
     }
 
-    private fun navigateToProfileSettingsFragment() {
+    private fun showFeedbackDialog() {
         val action =
-            ProfileHomeFragmentDirections.actionProfileHomeFragmentToProfileSettingsFragment()
+
+            ProfileHomeFragmentDirections.actionProfileHomeFragmentToFeedbackDialogFragment()
+        navController.navigate(action)
+    }
+
+    private fun openUpgradeFragment() {
+        if (profileViewModel.userData.value?.peekContent()?.isUpgradedPro == true) {
+            showSnackbar("Already a PRO User")
+        } else {
+            val action =
+                ProfileHomeFragmentDirections.actionProfileHomeFragmentToUpgradeToProFragment()
+            navController.navigate(action)
+        }
+    }
+
+    private fun showSignOutConfirmDialog() {
+        val action =
+            ProfileHomeFragmentDirections.actionProfileHomeFragmentToSignOutDialogFragment()
+        navController.navigate(action)
+    }
+
+    private fun navigateToReferralFragment() {
+        val action =
+            ProfileHomeFragmentDirections.actionProfileHomeFragmentToInviteFriendFragment()
+        navController.navigate(action)
+    }
+
+    private fun openHowJeevaWorksPage() {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://intealth.app/HowIntealthWorks"))
+        startActivity(intent)
+    }
+
+    private fun navigateToReminderListFragment() {
+        val action =
+            ProfileHomeFragmentDirections.actionProfileHomeFragmentToReminderListFragment()
         navController.navigate(action)
     }
 }

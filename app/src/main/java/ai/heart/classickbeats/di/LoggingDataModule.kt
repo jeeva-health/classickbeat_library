@@ -12,7 +12,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-
 @InstallIn(SingletonComponent::class)
 @Module
 object LoggingDataModule {

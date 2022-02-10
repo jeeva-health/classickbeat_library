@@ -1,13 +1,29 @@
 package ai.heart.classickbeats.graph
 
 import ai.heart.classickbeats.model.GraphData
+import ai.heart.classickbeats.model.HistoryType
 import android.content.Context
 import android.graphics.Color
 import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import timber.log.Timber
+import java.util.*
+import kotlin.collections.ArrayList
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.formatter.ValueFormatter
+
+
+class WeeklyXAxisFormatter : ValueFormatter() {
+    private val days = arrayOf("Mo", "Tu", "We", "Th", "Fr", "Sa", "Su")
+    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+        return days.getOrNull((value-1).toInt()) ?: value.toString()
+    }
+}
+
 
 
 object BarGraph {
@@ -18,6 +34,7 @@ object BarGraph {
         graphData: GraphData
     ) {
         val (model, timelineType, isDecimal, data1, data2, dateList, startDate, endDate) = graphData
+//        Timber.i("Data1: ${data1.size}, ${Arrays.toString(data1)}")
 
         val values: ArrayList<BarEntry> = ArrayList()
         val values2: ArrayList<BarEntry> = ArrayList()
@@ -41,13 +58,19 @@ object BarGraph {
             )
         }
 
-        adjustedData2.forEachIndexed { i, d ->
-            values2.add(
-                BarEntry(
-                    (i + 1).toFloat(),
-                    d.toFloat()
+        if (data2.isNotEmpty()){
+            adjustedData2.forEachIndexed { i, d ->
+                values2.add(
+                    BarEntry(
+                        (i + 1).toFloat(),
+                        d.toFloat()
+                    )
                 )
-            )
+            }
+        }
+
+        if (timelineType == HistoryType.Weekly){
+            chart.xAxis.valueFormatter = WeeklyXAxisFormatter()
         }
 
         setDataSet(chart, values, values2)
@@ -56,7 +79,7 @@ object BarGraph {
     private fun setDataSet(
         chart: BarChart,
         values: List<BarEntry>,
-        values2: List<BarEntry>
+        values2: List<BarEntry>,
     ) {
         chart.invalidate()
         chart.requestLayout()

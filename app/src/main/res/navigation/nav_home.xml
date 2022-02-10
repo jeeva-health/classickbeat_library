@@ -93,8 +93,20 @@
         android:label="fragment_profile_home"
         tools:layout="@layout/fragment_profile_home">
         <action
-            android:id="@+id/action_profileHomeFragment_to_profileSettingsFragment"
-            app:destination="@id/profileSettingsFragment" />
+            android:id="@+id/action_profileHomeFragment_to_signOutDialogFragment"
+            app:destination="@id/signOutDialogFragment" />
+        <action
+            android:id="@+id/action_profileHomeFragment_to_inviteFriendFragment"
+            app:destination="@id/inviteFriendFragment" />
+        <action
+            android:id="@+id/action_profileHomeFragment_to_upgradeToProFragment"
+            app:destination="@id/upgradeToProFragment" />
+        <action
+            android:id="@+id/action_profileHomeFragment_to_feedbackDialogFragment"
+            app:destination="@id/feedbackDialogFragment" />
+        <action
+            android:id="@+id/action_profileHomeFragment_to_reminderListFragment"
+            app:destination="@id/reminderListFragment" />
     </fragment>
 
     <fragment
@@ -166,35 +178,13 @@
 
     <dialog
         android:id="@+id/timePickerFragment"
-        android:name="ai.heart.classickbeats.ui.widgets.TimePickerFragment"
+        android:name="ai.heart.classickbeats.ui.common.TimePickerFragment"
         android:label="fragment_time_picker_dialog" />
 
     <dialog
         android:id="@+id/datePickerFragment"
-        android:name="ai.heart.classickbeats.ui.widgets.DatePickerFragment"
+        android:name="ai.heart.classickbeats.ui.common.DatePickerFragment"
         android:label="fragment_date_picker_dialog" />
-
-    <fragment
-        android:id="@+id/profileSettingsFragment"
-        android:name="ai.heart.classickbeats.ui.profile.ProfileSettingsFragment"
-        android:label="fragment_profile_settings"
-        tools:layout="@layout/fragment_profile_settings">
-        <action
-            android:id="@+id/action_profileSettingsFragment_to_signOutDialogFragment"
-            app:destination="@id/signOutDialogFragment" />
-        <action
-            android:id="@+id/action_profileSettingsFragment_to_inviteFriendFragment"
-            app:destination="@id/inviteFriendFragment" />
-        <action
-            android:id="@+id/action_profileSettingsFragment_to_upgradeToProFragment"
-            app:destination="@id/upgradeToProFragment" />
-        <action
-            android:id="@+id/action_profileSettingsFragment_to_feedbackDialogFragment"
-            app:destination="@id/feedbackDialogFragment" />
-        <action
-            android:id="@+id/action_profileSettingsFragment_to_reminderListFragment"
-            app:destination="@id/reminderListFragment" />
-    </fragment>
 
     <dialog
         android:id="@+id/signOutDialogFragment"
@@ -222,19 +212,36 @@
 
     <fragment
         android:id="@+id/reminderListFragment"
-        android:name="ai.heart.classickbeats.ui.profile.ReminderListFragment"
+        android:name="ai.heart.classickbeats.ui.profile.reminder.fragment.ReminderListFragment"
         android:label="fragment_reminder_list"
         tools:layout="@layout/fragment_reminder_list">
         <action
             android:id="@+id/action_reminderListFragment_to_addReminderFragment"
             app:destination="@id/addReminderFragment" />
+        <action
+            android:id="@+id/action_reminderListFragment_to_updateReminderFragment"
+            app:destination="@id/updateReminderFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addReminderFragment"
+        android:name="ai.heart.classickbeats.ui.profile.reminder.fragment.AddReminderFragment"
+        android:label="fragment_add_reminder"
+        tools:layout="@layout/fragment_add_reminder">
+        <action
+            android:id="@+id/action_addReminderFragment_to_reminderTypeBottomSheetFragment"
+            app:destination="@id/reminderTypeBottomSheetFragment" />
     </fragment>
 
     <dialog
-        android:id="@+id/addReminderFragment"
-        android:name="ai.heart.classickbeats.ui.profile.AddReminderFragment"
-        android:label="fragment_add_reminder"
-        tools:layout="@layout/fragment_add_reminder" />
+        android:id="@+id/updateReminderFragment"
+        android:name="ai.heart.classickbeats.ui.profile.reminder.fragment.UpdateReminderFragment"
+        android:label="fragment_update_reminder"
+        tools:layout="@layout/fragment_update_reminder">
+        <argument
+            android:name="reminder_id"
+            app:argType="long" />
+    </dialog>
 
     <fragment
         android:id="@+id/historyFragment"
@@ -321,5 +328,11 @@
     <action
         android:id="@+id/action_global_profileHomeFragment"
         app:destination="@id/profileHomeFragment" />
+
+    <dialog
+        android:id="@+id/reminderTypeBottomSheetFragment"
+        android:name="ai.heart.classickbeats.ui.profile.reminder.fragment.ReminderTypeBottomSheetFragment"
+        android:label="ReminderTypeBottomSheetFragment"
+        tools:layout="@layout/fragment_reminder_type_bottom_sheet" />
 
 </navigation>

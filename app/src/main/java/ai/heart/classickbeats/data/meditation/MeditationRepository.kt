@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.data.meditation
 
-import ai.heart.classickbeats.mapper.input.MeditationDataMapper
+import ai.heart.classickbeats.shared.mapper.input.MeditationDataMapper
 import ai.heart.classickbeats.model.MeditationMedia
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error

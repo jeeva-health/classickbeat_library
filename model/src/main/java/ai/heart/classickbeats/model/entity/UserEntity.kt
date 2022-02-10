@@ -62,5 +62,9 @@ data class UserEntity(
 
     @Transient
     @ColumnInfo(name = "modified_at")
-    var modifiedAt: Long? = null
+    var modifiedAt: Long? = null,
+
+    @Json(name = "google_profile_url")
+    @ColumnInfo(name = "google_profile_url")
+    var googleProfileUrl: String? = null
 )

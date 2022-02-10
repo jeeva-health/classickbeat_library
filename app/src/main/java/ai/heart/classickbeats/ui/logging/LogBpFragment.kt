@@ -4,7 +4,7 @@ import ai.heart.classickbeats.NavHomeDirections
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentLogBpBinding
 import ai.heart.classickbeats.shared.result.EventObserver
-import ai.heart.classickbeats.ui.widgets.DateTimePickerViewModel
+import ai.heart.classickbeats.ui.common.DateTimePickerViewModel
 import ai.heart.classickbeats.utils.*
 import android.os.Bundle
 import android.view.View
@@ -51,7 +51,7 @@ class LogBpFragment : Fragment(R.layout.fragment_log_bp) {
 
         binding?.dateLayout?.editText?.setText(currentDate.toString())
 
-        binding?.timeLayout?.editText?.setText(currentTime.toString())
+        binding?.timeLayout?.editText?.setText(currentTime.toDisplayString())
 
         binding?.timeLayout?.addOnEditTextAttachedListener(timerEditTextAttachListener)
 
@@ -70,7 +70,7 @@ class LogBpFragment : Fragment(R.layout.fragment_log_bp) {
         })
 
         dateTimePickerViewModel.selectedLogTime.observe(viewLifecycleOwner, EventObserver {
-            binding?.timeLayout?.editText?.setText(it.toString())
+            binding?.timeLayout?.editText?.setText(it.toDisplayString())
         })
 
         loggingViewModel.navigateToLoggingHome.observe(viewLifecycleOwner, EventObserver {

@@ -2,28 +2,29 @@ package ai.heart.classickbeats.data.reminder.cache
 
 import ai.heart.classickbeats.model.entity.ReminderEntity
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 interface ReminderDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(reminderEntity: ReminderEntity): Long
+    suspend fun insert(reminderEntity: ReminderEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(reminderEntityList: List<ReminderEntity>): List<Long>
+    suspend fun insertAll(reminderEntityList: List<ReminderEntity>)
 
     @Update
-    suspend fun update(reminderEntity: ReminderEntity): Long
+    suspend fun update(reminderEntity: ReminderEntity)
 
     @Query("SELECT * FROM reminders WHERE local_id = :localId")
     suspend fun selectLocal(localId: Long): ReminderEntity
 
     @Query("SELECT * FROM reminders WHERE id = :id")
-    suspend fun selectNetwork(id: Int): List<ReminderEntity>
+    suspend fun selectNetwork(id: Long): List<ReminderEntity>
 
     @Query("SELECT * FROM reminders")
-    suspend fun getAll(): List<ReminderEntity>
+    fun getAll(): Flow<List<ReminderEntity>>
 
     @Delete
     suspend fun delete(reminderEntity: ReminderEntity)

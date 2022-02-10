@@ -43,7 +43,7 @@ fun Date.toOrdinalFormattedDateString(): String {
 fun Date.toOrdinalFormattedDateStringWithoutYear(): String {
     val dateFormat = SimpleDateFormat("dd MMM yyyy", locale)
     val dateString = dateFormat.format(this)
-    val (day, month, year) = dateString.split(" ")
+    val (day, month, _) = dateString.split(" ")
     val formattedDay = Utils.ordinalOf(day.toInt())
     val formattedMonth = month[0] + month.substring(1).lowercase(locale)
     return "$formattedDay $formattedMonth"
@@ -55,6 +55,11 @@ fun Date.toDateString(): String {
 }
 
 fun Date.toDateStringNetwork(): String {
+    val timeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ", locale)
+    return timeFormat.format(this)
+}
+
+fun Date.toDateStringNetworkWithoutTime(): String {
     val timeFormat = SimpleDateFormat("yyyy-MM-dd", locale)
     return timeFormat.format(this)
 }
@@ -67,6 +72,13 @@ fun Date.toDbFormatString(): String {
 fun Date.toTimeString(): String {
     val timeFormat = SimpleDateFormat("h:mm a", locale)
     return timeFormat.format(this)
+}
+
+fun Date.toDailyMinutes(): Int {
+    val timeFormat = SimpleDateFormat("HH:mm", locale)
+    val time = timeFormat.format(this)
+    val (hour, minute) = time.split(":")
+    return hour.toInt() * 60 + minute.toInt()
 }
 
 fun Date.toWeekString(): String {
@@ -128,11 +140,13 @@ fun String.toTimeString2(): String? {
 
 fun String.toDateWithSeconds(): Date? {
     val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", locale)
+    inputFormat.timeZone = TimeZone.getTimeZone("GMT")
     return inputFormat.parse(this)
 }
 
 fun String.toDateWithMilli(): Date? {
     val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", locale)
+    inputFormat.timeZone = TimeZone.getTimeZone("GMT")
     return inputFormat.parse(this)
 }
 

@@ -71,7 +71,7 @@
 
     </FrameLayout>
 
-    <ai.heart.classickbeats.ui.widgets.CircleProgressBar
+    <ai.heart.classickbeats.ui.common.CircleProgressBar
         android:id="@+id/circular_progress_bar"
         android:layout_width="248dp"
         android:layout_height="248dp"
