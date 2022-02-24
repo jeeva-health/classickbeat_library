@@ -25,6 +25,18 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="20dp" />
 
+        <ImageView
+            android:id="@+id/back_arrow"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="16dp"
+            android:src="@drawable/ic_left_arrow"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/heart_rate_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/heart_rate_tv"
+            app:tint="@color/black" />
+
         <TextView
             android:id="@+id/heart_rate_tv"
             android:layout_width="wrap_content"
@@ -34,8 +46,9 @@
             android:textAllCaps="true"
             android:textColor="?attr/pageTitleColor"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/back_arrow"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginStart="20dp" />
 
         <TextView
             android:id="@+id/date"

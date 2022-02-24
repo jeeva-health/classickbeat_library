@@ -42,7 +42,7 @@ class InviteFriendFragment : Fragment(R.layout.fragment_invite_friend) {
         binding.inviteFriendButton.setSafeOnClickListener {
             val inviteMessage = getString(
                 R.string.invite_message,
-                "https://play.google.com/store/apps/details?id=com.welltory.client.android"
+                "https://play.google.com/store/apps/details?id=ai.heart.classickbeats"
             )
             val shareIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND

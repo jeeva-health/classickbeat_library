@@ -83,6 +83,10 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             requestLayout()
         }
 
+        binding.backArrow.setSafeOnClickListener {
+            navigateBack()
+        }
+
         scanResultViewModel.scanDetails.observe(viewLifecycleOwner, EventObserver {
             showUi(it, scanId, isShowingHistory)
         })
@@ -263,7 +267,12 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             }
 
             if (isShowingHistory) {
+                backArrow.visibility = View.VISIBLE
                 stressInsufficientCard.visibility = View.GONE
+                discardBtn.visibility = View.GONE
+                saveBtn.visibility = View.GONE
+            } else {
+                backArrow.visibility = View.GONE
             }
         }
     }
@@ -313,6 +322,10 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         val action =
             ScanResultFragmentDirections.actionScanResultFragmentToTimelineFragment()
         navController.navigate(action)
+    }
+
+    private fun navigateBack() {
+        navController.navigateUp()
     }
 
     private fun showDiscardConfirmDialog() {
