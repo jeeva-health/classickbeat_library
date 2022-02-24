@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.ui.ppg.fragment
 
+import ai.heart.classickbeats.NavHomeDirections
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanResultBinding
 import ai.heart.classickbeats.graph.LineGraph
@@ -9,7 +10,9 @@ import ai.heart.classickbeats.model.displayString
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.shared.util.toOrdinalFormattedDateString
 import ai.heart.classickbeats.shared.util.toTimeString
+import ai.heart.classickbeats.ui.common.ConfirmationViewModel
 import ai.heart.classickbeats.ui.ppg.viewmodel.ScanResultViewModel
+import ai.heart.classickbeats.ui.profile.ProfileHomeFragmentDirections
 import ai.heart.classickbeats.utils.*
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
@@ -21,6 +24,7 @@ import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -41,6 +45,8 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
     private val scanResultViewModel: ScanResultViewModel by viewModels()
 
+    private val confirmationDialogViewModel: ConfirmationViewModel by activityViewModels()
+
     private val args: ScanResultFragmentArgs by navArgs()
 
     private lateinit var waveformChart: LineChart
@@ -48,7 +54,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val (_, scanId) = args
+        val (scanId: Long, _) = args
         scanResultViewModel.getScanDetail(scanId)
     }
 
@@ -57,7 +63,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
         navController = findNavController()
 
-        val (isShowingHistory, _) = args
+        val (scanId: Long, isShowingHistory: Boolean) = args
 
         waveformChart = binding.waveformChart.apply {
             setDrawGridBackground(false)
@@ -78,7 +84,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         }
 
         scanResultViewModel.scanDetails.observe(viewLifecycleOwner, EventObserver {
-            showUi(it, isShowingHistory)
+            showUi(it, scanId, isShowingHistory)
         })
 
         scanResultViewModel.showLoading.observe(viewLifecycleOwner, EventObserver {
@@ -87,10 +93,29 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             }
         })
 
-        scanResultViewModel.scanDetails.value?.let { showUi(it.peekContent(), isShowingHistory) }
+        scanResultViewModel.scanDetails.value?.let {
+            showUi(
+                it.peekContent(),
+                scanId,
+                isShowingHistory
+            )
+        }
+
+        confirmationDialogViewModel.positiveEvent.observe(viewLifecycleOwner, EventObserver {
+            if (it) {
+                navigateToScanFragment()
+                scanResultViewModel.submitDiscardRequest(scanId)
+            }
+        })
+
+        confirmationDialogViewModel.negativeEvent.observe(viewLifecycleOwner, EventObserver {
+            if (it) {
+                confirmationDialogViewModel.dismiss()
+            }
+        })
     }
 
-    private fun showUi(scanResult: PPGData.ScanResult, isShowingHistory: Boolean) {
+    private fun showUi(scanResult: PPGData.ScanResult, scanId: Long, isShowingHistory: Boolean) {
         val bioAgeIndex = scanResult.ageBin
         val bioAge = BioAge.values()[bioAgeIndex]
         val bioAgeInfo: SpannableString = when (scanResult.bioAgeResult) {
@@ -229,6 +254,10 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             stressGraph.setImageResource(stressDrawableInt)
             stressMessage.text = stressSpannableString
 
+            discardBtn.setSafeOnClickListener {
+                showDiscardConfirmDialog()
+            }
+
             saveBtn.setSafeOnClickListener {
                 navigateToTimelineFragment()
             }
@@ -275,9 +304,26 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         return message
     }
 
+    private fun navigateToScanFragment() {
+        val action = NavHomeDirections.actionGlobalScanFragment()
+        navController.navigate(action)
+    }
+
     private fun navigateToTimelineFragment() {
         val action =
             ScanResultFragmentDirections.actionScanResultFragmentToTimelineFragment()
+        navController.navigate(action)
+    }
+
+    private fun showDiscardConfirmDialog() {
+        val title = getString(R.string.discard_title)
+        val negativeKey = getString(R.string.no)
+        val positiveKey = getString(R.string.yes)
+        val action = ProfileHomeFragmentDirections.actionGlobalConfirmationDialogFragment(
+            title = title,
+            negativeKey = negativeKey,
+            positiveKey = positiveKey
+        )
         navController.navigate(action)
     }
 }

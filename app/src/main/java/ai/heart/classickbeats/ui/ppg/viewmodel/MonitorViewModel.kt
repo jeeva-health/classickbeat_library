@@ -181,19 +181,18 @@ class MonitorViewModel @Inject constructor(
 
         val largeWindowOffset = (largeWindow - 1) / 2
         if (movAvgSmall.size >= largeWindow) {
-            val x = -1.0 * (movAvgSmall[movAvgSmall.size - largeWindowOffset] - movAvgLarge.last())
+            val x =  movAvgSmall[movAvgSmall.size - largeWindowOffset] - movAvgLarge.last()
             centeredSignal.add(x)
 
             _dynamicGraphCoordinates.postValue(Event(Pair(centeredSignal.size, x)))
         }
     }
 
-    fun uploadScanSurvey(sleepRating: Int, moodRating: Int, healthRating: Int, scanState: String) {
+    fun uploadScanSurvey(sleepRating: Int, moodRating: Int, scanState: String) {
         viewModelScope.launch {
             val ppgEntity = PPGEntity(
                 sleepRating = sleepRating,
                 moodRating = moodRating,
-                healthRating = healthRating,
                 scanState = scanState
             )
             recordRepository.updatePPG(ppgId, ppgEntity)

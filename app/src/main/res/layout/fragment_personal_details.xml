@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Skip"
+            android:text="@string/skip"
             android:textAllCaps="false"
             android:textSize="16sp"
             android:visibility="gone"
@@ -43,7 +43,7 @@
             style="@style/TextAppearance.Jeeva.H1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Help us know you better"
+            android:text="@string/help_us_know_you"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/skip"
@@ -54,7 +54,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Fill your details so that we can provide you with more accurate results"
+            android:text="@string/fill_your_details"
             android:textAppearance="@style/TextAppearance.Jeeva.H4"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
@@ -65,7 +65,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:hint="Full Name"
+            android:hint="@string/full_name"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/sub_title">
@@ -82,7 +82,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
-            android:hint="Gender"
+            android:hint="@string/gender"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/name_layout">
@@ -97,21 +97,40 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/height_layout"
+            android:id="@+id/height_feet_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
-            android:hint="Height"
-            app:helperText="5ft - 07in"
-            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/height_feet"
+            app:layout_constraintEnd_toStartOf="@id/height_inches_layout"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/gender_layout"
-            app:suffixText="ft in">
+            app:suffixText="ft">
 
-            <ai.heart.classickbeats.shared.formattedinput.MaskedEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:maskType="height" />
+                android:inputType="number" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/height_inches_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="22dp"
+            android:hint="@string/height_inches"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toEndOf="@id/height_feet_layout"
+            app:layout_constraintTop_toBottomOf="@id/gender_layout"
+            app:suffixText="in">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -120,10 +139,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
-            android:hint="Weight"
+            android:hint="@string/weight"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/height_layout"
+            app:layout_constraintTop_toBottomOf="@id/height_feet_layout"
             app:suffixText="kg">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -138,11 +157,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
-            android:hint="Date of Birth"
+            android:hint="@string/date_of_birth"
+            app:endIconDrawable="@drawable/ic_calendar_icon"
+            app:endIconMode="custom"
             app:helperText="20 / 09 / 1993"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@id/weight_layout">
+            app:layout_constraintTop_toBottomOf="@id/weight_layout"
+            app:placeholderText="dd / mm / yyyy">
 
             <ai.heart.classickbeats.shared.formattedinput.MaskedEditText
                 android:layout_width="match_parent"

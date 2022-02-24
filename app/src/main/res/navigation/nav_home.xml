@@ -93,9 +93,6 @@
         android:label="fragment_profile_home"
         tools:layout="@layout/fragment_profile_home">
         <action
-            android:id="@+id/action_profileHomeFragment_to_signOutDialogFragment"
-            app:destination="@id/signOutDialogFragment" />
-        <action
             android:id="@+id/action_profileHomeFragment_to_inviteFriendFragment"
             app:destination="@id/inviteFriendFragment" />
         <action
@@ -187,10 +184,30 @@
         android:label="fragment_date_picker_dialog" />
 
     <dialog
-        android:id="@+id/signOutDialogFragment"
-        android:name="ai.heart.classickbeats.ui.profile.SignOutDialogFragment"
-        android:label="fragment_sign_out_dialog"
-        tools:layout="@layout/fragment_sign_out_dialog" />
+        android:id="@+id/confirmationDialogFragment"
+        android:name="ai.heart.classickbeats.ui.common.ConfirmationDialogFragment"
+        android:label="fragment_confirmation_dialog"
+        tools:layout="@layout/fragment_confirmation_dialog">
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="message"
+            android:defaultValue=""
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="positive_key"
+            app:argType="string" />
+        <argument
+            android:name="negative_key"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="cancellable"
+            android:defaultValue="true"
+            app:argType="boolean" />
+    </dialog>
 
     <fragment
         android:id="@+id/inviteFriendFragment"
@@ -334,5 +351,8 @@
         android:name="ai.heart.classickbeats.ui.profile.reminder.fragment.ReminderTypeBottomSheetFragment"
         android:label="ReminderTypeBottomSheetFragment"
         tools:layout="@layout/fragment_reminder_type_bottom_sheet" />
+    <action
+        android:id="@+id/action_global_confirmationDialogFragment"
+        app:destination="@id/confirmationDialogFragment" />
 
 </navigation>

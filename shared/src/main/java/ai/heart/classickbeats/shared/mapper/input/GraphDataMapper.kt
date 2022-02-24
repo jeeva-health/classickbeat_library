@@ -1,11 +1,11 @@
 package ai.heart.classickbeats.shared.mapper.input
 
-import ai.heart.classickbeats.shared.mapper.Mapper
 import ai.heart.classickbeats.model.GraphData
-import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.HistoryType
+import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.response.GraphDataResponse
-import ai.heart.classickbeats.shared.util.toDate
+import ai.heart.classickbeats.shared.mapper.Mapper
+import ai.heart.classickbeats.shared.util.toDateWithSeconds2
 import java.util.*
 import javax.inject.Inject
 
@@ -17,7 +17,7 @@ class GraphDataMapper @Inject constructor() : Mapper<GraphDataMapper.InputData, 
         val dataList2 = mutableListOf<Double>()
         val dateList = mutableListOf<Date>()
         response.forEach {
-            dateList.add(it.date!!.toDate()!!)
+            dateList.add(it.date!!.toDateWithSeconds2()!!)
             when (model) {
                 LogType.BloodPressure -> {
                     dataList.add(it.systolicDailyAvg!!)

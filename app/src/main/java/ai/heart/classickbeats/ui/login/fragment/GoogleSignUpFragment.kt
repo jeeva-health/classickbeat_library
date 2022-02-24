@@ -22,7 +22,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import timber.log.Timber
 
-
 class GoogleSignUpFragment : Fragment(R.layout.fragment_google_sign_up) {
 
     private lateinit var auth: FirebaseAuth

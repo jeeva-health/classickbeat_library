@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.text.format.DateUtils
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.YearMonth
 import java.util.*
 
 @SuppressLint("ConstantLocale")
@@ -104,6 +105,16 @@ fun Date.getDateAddedBy(diff: Int): Date {
     return Date(requestedDateTimestamp)
 }
 
+fun Date.getYearPart(): Int {
+    val yearFormatter = SimpleDateFormat("yy", locale)
+    return yearFormatter.format(this).toInt()
+}
+
+fun Date.getMonthPart(): Int {
+    val monthFormatter = SimpleDateFormat("dd", locale)
+    return monthFormatter.format(this).toInt()
+}
+
 fun Date.getDayPart(): Int {
     val dayFormatter = SimpleDateFormat("dd", locale)
     return dayFormatter.format(this).toInt()
@@ -114,7 +125,12 @@ fun Date.getHourPart(): Int {
     return dayFormatter.format(this).toInt()
 }
 
-fun Date.getNumberOfDaysInMonth(): Int = 31 //TODO
+fun Date.getNumberOfDaysInMonth(): Int {
+    val year = this.getYearPart()
+    val month = this.getMonthPart()
+    val yearMonthObject: YearMonth = YearMonth.of(year, month)
+    return yearMonthObject.lengthOfMonth()
+}
 
 fun Date.getDayOfWeek(): Int {
     val c = Calendar.getInstance()
@@ -141,6 +157,11 @@ fun String.toTimeString2(): String? {
 fun String.toDateWithSeconds(): Date? {
     val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", locale)
     inputFormat.timeZone = TimeZone.getTimeZone("GMT")
+    return inputFormat.parse(this)
+}
+
+fun String.toDateWithSeconds2(): Date? {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", locale)
     return inputFormat.parse(this)
 }
 

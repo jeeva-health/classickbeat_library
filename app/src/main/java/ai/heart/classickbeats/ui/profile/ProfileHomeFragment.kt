@@ -1,11 +1,14 @@
 package ai.heart.classickbeats.ui.profile
 
+import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentProfileHomeBinding
 import ai.heart.classickbeats.model.WeightUnits
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.shared.util.computeAge
 import ai.heart.classickbeats.shared.util.toDate
+import ai.heart.classickbeats.ui.common.ConfirmationViewModel
+import ai.heart.classickbeats.ui.login.LoginViewModel
 import ai.heart.classickbeats.utils.*
 import android.content.Intent
 import android.net.Uri
@@ -25,6 +28,10 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
     private val binding by viewBinding(FragmentProfileHomeBinding::bind)
 
     private val profileViewModel: ProfileViewModel by activityViewModels()
+
+    private val confirmationViewModel: ConfirmationViewModel by activityViewModels()
+
+    private val loginViewModel: LoginViewModel by activityViewModels()
 
     private lateinit var navController: NavController
 
@@ -94,12 +101,23 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
         binding.signOut.setSafeOnClickListener {
             showSignOutConfirmDialog()
         }
+
+        confirmationViewModel.negativeEvent.observe(viewLifecycleOwner, EventObserver {
+            if (it) {
+                confirmationViewModel.dismiss()
+            }
+        })
+
+        confirmationViewModel.positiveEvent.observe(viewLifecycleOwner, EventObserver {
+            if (it) {
+                loginViewModel.logoutUser()
+                startActivity(Intent(requireActivity(), MainActivity::class.java))
+            }
+        })
     }
 
     private fun showFeedbackDialog() {
-        val action =
-
-            ProfileHomeFragmentDirections.actionProfileHomeFragmentToFeedbackDialogFragment()
+        val action = ProfileHomeFragmentDirections.actionProfileHomeFragmentToFeedbackDialogFragment()
         navController.navigate(action)
     }
 
@@ -114,8 +132,14 @@ class ProfileHomeFragment : Fragment(R.layout.fragment_profile_home) {
     }
 
     private fun showSignOutConfirmDialog() {
-        val action =
-            ProfileHomeFragmentDirections.actionProfileHomeFragmentToSignOutDialogFragment()
+        val title = getString(R.string.sign_out_title)
+        val negativeKey = getString(R.string.cancel)
+        val positiveKey = getString(R.string.sign_out)
+        val action = ProfileHomeFragmentDirections.actionGlobalConfirmationDialogFragment(
+            title = title,
+            negativeKey = negativeKey,
+            positiveKey = positiveKey
+        )
         navController.navigate(action)
     }
 

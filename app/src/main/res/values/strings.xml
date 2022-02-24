@@ -9,6 +9,13 @@
     <string name="enter_age">Enter your age</string>
     <string name="enter_weight">Enter your weight</string>
     <string name="enter_height">Enter your height</string>
+    <string name="height_feet">Height - Feet</string>
+    <string name="height_inches">Height - Inches</string>
+    <string name="gender">Gender</string>
+    <string name="full_name">Full Name</string>
+    <string name="fill_your_details">Fill your details so that we can provide you with more accurate results</string>
+    <string name="help_us_know_you">Help us know you better</string>
+    <string name="date_of_birth">Date of Birth</string>
     <string name="register">Register</string>
     <string name="sign_up_google">Connect with Google</string>
     <string name="terms_and_condition">By continuing, you agree to our Terms &amp; Conditions</string>
@@ -37,8 +44,8 @@
     <string name="scan_tutorial_1">Place the tip of your finger on the back camera and the flash, completely covering them.</string>
     <string name="scan_tutorial_2">Apply gentle pressure in order to stabilize the finger.</string>
     <string name="scan_tutorial_3">If the smartphone is too large to hold it in one hand comfortably, use one hand to hold the phone and the other to take the reading.</string>
-    <string name="scan_tutorial_4">Preferably, sit down on a chair and place your arm on a table at roughly the same level as the chest.</string>
-    <string name="scan_tutorial_5">Please Do not move or talk. Breath normally and do not take deep breaths. Make sure to follow all instructions for accurate results.</string>
+    <string name="scan_tutorial_4">Sit down if possible and keep your arm at roughly the same level as the chest.</string>
+    <string name="scan_tutorial_5">Do not move or talk. Please follow all instructions for accurate results.</string>
     <string name="start_scan">Start Scanning</string>
 
     <!--    Scan-->
@@ -57,7 +64,7 @@
     <string name="scan_message_11">We are almost done.</string>
 
     <!--    HRV help screen-->
-    <string name="how_to_scan_your_hrv">How to scan your HRV?</string>
+    <string name="how_to_scan_your_hrv">How to scan your pulse?</string>
     <string name="hrv_message_1">1. Place the tip of your finger on the back camera and the flash, completely covering them.</string>
     <string name="hrv_message_2">2. Apply gentle pressure in order to stabilize the finger.</string>
     <string name="hrv_message_3">3. If the smartphone is too large to hold it in one hand comfortably, use one hand to hold the phone and the other to take the reading.</string>
@@ -131,7 +138,7 @@
     <string name="bio_age_same">The reading suggests that your fitness level is similar to the average person of your age. DISCLAIMER: Fitness level assessment is not meant for medical purposes. It might change with every reading until a baseline is set.</string>
     <string name="sedentary_lifestyle">The reading suggests that your lifestyle is less active than the average person of your age. DISCLAIMER: Lifestyle assessment is not meant for medical purposes. It might change with every reading until a baseline is set.</string>
     <string name="active_lifestyle">The reading suggests that your lifestyle is more active than the average person of your age. DISCLAIMER: Lifestyle assessment is not meant for medical purposes. It might change with every reading until a baseline is set.</string>
-    <string name="biological_age">Fitness-Adjusted Age</string>
+    <string name="biological_age">Heart Age</string>
     <string name="younger">Younger</string>
     <string name="older">Older</string>
     <string name="lifestyle">Lifestyle</string>
@@ -165,6 +172,10 @@
     <string name="less_stress_msg">You are LESS STRESSED than usual</string>
     <string name="normal_stress_msg">You are STRESSED as usual</string>
     <string name="high_stress_msg">You are MORE STRESSED than usual</string>
+    <string name="discard">Discard</string>
+    <string name="discard_title">Are you sure you want to discard the scan result?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <!--    Scan Question-->
     <string name="scan_question_text">Scan successful! Give us a few moments till we process your detailed insights</string>
@@ -173,11 +184,11 @@
     <string name="healthy_question">Do you feel healthy today?</string>
     <string name="before_scanning_question">What were you up to before scanning?</string>
     <string name="chip_eating">Eating</string>
-    <string name="chip_napping">Napping</string>
+    <string name="chip_sleeping">Sleeping</string>
     <string name="chip_working">Working</string>
     <string name="chip_chilling">Chilling</string>
     <string name="chip_just_woke_up">Just woke up</string>
-    <string name="chip_workout">Workout</string>
+    <string name="chip_workout">Exercising</string>
     <string name="chip_other">Other</string>
     <string name="gems">Gems</string>
     <string name="view_result">View Result</string>
@@ -203,9 +214,10 @@
     <string name="timeline">Timeline</string>
     <string name="short_meditation_completion_message">Well done! You have completed a short meditation.</string>
     <string name="meditation_feedback_question">How did the meditation make you feel?</string>
-    <string name="gender">Gender</string>
-
     <string name="how_to_measure_your_pulse">How to measure your pulse?</string>
+    <string name="sign_out_title">Are you sure you want to sign out?</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="cancel">Cancel</string>
 
     <!--    Reminder-->
     <string name="set_a_reminder">Set a reminder</string>
@@ -245,5 +257,5 @@
     <string name="feedback_message">Tell us what you love about the app or what we could be doing better</string>
     <string name="write_here">Write Here</string>
     <string name="feedback_submitted">Feedback submitted</string>
-    
+
 </resources>

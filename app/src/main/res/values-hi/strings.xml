@@ -9,6 +9,13 @@
     <string name="enter_age">अपनी आयु दर्ज करें</string>
     <string name="enter_weight">अपना वजन दर्ज करें</string>
     <string name="enter_height">अपनी ऊंचाई दर्ज करें</string>
+    <string name="height_feet">Height - Feet</string>
+    <string name="height_inches">Height - Inches</string>
+    <string name="gender">Gender</string>
+    <string name="full_name">Full Name</string>
+    <string name="fill_your_details">Fill your details so that we can provide you with more accurate results</string>
+    <string name="help_us_know_you">Help us know you better</string>
+    <string name="date_of_birth">Date of Birth</string>
     <string name="register">रजिस्टर करें</string>
     <string name="sign_up_google">गूगल के माध्यम से जुड़ें</string>
     <string name="terms_and_condition">जारी रखकर, आप हमारे Terms &amp; Conditions से सहमत होते हैं।</string>
@@ -165,6 +172,10 @@
     <string name="less_stress_msg">आप सामान्य से कम तनाव में हैं।</string>
     <string name="normal_stress_msg">आपके तनाव का स्तर सामान्य है।</string>
     <string name="high_stress_msg">आप सामान्य से अधिक तनावग्रस्त हैं।</string>
+    <string name="discard">Discard</string>
+    <string name="discard_title">Are you sure you want to discard the scan result?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <!--    Scan Question-->
     <string name="scan_question_text">स्कैन सफल! आपकी विस्तृत जानकारी को संसाधित करने के लिए हमें कुछ क्षण दें।</string>
@@ -173,7 +184,7 @@
     <string name="healthy_question">क्या आप आज स्वस्थ महसूस कर रहे हैं?</string>
     <string name="before_scanning_question">स्कैन करने से पहले आप क्या कर रहे थे?</string>
     <string name="chip_eating">भोजन</string>
-    <string name="chip_napping">झपकी</string>
+    <string name="chip_sleeping">झपकी</string>
     <string name="chip_working">काम</string>
     <string name="chip_chilling">कुछ नहीं</string>
     <string name="chip_just_woke_up">अभी उठे</string>
@@ -203,8 +214,10 @@
     <string name="timeline">Timeline</string>
     <string name="short_meditation_completion_message">Well done! You have completed a short meditation.</string>
     <string name="meditation_feedback_question">How did the meditation make you feel?</string>
-    <string name="gender">Gender</string>
     <string name="how_to_measure_your_pulse">अपनी नाड़ी कैसे मापें?</string>
+    <string name="sign_out_title">Are you sure you want to sign out?</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="cancel">Cancel</string>
 
     <!--    Reminder-->
     <string name="set_a_reminder">Set a reminder</string>

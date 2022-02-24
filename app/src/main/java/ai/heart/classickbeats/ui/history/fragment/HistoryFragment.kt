@@ -41,8 +41,6 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
 
     private lateinit var historyAdapter: HistoryAdapter
 
-    private var selectedTimelineType: HistoryType = HistoryType.Daily
-
     private var job: Job? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,16 +54,36 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
 
         binding.apply {
             historyRv.adapter = historyAdapter
-            dailyCategory.isSelected = true
+
+            historyViewModel.selectedHistoryType.observe(viewLifecycleOwner) {
+                dailyCategory.isSelected = false
+                weeklyCategory.isSelected = false
+                monthlyCategory.isSelected = false
+                when (it) {
+                    HistoryType.Daily -> {
+                        dailyCategory.isSelected = true
+                    }
+                    HistoryType.Weekly -> {
+                        weeklyCategory.isSelected = true
+
+                    }
+                    HistoryType.Monthly -> {
+                        monthlyCategory.isSelected = true
+                    }
+                }
+
+                job?.cancel()
+                job = lifecycleScope.launch {
+                    historyViewModel.getHistoryData(it)
+                        .collectLatest { pagingData ->
+                            historyAdapter.submitData(pagingData)
+                        }
+                }
+            }
+
             arrayOf(dailyCategory, weeklyCategory, monthlyCategory).forEach { category ->
                 category.setOnClickListener {
-                    dailyCategory.isSelected = false
-                    weeklyCategory.isSelected = false
-                    monthlyCategory.isSelected = false
-
-                    category.isSelected = true
-
-                    selectedTimelineType = when (category.id) {
+                    val historyType = when (category.id) {
                         dailyCategory.id -> {
                             HistoryType.Daily
                         }
@@ -79,15 +97,10 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
                             HistoryType.Daily
                         }
                     }
-                    job?.cancel()
-                    job = lifecycleScope.launch {
-                        historyViewModel.getHistoryData(selectedTimelineType)
-                            .collectLatest { pagingData ->
-                                historyAdapter.submitData(pagingData)
-                            }
-                    }
+                    historyViewModel.setSelectedHistoryType(historyType)
                 }
             }
+
             arrayOf(switchIcon, timelineTv).forEach {
                 it.setSafeOnClickListener {
                     navigateToTimelineFragment()
@@ -109,7 +122,8 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
 
         job?.cancel()
         job = lifecycleScope.launchWhenResumed {
-            historyViewModel.getHistoryData(selectedTimelineType).collectLatest { pagingData ->
+            val historyType = historyViewModel.selectedHistoryType.value ?: HistoryType.Daily
+            historyViewModel.getHistoryData(historyType).collectLatest { pagingData ->
                 historyAdapter.submitData(pagingData)
             }
         }

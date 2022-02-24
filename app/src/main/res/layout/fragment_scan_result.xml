@@ -676,7 +676,7 @@
                     android:layout_height="8dp"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="12dp"
-                    android:max="10"
+                    android:max="6"
                     android:progressBackgroundTint="@color/very_light_grey"
                     android:progressTint="@color/bright_orange"
                     app:layout_constraintEnd_toStartOf="@id/count_barrier"
@@ -691,13 +691,13 @@
                     android:layout_height="8dp"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="12dp"
-                    android:max="7"
+                    android:max="3"
                     android:progressBackgroundTint="@color/very_light_grey"
                     android:progressTint="@color/bright_blue_2"
                     app:layout_constraintEnd_toStartOf="@id/count_barrier"
                     app:layout_constraintStart_toStartOf="@id/stress_start_guideline"
                     app:layout_constraintTop_toBottomOf="@id/stress_progress"
-                    tools:progress="5" />
+                    tools:progress="2" />
 
                 <androidx.constraintlayout.widget.Barrier
                     android:id="@+id/count_barrier"
@@ -1059,14 +1059,25 @@
         </androidx.cardview.widget.CardView>
 
         <Button
+            android:id="@+id/discard_btn"
+            style="@style/Widget.Jeeva.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/discard"
+            app:layout_constraintBottom_toBottomOf="@id/save_btn"
+            app:layout_constraintEnd_toStartOf="@id/save_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="1" />
+
+        <Button
             android:id="@+id/save_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_semi_rounded_rectangle"
-            android:text="@string/done"
+            android:text="@string/save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/discard_btn"
             app:layout_constraintTop_toBottomOf="@id/stress_insufficient_card"
             app:layout_constraintVertical_bias="1" />
 

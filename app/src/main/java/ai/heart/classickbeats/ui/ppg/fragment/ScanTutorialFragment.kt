@@ -23,7 +23,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ScanTutorialFragment : Fragment(R.layout.fragment_scan_tutorial) {
 
-    private val PAGE_COUNT = 5
+    private val PAGE_COUNT = 4
 
     private var binding: FragmentScanTutorialBinding? = null
 
@@ -60,12 +60,6 @@ class ScanTutorialFragment : Fragment(R.layout.fragment_scan_tutorial) {
         )
         sliderData.add(
             ScanTutorialModel(
-                R.drawable.tutorial_animation_3,
-                getString(R.string.scan_tutorial_3)
-            )
-        )
-        sliderData.add(
-            ScanTutorialModel(
                 R.drawable.tutorial_animation_4,
                 getString(R.string.scan_tutorial_4)
             )
@@ -94,7 +88,7 @@ class ScanTutorialFragment : Fragment(R.layout.fragment_scan_tutorial) {
 
             nextBtn.setOnClickListener {
                 illustrationVp.apply {
-                    val nextPosition = (currentItem + 1) % 5
+                    val nextPosition = (currentItem + 1) % 4
                     if (nextPosition == 0) {
                         scanViewModel.getStartedClick()
                     } else {

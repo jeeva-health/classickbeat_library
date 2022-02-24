@@ -1,5 +1,6 @@
 package ai.heart.classickbeats.ui.ppg.viewmodel
 
+import ai.heart.classickbeats.domain.usecase.DiscardPpgScanResultUseCase
 import ai.heart.classickbeats.domain.usecase.GetScanDetailsUseCase
 import ai.heart.classickbeats.model.PPGData
 import ai.heart.classickbeats.shared.result.Event
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 @HiltViewModel
 class ScanResultViewModel @Inject constructor(
-    private val getScanDetailsUseCase: GetScanDetailsUseCase
+    private val getScanDetailsUseCase: GetScanDetailsUseCase,
+    private val discardPpgScanResultUseCase: DiscardPpgScanResultUseCase
 ) : ViewModel() {
 
     var apiError: String? = null
@@ -46,6 +48,12 @@ class ScanResultViewModel @Inject constructor(
                 apiError = result.error
             }
             setShowLoadingFalse()
+        }
+    }
+
+    fun submitDiscardRequest(scanId: Long) {
+        viewModelScope.launch {
+            discardPpgScanResultUseCase(scanId)
         }
     }
 }

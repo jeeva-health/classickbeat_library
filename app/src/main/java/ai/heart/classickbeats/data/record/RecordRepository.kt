@@ -1,12 +1,12 @@
 package ai.heart.classickbeats.data.record
 
 import ai.heart.classickbeats.data.db.AppDatabase
-import ai.heart.classickbeats.shared.mapper.input.*
 import ai.heart.classickbeats.model.*
 import ai.heart.classickbeats.model.entity.BaseLogEntity
 import ai.heart.classickbeats.model.entity.HistoryEntity
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.model.entity.TimelineEntityDatabase
+import ai.heart.classickbeats.shared.mapper.input.*
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
 import ai.heart.classickbeats.shared.util.toDateStringNetwork
@@ -171,6 +171,19 @@ class RecordRepository @Inject constructor(
             }
             is Result.Error -> Timber.e(response.exception)
             Result.Loading -> throw IllegalStateException("getHistoryListData response invalid state")
+        }
+        return Result.Error(response.error)
+    }
+
+    suspend fun discardPpgData(ppgId: Long): Result<Boolean> {
+        val entity = PPGEntity(isSaved = false)
+        val response = recordRemoteDataSource.updatePPG(ppgId, entity)
+        when (response) {
+            is Result.Success -> {
+                return Result.Success(true)
+            }
+            is Result.Error -> Timber.e(response.exception)
+            Result.Loading -> throw IllegalStateException("discardPpgData response invalid state")
         }
         return Result.Error(response.error)
     }

@@ -2,9 +2,8 @@ package ai.heart.classickbeats.model
 
 enum class ScanState {
     Eating,
-    Napping,
+    Sleeping,
     Chilling,
-    JustWokeUp,
     Workout,
     Working,
     Others

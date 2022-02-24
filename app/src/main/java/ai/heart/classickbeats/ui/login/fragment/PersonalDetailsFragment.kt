@@ -5,6 +5,7 @@ import ai.heart.classickbeats.databinding.FragmentPersonalDetailsBinding
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.shared.formattedinput.MaskedEditText
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.ui.common.DateTimePickerViewModel
 import ai.heart.classickbeats.ui.login.LoginViewModel
 import ai.heart.classickbeats.utils.*
 import android.os.Bundle
@@ -15,12 +16,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 
-
 class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
 
     private val binding by viewBinding(FragmentPersonalDetailsBinding::bind)
 
     private val logInViewModel by activityViewModels<LoginViewModel>()
+
+    private val dateTimePickerViewModel: DateTimePickerViewModel by activityViewModels()
 
     private lateinit var navController: NavController
 
@@ -40,12 +42,17 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
             openGenderSelectionDialog()
         }
 
+        binding.dobLayout.setEndIconOnClickListener {
+            openDatePickerDialog()
+        }
+
         binding.continueBtn.setSafeOnClickListener {
             val name = binding.nameLayout.editText?.text?.toString() ?: ""
             val gender = logInViewModel.selectedGender.value
             val weight = binding.weightLayout.editText?.text?.toString()?.toDoubleOrNull()
-            val isHeightValid =
-                (binding.heightLayout.editText as MaskedEditText?)?.isValid() ?: false
+            val isHeightFeetValid = binding.heightFeetLayout.editText?.text?.isNotBlank() ?: false
+            val isHeightInchesValid =
+                binding.heightInchesLayout.editText?.text?.isNotBlank() ?: false
             val isDobValid = (binding.dobLayout.editText as MaskedEditText?)?.isValid() ?: false
 
             var isError = false
@@ -64,8 +71,13 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
                 isError = true
             }
 
-            if (!isHeightValid) {
-                binding.heightLayout.error = "Enter valid height"
+            if (!isHeightFeetValid) {
+                binding.heightFeetLayout.error = "Enter valid height"
+                isError = true
+            }
+
+            if (!isHeightInchesValid) {
+                binding.heightInchesLayout.error = "Enter valid height"
                 isError = true
             }
 
@@ -77,16 +89,17 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
             if (isError) {
                 showSnackbar("Invalid details", false)
             } else {
-                val height =
-                    (binding.heightLayout.editText as MaskedEditText?)?.getParsedText()
-                        ?.toDoubleOrNull()
+                val heightFeet = binding.heightFeetLayout.editText?.text?.toString()?.toInt() ?: 0
+                val heightInches =
+                    binding.heightInchesLayout.editText?.text?.toString()?.toInt() ?: 0
+                val height = heightFeet * 12 + heightInches
                 val dob = (binding.dobLayout.editText as MaskedEditText?)?.getParsedText()
 
                 val user = User(
                     fullName = name,
                     gender = gender!!,
                     weight = weight!!,
-                    height = height!!,
+                    height = height.toDouble(),
                     dob = dob!!
                 )
                 logInViewModel.registerUser(user)
@@ -107,6 +120,10 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
             }
         })
 
+        dateTimePickerViewModel.selectedLogDate.observe(viewLifecycleOwner, EventObserver {
+            binding.dobLayout.editText?.setText(it.toString())
+        })
+
         logInViewModel.showLoading.observe(viewLifecycleOwner) {
             if (it) {
                 showLoadingBar()
@@ -124,6 +141,11 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
     private fun openGenderSelectionDialog() {
         val action =
             PersonalDetailsFragmentDirections.actionPersonalDetailsFragmentToGenderSelectionBottomSheetFragment()
+        navController.navigate(action)
+    }
+
+    private fun openDatePickerDialog() {
+        val action = PersonalDetailsFragmentDirections.actionPersonalDetailsFragmentToDatePickerFragment2()
         navController.navigate(action)
     }
 }

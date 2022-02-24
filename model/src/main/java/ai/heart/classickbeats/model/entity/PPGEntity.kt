@@ -86,7 +86,10 @@ data class PPGEntity(
     @Json(name = "is_calculation_complete")
     val isCalculationComplete: Boolean? = null,
 
-    @Json(name = "lifestyleCategory")
+    @Json(name = "lifestyleClassification")
     val lifeStyleCategory: Int? = null,
 
-    ) : BaseLogEntity(LogType.PPG)
+    @Json(name = "is_saved")
+    val isSaved: Boolean? = true
+
+) : BaseLogEntity(LogType.PPG)

@@ -5,12 +5,12 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_7
-    targetCompatibility = JavaVersion.VERSION_1_7
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.31"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_stdlib"
 
     // Moshi
     implementation "com.squareup.moshi:moshi:$version_moshi"
@@ -18,7 +18,5 @@ dependencies {
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$version_moshi"
 
     // Room
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-ktx:2.2.6"
 }

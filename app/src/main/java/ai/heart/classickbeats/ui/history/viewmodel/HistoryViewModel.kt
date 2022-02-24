@@ -43,6 +43,12 @@ class HistoryViewModel @Inject constructor(
     private val _graphData = MutableLiveData<GraphData>()
     val graphData: LiveData<GraphData> = _graphData
 
+    private val _selectedHistoryType = MutableLiveData(HistoryType.Daily)
+    val selectedHistoryType: LiveData<HistoryType> = _selectedHistoryType
+    fun setSelectedHistoryType(historyType: HistoryType) {
+        _selectedHistoryType.postValue(historyType)
+    }
+
     private val _measurementData = MutableLiveData<List<TimelineItem>>()
     val measurementData: LiveData<List<TimelineItem>> = _measurementData
 
@@ -73,7 +79,7 @@ class HistoryViewModel @Inject constructor(
                     apiError = response.error
                 }
             } else {
-                val endDate = getEndDate(startDate, type)
+                val endDate = getEndDateGraph(startDate, type)
                 val response = recordRepository.getGraphData(model, type, startDate, endDate)
                 if (response.succeeded) {
                     _graphData.value = response.data
@@ -108,6 +114,15 @@ class HistoryViewModel @Inject constructor(
                 apiError = response.error
             }
         }
+    }
+
+    private fun getEndDateGraph(startDate: Date, type: HistoryType): Date {
+        val diffDays = when (type) {
+            HistoryType.Daily -> 1
+            HistoryType.Weekly -> 6
+            HistoryType.Monthly -> startDate.getNumberOfDaysInMonth() - 1
+        }
+        return startDate.getDateAddedBy(diffDays)
     }
 
     private fun getEndDate(startDate: Date, type: HistoryType): Date {

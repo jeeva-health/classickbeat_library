@@ -18,8 +18,8 @@ object PpgEntityToScanResult {
         val bioAge = BioAge.values()[bAgeBin]
         val bioAgeResult = if (userAge != -1) {
             when {
-                userAge < bioAge.startRange -> -1
-                userAge > bioAge.endRange -> 1
+                userAge < bioAge.startRange -> 1
+                userAge > bioAge.endRange -> -1
                 else -> 0
             }
         } else {

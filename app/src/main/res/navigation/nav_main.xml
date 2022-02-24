@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_personalDetailsFragment_to_genderSelectionBottomSheetFragment"
             app:destination="@id/genderSelectionBottomSheetFragment" />
+        <action
+            android:id="@+id/action_personalDetailsFragment_to_datePickerFragment2"
+            app:destination="@id/datePickerFragment2" />
     </fragment>
 
     <dialog
@@ -55,5 +58,10 @@
         android:name="ai.heart.classickbeats.ui.login.fragment.GenderSelectionBottomSheetFragment"
         android:label="fragment_gender_selection_bottom_sheet"
         tools:layout="@layout/fragment_gender_selection_bottom_sheet" />
+
+    <dialog
+        android:id="@+id/datePickerFragment2"
+        android:name="ai.heart.classickbeats.ui.common.DatePickerFragment"
+        android:label="DatePickerFragment" />
 
 </navigation>
