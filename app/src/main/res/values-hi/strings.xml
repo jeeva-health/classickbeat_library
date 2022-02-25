@@ -148,7 +148,7 @@
     <string name="moderately_active">Moderately Active</string>
     <string name="active">सक्रिय</string>
     <string name="very_active">Very Active</string>
-    <string name="insufficient_heart_rate_data">अपर्याप्त नाड़ी स्कैन। अपनी बेसलाइन निर्धारित करने और तनाव पर विस्तृत जानकारी प्राप्त करने के लिए 7 अलग-अलग दिनों में कुल 10 स्कैन पूरे करें।</string>
+    <string name="insufficient_heart_rate_data">अपर्याप्त नाड़ी स्कैन। अपनी बेसलाइन निर्धारित करने और तनाव पर विस्तृत जानकारी प्राप्त करने के लिए 3 अलग-अलग दिनों में कुल 6 स्कैन पूरे करें।</string>
     <string name="collect_more_gems"><![CDATA[विस्तृत तनाव विश्लेषण रिपोर्ट प्राप्त करने के लिए 20 HRV रत्न एकत्रित करें। >]]></string>
     <string name="hrv_metrics">HRV मीटर</string>
     <string name="sdnn">SDNN</string>
