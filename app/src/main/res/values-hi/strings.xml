@@ -176,6 +176,7 @@
     <string name="discard_title">Are you sure you want to discard the scan result?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="poor_quality_message">Poor quality recording, please try again</string>
 
     <!--    Scan Question-->
     <string name="scan_question_text">स्कैन सफल! आपकी विस्तृत जानकारी को संसाधित करने के लिए हमें कुछ क्षण दें।</string>

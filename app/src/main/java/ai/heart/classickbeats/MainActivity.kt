@@ -2,12 +2,11 @@ package ai.heart.classickbeats
 
 import ai.heart.classickbeats.databinding.ActivityMainBinding
 import ai.heart.classickbeats.model.Constants
-import ai.heart.classickbeats.shared.data.login.LoginRepository
 import ai.heart.classickbeats.shared.network.SessionManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -19,12 +18,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
@@ -32,20 +26,16 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private var binding: ActivityMainBinding? = null
+    var binding: ActivityMainBinding? = null
+        private set
 
     private lateinit var navController: NavController
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-
-    // It's needed to init loginRepoHolder class
     @Inject
-    lateinit var loginRepository: LoginRepository
+    lateinit var updateManager: UpdateManager
 
     @Inject
     lateinit var sessionManager: SessionManager
-
-    private lateinit var bottomSheetCallback: BottomSheetBehavior.BottomSheetCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,20 +62,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController = this.findNavController(R.id.nav_host_fragment)
-        appBarConfiguration =
-            AppBarConfiguration(
-                setOf(
-                    R.id.scanFragment,
-                    R.id.historyFragment,
-                    R.id.loggingHomeFragment,
-                    R.id.wellnessHomeFragment,
-                    R.id.profileHomeFragment
-                )
-            )
-//        setupActionBarWithNavController(
-//            navController,
-//            appBarConfiguration
-//        )
 
         binding?.bottomNavigation?.setOnItemSelectedListener { menuItem ->
             menuItem.onNavDestinationSelected(navController)
@@ -121,21 +97,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // TODO: fix below code
-//        sessionManager.updateNetworkIssueStatus(true)
-//
-//        loginViewModel.refreshTokenStatusLiveData.observe(this, { isTokenValid ->
-//            if (!isTokenValid) {
-//                loginViewModel.logoutUser()
-//                Toast.makeText(this, "Session expired. Please login again", Toast.LENGTH_SHORT)
-//                    .show()
-//                GlobalScope.launch {
-//                    delay(1000)
-//                    startActivity(Intent(this@MainActivity, MainActivity::class.java))
-//                }
-//            }
-//        })
-//        loginViewModel.resetRefreshTokenStatus()
+        updateManager.checkForImmediateUpdate()
     }
 
     override fun onResume() {
@@ -156,84 +118,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun showSnackbar(message: String, isShort: Boolean = true) {
-        val length = if (isShort) {
-            LENGTH_SHORT
-        } else {
-            LENGTH_LONG
-        }
-        binding?.apply {
-            Snackbar.make(bottomNavigation, message, length)
-                .apply { anchorView = bottomNavigation }.show()
-        }
-    }
-
-    fun showBottomNavigation() {
-        binding?.bottomNavigation?.visibility = View.VISIBLE
-    }
-
-    fun hideBottomNavigation() {
-        binding?.bottomNavigation?.visibility = View.GONE
-    }
-
-    fun selectHistoryFragmentInBottomNavigation() {
-        if (binding?.bottomNavigation?.selectedItemId != R.id.historyFragment) {
-            binding?.bottomNavigation?.selectedItemId = R.id.historyFragment
-        }
-    }
-
-    fun navigateToLoggingFragment() {
-        if (binding?.bottomNavigation?.selectedItemId != R.id.loggingHomeFragment) {
-            binding?.bottomNavigation?.selectedItemId = R.id.loggingHomeFragment
-        }
-    }
-
-    fun navigateToHeartRateFragment() {
-        if (binding?.bottomNavigation?.selectedItemId != R.id.scanFragment) {
-            binding?.bottomNavigation?.selectedItemId = R.id.scanFragment
-        }
-    }
-
-    fun navigateToWellnessFragment() {
-        if (binding?.bottomNavigation?.selectedItemId != R.id.wellnessHomeFragment) {
-            binding?.bottomNavigation?.selectedItemId = R.id.wellnessHomeFragment
-        }
-    }
-
-    fun navigateToProfileFragment() {
-        if (binding?.bottomNavigation?.selectedItemId != R.id.profileHomeFragment) {
-            binding?.bottomNavigation?.selectedItemId = R.id.profileHomeFragment
-        }
-    }
-
-    fun showLoadingBar() {
-        Timber.i("showLoadingBar() called")
-        binding?.progressBar?.visibility = View.VISIBLE
-//        window?.setFlags(
-//            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-//            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-//        )
-    }
-
-    fun hideLoadingBar() {
-        Timber.i("hideLoadingBar() called")
-        binding?.progressBar?.visibility = View.GONE
-        //window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-    }
-
     private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = getString(R.string.playback_channel_name)
-            val descriptionText = getString(R.string.playback_channel_description)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel =
-                NotificationChannel(Constants.PLAYBACK_CHANNEL_ID, name, importance).apply {
-                    description = descriptionText
-                }
-            // Register the channel with the system
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+        val name = getString(R.string.playback_channel_name)
+        val descriptionText = getString(R.string.playback_channel_description)
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel =
+            NotificationChannel(Constants.PLAYBACK_CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+        // Register the channel with the system
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == UpdateManager.IMMEDIATE_UPDATE_REQUEST_CODE) {
+            if (resultCode != RESULT_OK) {
+                Timber.e("Update flow failed! Result code: $resultCode")
+                // TODO(Start updated again)
+            }
         }
     }
 }

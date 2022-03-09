@@ -181,7 +181,7 @@ class MonitorViewModel @Inject constructor(
 
         val largeWindowOffset = (largeWindow - 1) / 2
         if (movAvgSmall.size >= largeWindow) {
-            val x =  movAvgSmall[movAvgSmall.size - largeWindowOffset] - movAvgLarge.last()
+            val x = movAvgSmall[movAvgSmall.size - largeWindowOffset] - movAvgLarge.last()
             centeredSignal.add(x)
 
             _dynamicGraphCoordinates.postValue(Event(Pair(centeredSignal.size, x)))

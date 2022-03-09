@@ -1,11 +1,11 @@
 package ai.heart.classickbeats.ui.history.fragment
 
-import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentHistoryBinding
 import ai.heart.classickbeats.model.HistoryType
 import ai.heart.classickbeats.model.LogType
 import ai.heart.classickbeats.model.Timeline
+import ai.heart.classickbeats.selectHistoryFragmentInBottomNavigation
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.history.HistoryAdapter
 import ai.heart.classickbeats.ui.history.viewmodel.HistoryViewModel
@@ -50,7 +50,7 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
 
         historyAdapter = HistoryAdapter(requireContext(), timelineItemClickListener)
 
-        (requireActivity() as MainActivity).selectHistoryFragmentInBottomNavigation()
+        requireActivity().selectHistoryFragmentInBottomNavigation()
 
         binding.apply {
             historyRv.adapter = historyAdapter

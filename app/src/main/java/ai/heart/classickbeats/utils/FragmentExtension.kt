@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.utils
 
-import ai.heart.classickbeats.MainActivity
+import ai.heart.classickbeats.*
 import android.content.Context
 import android.os.Build
 import android.view.View
@@ -21,11 +21,8 @@ fun Fragment.setLightStatusBar() {
             APPEARANCE_LIGHT_STATUS_BARS
         )
     } else {
-        window.decorView.systemUiVisibility = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        window.decorView.systemUiVisibility =
             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-        } else {
-            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
     }
 }
 
@@ -48,7 +45,7 @@ fun Fragment.showShortToast(message: String) {
 }
 
 fun Fragment.showSnackbar(message: String, isShort: Boolean = true) {
-    (requireActivity() as MainActivity).showSnackbar(message, isShort)
+    requireActivity().showSnackbar(message, isShort)
 }
 
 fun Fragment.hideKeyboard(view: View) {
@@ -65,19 +62,19 @@ fun Fragment.postOnMainLooper(call: () -> Unit) {
 }
 
 fun Fragment.showBottomNavigation() {
-    (requireActivity() as MainActivity).showBottomNavigation()
+    requireActivity().showBottomNavigation()
 }
 
 fun Fragment.hideBottomNavigation() {
-    (requireActivity() as MainActivity).hideBottomNavigation()
+    requireActivity().hideBottomNavigation()
 }
 
 fun Fragment.showLoadingBar() {
-    (requireActivity() as MainActivity).showLoadingBar()
+    requireActivity().showLoadingBar()
 }
 
 fun Fragment.hideLoadingBar() {
-    (requireActivity() as MainActivity).hideLoadingBar()
+    requireActivity().hideLoadingBar()
 }
 
 fun Fragment.getContextColor(colorId: Int): Int {

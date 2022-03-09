@@ -1,18 +1,18 @@
 package ai.heart.classickbeats.ui.ppg.fragment
 
-import ai.heart.classickbeats.MainActivity
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.compute.ProcessingData
 import ai.heart.classickbeats.databinding.FragmentScanBinding
 import ai.heart.classickbeats.domain.CameraReading
 import ai.heart.classickbeats.graph.RunningGraph
 import ai.heart.classickbeats.model.Constants.SCAN_DURATION
+import ai.heart.classickbeats.navigateToHeartRateFragment
 import ai.heart.classickbeats.shared.result.EventObserver
+import ai.heart.classickbeats.ui.common.CircleProgressBar
 import ai.heart.classickbeats.ui.ppg.AccelerometerListener
 import ai.heart.classickbeats.ui.ppg.PixelAnalyzer
 import ai.heart.classickbeats.ui.ppg.viewmodel.MonitorViewModel
 import ai.heart.classickbeats.ui.ppg.viewmodel.ScanViewModel
-import ai.heart.classickbeats.ui.common.CircleProgressBar
 import ai.heart.classickbeats.utils.*
 import android.Manifest
 import android.annotation.SuppressLint
@@ -43,7 +43,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import com.github.mikephil.charting.charts.LineChart
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @ExperimentalCoroutinesApi
@@ -162,7 +165,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         navController = findNavController()
 
         // To make sure the bottom navigation is correctly set
-        (requireActivity() as MainActivity).navigateToHeartRateFragment()
+        requireActivity().navigateToHeartRateFragment()
 
         // If its first scan show the scan tutorial dialog fragment
         scanViewModel.isFirstTimeScanCompleted.observe(viewLifecycleOwner, EventObserver {
@@ -225,7 +228,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
                 if (countdownType == 0) {
                     binding.countdown.text = it.toString()
                 } else {
-                    val progress = ((SCAN_DURATION - it) * 100 / SCAN_DURATION).toFloat()
+                    val progress = ((SCAN_DURATION - it + 1) * 100 / SCAN_DURATION).toFloat()
                     circularProgressBar.setProgressWithAnimation(progress)
                     circularProgressBar.invalidate()
                     circularProgressBar.requestLayout()
@@ -583,15 +586,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         } else {
             val time = SCAN_DURATION - countdownTime
             when {
-                time <= 5 -> R.string.scan_message_2
-                time <= 10 -> R.string.scan_message_3
-                time <= 15 -> R.string.scan_message_4
-                time <= 22 -> R.string.scan_message_5
-                time <= 30 -> R.string.scan_message_6
-                time <= 35 -> R.string.scan_message_7
-                time <= 43 -> R.string.scan_message_8
-                time <= 50 -> R.string.scan_message_9
-                time <= 57 -> R.string.scan_message_10
+                time <= 5 -> R.string.scan_message_3
+                time <= 9 -> R.string.scan_message_5
+                time <= 13 -> R.string.scan_message_7
+                time <= 17 -> R.string.scan_message_8
+                time <= 22 -> R.string.scan_message_9
+                time <= 27 -> R.string.scan_message_10
                 else -> R.string.scan_message_11
             }
         }

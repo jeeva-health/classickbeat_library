@@ -1,6 +1,5 @@
 package ai.heart.classickbeats.ui.ppg.fragment
 
-import ai.heart.classickbeats.NavHomeDirections
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanResultBinding
 import ai.heart.classickbeats.graph.LineGraph
@@ -120,6 +119,14 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
     }
 
     private fun showUi(scanResult: PPGData.ScanResult, scanId: Long, isShowingHistory: Boolean) {
+
+        val scanQuality = scanResult.quality
+        if (scanQuality <= 0f) {
+            showSnackbar(getString(R.string.poor_quality_message), isShort = false)
+            navigateToScanFragment()
+            return
+        }
+
         val bioAgeIndex = scanResult.ageBin
         val bioAge = BioAge.values()[bioAgeIndex]
         val bioAgeInfo: SpannableString = when (scanResult.bioAgeResult) {
@@ -188,7 +195,6 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
                     ColorStateList.valueOf(getContextColor(R.color.bright_red_3))
             }
 
-            val scanQuality = scanResult.quality
             quality.text = "Quality: ${scanQuality.toInt()} %"
 
             var stressDrawableInt = 0
@@ -313,14 +319,14 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
         return message
     }
 
-    private fun navigateToScanFragment() {
-        val action = NavHomeDirections.actionGlobalScanFragment()
-        navController.navigate(action)
-    }
-
     private fun navigateToTimelineFragment() {
         val action =
             ScanResultFragmentDirections.actionScanResultFragmentToTimelineFragment()
+        navController.navigate(action)
+    }
+
+    private fun navigateToScanFragment() {
+        val action = ScanResultFragmentDirections.actionGlobalScanFragment()
         navController.navigate(action)
     }
 
