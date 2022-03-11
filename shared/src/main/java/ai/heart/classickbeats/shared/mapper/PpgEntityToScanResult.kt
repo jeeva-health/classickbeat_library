@@ -1,9 +1,9 @@
 package ai.heart.classickbeats.shared.mapper
 
-import ai.heart.classickbeats.model.BioAge
 import ai.heart.classickbeats.model.PPGData
 import ai.heart.classickbeats.model.StressResult
 import ai.heart.classickbeats.model.entity.PPGEntity
+import ai.heart.classickbeats.model.toHeartAgeClassification
 import ai.heart.classickbeats.model.toLifestyleCategory
 import ai.heart.classickbeats.shared.util.toPPGDate
 import java.util.*
@@ -11,20 +11,8 @@ import java.util.*
 object PpgEntityToScanResult {
 
     fun map(
-        userAge: Int,
         ppgEntity: PPGEntity
     ): PPGData.ScanResult {
-        val bAgeBin = ppgEntity.bAgeBin ?: 0
-        val bioAge = BioAge.values()[bAgeBin]
-        val bioAgeResult = if (userAge != -1) {
-            when {
-                userAge < bioAge.startRange -> 1
-                userAge > bioAge.endRange -> -1
-                else -> 0
-            }
-        } else {
-            0
-        }
         val activeStars = ppgEntity.activeStars ?: 2
         val isActive = activeStars > 3
 
@@ -33,7 +21,8 @@ object PpgEntityToScanResult {
             aFib = "Not Detected",
             quality = ppgEntity.quality ?: 0.0f,
             ageBin = ppgEntity.bAgeBin ?: 0,
-            bioAgeResult = bioAgeResult,
+            heartAgeClassification = ppgEntity.heartAgeClassification?.toHeartAgeClassification()
+                ?: PPGData.ScanResult.HeartAgeClassification.Similar,
             activeStar = activeStars,
             lifestyleCategory = ppgEntity.lifeStyleCategory?.toLifestyleCategory()
                 ?: PPGData.ScanResult.LifestyleCategory.ModeratelyActive,

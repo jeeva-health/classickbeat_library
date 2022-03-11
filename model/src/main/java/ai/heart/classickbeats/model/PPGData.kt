@@ -20,7 +20,7 @@ data class PPGData(
         val aFib: String,
         val quality: Float,
         val ageBin: Int,
-        val bioAgeResult: Int,
+        val heartAgeClassification: HeartAgeClassification,
         val activeStar: Int,
         val activeSedentaryProb: List<Float> = emptyList(),
         val binProbsMAP: List<Float> = emptyList(),
@@ -43,6 +43,12 @@ data class PPGData(
             Active,
             VeryActive
         }
+
+        enum class HeartAgeClassification {
+            Good,
+            Similar,
+            Worse
+        }
     }
 }
 
@@ -53,4 +59,11 @@ fun Int.toLifestyleCategory(): PPGData.ScanResult.LifestyleCategory =
         3 -> PPGData.ScanResult.LifestyleCategory.Active
         4 -> PPGData.ScanResult.LifestyleCategory.VeryActive
         else -> PPGData.ScanResult.LifestyleCategory.ModeratelyActive
+    }
+
+fun Int.toHeartAgeClassification(): PPGData.ScanResult.HeartAgeClassification =
+    when (this) {
+        1 -> PPGData.ScanResult.HeartAgeClassification.Worse
+        0 -> PPGData.ScanResult.HeartAgeClassification.Similar
+        else -> PPGData.ScanResult.HeartAgeClassification.Good
     }

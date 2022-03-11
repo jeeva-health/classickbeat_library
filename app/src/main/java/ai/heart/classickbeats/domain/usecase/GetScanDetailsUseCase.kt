@@ -2,20 +2,16 @@ package ai.heart.classickbeats.domain.usecase
 
 import ai.heart.classickbeats.data.record.RecordRepository
 import ai.heart.classickbeats.data.user.UserRepository
-import ai.heart.classickbeats.domain.exception.AgeException
 import ai.heart.classickbeats.domain.exception.PpgEntityException
-import ai.heart.classickbeats.domain.exception.UserException
-import ai.heart.classickbeats.shared.mapper.PpgEntityToScanResult
 import ai.heart.classickbeats.model.PPGData
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.di.IoDispatcher
 import ai.heart.classickbeats.shared.domain.UseCase
+import ai.heart.classickbeats.shared.mapper.PpgEntityToScanResult
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.error
 import ai.heart.classickbeats.shared.result.succeeded
-import ai.heart.classickbeats.shared.util.computeAge
-import ai.heart.classickbeats.shared.util.toDate
 import androidx.paging.ExperimentalPagingApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,7 +32,7 @@ class GetScanDetailsUseCase @Inject constructor(
     }
 
     override suspend fun execute(parameters: Long): PPGData.ScanResult {
-        var recordResult: Result<PPGEntity>
+        var recordResult: Result<PPGEntity>? = null
         var counter = 0
         do {
             recordResult = recordRepository.getScanDetail(parameters)
@@ -54,9 +50,7 @@ class GetScanDetailsUseCase @Inject constructor(
                 delay(RETRY_DELAY)
             }
         } while (true)
-        val ppgEntity = recordResult.data ?: throw PpgEntityException("PPG entity data is null")
-        val user = userRepository.getUser() ?: throw UserException("User is null")
-        val age = user.dob.toDate()?.computeAge() ?: throw AgeException("Age is null")
-        return PpgEntityToScanResult.map(age, ppgEntity)
+        val ppgEntity = recordResult?.data ?: throw PpgEntityException("PPG entity data is null")
+        return PpgEntityToScanResult.map(ppgEntity)
     }
 }

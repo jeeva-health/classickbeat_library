@@ -39,6 +39,9 @@ class ScanResultViewModel @Inject constructor(
     }
 
     fun getScanDetail(scanId: Long) {
+        if (scanId == -1L) {
+            return
+        }
         viewModelScope.launch {
             setShowLoadingTrue()
             val result = getScanDetailsUseCase(scanId)

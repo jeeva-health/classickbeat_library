@@ -59,7 +59,7 @@ class MonitorViewModel @Inject constructor(
     val offset = (largeWindow + smallWindow - 1) / 2
 
     @Volatile
-    var ppgId: Long = -1
+    var ppgId: Long = -1L
 
     private val _dynamicGraphCoordinates = MutableLiveData<Event<Pair<Int, Double>>>()
     val dynamicGraphCoordinates: LiveData<Event<Pair<Int, Double>>> = _dynamicGraphCoordinates
@@ -190,12 +190,14 @@ class MonitorViewModel @Inject constructor(
 
     fun uploadScanSurvey(sleepRating: Int, moodRating: Int, scanState: String) {
         viewModelScope.launch {
-            val ppgEntity = PPGEntity(
-                sleepRating = sleepRating,
-                moodRating = moodRating,
-                scanState = scanState
-            )
-            recordRepository.updatePPG(ppgId, ppgEntity)
+            if (ppgId != -1L) {
+                val ppgEntity = PPGEntity(
+                    sleepRating = sleepRating,
+                    moodRating = moodRating,
+                    scanState = scanState
+                )
+                recordRepository.updatePPG(ppgId, ppgEntity)
+            }
         }
     }
 }

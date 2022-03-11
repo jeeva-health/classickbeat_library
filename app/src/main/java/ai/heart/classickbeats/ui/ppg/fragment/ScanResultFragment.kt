@@ -129,10 +129,22 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
 
         val bioAgeIndex = scanResult.ageBin
         val bioAge = BioAge.values()[bioAgeIndex]
-        val bioAgeInfo: SpannableString = when (scanResult.bioAgeResult) {
-            1 -> setBoldSpan(SpannableString.valueOf(getString(R.string.bio_age_more)), 91, 102)
-            -1 -> setBoldSpan(SpannableString.valueOf(getString(R.string.bio_age_less)), 92, 103)
-            else -> setBoldSpan(SpannableString.valueOf(getString(R.string.bio_age_same)), 91, 102)
+        val bioAgeInfo: SpannableString = when (scanResult.heartAgeClassification) {
+            PPGData.ScanResult.HeartAgeClassification.Good -> setBoldSpan(
+                SpannableString.valueOf(
+                    getString(R.string.bio_age_less)
+                ), 92, 103
+            )
+            PPGData.ScanResult.HeartAgeClassification.Similar -> setBoldSpan(
+                SpannableString.valueOf(
+                    getString(R.string.bio_age_same)
+                ), 91, 102
+            )
+            PPGData.ScanResult.HeartAgeClassification.Worse -> setBoldSpan(
+                SpannableString.valueOf(
+                    getString(R.string.bio_age_more)
+                ), 91, 102
+            )
         }
 
         val activeStarCount = scanResult.activeStar
