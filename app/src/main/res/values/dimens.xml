@@ -14,7 +14,10 @@
     <dimen name="inner_frame_layout_padding">5dp</dimen>
     <dimen name="big_guideline_margin">32dp</dimen>
     <dimen name="small_guideline_marin">18dp</dimen>
+    <dimen name="start_guideline_margin">24dp</dimen>
+    <dimen name="end_guideline_margin">24dp</dimen>
 
+    <dimen name="text_size_h0">28sp</dimen>
     <dimen name="text_size_h1">24sp</dimen>
     <dimen name="text_size_h2">20sp</dimen>
     <dimen name="text_size_h3">18sp</dimen>
@@ -23,8 +26,9 @@
 
     <dimen name="button_height">54dp</dimen>
     <dimen name="page_bottom_margin">48dp</dimen>
+    <dimen name="page_bottom_button_margin">24dp</dimen>
     <dimen name="page_navigation_bottom_margin">84dp</dimen>
-    <dimen name="page_top_margin">52dp</dimen>
+    <dimen name="page_top_margin">56dp</dimen>
 
     <dimen name="emoji_size">18dp</dimen>
 </resources>

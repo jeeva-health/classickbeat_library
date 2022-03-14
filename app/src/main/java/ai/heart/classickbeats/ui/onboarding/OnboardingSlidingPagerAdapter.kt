@@ -1,46 +1,38 @@
 package ai.heart.classickbeats.ui.onboarding
 
 import ai.heart.classickbeats.databinding.ItemviewOnboardingBinding
-import ai.heart.classickbeats.model.OnBoardingModel
+import ai.heart.classickbeats.model.OnboardingModel
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
-class OnBoardingSlidingPagerAdapter(
+class OnboardingSlidingPagerAdapter(
     private val context: Context,
-    private val dataList: List<OnBoardingModel>
-) :
-    RecyclerView.Adapter<OnBoardingSlidingPagerAdapter.ItemViewHolder>() {
+    private val onboardingModelList: List<OnboardingModel>
+) : RecyclerView.Adapter<OnboardingSlidingPagerAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder.from(parent)
     }
 
     override fun getItemCount(): Int {
-        return dataList.size
+        return onboardingModelList.size
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(context, dataList[position])
+        holder.bind(context, onboardingModelList[position])
     }
 
-    class ItemViewHolder private constructor(val binding: ItemviewOnboardingBinding) :
+    class ItemViewHolder(val binding: ItemviewOnboardingBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(context: Context, itemData: OnBoardingModel) {
-            val resource = context.resources
-            binding.root.background =
-                ResourcesCompat.getDrawable(resource, itemData.backgroundDrawableId, null)
-            binding.icon.setImageDrawable(
-                ResourcesCompat.getDrawable(
-                    resource,
-                    itemData.iconDrawableId,
-                    null
-                )
-            )
-            binding.message.text = itemData.message
+        fun bind(
+            context: Context,
+            item: OnboardingModel,
+        ) {
+            Glide.with(context).load(item.imageDrawableId).into(binding.onboardImage)
         }
 
         companion object {

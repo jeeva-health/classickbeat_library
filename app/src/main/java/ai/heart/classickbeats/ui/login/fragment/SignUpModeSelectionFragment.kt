@@ -2,7 +2,10 @@ package ai.heart.classickbeats.ui.login.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentSignUpModeSelectionBinding
-import ai.heart.classickbeats.utils.*
+import ai.heart.classickbeats.utils.getContextColor
+import ai.heart.classickbeats.utils.setDarkStatusBar
+import ai.heart.classickbeats.utils.setSafeOnClickListener
+import ai.heart.classickbeats.utils.viewBinding
 import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
@@ -11,11 +14,9 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-
 
 class SignUpModeSelectionFragment : Fragment(R.layout.fragment_sign_up_mode_selection) {
 
@@ -23,16 +24,22 @@ class SignUpModeSelectionFragment : Fragment(R.layout.fragment_sign_up_mode_sele
 
     private lateinit var navController: NavController
 
-    private lateinit var googleModeButton: Button
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
 
-        googleModeButton = binding.googleSignIn
-
         setDarkStatusBar()
+
+        binding.tagLine.text =
+            setColoredText(
+                setColoredText(
+                    SpannableString.valueOf(getString(R.string.app_tagline)),
+                    0,
+                    7,
+                    getContextColor(R.color.rosy_pink)
+                ), 8, 18, getContextColor(R.color.soft_blue_3)
+            )
 
         binding.tnc.text = setClickableText(
             SpannableString.valueOf(getString(R.string.terms_and_condition)),
@@ -43,15 +50,9 @@ class SignUpModeSelectionFragment : Fragment(R.layout.fragment_sign_up_mode_sele
             openTnCPage()
         }
 
-        googleModeButton.setSafeOnClickListener {
+        binding.connectWithGoogleCard.setSafeOnClickListener {
             navigateGoogleSignUpFragment()
         }
-    }
-
-    private fun navigateToPhoneSignUpFragment() {
-        val action =
-            SignUpModeSelectionFragmentDirections.actionSignUpModeSelectionFragmentToPhoneSignUpFragment()
-        navController.navigate(action)
     }
 
     private fun navigateGoogleSignUpFragment() {
@@ -73,6 +74,21 @@ class SignUpModeSelectionFragment : Fragment(R.layout.fragment_sign_up_mode_sele
         )
         message.setSpan(
             ForegroundColorSpan(getContextColor(R.color.orange)),
+            startPos,
+            endPos,
+            SpannableString.SPAN_INCLUSIVE_INCLUSIVE
+        )
+        return message
+    }
+
+    private fun setColoredText(
+        message: SpannableString,
+        startPos: Int,
+        endPos: Int,
+        colorId: Int,
+    ): SpannableString {
+        message.setSpan(
+            ForegroundColorSpan(colorId),
             startPos,
             endPos,
             SpannableString.SPAN_INCLUSIVE_INCLUSIVE

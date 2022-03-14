@@ -65,10 +65,10 @@ dependencies {
     api 'com.jakewharton.timber:timber:5.0.1'
 
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt'
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_kotlin_coroutines"
 
     // Hilt
-    implementation 'com.google.dagger:hilt-android:2.40.5'
+    implementation 'com.google.dagger:hilt-android:2.41'
     implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 

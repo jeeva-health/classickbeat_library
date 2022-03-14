@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:innerRadius="0dp"
-    android:shape="ring"
-    android:thickness="4dp"
-    android:useLevel="false">
-    <solid android:color="@color/very_soft_red" />
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="false">
+        <shape android:innerRadius="0dp" android:shape="ring" android:thickness="6dp" android:useLevel="false">
+            <solid android:color="#1effffff" />
+        </shape>
+    </item>
+    <item android:state_selected="true">
+        <shape android:innerRadius="0dp" android:shape="ring" android:thickness="6dp" android:useLevel="false">
+            <solid android:color="@color/transparent" />
+        </shape>
+    </item>
+</selector>

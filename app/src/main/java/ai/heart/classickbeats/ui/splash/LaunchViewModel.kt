@@ -1,7 +1,7 @@
 package ai.heart.classickbeats.ui.splash
 
 import ai.heart.classickbeats.shared.domain.prefs.AuthTokenUseCase
-import ai.heart.classickbeats.shared.domain.prefs.OnBoardingCompletedUseCase
+import ai.heart.classickbeats.shared.domain.prefs.OnboardingCompletedUseCase
 import ai.heart.classickbeats.shared.domain.prefs.UserRegisteredUseCase
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
@@ -13,14 +13,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LaunchViewModel @Inject constructor(
-    private val onBoardingCompletedUseCase: OnBoardingCompletedUseCase,
+    private val onboardingCompletedUseCase: OnboardingCompletedUseCase,
     private val userRegisteredUseCase: UserRegisteredUseCase,
     private val authTokenUseCase: AuthTokenUseCase
 ) : ViewModel() {
 
     val launchDestination = liveData {
         delay(3000)
-        val onBoardingResult = onBoardingCompletedUseCase(Unit)
+        val onBoardingResult = onboardingCompletedUseCase(Unit)
         if (onBoardingResult.data == false) {
             emit(Event(LaunchDestination.ONBOARDING))
         } else {

@@ -24,7 +24,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
 
         launchViewModel.launchDestination.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                LaunchDestination.ONBOARDING -> navigateToOnBoardingFragment()
+                LaunchDestination.ONBOARDING -> navigateToOnboardingFragment()
                 LaunchDestination.SIGNUP -> navigateToLoginFragment()
                 LaunchDestination.HOME_SCREEN -> navigateToScanFragment()
                 LaunchDestination.REGISTER -> navigateToUserRegisterFragment()
@@ -33,8 +33,6 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
     }
 
     private fun navigateToUserRegisterFragment() {
-        val action = SplashFragmentDirections.actionSplashFragmentToPersonalDetailsFragment()
-        navController.navigate(action)
     }
 
     private fun navigateToScanFragment() {
@@ -47,8 +45,8 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
         navController.navigate(action)
     }
 
-    private fun navigateToOnBoardingFragment() {
-        val action = SplashFragmentDirections.actionSplashFragmentToOnBoardingFragment()
+    private fun navigateToOnboardingFragment() {
+        val action = SplashFragmentDirections.actionSplashFragmentToOnboardingFragment()
         navController.navigate(action)
     }
 }

@@ -114,6 +114,14 @@
     <!-- We use a dark scrim by default since light status is API 23+ -->
     <color name="status_bar_scrim">@color/system_ui_scrim_black</color>
     <!-- We use a dark scrim by default since light nav bar is API 27+ -->
+    <color name="dark_indigo">#1c1662</color>
+    <color name="twilight">#615d92</color>
+    <color name="rosy_pink">#f35b6e</color>
+    <color name="soft_blue_3">#4ab9ea</color>
+    <color name="pale_red">#de4141</color>
+    <color name="light_pink">#fff8f9</color>
+    <color name="ice_blue">#fafeff</color>
+
     <color name="nav_bar_scrim">@color/system_ui_scrim_black</color>
 
 </resources>

@@ -32,6 +32,7 @@ import androidx.paging.ExperimentalPagingApi
 import com.github.mikephil.charting.charts.LineChart
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlin.math.roundToInt
 
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
@@ -163,7 +164,7 @@ class ScanResultFragment : Fragment(R.layout.fragment_scan_result) {
             val lifeStyleList =
                 listOf(lifestyle1, lifestyle2, lifestyle3, lifestyle4, lifestyle5, lifestyle6)
 
-            heartRate.text = scanResult.bpm.toInt().toString()
+            heartRate.text = scanResult.bpm.roundToInt().toString()
 
             date.text = dateStr
             time.text = timeStr

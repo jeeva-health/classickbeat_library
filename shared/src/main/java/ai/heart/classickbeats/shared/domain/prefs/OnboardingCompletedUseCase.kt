@@ -6,14 +6,9 @@ import ai.heart.classickbeats.shared.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
-/**
- * Records whether onBoarding has been completed.
- */
-open class OnBoardingCompleteActionUseCase @Inject constructor(
+class OnboardingCompletedUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : UseCase<Boolean, Unit>(dispatcher) {
-    override suspend fun execute(parameters: Boolean) {
-        preferenceStorage.onBoardingCompleted = parameters
-    }
+) : UseCase<Unit, Boolean>(dispatcher) {
+    override suspend fun execute(parameters: Unit): Boolean = preferenceStorage.onboardingCompleted
 }

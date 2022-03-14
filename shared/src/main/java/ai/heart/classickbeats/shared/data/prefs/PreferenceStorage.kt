@@ -3,7 +3,7 @@ package ai.heart.classickbeats.shared.data.prefs
 import androidx.lifecycle.LiveData
 
 interface PreferenceStorage {
-    var onBoardingCompleted: Boolean
+    var onboardingCompleted: Boolean
     var userRegistered: Boolean
     var firstTimeScanCompleted: Boolean
     var scheduleUiHintsShown: Boolean

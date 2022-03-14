@@ -6,7 +6,7 @@ import ai.heart.classickbeats.shared.domain.UseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
-open class UserRegisteredActionUseCase @Inject constructor(
+class UserRegisteredActionUseCase @Inject constructor(
     private val preferenceStorage: PreferenceStorage,
     @IoDispatcher dispatcher: CoroutineDispatcher
 ) : UseCase<Boolean, Unit>(dispatcher) {

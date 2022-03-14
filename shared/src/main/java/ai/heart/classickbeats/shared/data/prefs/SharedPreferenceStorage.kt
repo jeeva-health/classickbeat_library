@@ -36,7 +36,7 @@ class SharedPreferenceStorage @Inject constructor(
         }
     }
 
-    override var onBoardingCompleted by BooleanPreference(prefs, PREF_ONBOARDING, false)
+    override var onboardingCompleted by BooleanPreference(prefs, PREF_ONBOARDING, false)
 
     override var userRegistered by BooleanPreference(prefs, PREF_USER_REGISTERED, false)
 

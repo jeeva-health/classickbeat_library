@@ -88,9 +88,14 @@
         </item>
     </style>
 
-
     <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/Widget.Jeeva.ModalBottomSheetDialog</item>
+    </style>
+
+    <!-- Bottom Dialog In and Out -->
+    <style name="DialogAnimationBottomInOut">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
 </resources>

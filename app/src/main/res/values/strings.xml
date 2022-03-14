@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Intealth</string>
     <string name="app_name_small_case">intealth</string>
-    <string name="app_tagline">Health. Vitality. Longevity</string>
+    <string name="app_tagline">Fitter. Healthier. Happier.</string>
 
     <string name="rupee_amount">\u20B9 %s</string>
 
@@ -21,13 +21,18 @@
     <string name="terms_and_condition">By continuing, you agree to our Terms &amp; Conditions</string>
 
     <!--    OnBoarding-->
-    <string name="onboarding_message_1">Measure your stress level and wellness with your phone camera</string>
-    <string name="onboarding_message_2">Track and log your blood pressure, blood glucose level and other daily health vitals</string>
-    <string name="onboarding_message_3">Get a detailed analysis of your physical and mental health</string>
-    <string name="onboarding_message_4">Improve wellness with curated content - meditation, yoga and exercise</string>
+    <string name="onboarding_action_1">Scan your pulse with your phone camera</string>
+    <string name="onboarding_message_1">Simply put your finger on the phone camera to analyze your beating heart.</string>
+    <string name="onboarding_action_2">Track and log your daily health vitals</string>
+    <string name="onboarding_message_2">Check trends and gain insights on your important vitals</string>
+    <string name="onboarding_action_3">Get detailed analysis of your fitness and stress levels</string>
+    <string name="onboarding_message_3">Let powerful AI algorithms keep you informed about your health.</string>
+    <string name="onboarding_action_4">Meditate and stay calm with curated sounds</string>
+    <string name="onboarding_message_4">Check out our meditation sessions to relax both your mind and body</string>
     <string name="get_started">Get Started</string>
     <string name="skip">Skip</string>
     <string name="next">Next</string>
+    <string name="on_boarding_image">Onboarding Image</string>
 
     <!--    Notification-->
     <string name="playback_channel_name">Playback</string>
@@ -49,7 +54,7 @@
     <string name="start_scan">Start Scanning</string>
 
     <!--    Scan-->
-    <string name="default_heart_rate">_ _</string>
+    <string name="double_underscore">_ _</string>
     <string name="start">Start</string>
     <string name="scan_message_1">Please relax and stay still. Do not move or talk.</string>
     <string name="scan_message_2">Breath as you usually do. Do not take very deep breaths.</string>
@@ -176,7 +181,6 @@
     <string name="discard_title">Are you sure you want to discard the scan result?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="poor_quality_message">Poor quality recording, please try again</string>
 
     <!--    Scan Question-->
     <string name="scan_question_text">Scan successful! Give us a few moments till we process your detailed insights</string>
@@ -201,6 +205,7 @@
     <string name="daily">Daily</string>
     <string name="weekly">Weekly</string>
     <string name="monthly">Monthly</string>
+    <string name="poor_quality_message">Poor quality recording, please try again.</string>
 
     <!--    Profile-->
     <string name="earn_gems_message_1">Earn %d gems with every invite to unlock premium features</string>
@@ -258,5 +263,26 @@
     <string name="feedback_message">Tell us what you love about the app or what we could be doing better</string>
     <string name="write_here">Write Here</string>
     <string name="feedback_submitted">Feedback submitted</string>
+    <string name="connect_with_google">Connect with Google</string>
+    <string name="other">Other</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="choose_your_gender">Choose Your Gender</string>
+    <string name="gender_selection_msg">Health-related insights and personalized recommendations are built based on your gender.</string>
+    <string name="height">HEIGHT</string>
+    <string name="yyyy">YYYY</string>
+    <string name="mm">MM</string>
+    <string name="dd">DD</string>
+    <string name="why_we_ask">Why we ask ?</string>
+    <string name="health_related">Health-related insights and personalized recommendations are built based on your date of birth.</string>
+    <string name="got_it">GOT IT</string>
+    <string name="feet">FEET</string>
+    <string name="cm">CM</string>
+    <string name="_00">00</string>
+    <string name="inch">INCH</string>
+    <string name="your_height">YOUR HEIGHT</string>
+
+    <string name="back">Back</string>
+    <string name="click">click</string>
 
 </resources>

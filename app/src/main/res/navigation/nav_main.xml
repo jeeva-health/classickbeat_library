@@ -14,29 +14,30 @@
             android:id="@+id/action_splashFragment_to_nav_login"
             app:destination="@id/nav_login" />
         <action
-            android:id="@+id/action_splashFragment_to_onBoardingFragment"
-            app:destination="@id/onBoardingFragment" />
+            android:id="@+id/action_splashFragment_to_onboardingFragment"
+            app:destination="@id/onboardingFragment" />
         <action
             android:id="@+id/action_splashFragment_to_nav_home"
             app:destination="@id/nav_home" />
         <action
-            android:id="@+id/action_splashFragment_to_personalDetailsFragment"
-            app:destination="@id/personalDetailsFragment" />
+            android:id="@+id/action_splashFragment_to_genderSelectionFragment"
+            app:destination="@id/genderSelectionFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/onBoardingFragment"
-        android:name="ai.heart.classickbeats.ui.onboarding.OnBoardingFragment"
+        android:id="@+id/onboardingFragment"
+        android:name="ai.heart.classickbeats.ui.onboarding.OnboardingFragment"
         android:label="fragment_onboarding"
         tools:layout="@layout/fragment_onboarding">
         <action
-            android:id="@+id/action_onBoardingFragment_to_nav_login"
+            android:id="@+id/action_onboardingFragment_to_nav_login"
             app:destination="@id/nav_login" />
     </fragment>
 
     <include app:graph="@navigation/nav_login" />
 
     <include app:graph="@navigation/nav_home" />
+
     <fragment
         android:id="@+id/personalDetailsFragment"
         android:name="ai.heart.classickbeats.ui.login.fragment.PersonalDetailsFragment"
@@ -46,22 +47,22 @@
             android:id="@+id/action_personalDetailsFragment_to_nav_home"
             app:destination="@id/nav_home" />
         <action
-            android:id="@+id/action_personalDetailsFragment_to_genderSelectionBottomSheetFragment"
-            app:destination="@id/genderSelectionBottomSheetFragment" />
-        <action
             android:id="@+id/action_personalDetailsFragment_to_datePickerFragment2"
             app:destination="@id/datePickerFragment2" />
     </fragment>
 
     <dialog
-        android:id="@+id/genderSelectionBottomSheetFragment"
-        android:name="ai.heart.classickbeats.ui.login.fragment.GenderSelectionBottomSheetFragment"
-        android:label="fragment_gender_selection_bottom_sheet"
-        tools:layout="@layout/fragment_gender_selection_bottom_sheet" />
-
-    <dialog
         android:id="@+id/datePickerFragment2"
         android:name="ai.heart.classickbeats.ui.common.DatePickerFragment"
         android:label="DatePickerFragment" />
+    <fragment
+        android:id="@+id/genderSelectionFragment"
+        android:name="ai.heart.classickbeats.ui.login.fragment.GenderSelectionFragment"
+        android:label="fragment_gender_selection"
+        tools:layout="@layout/fragment_gender_selection" >
+        <action
+            android:id="@+id/action_genderSelectionFragment_to_personalDetailsFragment"
+            app:destination="@id/personalDetailsFragment" />
+    </fragment>
 
 </navigation>

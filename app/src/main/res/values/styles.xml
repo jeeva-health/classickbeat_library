@@ -28,6 +28,11 @@
 
     <style name="Widget.Jeeva.TextButton" parent="Widget.MaterialComponents.Button.TextButton" />
 
+    <style name="TextAppearance.Jeeva.H0" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="android:textSize">@dimen/text_size_h0</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="TextAppearance.Jeeva.H1" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="android:textSize">@dimen/text_size_h1</item>
         <item name="android:textStyle">bold</item>
@@ -141,6 +146,11 @@
         <item name="chipIconVisible">false</item>
         <item name="closeIconVisible">false</item>
         <item name="chipMinHeight">36dp</item>
+    </style>
+
+    <style name="PersonalInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">#fff</item>
+        <item name="boxStrokeWidth">0dp</item>
     </style>
 
 </resources>

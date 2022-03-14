@@ -67,7 +67,7 @@ class GoogleSignUpFragment : Fragment(R.layout.fragment_google_sign_up) {
                     if (isUserRegistered) {
                         navigateToHomeFragment()
                     } else {
-                        navigateToRegisterFragment()
+                        navigateToGenderSelectionFragment()
                     }
                 }
             })
@@ -104,9 +104,9 @@ class GoogleSignUpFragment : Fragment(R.layout.fragment_google_sign_up) {
         navController.navigate(action)
     }
 
-    private fun navigateToRegisterFragment() {
+    private fun navigateToGenderSelectionFragment() {
         val action =
-            GoogleSignUpFragmentDirections.actionGoogleSignUpFragmentToPersonalDetailsFragment()
+            GoogleSignUpFragmentDirections.actionGoogleSignUpFragmentToGenderSelectionFragment()
         navController.navigate(action)
     }
 }

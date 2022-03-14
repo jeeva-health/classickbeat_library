@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.ui.onboarding
 
-import ai.heart.classickbeats.shared.domain.prefs.OnBoardingCompleteActionUseCase
+import ai.heart.classickbeats.shared.domain.prefs.OnboardingCompleteActionUseCase
 import ai.heart.classickbeats.shared.result.Event
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class OnBoardingViewModel @Inject constructor(
-    private val onBoardingCompleteActionUseCase: OnBoardingCompleteActionUseCase,
+class OnboardingViewModel @Inject constructor(
+    private val onboardingCompleteActionUseCase: OnboardingCompleteActionUseCase,
 ) : ViewModel() {
 
     private val _navigateToSignUpFragment = MutableLiveData<Event<Unit>>()
@@ -20,8 +20,10 @@ class OnBoardingViewModel @Inject constructor(
 
     fun getStartedClick() {
         viewModelScope.launch {
-            onBoardingCompleteActionUseCase.invoke(true)
+            onboardingCompleteActionUseCase.invoke(true)
             _navigateToSignUpFragment.postValue(Event(Unit))
         }
     }
 }
+
+

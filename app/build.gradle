@@ -110,16 +110,16 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     // CameraX
-    implementation "androidx.camera:camera-camera2:1.1.0-beta01"
-    implementation "androidx.camera:camera-lifecycle:1.1.0-beta01"
-    implementation 'androidx.camera:camera-view:1.1.0-beta01'
+    implementation "androidx.camera:camera-camera2:1.1.0-beta02"
+    implementation "androidx.camera:camera-lifecycle:1.1.0-beta02"
+    implementation 'androidx.camera:camera-view:1.1.0-beta02'
 
     //Lottie
-    implementation 'com.airbnb.android:lottie:4.2.2'
+    implementation 'com.airbnb.android:lottie:5.0.3'
 
     //Glide
-    implementation 'com.github.bumptech.glide:glide:4.13.0'
-    kapt 'com.github.bumptech.glide:compiler:4.13.0'
+    implementation 'com.github.bumptech.glide:glide:4.13.1'
+    kapt 'com.github.bumptech.glide:compiler:4.13.1'
 
     // Graph
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
@@ -155,17 +155,17 @@ dependencies {
     implementation 'org.conscrypt:conscrypt-android:2.5.2'
 
     // Room
-    implementation "androidx.room:room-runtime:2.4.1"
-    kapt "androidx.room:room-compiler:2.4.1"
-    implementation "androidx.room:room-ktx:2.4.1"
-    implementation "androidx.room:room-paging:2.4.1"
+    implementation "androidx.room:room-runtime:2.4.2"
+    kapt "androidx.room:room-compiler:2.4.2"
+    implementation "androidx.room:room-ktx:2.4.2"
+    implementation "androidx.room:room-paging:2.4.2"
 
     // Pagination
     implementation "androidx.paging:paging-runtime-ktx:3.1.0"
 
     // ExoPlayer
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.16.1'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.16.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.17.0'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.17.0'
 
     // Leak Canary
     // debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
@@ -179,7 +179,7 @@ dependencies {
     androidTestImplementation 'androidx.test:core:1.4.0'
 
     // Mockito framework
-    testImplementation 'org.mockito:mockito-core:4.3.1'
+    testImplementation 'org.mockito:mockito-core:4.4.0'
 
     // AndroidJUnitRunner and JUnit Rules
     androidTestImplementation 'androidx.test:runner:1.4.0'
