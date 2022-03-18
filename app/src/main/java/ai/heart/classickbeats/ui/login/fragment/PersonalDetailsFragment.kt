@@ -12,6 +12,7 @@ import ai.heart.classickbeats.utils.showSnackbar
 import ai.heart.classickbeats.utils.viewBinding
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -137,7 +138,7 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
         dialogWhyAsk.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialogWhyAsk.setContentView(R.layout.dialog_why_ask)
         dialogWhyAsk.setCancelable(true)
-        val gotIt: TextView = dialogWhyAsk!!.findViewById(R.id.got_it)
+        val gotIt: TextView = dialogWhyAsk.findViewById(R.id.got_it)
         dialogWhyAsk.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -159,7 +160,7 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
         }
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ResourceAsColor")
     private fun weightDialog() {
         // setting up Weight Dialog
         dialogWeight = Dialog(requireContext())
@@ -203,6 +204,7 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
         wtDone.setOnClickListener {
             weight = Integer.parseInt(wtInput.text.toString())
             binding.weightValue.text = "$weight KG"
+            binding.weightValue.setTextColor(R.color.black)
             dialogWeight.dismiss()
         }
 
@@ -328,7 +330,8 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
                 if (htInputCm.text.isNotBlank()) {
                     height = Integer.parseInt(htInputCm.text.toString())
                     binding.heightValue.text = "$height cm"
-                    dialogHeight!!.dismiss()
+                    binding.heightValue.setTextColor(R.color.black)
+                    dialogHeight.dismiss()
                 } else {
                     Toast.makeText(
                         requireContext(),
@@ -344,6 +347,7 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
                         )
                     binding.heightValue.text =
                         htInputFeet.text.toString() + " FEET  " + Integer.parseInt(htInputInch.text.toString()) + " INCH"
+                    binding.heightValue.setTextColor(R.color.black)
                     dialogHeight.dismiss()
                 } else {
                     Toast.makeText(
