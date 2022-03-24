@@ -117,6 +117,7 @@ dependencies {
     //Lottie
     implementation 'com.airbnb.android:lottie:5.0.3'
 
+
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.13.1'
     kapt 'com.github.bumptech.glide:compiler:4.13.1'
@@ -197,6 +198,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-accessibility:3.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-web:3.4.0'
     androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.4.0'
+
+    //support design
+    implementation 'com.google.android.material:material:1.6.0-alpha03'
 
     // The following Espresso dependency can be either "implementation"
     // or "androidTestImplementation", depending on whether you want the

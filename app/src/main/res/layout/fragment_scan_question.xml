@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +7,7 @@
     android:fillViewport="true"
     tools:context=".ui.ppg.fragment.ScanQuestionFragment">
 
+  <!--
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -170,6 +171,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="96dp"
+                app:chipIcon="@drawable/google_icon"
+                app:checkedIcon="true"
                 android:text="@string/chip_sleeping" />
 
             <com.google.android.material.chip.Chip
@@ -209,4 +212,309 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.core.widget.NestedScrollView>
+    -->
+
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:gravity="center"
+      android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/your_height" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Scan Successful!" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Give us a few moments till we process
+your detailed insights" />
+
+  </LinearLayout>
+
+
+  <androidx.core.widget.NestedScrollView
+      android:id="@+id/nested_bottom_sheet"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/light_grayish_red_3"
+      app:behavior_hideable="true"
+      app:behavior_peekHeight="55dp"
+      app:layout_behavior="@string/bottom_sheet_behavior"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/start_guideline_nested"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/big_guideline_margin" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/end_guideline_nested"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/big_guideline_margin" />
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="100dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="25dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toStartOf="@+id/end_guideline_nested"
+            app:layout_constraintStart_toStartOf="@+id/start_guideline_nested"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="continuous slider"
+            android:value="20.0"
+            android:valueFrom="0.0"
+            android:valueTo="100.0"
+            app:layout_constraintEnd_toStartOf="@+id/end_guideline_nested"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/start_guideline_nested"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="How ell did you sleep today ?"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider4" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toStartOf="@+id/end_guideline_nested"
+            app:layout_constraintTop_toBottomOf="@+id/slider" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="hours/minutes"
+            app:layout_constraintBottom_toBottomOf="@+id/textView2"
+            app:layout_constraintEnd_toStartOf="@+id/textView2" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="How do you feel today ?"
+            app:layout_constraintEnd_toStartOf="@+id/end_guideline_nested"
+            app:layout_constraintStart_toStartOf="@+id/start_guideline_nested"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/before_scan_chip_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:chipSpacingHorizontal="12dp"
+            app:layout_constraintEnd_toStartOf="@+id/end_guideline_nested"
+            app:layout_constraintStart_toStartOf="@+id/start_guideline_nested"
+            app:layout_constraintTop_toBottomOf="@+id/textView4"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_happy"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+
+              android:text="@string/chip_chilling" />
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_good"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_working" />
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_seek"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_sleeping"
+              app:checkedIcon="true"
+              app:chipIcon="@drawable/google_icon" />
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_excited"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_eating" />
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_energetic"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_workout" />
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_calm"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_other" />
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_sad"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_other" />
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_tired"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_other" />
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_normal"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_other" />
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_stressed"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_other" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="What were you upto before  scanning? "
+            app:layout_constraintEnd_toStartOf="@+id/end_guideline_nested"
+            app:layout_constraintStart_toStartOf="@+id/start_guideline_nested"
+            app:layout_constraintTop_toBottomOf="@+id/before_scan_chip_group" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/before_scan_chip_group_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:chipSpacingHorizontal="12dp"
+            app:layout_constraintEnd_toStartOf="@+id/end_guideline_nested"
+            app:layout_constraintStart_toStartOf="@+id/start_guideline_nested"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_chilling"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_chilling" />
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_working"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_working" />
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_sleeping"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_sleeping"
+              app:checkedIcon="true"
+              app:chipIcon="@drawable/google_icon" />
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_eating"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_eating" />
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_workout"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_workout" />
+
+          <com.google.android.material.chip.Chip
+              android:id="@+id/chip_other"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="96dp"
+              android:text="@string/chip_other" />
+
+        </com.google.android.material.chip.ChipGroup>
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <Button
+          android:id="@+id/button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Button" />
+
+    </LinearLayout>
+
+
+  </androidx.core.widget.NestedScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

@@ -4,13 +4,19 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanQuestionBinding
 import ai.heart.classickbeats.model.ScanState
 import ai.heart.classickbeats.ui.ppg.viewmodel.MonitorViewModel
-import ai.heart.classickbeats.utils.*
+import ai.heart.classickbeats.utils.getColor
+import ai.heart.classickbeats.utils.hideLoadingBar
+import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -20,33 +26,34 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class ScanQuestionFragment : Fragment(R.layout.fragment_scan_question) {
 
     private val binding by viewBinding(FragmentScanQuestionBinding::bind)
-
     private val monitorViewModel: MonitorViewModel by activityViewModels()
+    private var bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>? = null
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setLightStatusBar()
+        /** setLightStatusBar()
 
         resetAllChips()
 
         binding.apply {
 
-            arrayOf(
-                chipEating,
-                chipSleeping,
-                chipChilling,
-                chipWorkout,
-                chipWorking,
-                chipOther
-            ).forEach {
-                it.setSafeOnClickListener {
-                    resetAllChips()
+        arrayOf(
+        chipEating,
+        chipSleeping,
+        chipChilling,
+        chipWorkout,
+        chipWorking,
+        chipOther
+        ).forEach {
+        it.setSafeOnClickListener {
+        resetAllChips()
 
-                    val scanState = when (beforeScanChipGroup.checkedChipId) {
-                        R.id.chip_eating -> ScanState.Eating
-                        R.id.chip_sleeping -> ScanState.Sleeping
-                        R.id.chip_chilling -> ScanState.Chilling
+        val scanState = when (beforeScanChipGroup.checkedChipId) {
+        R.id.chip_eating -> ScanState.Eating
+        R.id.chip_sleeping -> ScanState.Sleeping
+        R.id.chip_chilling -> ScanState.Chilling
                         R.id.chip_workout -> ScanState.Workout
                         R.id.chip_working -> ScanState.Working
                         else -> ScanState.Others
@@ -79,27 +86,84 @@ class ScanQuestionFragment : Fragment(R.layout.fragment_scan_question) {
                         }
                     }
                 }
+        }
+
+        saveBtn.setSafeOnClickListener {
+        val sleepRating = sleepSlider.value.toInt()
+        val moodRating = moodSlider.value.toInt()
+        val scanState = when (beforeScanChipGroup.checkedChipId) {
+        R.id.chip_eating -> ScanState.Eating
+        R.id.chip_sleeping -> ScanState.Sleeping
+        R.id.chip_chilling -> ScanState.Chilling
+        R.id.chip_workout -> ScanState.Workout
+        R.id.chip_working -> ScanState.Working
+        else -> ScanState.Others
+        }
+        monitorViewModel.uploadScanSurvey(
+        sleepRating,
+        moodRating,
+        scanState.getText(requireContext())
+        )
+        navigateToScanResultFragment()
+        }
+        }**/
+
+
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.nestedBottomSheet)
+        bottomSheetBehavior!!.halfExpandedRatio = 0.7f //changing the half expanding ratio
+
+        bottomSheetBehavior!!.setBottomSheetCallback(object : BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        //todo
+                        Toast.makeText(context, "collapsed", Toast.LENGTH_SHORT).show()
+                    }
+
+                    BottomSheetBehavior.STATE_DRAGGING -> {
+                        //todo
+                        Toast.makeText(context, "dragging", Toast.LENGTH_SHORT).show()
+                    }
+
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        //todo
+                        Toast.makeText(context, "expanded", Toast.LENGTH_SHORT).show()
+                    }
+
+                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+                        //todo
+                        Toast.makeText(context, "half expanded", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        //todo
+                        Toast.makeText(context, "hidden", Toast.LENGTH_SHORT).show()
+                    }
+
+                    BottomSheetBehavior.STATE_SETTLING -> {
+                        //todo
+                        Toast.makeText(context, "settling", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
             }
 
-            saveBtn.setSafeOnClickListener {
-                val sleepRating = sleepSlider.value.toInt()
-                val moodRating = moodSlider.value.toInt()
-                val scanState = when (beforeScanChipGroup.checkedChipId) {
-                    R.id.chip_eating -> ScanState.Eating
-                    R.id.chip_sleeping -> ScanState.Sleeping
-                    R.id.chip_chilling -> ScanState.Chilling
-                    R.id.chip_workout -> ScanState.Workout
-                    R.id.chip_working -> ScanState.Working
-                    else -> ScanState.Others
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                val upperState = 0.72f
+                val lowerState = 0.36f
+                if (bottomSheetBehavior!!.state == BottomSheetBehavior.STATE_SETTLING) {
+                    if (slideOffset > lowerState && slideOffset < upperState) {
+                        bottomSheetBehavior!!.setState(BottomSheetBehavior.STATE_HALF_EXPANDED)
+                    } else if (slideOffset >= upperState) {
+                        bottomSheetBehavior!!.setState(BottomSheetBehavior.STATE_EXPANDED)
+                    } else if (slideOffset <= lowerState) {
+                        bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
+                    }
                 }
-                monitorViewModel.uploadScanSurvey(
-                    sleepRating,
-                    moodRating,
-                    scanState.getText(requireContext())
-                )
-                navigateToScanResultFragment()
             }
-        }
+        })
     }
 
     private fun resetAllChips() {

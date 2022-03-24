@@ -36,7 +36,13 @@
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_personal_detail_2_.xml" value="0.33" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_personal_details.xml" value="0.33" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_phone_sign_up.xml" value="0.19322916666666667" />
+        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_reminder_list.xml" value="0.33" />
+        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_reminder_type_bottom_sheet.xml" value="0.17175925925925925" />
+        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_scan.xml" value="0.17175925925925925" />
+        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_scan_question.xml" value="0.25" />
+        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_scan_result.xml" value="0.25" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_sign_up_mode_selection.xml" value="0.25" />
+        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_update_reminder.xml" value="0.33" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_upgrade_to_pro.xml" value="0.17175925925925925" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_wellness_category.xml" value="0.17175925925925925" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/itemview_graph_history.xml" value="0.17175925925925925" />
@@ -45,6 +51,9 @@
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/itemview_history_date.xml" value="0.17175925925925925" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/itemview_meditation.xml" value="0.17175925925925925" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/itemview_onboarding.xml" value="0.19322916666666667" />
+        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/itemview_reminder.xml" value="0.33" />
+        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/itemview_scan_tutorial.xml" value="0.17175925925925925" />
+        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/layout_audio_media_control.xml" value="0.13935185185185187" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.24074074074074073" />
         <entry key="app/src/main/res/drawable/bg_blue_gradient.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/drawable/bg_circle.xml" value="0.1485" />
