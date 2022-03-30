@@ -135,17 +135,33 @@
         <item name="cornerSize">12dp</item>
     </style>
 
-    <style name="Widget.Jeeva.App.Chip" parent="Widget.MaterialComponents.Chip.Entry">
-        <item name="chipStrokeWidth">2dp</item>
-        <item name="checkedIconVisible">false</item>
-        <item name="chipBackgroundColor">@color/white</item>
-        <item name="shapeAppearanceOverlay">@null</item>
+
+    <!--    <style name="Widget.Jeeva.App.Chip" parent="Widget.MaterialComponents.Chip.Entry">-->
+    <!--        <item name="checkedIconVisible">false</item>-->
+    <!--        <item name="chipBackgroundColor">@color/white</item>-->
+    <!--        <item name="shapeAppearanceOverlay">@null</item>-->
+    <!--        <item name="chipCornerRadius">4dp</item>-->
+    <!--        <item name="android:textAlignment">center</item>-->
+    <!--        <item name="android:checkable">true</item>-->
+    <!--        <item name="closeIconVisible">false</item>-->
+    <!--        <item name="chipMinHeight">40dp</item>-->
+    <!--    </style>-->
+
+
+    <!-- chip style-->
+    <style name="Widget.Jeeva.MaterialComponents.ChipBackground" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="chipBackgroundColor">@color/bg_chip</item>
         <item name="chipCornerRadius">4dp</item>
+        <item name="chipMinHeight">40dp</item>
         <item name="android:textAlignment">center</item>
         <item name="android:checkable">true</item>
-        <item name="chipIconVisible">false</item>
-        <item name="closeIconVisible">false</item>
-        <item name="chipMinHeight">36dp</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="android:textColor">@color/charcoal_grey</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:minWidth">96dp</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipStrokeColor">@color/bg_stroke_chip</item>
     </style>
 
     <style name="PersonalInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">

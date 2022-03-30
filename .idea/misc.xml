@@ -8,13 +8,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/drawable/bg_chip.xml" value="0.164" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/drawable/bg_circle.xml" value="0.1" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/drawable/bg_circle_fill.xml" value="0.1" />
+        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/drawable/bg_gradient_rect_blue.xml" value="0.137" />
+        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/drawable/bg_gradient_rect_sky_6.xml" value="0.137" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/drawable/bg_personal_details.xml" value="0.1855" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/drawable/bg_rectangel_24.xml" value="0.1905" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/drawable/bg_rectangel_6.xml" value="0.1855" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/drawable/bg_rectangle_cornered.xml" value="0.191" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/drawable/bg_rectangle_pink_6.xml" value="0.1685" />
+        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/drawable/bg_red_rect_6.xml" value="0.137" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/drawable/bg_semi_rounded_rectangle.xml" value="0.1685" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/drawable/bg_semi_rounded_rectangle_32.xml" value="0.1685" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/drawable/bg_white_gradient.xml" value="0.201" />
@@ -39,7 +43,7 @@
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_reminder_list.xml" value="0.33" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_reminder_type_bottom_sheet.xml" value="0.17175925925925925" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_scan.xml" value="0.17175925925925925" />
-        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_scan_question.xml" value="0.25" />
+        <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_scan_question.xml" value="0.1" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_scan_result.xml" value="0.25" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_sign_up_mode_selection.xml" value="0.25" />
         <entry key="..\:/StudioProjects/classick-beats/app/src/main/res/layout/fragment_update_reminder.xml" value="0.33" />
