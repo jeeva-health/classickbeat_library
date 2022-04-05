@@ -133,6 +133,17 @@
             app:destination="@id/scanResultFragment"
             app:popUpTo="@id/scanQuestionFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_scanQuestionFragment_to_myHealthFragment"
+            app:destination="@id/myHealthFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/myHealthFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.fragment.MyHealthFragment"
+        android:label="fragment_my_health"
+        tools:layout="@layout/fragment_my_health">
+
     </fragment>
 
     <fragment

@@ -289,5 +289,7 @@
     <string name="continue_1">Continue</string>
     <string name="hours_minutes">hours/minutes</string>
     <string name="scan_successful">Scan Successful!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
 
 </resources>

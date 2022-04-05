@@ -12,6 +12,7 @@ import android.view.View
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
@@ -210,7 +211,8 @@ class ScanQuestionFragment : Fragment(R.layout.fragment_scan_question) {
             }
         }
 
-        binding.continueBtn.setSafeOnClickListener {
+        binding.continueBtn.setOnClickListener {
+            navToMyHealthFragment()
             if (btnEnabled()) {
                 //todo on continue btn click
             }
@@ -252,6 +254,11 @@ class ScanQuestionFragment : Fragment(R.layout.fragment_scan_question) {
 //
 //        }
         return false
+    }
+
+    private fun navToMyHealthFragment(){
+            val action = ScanQuestionFragmentDirections.actionScanQuestionFragmentToMyHealthFragment()
+        findNavController().navigate(action)
     }
 
 }
