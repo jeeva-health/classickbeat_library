@@ -140,7 +140,7 @@
 
     <fragment
         android:id="@+id/myHealthFragment"
-        android:name="ai.heart.classickbeats.ui.ppg.fragment.MyHealthFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.fragment.my_health.MyHealthFragment"
         android:label="fragment_my_health"
         tools:layout="@layout/fragment_my_health">
 
