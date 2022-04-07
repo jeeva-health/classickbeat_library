@@ -14,9 +14,14 @@
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/drawable/bg_rectangle_16.xml" value="0.2085" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/drawable/bg_rectangle_24.xml" value="0.2085" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/drawable/bg_rectangle_8.xml" value="0.2085" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/dialog_height.xml" value="0.209375" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/dialog_weight.xml" value="0.209375" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_my_health.xml" value="0.12" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_onboarding.xml" value="0.209375" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_save_weight.xml" value="0.33" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_scan.xml" value="0.209375" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_scan_question.xml" value="0.209375" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_water_in_take.xml" value="0.1953125" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_meditation.xml" value="0.33" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_board.xml" value="0.412962962962963" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_recent_1.xml" value="0.209375" />
@@ -127,7 +132,7 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
