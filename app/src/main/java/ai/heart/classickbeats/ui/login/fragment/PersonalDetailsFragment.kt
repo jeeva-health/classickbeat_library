@@ -12,9 +12,12 @@ import ai.heart.classickbeats.utils.showSnackbar
 import ai.heart.classickbeats.utils.viewBinding
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +25,7 @@ import android.view.Window
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -45,6 +49,8 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
     private var height = 0
     private var heightUnit = "cm"
 
+
+
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,6 +66,34 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
         weightDialog()
 
         heightDialog()
+
+        binding.dobDay.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (s?.length == 2){
+                    binding.dobMonth.requestFocus()
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+        binding.dobMonth.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (s?.length == 2){
+                    binding.dobYear.requestFocus()
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
 
         binding.whyAsk.setOnClickListener {
             whyAskDialog()
@@ -101,32 +135,32 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
     private fun whyAskDialog() {
         // setting up Why Ask Dialog
         dialogWhyAsk = Dialog(requireContext())
-        dialogWhyAsk!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialogWhyAsk!!.setContentView(R.layout.dialog_why_ask)
-        dialogWhyAsk!!.setCancelable(true)
-        val gotIt: TextView = dialogWhyAsk!!.findViewById(R.id.got_it)
-        dialogWhyAsk!!.window?.setLayout(
+        dialogWhyAsk.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogWhyAsk.setContentView(R.layout.dialog_why_ask)
+        dialogWhyAsk.setCancelable(true)
+        val gotIt: TextView = dialogWhyAsk.findViewById(R.id.got_it)
+        dialogWhyAsk.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        dialogWhyAsk!!.window?.setBackgroundDrawable(
+        dialogWhyAsk.window?.setBackgroundDrawable(
             ContextCompat.getDrawable(
                 requireContext(),
                 R.drawable.bg_semi_rounded_rectangle_32
             )
         )
-        dialogWhyAsk!!.window?.attributes?.windowAnimations =
+        dialogWhyAsk.window?.attributes?.windowAnimations =
             R.style.Animation_Design_BottomSheetDialog
-        dialogWhyAsk!!.window?.setGravity(Gravity.BOTTOM)
+        dialogWhyAsk.window?.setGravity(Gravity.BOTTOM)
 
-        dialogWhyAsk!!.show()
+        dialogWhyAsk.show()
 
         gotIt.setOnClickListener {
-            dialogWhyAsk!!.dismiss()
+            dialogWhyAsk.dismiss()
         }
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ResourceAsColor")
     private fun weightDialog() {
         // setting up Weight Dialog
         dialogWeight = Dialog(requireContext())
@@ -170,6 +204,7 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
         wtDone.setOnClickListener {
             weight = Integer.parseInt(wtInput.text.toString())
             binding.weightValue.text = "$weight KG"
+            binding.weightValue.setTextColor(R.color.black)
             dialogWeight.dismiss()
         }
 
@@ -180,33 +215,33 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
     private fun heightDialog() {
         // setting up Height Dialog
         dialogHeight = Dialog(requireContext())
-        dialogHeight!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialogHeight!!.setContentView(R.layout.dialog_height)
-        val htIncrement: ImageView = dialogHeight!!.findViewById(R.id.increment_height)
-        val htDecrement: ImageView = dialogHeight!!.findViewById(R.id.decrement_height)
-        val htDone: Button = dialogHeight!!.findViewById(R.id.height_done)
-        val toggleCm: TextView = dialogHeight!!.findViewById(R.id.toggle_cm)
-        val toggleFeet: TextView = dialogHeight!!.findViewById(R.id.toggle_feet)
-        val constrainCm: ConstraintLayout = dialogHeight!!.findViewById(R.id.constrain_cm)
-        val constrainFeet: ConstraintLayout = dialogHeight!!.findViewById(R.id.constrain_feet)
-        val htInputCm: EditText = dialogHeight!!.findViewById(R.id.input_cm)
-        val htInputFeet: EditText = dialogHeight!!.findViewById(R.id.input_feet)
-        val htInputInch: EditText = dialogHeight!!.findViewById(R.id.input_inch)
+        dialogHeight.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogHeight.setContentView(R.layout.dialog_height)
+        val htIncrement: ImageView = dialogHeight.findViewById(R.id.increment_height)
+        val htDecrement: ImageView = dialogHeight.findViewById(R.id.decrement_height)
+        val htDone: Button = dialogHeight.findViewById(R.id.height_done)
+        val toggleCm: TextView = dialogHeight.findViewById(R.id.toggle_cm)
+        val toggleFeet: TextView = dialogHeight.findViewById(R.id.toggle_feet)
+        val constrainCm: ConstraintLayout = dialogHeight.findViewById(R.id.constrain_cm)
+        val constrainFeet: ConstraintLayout = dialogHeight.findViewById(R.id.constrain_feet)
+        val htInputCm: EditText = dialogHeight.findViewById(R.id.input_cm)
+        val htInputFeet: EditText = dialogHeight.findViewById(R.id.input_feet)
+        val htInputInch: EditText = dialogHeight.findViewById(R.id.input_inch)
 
-        dialogHeight!!.window?.setLayout(
+        dialogHeight.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        dialogHeight!!.setCancelable(false)
-        dialogHeight!!.window?.setBackgroundDrawable(
+        dialogHeight.setCancelable(false)
+        dialogHeight.window?.setBackgroundDrawable(
             ContextCompat.getDrawable(
                 requireContext(),
                 R.drawable.bg_semi_rounded_rectangle_32
             )
         )
-        dialogHeight!!.window?.attributes?.windowAnimations =
+        dialogHeight.window?.attributes?.windowAnimations =
             R.style.Animation_Design_BottomSheetDialog
-        dialogHeight!!.window?.setGravity(Gravity.BOTTOM)
+        dialogHeight.window?.setGravity(Gravity.BOTTOM)
 
         toggleCm.setBackgroundDrawable(
             ContextCompat.getDrawable(
@@ -295,7 +330,8 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
                 if (htInputCm.text.isNotBlank()) {
                     height = Integer.parseInt(htInputCm.text.toString())
                     binding.heightValue.text = "$height cm"
-                    dialogHeight!!.dismiss()
+                    binding.heightValue.setTextColor(R.color.black)
+                    dialogHeight.dismiss()
                 } else {
                     Toast.makeText(
                         requireContext(),
@@ -311,7 +347,8 @@ class PersonalDetailsFragment : Fragment(R.layout.fragment_personal_details) {
                         )
                     binding.heightValue.text =
                         htInputFeet.text.toString() + " FEET  " + Integer.parseInt(htInputInch.text.toString()) + " INCH"
-                    dialogHeight!!.dismiss()
+                    binding.heightValue.setTextColor(R.color.black)
+                    dialogHeight.dismiss()
                 } else {
                     Toast.makeText(
                         requireContext(),
