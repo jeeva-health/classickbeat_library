@@ -21,14 +21,16 @@ class GraphHistoryAdapter constructor(
     private val context: Context,
     private val itemClickListener: (BaseLogEntity) -> Unit
 ) :
-    ListAdapter<TimelineItem, RecyclerView.ViewHolder>(HistoryItemDiffCallback()) {
+    ListAdapter<TimelineItem, RecyclerView.ViewHolder>
+        (HistoryItemDiffCallback()) {
 
     companion object {
         const val LOG_ITEM = 0
         const val DATE_ITEM = 1
     }
 
-    class HistoryItemViewHolder private constructor(val binding: ItemviewGraphHistoryBinding) :
+    class HistoryItemViewHolder private constructor(
+        val binding: ItemviewGraphHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(

@@ -213,9 +213,9 @@ class ScanQuestionFragment : Fragment(R.layout.fragment_scan_question) {
 
         binding.continueBtn.setOnClickListener {
             navToMyHealthFragment()
-            if (btnEnabled()) {
+            /*if (btnEnabled()) {
                 //todo on continue btn click
-            }
+            }*/
         }
 
 

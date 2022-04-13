@@ -44,6 +44,18 @@
         <action
             android:id="@+id/action_scanFragment_to_scanTutorialFragment"
             app:destination="@id/scanTutorialFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_scanTutorialFragment2"
+            app:destination="@id/scanTutorialFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_myHealthFragment"
+            app:destination="@id/myHealthFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_saveWeightFragment"
+            app:destination="@id/saveWeightFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_waterIntakeFragment"
+            app:destination="@id/waterIntakeFragment" />
     </fragment>
 
     <fragment
@@ -143,6 +155,28 @@
         android:name="ai.heart.classickbeats.ui.ppg.fragment.my_health.MyHealthFragment"
         android:label="fragment_my_health"
         tools:layout="@layout/fragment_my_health">
+
+        <action
+            android:id="@+id/action_myHealthFragment_to_saveWeightFragment"
+            app:destination="@id/saveWeightFragment" />
+        <action
+            android:id="@+id/action_myHealthFragment_to_waterIntakeFragment"
+            app:destination="@id/waterIntakeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/saveWeightFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.fragment.my_health.SaveWeightFragment"
+        android:label="fragment_my_health"
+        tools:layout="@layout/fragment_save_weight">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/waterIntakeFragment"
+        android:name="ai.heart.classickbeats.ui.ppg.fragment.my_health.WaterInTakeFragment"
+        android:label="fragment_my_health"
+        tools:layout="@layout/fragment_water_in_take">
 
     </fragment>
 

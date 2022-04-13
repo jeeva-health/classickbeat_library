@@ -1,23 +1,64 @@
 package ai.heart.classickbeats.ui.ppg.fragment.my_health
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.databinding.FragmentWaterInTakeBinding
+import ai.heart.classickbeats.utils.viewBinding
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 
 
-class WaterInTakeFragment : Fragment() {
+class WaterInTakeFragment : Fragment(R.layout.fragment_water_in_take) {
 
+    private val binding by viewBinding(FragmentWaterInTakeBinding::bind)
+    var xWater: Int = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
+    @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        waterIntakeChange()
+        binding.witBackBtn.setOnClickListener {
+            //todo get back
+        }
 
+        val layoutManager = LinearLayoutManager(requireContext())
+        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        binding.witRecyclerView.layoutManager = layoutManager
+
+        val modelList: MutableList<WaterIntakeItemModel> = java.util.ArrayList()
+        modelList.add(WaterIntakeItemModel(R.drawable.water_bottel, "Water", false))
+        modelList.add(WaterIntakeItemModel(R.drawable.juice, "Juice", false))
+        modelList.add(WaterIntakeItemModel(R.drawable.tea, "Tea", false))
+        modelList.add(WaterIntakeItemModel(R.drawable.coffe_long, "Coffee", false))
+        modelList.add(WaterIntakeItemModel(R.drawable.soda, "Soda", false))
+
+        val waterIntakeItemAdapter = WaterIntakeItemAdapter(modelList)
+        binding.witRecyclerView.adapter = waterIntakeItemAdapter
+        waterIntakeItemAdapter.notifyDataSetChanged()
+
+
+
+        binding.witSaveBtn.setOnClickListener {
+            //todo save intake
+        }
     }
+
+    fun waterIntakeChange() {
+        binding.witWaterIndicaterText.text = "$xWater X Glass 250 ml"
+        binding.witMinus.setOnClickListener {
+            if (xWater > 0) {
+                xWater -= 1
+                binding.witWaterIndicaterText.text = "$xWater X Glass 250 ml"
+            }
+        }
+        binding.witPlus.setOnClickListener {
+            if (xWater < 100) {
+                xWater += 1
+                binding.witWaterIndicaterText.text = "$xWater X Glass 250 ml"
+            }
+        }
+    }
+
 }

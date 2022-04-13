@@ -160,6 +160,13 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //redirect to my health fragment delete after test
+        binding.heartRateTv.setOnClickListener{
+            findNavController().navigate(ScanFragmentDirections.actionScanFragmentToWaterIntakeFragment())
+           // findNavController().navigate(ScanFragmentDirections.actionScanFragmentToMyHealthFragment())
+        }
+
+
         setLightStatusBar()
 
         navController = findNavController()

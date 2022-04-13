@@ -9,6 +9,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.275" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/drawable/bg_blue_gradient.xml" value="0.176" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/drawable/bg_gradient_rect_sky_6.xml" value="0.2085" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/drawable/bg_gradient_sky_pink.xml" value="0.2085" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/drawable/bg_rectangle_16.xml" value="0.2085" />
@@ -16,17 +17,20 @@
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/drawable/bg_rectangle_8.xml" value="0.2085" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/dialog_height.xml" value="0.209375" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/dialog_weight.xml" value="0.209375" />
-        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_my_health.xml" value="0.12" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_gender_selection.xml" value="0.209375" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_my_health.xml" value="0.25" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_onboarding.xml" value="0.209375" />
-        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_save_weight.xml" value="0.33" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_save_weight.xml" value="0.4486486486486487" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_scan.xml" value="0.209375" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_scan_question.xml" value="0.209375" />
-        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_water_in_take.xml" value="0.1953125" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_water_in_take.xml" value="0.33" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_graph_history_date.xml" value="0.1" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_meditation.xml" value="0.33" />
-        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_board.xml" value="0.412962962962963" />
-        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_recent_1.xml" value="0.209375" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_board.xml" value="0.1" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_recent_1.xml" value="0.1" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_recent_2.xml" value="0.67" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_upcoming.xml" value="0.5" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_water_in_take.xml" value="0.5" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.24074074074074073" />
         <entry key="app/src/main/res/drawable/bg_blue_gradient.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/drawable/bg_circle.xml" value="0.1485" />
