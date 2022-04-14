@@ -42,7 +42,7 @@ class SaveWeightFragment : Fragment(R.layout.fragment_save_weight) {
             binding.swUnit.text = unit
         }
 
-        binding.swWeight.setText("0")
+        binding.swWeight.setText("$xWeight")
 
         binding.swMinus.setOnClickListener {
             if (xWeight>0){
