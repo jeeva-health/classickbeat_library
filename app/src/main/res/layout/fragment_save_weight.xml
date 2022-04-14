@@ -22,10 +22,10 @@
         app:layout_constraintGuide_end="@dimen/small_guideline_marin" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/swBack"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:src="@drawable/ic_baseline_arrow_back"
         app:layout_constraintStart_toStartOf="@+id/start_guideline"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +41,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/swBack" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/witDateLayout"
@@ -73,7 +73,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/swDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -127,7 +127,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/swTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -166,7 +166,7 @@
         app:layout_constraintTop_toBottomOf="@+id/witTimeLayout">
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/swKg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -179,7 +179,7 @@
             android:text="KG" />
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/swPound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -192,7 +192,7 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/swWeight"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginTop="28dp"
@@ -202,7 +202,8 @@
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:hint="__"
-        android:inputType="numberDecimal"
+        android:maxLength="3"
+        android:inputType="number"
         android:textColor="@color/charcoal_grey"
         android:textSize="32sp"
         app:layout_constraintEnd_toStartOf="@+id/end_guideline"
@@ -210,43 +211,44 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <TextView
-        android:id="@+id/witWaterIndicaterText"
+        android:id="@+id/swUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:layout_marginBottom="4dp"
-        android:text="KG"
+        android:layout_marginBottom="8dp"
         android:fontFamily="sans-serif-medium"
+        android:text="KG"
         android:textColor="@color/charcoal_grey"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName"
-        app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName" />
+        app:layout_constraintBottom_toBottomOf="@+id/swWeight"
+        app:layout_constraintStart_toEndOf="@+id/swWeight" />
 
     <ImageView
-        android:id="@+id/witPlus"
+        android:id="@+id/swPlus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:src="@drawable/plus_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/swWeight"
         app:layout_constraintEnd_toStartOf="@+id/end_guideline"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName"
-        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName" />
+        app:layout_constraintStart_toEndOf="@+id/swWeight"
+        app:layout_constraintTop_toTopOf="@+id/swWeight" />
 
     <ImageView
-        android:id="@+id/witMinus"
+        android:id="@+id/swMinus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:src="@drawable/minus_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/editTextTextPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/swWeight"
+        app:layout_constraintEnd_toStartOf="@+id/swWeight"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/start_guideline"
-        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toTopOf="@+id/swWeight" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/swSaveBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -256,15 +258,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/end_guideline"
         app:layout_constraintStart_toStartOf="@+id/start_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/swWeight"
         app:layout_constraintVertical_bias="1.0">
 
         <TextView
             android:id="@+id/textView19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save Your Weight"
             android:fontFamily="sans-serif-medium"
+            android:text="Save Your Weight"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -278,8 +280,8 @@
             android:layout_height="36dp"
             android:background="@drawable/bg_circle_fill"
             android:backgroundTint="@color/pale_red"
-            android:src="@drawable/ic_arrow_forward"
             android:padding="6dp"
+            android:src="@drawable/ic_arrow_forward"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

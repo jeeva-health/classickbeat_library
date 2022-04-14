@@ -3,6 +3,7 @@ package ai.heart.classickbeats.ui.ppg.fragment.my_health
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentMyHealthBinding
 import ai.heart.classickbeats.ui.ppg.fragment.my_health.VitalsModel.Companion.FUNCTION_BLOOD_PRESSURE
+import ai.heart.classickbeats.ui.ppg.fragment.my_health.VitalsModel.Companion.FUNCTION_HEART
 import ai.heart.classickbeats.ui.ppg.fragment.my_health.VitalsModel.Companion.FUNCTION_INTAKE
 import ai.heart.classickbeats.ui.ppg.fragment.my_health.VitalsModel.Companion.FUNCTION_WEIGHT
 import ai.heart.classickbeats.ui.ppg.fragment.my_health.VitalsModel.Companion.RECENT_VITALS
@@ -47,21 +48,82 @@ class MyHealthFragment : Fragment(R.layout.fragment_my_health) {
         binding.mhRecentRecycleview.layoutManager = recentManager
 
         //board
-        val boardModelList:MutableList<BoardModel> = java.util.ArrayList()
-        boardModelList.add(BoardModel(R.drawable.female_icon,"Glucose Level", "200","ppm",false))
-        boardModelList.add(BoardModel(R.drawable.female_icon,"Blood pressure", "200","ppm",true))
-        boardModelList.add(BoardModel(R.drawable.your_weight,"Weight", "60","KG",false))
-        boardModelList.add(BoardModel(R.drawable.female_icon,"Glucose Level", "200","ppm",true))
+        val boardModelList: MutableList<BoardModel> = java.util.ArrayList()
+        boardModelList.add(
+            BoardModel(
+                R.drawable.blood_pressure,
+                "Blood pressure",
+                "85/75",
+                "MMHG",
+                false
+            )
+        )
+        boardModelList.add(BoardModel(R.drawable.heart_rate, "Heart Rate", "92", "BPM", true))
+        boardModelList.add(BoardModel(R.drawable.your_weight, "Body Weight", "75", "KG", false))
+        boardModelList.add(
+            BoardModel(
+                R.drawable.water_intake,
+                "Water Intake",
+                "1.95",
+                "LITERS",
+                true
+            )
+        )
+        boardModelList.add(
+            BoardModel(
+                R.drawable.blood_glucose,
+                "Blood Glucose",
+                "200",
+                "MG/DL",
+                false
+            )
+        )
 
-        val boardAdapter = BoardAdapter(requireContext(),boardModelList,boardItemClickListener())
+        val boardAdapter = BoardAdapter(requireContext(), boardModelList, boardItemClickListener())
         binding.mhBoardRecycleview.adapter = boardAdapter
 
         //upcoming vitals
         val upcomingVitalModelList: MutableList<VitalsModel> = java.util.ArrayList()
-        upcomingVitalModelList.add(VitalsModel(UPCOMING_VITALS,  "92","Measure","Today", FUNCTION_BLOOD_PRESSURE ))
-        upcomingVitalModelList.add(VitalsModel(UPCOMING_VITALS,  "92","Measure","Today", FUNCTION_BLOOD_PRESSURE ))
-        upcomingVitalModelList.add(VitalsModel(UPCOMING_VITALS,  "92","Measure","Today", FUNCTION_BLOOD_PRESSURE ))
-        upcomingVitalModelList.add(VitalsModel(UPCOMING_VITALS,  "92","Measure","Today", FUNCTION_BLOOD_PRESSURE ))
+        upcomingVitalModelList.add(
+            VitalsModel(
+                UPCOMING_VITALS,
+                R.drawable.heart_rate,
+                "Heart Rate",
+                "7:30 AM",
+                "Measure",
+                FUNCTION_HEART
+            )
+        )
+        upcomingVitalModelList.add(
+            VitalsModel(
+                UPCOMING_VITALS,
+                R.drawable.water_intake,
+                "Water Intake",
+                "8:30 AM",
+                "Intake",
+                FUNCTION_INTAKE
+            )
+        )
+        upcomingVitalModelList.add(
+            VitalsModel(
+                UPCOMING_VITALS,
+                R.drawable.blood_pressure,
+                "Blood Pressure",
+                "9:00 AM",
+                "Measure",
+                FUNCTION_BLOOD_PRESSURE
+            )
+        )
+        upcomingVitalModelList.add(
+            VitalsModel(
+                UPCOMING_VITALS,
+                R.drawable.weight,
+                "Body Weight",
+                "2:30 PM",
+                "Measure",
+                FUNCTION_WEIGHT
+            )
+        )
         mhUpcomingVitalsAdapter =
             VitalsAdapter(
                 requireActivity().applicationContext,
@@ -76,21 +138,23 @@ class MyHealthFragment : Fragment(R.layout.fragment_my_health) {
         recentVitalsModelList.add(
             VitalsModel(
                 RECENT_VITALS,
-                "00",
-                "Weight",
-                "Today",
-                "KG",
-                VitalsModel.FUNCTION_WEIGHT
+                R.drawable.blood_pressure,
+                "Blood Pressure",
+                "141/90",
+                "MMHG",
+                "7:30 AM",
+                FUNCTION_BLOOD_PRESSURE
             )
         )
         recentVitalsModelList.add(
             VitalsModel(
                 RECENT_VITALS,
-                "3",
-                "Weight",
-                "Today",
-                "lt",
-                VitalsModel.FUNCTION_INTAKE
+                R.drawable.weight,
+                "Body Weight",
+                "75",
+                "KG",
+                "7:30 AM",
+                FUNCTION_WEIGHT
             )
         )
         mhRecentVitalsAdapter =
@@ -111,11 +175,14 @@ private fun boardItemClickListener() = fun(function: Int){
     private fun itemClickListener() = fun(function: Int) {
         Toast.makeText(context, "item clicked", Toast.LENGTH_SHORT).show()
         when (function) {
+            FUNCTION_HEART -> {
+                findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToScanFragment())
+            }
             FUNCTION_WEIGHT -> {
-                navigateToSaveWeight()
+                findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToSaveWeightFragment())
             }
             FUNCTION_INTAKE -> {
-                navigateToWaterInTake()
+                findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToWaterIntakeFragment())
             }
             FUNCTION_BLOOD_PRESSURE -> {
                 //todo
@@ -125,15 +192,5 @@ private fun boardItemClickListener() = fun(function: Int){
                 Toast.makeText(context, "elsed", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    private fun navigateToWaterInTake() {
-        val action = MyHealthFragmentDirections.actionMyHealthFragmentToWaterIntakeFragment()
-        findNavController().navigate(action)
-    }
-
-    private fun navigateToSaveWeight() {
-        val action = MyHealthFragmentDirections.actionMyHealthFragmentToSaveWeightFragment()
-        findNavController().navigate(action)
     }
 }

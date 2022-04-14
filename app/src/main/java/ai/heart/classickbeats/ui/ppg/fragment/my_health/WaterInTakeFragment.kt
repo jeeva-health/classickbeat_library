@@ -7,6 +7,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 
@@ -19,9 +20,6 @@ class WaterInTakeFragment : Fragment(R.layout.fragment_water_in_take) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         waterIntakeChange()
-        binding.witBackBtn.setOnClickListener {
-            //todo get back
-        }
 
         val layoutManager = LinearLayoutManager(requireContext())
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
@@ -41,7 +39,11 @@ class WaterInTakeFragment : Fragment(R.layout.fragment_water_in_take) {
 
 
         binding.witSaveBtn.setOnClickListener {
-            //todo save intake
+            //
+        }
+
+        binding.witBackBtn.setOnClickListener {
+            findNavController().navigate(WaterInTakeFragmentDirections.actionWaterIntakeFragmentToMyHealthFragment())
         }
     }
 

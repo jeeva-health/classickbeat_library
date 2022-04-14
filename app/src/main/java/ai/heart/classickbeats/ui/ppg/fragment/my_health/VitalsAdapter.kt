@@ -65,7 +65,8 @@ class VitalsAdapter constructor(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (vitalsModelList[position].type) {
             UPCOMING_VITALS -> (holder as UpcomingViewHolder).setUpcomingData(
-                vitalsModelList[position]
+                vitalsModelList[position],
+                itemClickListener
             )
             RECENT_VITALS_DAY -> (holder as RecentDayViewHolder).setRecentDayData(
                 vitalsModelList[position]
@@ -88,8 +89,14 @@ class VitalsAdapter constructor(
         private val uvVitals: TextView? = itemView.findViewById(R.id.upcomingVitals);
         private val uvAction: TextView? = itemView.findViewById(R.id.upcomingBtn);
         private val uvTimeStamp: TextView? = itemView.findViewById(R.id.upcomingTimestamp);
-        fun setUpcomingData(model: VitalsModel) {
-            //todo
+        fun setUpcomingData(model: VitalsModel,    itemClickListener: (Int) -> Unit) {
+            uvIcon?.setImageResource(model.icon)
+            uvVitals?.text = model.name
+            uvAction?.text = model.action
+            uvTimeStamp?.text = model.timeStamp
+            itemView.setOnClickListener {
+                itemClickListener.invoke(model.function)
+            }
         }
     }
 
@@ -113,26 +120,14 @@ class VitalsAdapter constructor(
             model: VitalsModel,
             itemClickListener: (Int) -> Unit
         ) {
-            when (model.function) {
-                VitalsModel.FUNCTION_BLOOD_PRESSURE -> {
 
-                }
-                VitalsModel.FUNCTION_WEIGHT -> {
-                    rvIcon?.setImageResource(R.drawable.your_weight)
-                }
-                VitalsModel.FUNCTION_INTAKE -> {
-
-                }
-                VitalsModel.FUNCTION_HEART -> {
-
-                }
-            }
+            rvIcon?.setImageResource(model.icon)
+            rvVitals?.text = model.name
+            rvReading?.text = model.reading
+            rvUnit?.text = model.unit
+            rvTimeStamp?.text = model.timeStamp
             itemView.setOnClickListener {
-                if (model.function == VitalsModel.FUNCTION_WEIGHT) {
-                    itemClickListener.invoke(VitalsModel.FUNCTION_WEIGHT)
-                } else if (model.function == VitalsModel.FUNCTION_INTAKE) {
-                    itemClickListener.invoke(VitalsModel.FUNCTION_INTAKE)
-                }
+                itemClickListener.invoke(model.function)
             }
         }
 

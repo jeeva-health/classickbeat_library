@@ -1,12 +1,15 @@
 package ai.heart.classickbeats.ui.ppg.fragment.my_health
 
 class VitalsModel {
-    var type: Int
-    var function = -1
-    var action: String? = null
-    var timeStamp: String
+    var type: Int = -1
+    var icon: Int = 0
+    var name: String? = null
     var reading: String? = null
     var unit: String? = null
+    lateinit var timeStamp: String
+    var action: String? = null
+    var function = -1
+
     //recent day
     constructor(type: Int, timeStamp: String) {
         this.type = type
@@ -14,33 +17,47 @@ class VitalsModel {
     }
 
     //upcoming vitals
-    constructor(type: Int, reading: String, action: String, timeStamp: String, function: Int) {
-        this.type = type
-        this.reading = reading
-        this.function = function
-        this.action = action
-        this.timeStamp = timeStamp
-    }
+
 
     //recent vitals
     constructor(
         type: Int,
+        icon: Int,
+        name: String?,
         reading: String?,
-        action: String?,
-        timeStamp: String,
         unit: String?,
+        timeStamp: String,
         function: Int
     ) {
         this.type = type
-        this.function = function
-        this.action = action
-        this.timeStamp = timeStamp
+        this.icon = icon
+        this.name = name
         this.reading = reading
         this.unit = unit
+        this.timeStamp = timeStamp
+        this.function = function
     }
 
+    constructor()
+    constructor(
+        type: Int,
+        icon: Int,
+        name: String?,
+        timeStamp: String,
+        action: String?,
+        function: Int
+    ) {
+        this.type = type
+        this.icon = icon
+        this.name = name
+        this.timeStamp = timeStamp
+        this.action = action
+        this.function = function
+    }
+
+
     companion object {
-         var UPCOMING_VITALS = 0
+        var UPCOMING_VITALS = 0
         var RECENT_VITALS_DAY = 1
         var RECENT_VITALS = 2
 

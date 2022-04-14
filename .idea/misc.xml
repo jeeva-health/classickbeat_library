@@ -20,7 +20,7 @@
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_gender_selection.xml" value="0.209375" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_my_health.xml" value="0.25" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_onboarding.xml" value="0.209375" />
-        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_save_weight.xml" value="0.4486486486486487" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_save_weight.xml" value="0.75" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_scan.xml" value="0.209375" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_scan_question.xml" value="0.209375" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_water_in_take.xml" value="0.33" />
@@ -28,8 +28,8 @@
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_meditation.xml" value="0.33" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_board.xml" value="0.1" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_recent_1.xml" value="0.1" />
-        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_recent_2.xml" value="0.67" />
-        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_upcoming.xml" value="0.5" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_recent_2.xml" value="0.33" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_upcoming.xml" value="0.33" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_water_in_take.xml" value="0.5" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.24074074074074073" />
         <entry key="app/src/main/res/drawable/bg_blue_gradient.xml" value="0.321025641025641" />

@@ -50,12 +50,6 @@
         <action
             android:id="@+id/action_scanFragment_to_myHealthFragment"
             app:destination="@id/myHealthFragment" />
-        <action
-            android:id="@+id/action_scanFragment_to_saveWeightFragment"
-            app:destination="@id/saveWeightFragment" />
-        <action
-            android:id="@+id/action_scanFragment_to_waterIntakeFragment"
-            app:destination="@id/waterIntakeFragment" />
     </fragment>
 
     <fragment
@@ -162,6 +156,9 @@
         <action
             android:id="@+id/action_myHealthFragment_to_waterIntakeFragment"
             app:destination="@id/waterIntakeFragment" />
+        <action
+            android:id="@+id/action_myHealthFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
     </fragment>
 
     <fragment
@@ -170,6 +167,9 @@
         android:label="fragment_my_health"
         tools:layout="@layout/fragment_save_weight">
 
+        <action
+            android:id="@+id/action_saveWeightFragment_to_myHealthFragment"
+            app:destination="@id/myHealthFragment" />
     </fragment>
 
     <fragment
@@ -178,6 +178,9 @@
         android:label="fragment_my_health"
         tools:layout="@layout/fragment_water_in_take">
 
+        <action
+            android:id="@+id/action_waterIntakeFragment_to_myHealthFragment"
+            app:destination="@id/myHealthFragment" />
     </fragment>
 
     <fragment
