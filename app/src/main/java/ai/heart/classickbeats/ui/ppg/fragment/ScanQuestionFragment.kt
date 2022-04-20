@@ -27,7 +27,6 @@ class ScanQuestionFragment : Fragment(R.layout.fragment_scan_question) {
 
     private val binding by viewBinding(FragmentScanQuestionBinding::bind)
     private val monitorViewModel: MonitorViewModel by activityViewModels()
-    private var bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>? = null
 
 
     @SuppressLint("SetTextI18n")
@@ -110,61 +109,62 @@ class ScanQuestionFragment : Fragment(R.layout.fragment_scan_question) {
         }**/
 
 
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.nestedBottomSheet)
-        bottomSheetBehavior!!.halfExpandedRatio = 0.7f //changing the half expanding ratio
+//        bottomSheetBehavior = BottomSheetBehavior.from(binding.nestedBottomSheet)
+//        bottomSheetBehavior!!.halfExpandedRatio = 0.7f //changing the half expanding ratio
+//
+//        bottomSheetBehavior!!.setBottomSheetCallback(object : BottomSheetCallback() {
+//            override fun onStateChanged(bottomSheet: View, newState: Int) {
+//
+//                /** when (newState) {
+//                BottomSheetBehavior.STATE_COLLAPSED -> {
+//                //todo
+//                Toast.makeText(context, "collapsed", Toast.LENGTH_SHORT).show()
+//                }
+//
+//                BottomSheetBehavior.STATE_DRAGGING -> {
+//                //todo
+//                Toast.makeText(context, "dragging", Toast.LENGTH_SHORT).show()
+//                }
+//
+//                BottomSheetBehavior.STATE_EXPANDED -> {
+//                //todo
+//                Toast.makeText(context, "expanded", Toast.LENGTH_SHORT).show()
+//                }
+//
+//                BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+//                //todo
+//                Toast.makeText(context, "half expanded", Toast.LENGTH_SHORT)
+//                .show()
+//                }
+//
+//                BottomSheetBehavior.STATE_HIDDEN -> {
+//                //todo
+//                Toast.makeText(context, "hidden", Toast.LENGTH_SHORT).show()
+//                }
+//
+//                BottomSheetBehavior.STATE_SETTLING -> {
+//                //todo
+//                Toast.makeText(context, "settling", Toast.LENGTH_SHORT).show()
+//                }
+//
+//                }**/
+//            }
+//
+//            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+//                val upperState = 0.72f
+//                val lowerState = 0.36f
+//                if (bottomSheetBehavior!!.state == BottomSheetBehavior.STATE_SETTLING) {
+//                    if (slideOffset > lowerState && slideOffset < upperState) {
+//                        bottomSheetBehavior!!.setState(BottomSheetBehavior.STATE_HALF_EXPANDED)
+//                    } else if (slideOffset >= upperState) {
+//                        bottomSheetBehavior!!.setState(BottomSheetBehavior.STATE_EXPANDED)
+//                    } else if (slideOffset <= lowerState) {
+//                        bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
+//                    }
+//                }
+//            }
+//        })
 
-        bottomSheetBehavior!!.setBottomSheetCallback(object : BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-
-                /** when (newState) {
-                BottomSheetBehavior.STATE_COLLAPSED -> {
-                //todo
-                Toast.makeText(context, "collapsed", Toast.LENGTH_SHORT).show()
-                }
-
-                BottomSheetBehavior.STATE_DRAGGING -> {
-                //todo
-                Toast.makeText(context, "dragging", Toast.LENGTH_SHORT).show()
-                }
-
-                BottomSheetBehavior.STATE_EXPANDED -> {
-                //todo
-                Toast.makeText(context, "expanded", Toast.LENGTH_SHORT).show()
-                }
-
-                BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                //todo
-                Toast.makeText(context, "half expanded", Toast.LENGTH_SHORT)
-                .show()
-                }
-
-                BottomSheetBehavior.STATE_HIDDEN -> {
-                //todo
-                Toast.makeText(context, "hidden", Toast.LENGTH_SHORT).show()
-                }
-
-                BottomSheetBehavior.STATE_SETTLING -> {
-                //todo
-                Toast.makeText(context, "settling", Toast.LENGTH_SHORT).show()
-                }
-
-                }**/
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                val upperState = 0.72f
-                val lowerState = 0.36f
-                if (bottomSheetBehavior!!.state == BottomSheetBehavior.STATE_SETTLING) {
-                    if (slideOffset > lowerState && slideOffset < upperState) {
-                        bottomSheetBehavior!!.setState(BottomSheetBehavior.STATE_HALF_EXPANDED)
-                    } else if (slideOffset >= upperState) {
-                        bottomSheetBehavior!!.setState(BottomSheetBehavior.STATE_EXPANDED)
-                    } else if (slideOffset <= lowerState) {
-                        bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
-                    }
-                }
-            }
-        })
         setTextWithEmoticon()
 
         binding.sleepSlider.addOnChangeListener { slider, value, fromUser ->

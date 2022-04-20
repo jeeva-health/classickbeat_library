@@ -15,6 +15,7 @@
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/drawable/bg_rectangle_16.xml" value="0.2085" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/drawable/bg_rectangle_24.xml" value="0.2085" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/drawable/bg_rectangle_8.xml" value="0.2085" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/activity_main.xml" value="0.209375" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/dialog_height.xml" value="0.209375" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/dialog_weight.xml" value="0.209375" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_gender_selection.xml" value="0.209375" />
@@ -22,7 +23,7 @@
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_onboarding.xml" value="0.209375" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_save_weight.xml" value="0.75" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_scan.xml" value="0.209375" />
-        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_scan_question.xml" value="0.209375" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_scan_question.xml" value="0.1" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_water_in_take.xml" value="0.33" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_graph_history_date.xml" value="0.1" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_meditation.xml" value="0.33" />
