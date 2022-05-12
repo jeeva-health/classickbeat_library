@@ -18,10 +18,12 @@
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/activity_main.xml" value="0.209375" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/dialog_height.xml" value="0.209375" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/dialog_weight.xml" value="0.209375" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_blood_pressure.xml" value="0.1933876811594203" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_gender_selection.xml" value="0.209375" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_log_bp.xml" value="0.33" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_my_health.xml" value="0.25" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_onboarding.xml" value="0.209375" />
-        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_save_weight.xml" value="0.75" />
+        <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_save_weight.xml" value="0.2" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_scan.xml" value="0.209375" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_scan_question.xml" value="0.1" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/fragment_water_in_take.xml" value="0.33" />

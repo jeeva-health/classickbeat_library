@@ -58,6 +58,10 @@ android {
     buildFeatures {
         viewBinding true
         dataBinding true
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.2.0-alpha08"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -79,18 +83,30 @@ android {
 
 dependencies {
 
+    //noinspection GradleDependency
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_stdlib"
     implementation "androidx.core:core-ktx:$core_ktx"
     implementation "androidx.activity:activity-ktx:$activity_ktx"
     implementation "androidx.fragment:fragment-ktx:$fragment_ktx"
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation project(path: ':model')
     implementation project(path: ':shared')
+
+
+    //compose
+    implementation "androidx.ui:ui-framework:0.1.0-dev03"
+    debugImplementation "androidx.compose.ui:ui-tooling:1.1.1"
+    implementation "androidx.compose.ui:ui-tooling-preview:1.1.1"
+    implementation 'androidx.activity:activity-compose:1.4.0'
+    implementation 'androidx.compose.material:material:1.1.1' // Compose Material Design
+    implementation 'androidx.compose.animation:animation:1.1.1'// Animations
+    implementation 'androidx.compose.ui:ui-tooling:1.1.1'// Tooling support (Previews, etc.)
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'    // Integration with ViewModels
 
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
@@ -103,6 +119,8 @@ dependencies {
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
+    implementation 'androidx.compose.ui:ui:1.1.1'
+    implementation 'androidx.compose.material:material:1.1.1'
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
 
