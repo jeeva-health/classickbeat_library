@@ -108,6 +108,10 @@ dependencies {
     implementation 'androidx.compose.ui:ui-tooling:1.1.1'// Tooling support (Previews, etc.)
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'    // Integration with ViewModels
 
+    // To use constraintlayout in compose
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0")
+
+
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
     // lifecycle -- (used for ViewBinding delegate)
