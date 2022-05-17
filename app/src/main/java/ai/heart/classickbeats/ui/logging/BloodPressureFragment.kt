@@ -243,7 +243,7 @@ class BloodPressureFragment : Fragment() {
             modifier = modifier
                 .padding(16.dp, 4.dp)
                 .fillMaxWidth()
-                .background(color = MaterialTheme.colors.background, shape = RoundedCornerShape(8.dp))
+                .background(color = White, shape = RoundedCornerShape(8.dp))
                 .padding(16.dp, 4.dp)
         ) {
             Text(
@@ -255,7 +255,7 @@ class BloodPressureFragment : Fragment() {
             )
             Row(
                 modifier = Modifier
-                    .background(color = Color(0xFFEDF3F5), shape = RoundedCornerShape(4.dp))
+                    .background(color = PaleGray, shape = RoundedCornerShape(4.dp))
                     .padding(12.dp, 9.dp)
                     .align(alignment = Alignment.CenterHorizontally)
             ) {
@@ -277,7 +277,7 @@ class BloodPressureFragment : Fragment() {
             LazyColumn {
                 items(dtvList) { dtv: DateTimeValueModel ->
                     ItemHistory(modifier = Modifier, dtv = dtv)
-                    Divider(color = Color(0xFFEDF3F5), thickness = 1.dp)
+                    Divider(color = PaleGray, thickness = 1.dp)
                 }
             }
         }

@@ -1,7 +1,7 @@
 package ai.heart.classickbeats.ui.logging
 
 import ai.heart.classickbeats.R
-import ai.heart.classickbeats.ui.theme.ClassicBeatsTheme
+import ai.heart.classickbeats.ui.theme.*
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -62,58 +64,53 @@ class AddBloodPressureFragment : Fragment() {
         )
 
 
-        Surface(
+        Column(
             modifier = Modifier
                 .fillMaxHeight()
                 .fillMaxWidth()
-                .background(color = colorResource(id = R.color.ice_blue))
+                .background(color = LightPink)
         ) {
-            Column(
+            ToolBarLayout(modifier = Modifier)
+            DateTimeItem(
+                modifier = Modifier,
+                icon = R.drawable.date,
+                unit = "Date",
+                value = "Today"
+            )
+            DateTimeItem(
+                modifier = Modifier,
+                icon = R.drawable.time,
+                unit = "Time",
+                value = "2:30 PM"
+            )
+            ReadingLayout(modifier = Modifier)
+
+            Spacer(
                 modifier = Modifier
-                    .fillMaxHeight()
+                    .weight(1f)
                     .fillMaxWidth()
+                    .background(color = Color.Transparent)
+
+            )
+
+            Button(
+                onClick = { onBackPressed() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .background(shape = RectangleShape, color = RosyPink),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = RosyPink,
+                    contentColor = White
+                )
             ) {
-                ToolBarLayout(modifier = Modifier)
-                DateTimeItem(
-                    modifier = Modifier,
-                    icon = R.drawable.date,
-                    unit = "Date",
-                    value = "Today"
+                Text(
+                    text = "SAVE",
+                    fontSize = 16.sp,
+                    color = White,
                 )
-                DateTimeItem(
-                    modifier = Modifier,
-                    icon = R.drawable.time,
-                    unit = "Time",
-                    value = "2:30 PM"
-                )
-                ReadingLayout(modifier = Modifier)
-
-                Spacer(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                )
-
-                Button(
-                    onClick = { onBackPressed() },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .background(color = Color(R.color.red)),
-                ) {
-                    Text(
-                        text = "SAVE",
-                        color = colorResource(id = R.color.white),
-                        fontSize = 16.sp,
-
-                        )
-
-                }
-
-
             }
         }
-
     }
 
     @Composable
@@ -155,7 +152,10 @@ class AddBloodPressureFragment : Fragment() {
             modifier = modifier
                 .padding(16.dp, 4.dp)
                 .fillMaxWidth()
-                .background(color = colorResource(id = R.color.white), shape = RectangleShape)
+                .background(
+                    color = colorResource(id = R.color.white),
+                    shape = RoundedCornerShape(8.dp)
+                )
                 .padding(16.dp),
         ) {
             Image(
@@ -170,14 +170,15 @@ class AddBloodPressureFragment : Fragment() {
                 content = {
                     Text(
                         modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 4.dp),
-                        color = Color.Black,
+                        color = CharcoalGray,
                         fontSize = 12.sp,
                         text = unit
                     )
                     Text(
-                        color = Color.Black,
+                        color = CharcoalGray,
                         fontSize = 16.sp,
-                        text = value
+                        text = value,
+                        fontWeight = Bold
                     )
                 }
             )
@@ -198,7 +199,7 @@ class AddBloodPressureFragment : Fragment() {
         Column(
             modifier = modifier
                 .padding(16.dp, 10.dp)
-                .background(color = Color.White)
+                .background(color = White, shape = RoundedCornerShape(8.dp))
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -220,19 +221,27 @@ class AddBloodPressureFragment : Fragment() {
 
                     )
                 Text(
-                    text = "(mmgh)",
+                    text = "(mmHg)",
                     modifier = Modifier
                         .align(alignment = Alignment.Bottom)
                 )
 
             }
-            ScaleLayout(modifier = Modifier, diagnostic = "Systolic (High)", color = R.color.red)
-            ScaleLayout(modifier = Modifier, diagnostic = "Systolic (High)", color = R.color.bright_blue_2)
+            ScaleLayout(
+                modifier = Modifier,
+                diagnostic = "Systolic (High)",
+                color = RosyPink
+            )
+            ScaleLayout(
+                modifier = Modifier,
+                diagnostic = "Diastolic (Low)",
+                color = DarkSkyBlue
+            )
         }
     }
 
     @Composable
-    fun ScaleLayout(modifier: Modifier, diagnostic: String,color:Int) {
+    fun ScaleLayout(modifier: Modifier, diagnostic: String, color: Color) {
 
         Column(
             modifier = modifier
@@ -245,14 +254,15 @@ class AddBloodPressureFragment : Fragment() {
                 Box(
                     modifier = Modifier
                         .size(16.dp)
-                        .background(color = colorResource(id = color), shape = CircleShape)
-                        .border(width = 3.dp, color = Color.White, shape = CircleShape)
-                        .align(alignment = Alignment.Bottom)
+                        .background(color = color, shape = CircleShape)
+                        .border(width = 3.dp, color = White, shape = CircleShape)
+                        .align(alignment = Alignment.CenterVertically)
                 )
                 Text(
                     text = diagnostic,
                     fontSize = 16.sp,
                     fontWeight = Bold,
+                    color = CharcoalGray,
                     fontFamily = FontFamily.SansSerif,
                     modifier = Modifier.padding(4.dp, 0.dp)
                 )
@@ -262,9 +272,8 @@ class AddBloodPressureFragment : Fragment() {
                 modifier = Modifier
                     .padding(0.dp, 16.dp)
                     .fillMaxWidth()
-                    .height(100.dp)
-                    .background(color = colorResource(id = color))
-
+                    .height(100.dp),
+                color = color
             ) {
 
             }
