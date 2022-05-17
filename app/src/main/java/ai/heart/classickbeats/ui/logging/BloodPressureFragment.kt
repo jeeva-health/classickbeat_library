@@ -1,32 +1,37 @@
 package ai.heart.classickbeats.ui.logging
 
 import ai.heart.classickbeats.R
-import android.annotation.SuppressLint
+import ai.heart.classickbeats.ui.logging.model.DateTimeValueModel
+import ai.heart.classickbeats.ui.theme.*
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.compose.View
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,8 +39,10 @@ import androidx.fragment.app.Fragment
 
 class BloodPressureFragment : Fragment() {
 
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
@@ -50,67 +57,27 @@ class BloodPressureFragment : Fragment() {
     }
 
 
-    @SuppressLint("ResourceType")
-    @Composable
     @Preview(showBackground = true)
+    @Composable
     fun MainCompose() {
-        val brush = Brush.verticalGradient(
-            listOf(Color(0xFFE1F2F6), Color(0xFFD3062A)),
-        )
-
-
-        Surface(
-            modifier = Modifier
-                .fillMaxHeight()
-                .fillMaxWidth()
-                .background(brush = brush)
-        ) {
+        ClassicBeatsTheme {
             Column(
                 modifier = Modifier
-                    .fillMaxHeight()
+                    .background(color = colorResource(id = R.color.ice_blue))
                     .fillMaxWidth()
+                    .fillMaxHeight()
+
             ) {
                 ToolBarLayout(modifier = Modifier)
-                DateTimeItem(
-                    modifier = Modifier,
-                    icon = R.drawable.date,
-                    unit = "Date",
-                    value = "Today"
-                )
-                DateTimeItem(
-                    modifier = Modifier,
-                    icon = R.drawable.time,
-                    unit = "Time",
-                    value = "2:30 PM"
-                )
-                ReadingLayout(modifier = Modifier)
+                GraphLayout(modifier = Modifier)
+                var d1 = DateTimeValueModel("12 March", "12:00 PM", "120/190")
+                var d2 = DateTimeValueModel("12 March", "12:00 PM", "120/190")
+                var d3 = DateTimeValueModel("12 March", "12:00 PM", "120/190")
+                var dd: List<DateTimeValueModel> = arrayListOf(d1, d2, d3)
 
-                Spacer(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                )
-
-                Button(
-                    onClick = { onBackPressed() },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .background(color = Color(R.color.red)),
-                ) {
-                    Text(
-                        text = "SAVE",
-                        color = colorResource(id = R.color.white),
-                        fontSize = 16.sp,
-
-                        )
-
-                }
-
-
+                HistoryLayout(modifier = Modifier, dtvList = dd)
             }
         }
-
     }
 
     @Composable
@@ -119,16 +86,18 @@ class BloodPressureFragment : Fragment() {
             modifier = modifier
                 .height(56.dp)
                 .fillMaxWidth()
-                .background(Color.White),
+                .background(color = White),
+
             verticalAlignment = Alignment.CenterVertically,
-        ) {
+
+            ) {
             Column(
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier
                     .padding(16.dp)
                     .width(24.dp)
                     .height(24.dp)
-                    .clickable { onBackPressed() },
+                    .clickable { },
                 content = {
                     Image(
                         painter = painterResource(id = R.drawable.ic_baseline_arrow_back),
@@ -143,139 +112,205 @@ class BloodPressureFragment : Fragment() {
                 fontSize = 20.sp,
                 fontFamily = FontFamily.SansSerif,
             )
-        }
-    }
 
-    @Composable
-    fun DateTimeItem(modifier: Modifier, icon: Int, unit: String, value: String) {
-        Row(
-            modifier = modifier
-                .padding(16.dp, 4.dp)
-                .fillMaxWidth()
-                .background(color = Color.Gray, shape = RectangleShape)
-                .padding(16.dp),
-        ) {
-            Image(
+            Spacer(
                 modifier = Modifier
+                    .fillMaxHeight()
                     .weight(1f)
-                    .align(Alignment.CenterVertically),
-                painter = painterResource(id = icon), contentDescription = null
             )
-            Column(modifier = Modifier
-                .padding(16.dp, 0.dp)
-                .weight(8f),
-                content = {
-                    Text(
-                        modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 4.dp),
-                        color = Color.Black,
-                        fontSize = 12.sp,
-                        text = unit
-                    )
-                    Text(
-                        color = Color.Black,
-                        fontSize = 16.sp,
-                        text = value
-                    )
-                }
-            )
-
-            Image(
-                modifier = Modifier
-                    .weight(1f)
-                    .align(Alignment.CenterVertically),
-                painter = painterResource(R.drawable.ic_baseline_keyboard_arrow_down_24),
-                contentDescription = null
-            )
-
-        }
-    }
-
-    @Composable
-    fun ReadingLayout(modifier: Modifier) {
-        Column(
-            modifier = modifier
-                .padding(16.dp, 10.dp)
-                .background(color = Color.LightGray)
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
 
             Row(
                 modifier = Modifier
-                    .padding(0.dp, 0.dp, 0.dp, 32.dp)
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .align(alignment = Alignment.CenterHorizontally),
-                horizontalArrangement = Arrangement.Center
-
+                    .padding(8.dp, 10.dp)
+                    .fillMaxHeight()
+                    .fillMaxHeight()
+                    .border(
+                        width = 2.dp,
+                        color = RosyPink,
+                        shape = RoundedCornerShape(25.dp)
+                    )
+                    .align(Alignment.CenterVertically)
+                    .padding(8.dp, 8.dp)
+                    .clickable {/*TODO*/ }
             ) {
-                Text(
-                    modifier = Modifier
-                        .padding(0.dp, 32.dp, 8.dp, 0.dp),
-                    text = "75/65",
-                    fontSize = 24.sp,
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_plus),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxHeight(),
+                    colorFilter = ColorFilter.tint(RosyPink),
+                    alignment = Alignment.Center,
 
                     )
+
                 Text(
-                    text = "(mmgh)",
+                    // modifier = Modifier.padding(16.dp),
+                    text = "Add",
+                    fontSize = 16.sp,
+                    color = RosyPink,
+                    fontFamily = FontFamily.SansSerif,
                     modifier = Modifier
-                        .align(alignment = Alignment.Bottom)
+                        .padding(2.dp, 0.dp)
+                        .align(alignment = Alignment.CenterVertically)
+                )
+            }
+        }
+    }
+
+    @Composable
+    fun GraphLayout(modifier: Modifier) {
+        Column(
+            modifier = modifier
+                .padding(16.dp, 4.dp)
+                .background(color = Color.White, shape = RoundedCornerShape(8.dp))
+                .fillMaxWidth()
+        ) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                ItemGraph(
+                    modifier = Modifier
+                        .weight(1f),
+                    type = "Systolic",
+                    value = "90 to 250 (mmHg)",
+                    color = RosyPink
+                )
+                ItemGraph(
+                    modifier = Modifier
+                        .weight(1f),
+                    type = "Diastolic",
+                    value = "60 to 140 (mmHg)",
+                    color = DarkSkyBlue,
                 )
 
             }
-            ScaleLayout(modifier = Modifier, diagnostic = "Systolic (High)", color = R.color.red)
-            ScaleLayout(modifier = Modifier, diagnostic = "Systolic (High)", color = R.color.bright_blue_2)
+            Text(
+                text = "Last Seven Days",
+                modifier = Modifier.padding(16.dp, 0.dp),
+                color = CharcoalGray,
+                fontWeight = FontWeight.Bold
+            )
+            Surface(
+                modifier = Modifier
+                    .padding(0.dp,16.dp)
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .background(color = RosyPink),
+                color = RosyPink
+            ) {}
         }
     }
 
     @Composable
-    fun ScaleLayout(modifier: Modifier, diagnostic: String,color:Int) {
-
-        Column(
+    fun ItemGraph(modifier: Modifier, color: Color, type: String, value: String) {
+        Row(
             modifier = modifier
-                .fillMaxWidth()
+                .padding(12.dp, 25.dp)
         ) {
-            Row(
+            Box(
                 modifier = Modifier
-                    .padding(12.dp, 0.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(16.dp)
-                        .background(color = colorResource(id = color), shape = CircleShape)
-                        .border(width = 3.dp, color = Color.White, shape = CircleShape)
-                        .align(alignment = Alignment.Bottom)
-                )
+
+                    .size(16.dp)
+                    .background(color = color, shape = CircleShape)
+                    .border(width = 3.dp, color = Color.White, shape = CircleShape)
+                    .align(alignment = Alignment.Top)
+            )
+            Column(modifier = modifier) {
+
                 Text(
-                    text = diagnostic,
+                    text = type,
                     fontSize = 16.sp,
-                    fontWeight = Bold,
+                    color = CharcoalGray,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.SansSerif,
+                    modifier = Modifier.padding(4.dp, 0.dp)
+                )
+
+                Text(
+                    text = value,
+                    fontSize = 12.sp,
+                    color = WarmGray,
                     fontFamily = FontFamily.SansSerif,
                     modifier = Modifier.padding(4.dp, 0.dp)
                 )
             }
-
-            Surface(
-                modifier = Modifier
-                    .padding(0.dp, 16.dp)
-                    .fillMaxWidth()
-                    .height(100.dp)
-                    .background(color = colorResource(id = color))
-
-            ) {
-
-            }
-
         }
+
 
     }
 
+    @Composable
+    fun HistoryLayout(modifier: Modifier, dtvList: List<DateTimeValueModel>) {
+        Column(
+            modifier = modifier
+                .padding(16.dp, 4.dp)
+                .fillMaxWidth()
+                .background(color = MaterialTheme.colors.background, shape = RoundedCornerShape(8.dp))
+                .padding(16.dp, 4.dp)
+        ) {
+            Text(
+                text = "History",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = CharcoalGray,
+                modifier = Modifier.padding(0.dp,16.dp)
+            )
+            Row(
+                modifier = Modifier
+                    .background(color = Color(0xFFEDF3F5), shape = RoundedCornerShape(4.dp))
+                    .padding(12.dp, 9.dp)
+                    .align(alignment = Alignment.CenterHorizontally)
+            ) {
+                Text(
+                    text = "Date & Time",
+                    color = WarmGray,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = "mmHg",
+                    color = WarmGray,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
+                )
 
-    //..........................FUNCTIONS...........................//
-    private fun onBackPressed() {
-        TODO("Not yet implemented")
+            }
+            LazyColumn {
+                items(dtvList) { dtv: DateTimeValueModel ->
+                    ItemHistory(modifier = Modifier, dtv = dtv)
+                    Divider(color = Color(0xFFEDF3F5), thickness = 1.dp)
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun ItemHistory(modifier: Modifier, dtv: DateTimeValueModel) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(16.dp, 8.dp, 8.dp, 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column() {
+                Text(
+                    text = dtv.date,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = dtv.time,
+                    fontSize = 14.sp
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = dtv.value,
+                fontSize = 18.sp,
+                modifier = Modifier.fillMaxHeight(),
+
+                )
+        }
     }
 
 
 }
-

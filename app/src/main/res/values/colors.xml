@@ -122,7 +122,7 @@
     <color name="soft_blue_3">#4ab9ea</color>
     <color name="pale_red">#de4141</color>
     <color name="light_pink">#fff8f9</color>
-    <color name="ice_blue">#fafeff</color>
+    <color name="ice_blue">#E1F2F6</color>
 
     <color name="nav_bar_scrim">@color/system_ui_scrim_black</color>
 
