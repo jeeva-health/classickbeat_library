@@ -1,6 +1,8 @@
 package ai.heart.classickbeats.ui.logging
 
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.ui.common.ui.DateTimeItem
+import ai.heart.classickbeats.ui.common.ui.ToolBarWithBackAndAction
 import ai.heart.classickbeats.ui.theme.*
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -70,7 +72,11 @@ class AddBloodPressureFragment : Fragment() {
                 .fillMaxWidth()
                 .background(color = LightPink)
         ) {
-            ToolBarLayout(modifier = Modifier)
+            ToolBarWithBackAndAction(
+                modifier = Modifier,
+                title = "Blood Glucose Level",
+                backAction = {},
+            ) {}
             DateTimeItem(
                 modifier = Modifier,
                 icon = R.drawable.date,
@@ -146,53 +152,6 @@ class AddBloodPressureFragment : Fragment() {
         }
     }
 
-    @Composable
-    fun DateTimeItem(modifier: Modifier, icon: Int, unit: String, value: String) {
-        Row(
-            modifier = modifier
-                .padding(16.dp, 4.dp)
-                .fillMaxWidth()
-                .background(
-                    color = colorResource(id = R.color.white),
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .padding(16.dp),
-        ) {
-            Image(
-                modifier = Modifier
-                    .weight(1f)
-                    .align(Alignment.CenterVertically),
-                painter = painterResource(id = icon), contentDescription = null
-            )
-            Column(modifier = Modifier
-                .padding(16.dp, 0.dp)
-                .weight(8f),
-                content = {
-                    Text(
-                        modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 4.dp),
-                        color = CharcoalGray,
-                        fontSize = 12.sp,
-                        text = unit
-                    )
-                    Text(
-                        color = CharcoalGray,
-                        fontSize = 16.sp,
-                        text = value,
-                        fontWeight = Bold
-                    )
-                }
-            )
-
-            Image(
-                modifier = Modifier
-                    .weight(1f)
-                    .align(Alignment.CenterVertically),
-                painter = painterResource(R.drawable.ic_baseline_keyboard_arrow_down_24),
-                contentDescription = null
-            )
-
-        }
-    }
 
     @Composable
     fun ReadingLayout(modifier: Modifier) {

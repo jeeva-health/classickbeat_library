@@ -1,6 +1,9 @@
 package ai.heart.classickbeats.ui.logging
 
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.ui.common.ui.DateTimeItem
+import ai.heart.classickbeats.ui.common.ui.ItemTag
+import ai.heart.classickbeats.ui.common.ui.ToolBarWithBackAndAction
 import ai.heart.classickbeats.ui.logging.model.GlucoseTagModel
 import ai.heart.classickbeats.ui.theme.*
 import android.annotation.SuppressLint
@@ -10,7 +13,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -30,7 +32,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
@@ -74,7 +75,13 @@ class AddBloodGlucoseFragment : Fragment() {
                 .fillMaxWidth()
                 .background(color = LightPink)
         ) {
-            ToolBarLayout(modifier = Modifier)
+
+            ToolBarWithBackAndAction(
+                modifier = Modifier,
+                title = "Blood Glucose Level",
+                backAction = {},
+            ) {}
+
             DateTimeItem(
                 modifier = Modifier,
                 icon = R.drawable.date,
@@ -87,6 +94,7 @@ class AddBloodGlucoseFragment : Fragment() {
                 unit = "Time",
                 value = "2:30 PM"
             )
+
             ReadingLayout(modifier = Modifier)
 
             Spacer(
@@ -114,87 +122,6 @@ class AddBloodGlucoseFragment : Fragment() {
                     color = White,
                 )
             }
-        }
-    }
-
-    @Composable
-    fun ToolBarLayout(modifier: Modifier) {
-        Row(
-            modifier = modifier
-                .height(56.dp)
-                .fillMaxWidth()
-                .background(Color.White),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Column(
-                horizontalAlignment = Start,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .width(24.dp)
-                    .height(24.dp)
-                    .clickable { onBackPressed() },
-                content = {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_baseline_arrow_back),
-                        contentDescription = null
-                    )
-                }
-            )
-
-            Text(
-                // modifier = Modifier.padding(16.dp),
-                text = "Blood Glucose Level",
-                fontSize = 20.sp,
-                fontFamily = FontFamily.SansSerif,
-            )
-        }
-    }
-
-    @Composable
-    fun DateTimeItem(modifier: Modifier, icon: Int, unit: String, value: String) {
-        Row(
-            modifier = modifier
-                .padding(16.dp, 4.dp)
-                .fillMaxWidth()
-                .background(
-                    color = colorResource(id = R.color.white),
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .padding(16.dp),
-        ) {
-            Image(
-                modifier = Modifier
-                    .weight(1f)
-                    .align(Alignment.CenterVertically),
-                painter = painterResource(id = icon), contentDescription = null
-            )
-            Column(modifier = Modifier
-                .padding(16.dp, 0.dp)
-                .weight(8f),
-                content = {
-                    Text(
-                        modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 4.dp),
-                        color = CharcoalGray,
-                        fontSize = 12.sp,
-                        text = unit
-                    )
-                    Text(
-                        color = CharcoalGray,
-                        fontSize = 16.sp,
-                        text = value,
-                        fontWeight = Bold
-                    )
-                }
-            )
-
-            Image(
-                modifier = Modifier
-                    .weight(1f)
-                    .align(Alignment.CenterVertically),
-                painter = painterResource(R.drawable.ic_baseline_keyboard_arrow_down_24),
-                contentDescription = null
-            )
-
         }
     }
 
@@ -251,18 +178,21 @@ class AddBloodGlucoseFragment : Fragment() {
                     .padding(16.dp)
             )
 
-            val d1 = GlucoseTagModel(R.drawable.juice,"Fasting",true)
-            val d2 = GlucoseTagModel(R.drawable.juice,"Post Meal",false)
-            val d3 = GlucoseTagModel(R.drawable.juice,"Bedtime",true)
-            val d4 = GlucoseTagModel(R.drawable.juice,"Random",false)
-            val d5 = GlucoseTagModel(R.drawable.juice,"Random",false)
-            val d6 = GlucoseTagModel(R.drawable.juice,"Random",false)
-            val ddList:List<GlucoseTagModel> = arrayListOf(d1,d2,d3,d4,d5,d6)
+            val d1 = GlucoseTagModel(R.drawable.juice, "Fasting", true)
+            val d2 = GlucoseTagModel(R.drawable.juice, "Post Meal", false)
+            val d3 = GlucoseTagModel(R.drawable.juice, "Bedtime", true)
+            val d4 = GlucoseTagModel(R.drawable.juice, "Random", false)
+            val d5 = GlucoseTagModel(R.drawable.juice, "Random", false)
+            val d6 = GlucoseTagModel(R.drawable.juice, "Random", false)
+            val ddList: List<GlucoseTagModel> = arrayListOf(d1, d2, d3, d4, d5, d6)
 
 
-            LazyRow(modifier = Modifier.fillMaxWidth()){
-                items(ddList){dd:GlucoseTagModel->
-                    ItemTag(modifier = Modifier, dd.icon, tag = dd.tag, selected = dd.selected)
+            LazyRow(modifier = Modifier.fillMaxWidth()) {
+                items(ddList) { dd: GlucoseTagModel ->
+                    ItemTag(modifier = Modifier, dd.icon,
+                        tag = dd.tag, selected = dd.selected,
+                        onClick = {}
+                    )
                 }
             }
 
@@ -293,55 +223,6 @@ class AddBloodGlucoseFragment : Fragment() {
 
 
             }
-        }
-    }
-
-    @Composable
-    fun ItemTag(modifier: Modifier, icon: Int, tag: String, selected: Boolean) {
-       val columnModifier:Modifier
-       val colorPrefix:Color
-        if (selected) {
-            columnModifier = modifier
-                .padding(4.dp)
-                .height(88.dp)
-                .widthIn(min = 68.dp)
-                .background(color = LightPink)
-                .border(
-                    width = 1.dp, color = RosyPink,
-                    shape = RoundedCornerShape(4.dp)
-                )
-                .padding(12.dp)
-            colorPrefix =RosyPink
-
-        } else {
-            columnModifier = Modifier
-                .padding(4.dp)
-                .height(88.dp)
-                .widthIn(min = 68.dp)
-                .border(
-                    width = 1.dp, color = PaleGray,
-                    shape = RoundedCornerShape(4.dp)
-                )
-                .padding(12.dp)
-            colorPrefix = CharcoalGray
-
-        }
-        Column(
-            modifier = columnModifier,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Image(
-                painter = painterResource(id = icon),
-                contentDescription = "",
-                colorFilter = ColorFilter.tint(colorPrefix)
-            )
-            Text(
-                text = tag,
-                fontSize = 12.sp,
-                modifier = Modifier.padding(0.dp, 10.dp),
-                color = colorPrefix
-            )
         }
     }
 
