@@ -168,9 +168,9 @@ class MyHealthFragment : Fragment(R.layout.fragment_my_health) {
 
     }
 
-private fun boardItemClickListener() = fun(function: Int){
-    //TODO
-}
+    private fun boardItemClickListener() = fun(function: Int) {
+        //TODO
+    }
 
     private fun itemClickListener() = fun(function: Int) {
         Toast.makeText(context, "item clicked", Toast.LENGTH_SHORT).show()
@@ -185,7 +185,7 @@ private fun boardItemClickListener() = fun(function: Int){
                 findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToWaterIntakeFragment())
             }
             FUNCTION_BLOOD_PRESSURE -> {
-                //todo
+                findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToBloodPressureFragment())
             }
             else -> {
                 //todo nothing

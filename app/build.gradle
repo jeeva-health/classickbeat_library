@@ -200,7 +200,7 @@ dependencies {
 
     // TEST Dependencies
     testImplementation 'junit:junit:4.13.2'
-    testImplementation "androidx.paging:paging-common-ktx:3.1.0"
+    testImplementation "androidx.paging:paging-common-ktx:3.1.1"
 
     // Core library
     testImplementation 'androidx.test:core:1.4.0'
@@ -227,7 +227,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.4.0'
 
     //support design
-    implementation 'com.google.android.material:material:1.6.0-alpha03'
+    implementation 'com.google.android.material:material:1.7.0-alpha01'
 
     // The following Espresso dependency can be either "implementation"
     // or "androidTestImplementation", depending on whether you want the

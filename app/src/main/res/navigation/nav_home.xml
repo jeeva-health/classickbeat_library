@@ -159,6 +159,9 @@
         <action
             android:id="@+id/action_myHealthFragment_to_scanFragment"
             app:destination="@id/scanFragment" />
+        <action
+            android:id="@+id/action_myHealthFragment_to_bloodPressureFragment"
+            app:destination="@id/bloodPressureFragment" />
     </fragment>
 
     <fragment
@@ -182,6 +185,32 @@
             android:id="@+id/action_waterIntakeFragment_to_myHealthFragment"
             app:destination="@id/myHealthFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/bloodPressureFragment"
+        android:name="ai.heart.classickbeats.ui.logging.BloodPressureFragment"
+        android:label="fragment_blood_pressure"
+        >
+        <action
+            android:id="@+id/action_bloodPressureFragment_to_addBloodPressureFragment"
+            app:destination="@id/addBloodPressureFragment" />
+        <action
+            android:id="@+id/action_bloodPressureFragment_to_myHealthFragment"
+            app:destination="@id/myHealthFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addBloodPressureFragment"
+        android:name="ai.heart.classickbeats.ui.logging.AddBloodPressureFragment"
+        android:label="fragment_blood_pressure"
+        >
+        <action
+            android:id="@+id/action_bloodPressureFragment_self"
+            app:destination="@id/bloodPressureFragment" />
+        <action
+            android:id="@+id/action_bloodPressureFragment_self2"
+            app:destination="@id/bloodPressureFragment" />
+    </fragment>
+
 
     <fragment
         android:id="@+id/wellnessCategoryFragment"

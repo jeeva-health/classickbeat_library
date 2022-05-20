@@ -34,7 +34,9 @@ class LaunchViewModel @Inject constructor(
                     emit(Event(LaunchDestination.HOME_SCREEN))
                 }
             } else {
-                emit(Event(LaunchDestination.SIGNUP))
+//                emit(Event(LaunchDestination.SIGNUP))
+                emit(Event(LaunchDestination.HOME_SCREEN))
+
             }
         }
     }

@@ -37,6 +37,9 @@
         <entry key="..\:/project/classick-beats/app/src/main/res/drawable/bg_gradient_sky_pink.xml" value="0.1" />
         <entry key="..\:/project/classick-beats/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right.xml" value="0.145" />
         <entry key="..\:/project/classick-beats/app/src/main/res/drawable/your_height.xml" value="0.145" />
+        <entry key="..\:/project/classick-beats/app/src/main/res/layout/fragment_google_sign_up.xml" value="0.184375" />
+        <entry key="..\:/project/classick-beats/app/src/main/res/layout/fragment_logging_home.xml" value="0.13451086956521738" />
+        <entry key="..\:/project/classick-beats/app/src/main/res/layout/fragment_my_health.xml" value="0.184375" />
         <entry key="..\:/project/classick-beats/app/src/main/res/layout/fragment_save_weight.xml" value="0.184375" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.24074074074074073" />
         <entry key="app/src/main/res/drawable/bg_blue_gradient.xml" value="0.321025641025641" />
