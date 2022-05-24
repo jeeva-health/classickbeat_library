@@ -285,9 +285,5 @@
     <string name="back">Back</string>
     <string name="click">click</string>
     <string name="image">image</string>
-    <string name="give_us_a_few_moments_till_we_process_your_detailed_insights">Give us a few moments till we process your detailed insights</string>
-    <string name="continue_1">Continue</string>
-    <string name="hours_minutes">hours/minutes</string>
-    <string name="scan_successful">Scan Successful!</string>
 
 </resources>
