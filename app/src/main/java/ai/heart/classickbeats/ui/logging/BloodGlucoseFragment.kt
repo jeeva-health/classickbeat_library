@@ -224,8 +224,7 @@ class BloodGlucoseFragment : Fragment() {
                     .padding(0.dp, 4.dp)
                     .fillMaxWidth()
                     .height(150.dp)
-                    .background(color = RosyPink),
-                color = RosyPink
+                    ,
             ) {
                 var data: MutableList<LineChartModel> = ArrayList()
 

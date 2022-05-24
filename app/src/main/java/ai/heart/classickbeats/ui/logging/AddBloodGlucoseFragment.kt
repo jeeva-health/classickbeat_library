@@ -40,9 +40,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import kotlinx.coroutines.flow.MutableStateFlow
+import timber.log.Timber
 
 class AddBloodGlucoseFragment : Fragment() {
 
@@ -52,7 +53,7 @@ class AddBloodGlucoseFragment : Fragment() {
             R.id.nav_host_fragment
         )
     }
-   // var glucoseLevelReading = ""
+    // var glucoseLevelReading = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -92,7 +93,7 @@ class AddBloodGlucoseFragment : Fragment() {
             ToolBarWithBackAndAction(
                 modifier = Modifier,
                 title = "Blood Glucose Level",
-                backAction = {onBackPressed()},
+                backAction = { onBackPressed() },
             ) {}
 
             DateTimeItem(
@@ -214,25 +215,24 @@ class AddBloodGlucoseFragment : Fragment() {
     @Composable
     fun ScaleLayout(modifier: Modifier, maxValue: Int) {
 
-        var re:MutableLiveData<String> = MutableLiveData("00")
+        val re = MutableStateFlow(0)
 
-        var  glucoseLevelReading by remember {
+        var glucoseLevelReading by remember {
             mutableStateOf("00")
         }
-        var reading:String? = ""
 
+        var count = 0
 
         Row(
             modifier = Modifier
                 .padding(0.dp, 0.dp, 0.dp, 8.dp)
-                .fillMaxWidth()
-                ,
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
 
         ) {
 
             Text(
-                text = "" + re.value,
+                text = "" + re.collectAsState().value,
                 modifier = Modifier
                     .padding(0.dp, 8.dp, 8.dp, 0.dp),
                 fontSize = 24.sp,
@@ -246,11 +246,10 @@ class AddBloodGlucoseFragment : Fragment() {
 
         AndroidView(modifier = modifier.fillMaxWidth(),
             factory = { context ->
-                CustomSliderScale(context, null, maxValue)
+                CustomSliderScale(context, null, maxValue,re)
             },
             update = {
-                re.value = it.reading.toString()
-            })
+                })
 
     }
 

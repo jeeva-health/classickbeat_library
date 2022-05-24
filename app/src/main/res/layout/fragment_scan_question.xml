@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:gravity="center"
-            android:text="@string/scan_successful"
+            android:text="scan_successful"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="32dp"
             android:gravity="center"
-            android:text="@string/give_us_a_few_moments_till_we_process_your_detailed_insights"
+            android:text="give_us_a_few_moments_till_we_process_your_detailed_insights"
             android:textColor="@color/light_blue_gray"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -160,7 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="@string/hours_minutes"
+                android:text="hours_minutes"
                 android:textColor="#d4d4d4"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/sleep_time_text"
@@ -375,7 +375,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/continue_1"
+                android:text="continue_1"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />

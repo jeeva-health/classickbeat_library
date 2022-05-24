@@ -23,7 +23,7 @@ class CustomLineGraph @JvmOverloads constructor(
         val chart: LineChart = view.findViewById(R.id.line_chart_custom)
 
         var entries:MutableList<Entry> = ArrayList<Entry>()
-
+        var j = 0
         for (i in dataPoints) {
 
             if (i.float >= 150) {
@@ -36,18 +36,32 @@ class CustomLineGraph @JvmOverloads constructor(
                 //low blood glucose level
 
             }
-            entries.add(Entry(i.date.day.toFloat(),i.float))
+            entries.add(Entry(j++.toFloat(),i.float))
         }
 
         val dataset = LineDataSet(entries, "")
         dataset.setDrawCircles(false)
+        dataset.mode = LineDataSet.Mode.CUBIC_BEZIER //set it to curve
         dataset.color = R.color.ice_blue
         dataset.apply {
             lineWidth = 3f
+
         }
 
         val lineData = LineData(dataset)
-        chart.data = lineData
+        chart.apply {
+            data = lineData
+            axisLeft.setDrawLabels(false)
+            axisLeft.setDrawAxisLine(false)
+            axisLeft.setDrawGridLines(false)
+            axisRight.setDrawLabels(false)
+            axisRight.setDrawAxisLine(false)
+            axisRight.setDrawGridLines(false)
+            xAxis.setDrawLabels(false)
+            xAxis.setDrawAxisLine(false)
+            xAxis.setDrawGridLines(false)
+            legend.isEnabled = false
+        }
         chart.invalidate() // refresh
 
 

@@ -10,14 +10,19 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import timber.log.Timber
 
 class CustomSliderScale @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, maxValue:Int
+    context: Context, attrs: AttributeSet? = null, maxValue:Int,re:MutableStateFlow<Int>
 ) : FrameLayout(context, attrs) {
 
-    var reading:Int = 0
+    var reading = MutableStateFlow(0)
 
     init {
         val view = inflate(context, R.layout.layout_slider, this)
@@ -35,7 +40,8 @@ class CustomSliderScale @JvmOverloads constructor(
                 super.onScrolled(recyclerView, dx, dy)
                 val firstItem: Int = manager.findFirstVisibleItemPosition()
                 val lastItem: Int = manager.findLastCompletelyVisibleItemPosition() + 1
-                reading = (firstItem + (lastItem - firstItem) /2)
+                re.value = (firstItem + (lastItem - firstItem) /2)
+
             }
         })
     }
