@@ -162,6 +162,9 @@
         <action
             android:id="@+id/action_myHealthFragment_to_bloodPressureFragment"
             app:destination="@id/bloodPressureFragment" />
+        <action
+            android:id="@+id/action_myHealthFragment_to_bloodGlucoseFragment"
+            app:destination="@id/bloodGlucoseFragment" />
     </fragment>
 
     <fragment
@@ -197,6 +200,7 @@
         <action
             android:id="@+id/action_bloodPressureFragment_to_myHealthFragment"
             app:destination="@id/myHealthFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/addBloodPressureFragment"
@@ -206,9 +210,32 @@
         <action
             android:id="@+id/action_bloodPressureFragment_self"
             app:destination="@id/bloodPressureFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/bloodGlucoseFragment"
+        android:name="ai.heart.classickbeats.ui.logging.BloodGlucoseFragment"
+        android:label="fragment_blood_glucose"
+        >
+
         <action
-            android:id="@+id/action_bloodPressureFragment_self2"
-            app:destination="@id/bloodPressureFragment" />
+            android:id="@+id/action_bloodGlucoseFragment_to_myHealthFragment"
+            app:destination="@id/myHealthFragment" />
+        <action
+            android:id="@+id/action_bloodGlucoseFragment_to_addBloodGlucoseFragment"
+            app:destination="@id/addBloodGlucoseFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addBloodGlucoseFragment"
+        android:name="ai.heart.classickbeats.ui.logging.AddBloodGlucoseFragment"
+        android:label="fragment_add_blood_glucose"
+        >
+
+        <action
+            android:id="@+id/action_addBloodGlucoseFragment_to_bloodGlucoseFragment"
+            app:destination="@id/bloodGlucoseFragment" />
     </fragment>
 
 

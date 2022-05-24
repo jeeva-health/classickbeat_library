@@ -169,14 +169,30 @@ class MyHealthFragment : Fragment(R.layout.fragment_my_health) {
     }
 
     private fun boardItemClickListener() = fun(function: Int) {
-        //TODO
-    }
-
-    private fun itemClickListener() = fun(function: Int) {
-        Toast.makeText(context, "item clicked", Toast.LENGTH_SHORT).show()
         when (function) {
             FUNCTION_HEART -> {
                 findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToScanFragment())
+            }
+            FUNCTION_WEIGHT -> {
+                findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToSaveWeightFragment())
+            }
+            FUNCTION_INTAKE -> {
+                findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToWaterIntakeFragment())
+            }
+            FUNCTION_BLOOD_PRESSURE -> {
+                findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToBloodPressureFragment())
+            }
+            else -> {
+                //todo nothing
+                Toast.makeText(context, "elsed", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun itemClickListener() = fun(function: Int) {
+        when (function) {
+            FUNCTION_HEART -> {
+                findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToBloodGlucoseFragment())
             }
             FUNCTION_WEIGHT -> {
                 findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToSaveWeightFragment())

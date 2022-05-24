@@ -2,42 +2,36 @@ package ai.heart.classickbeats.ui.logging
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.ui.common.ui.AddIcon
+import ai.heart.classickbeats.ui.common.ui.CustomSliderScale
 import ai.heart.classickbeats.ui.common.ui.HistoryLayout
 import ai.heart.classickbeats.ui.common.ui.ToolBarWithBackAndAction
 import ai.heart.classickbeats.ui.logging.model.DateTimeValueModel
+import ai.heart.classickbeats.ui.ppg.fragment.my_health.MyHealthFragmentDirections
 import ai.heart.classickbeats.ui.theme.*
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.View
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -81,21 +75,23 @@ class BloodPressureFragment : Fragment() {
             ) {
                 ToolBarWithBackAndAction(
                     modifier = Modifier,
-                    title = "Blood Glucose Level",
-                    backAction = ::onNavigateBack,
+                    title = "Blood Pressure",
+                    backAction = {onNavigateBack()},
                 ) {
-                    AddIcon(onAction = { onNavigateBack() }, actionTitle = "Add")
+                    AddIcon(onAction = { onNavigateAddPressure() }, actionTitle = "Add")
                 }
                 GraphLayout(modifier = Modifier)
-                var d1 = DateTimeValueModel("12 March", "12:00 PM", "120/190")
-                var d2 = DateTimeValueModel("12 March", "12:00 PM", "120/190")
-                var d3 = DateTimeValueModel("12 March", "12:00 PM", "120/190")
-                var dd: List<DateTimeValueModel> = arrayListOf(d1, d2, d3)
+                val d1 = DateTimeValueModel("12 March", "12:00 PM", "120/190")
+                val d2 = DateTimeValueModel("12 March", "12:00 PM", "120/190")
+                val d3 = DateTimeValueModel("12 March", "12:00 PM", "120/190")
+                val dd: List<DateTimeValueModel> = arrayListOf(d1, d2, d3)
 
-                HistoryLayout(modifier = Modifier,
+                HistoryLayout(
+                    modifier = Modifier,
                     title = "History",
                     unit = "",
-                    dtvList = dd)
+                    dtvList = dd
+                )
             }
         }
     }
@@ -134,12 +130,10 @@ class BloodPressureFragment : Fragment() {
             )
             Surface(
                 modifier = Modifier
-                    .padding(0.dp,16.dp)
+                    .padding(0.dp, 16.dp)
                     .fillMaxWidth()
                     .height(150.dp)
-                    .background(color = RosyPink),
-                color = RosyPink
-            ) {}
+            ){}
         }
     }
 
@@ -177,12 +171,17 @@ class BloodPressureFragment : Fragment() {
                 )
             }
         }
-
-
     }
+
+
 
     //..............................Functions......................................//
     private fun onNavigateBack() {
         navController.navigateUp()
     }
+
+    private fun onNavigateAddPressure(){
+        navController.navigate(BloodPressureFragmentDirections.actionBloodPressureFragmentToAddBloodPressureFragment())
+    }
+
 }

@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.ui.common.ui
 
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.ui.theme.CharcoalGray
 import ai.heart.classickbeats.ui.theme.RosyPink
 import ai.heart.classickbeats.ui.theme.White
 import androidx.compose.foundation.Image
@@ -35,10 +36,10 @@ fun ToolBarWithBackAndAction(
 ) {
     Row(
         modifier = modifier
+            .padding(0.dp,50.dp,0.dp,0.dp)
             .height(56.dp)
             .fillMaxWidth()
             .background(color = White),
-
         verticalAlignment = Alignment.CenterVertically,
 
         ) {
@@ -62,6 +63,7 @@ fun ToolBarWithBackAndAction(
             text = title,
             fontSize = 20.sp,
             fontFamily = FontFamily.SansSerif,
+            color = CharcoalGray,
         )
 
         Spacer(

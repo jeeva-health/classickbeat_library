@@ -6,7 +6,7 @@ class VitalsModel {
     var name: String? = null
     var reading: String? = null
     var unit: String? = null
-    lateinit var timeStamp: String
+    var timeStamp: String
     var action: String? = null
     var function = -1
 
@@ -37,8 +37,6 @@ class VitalsModel {
         this.timeStamp = timeStamp
         this.function = function
     }
-
-    constructor()
     constructor(
         type: Int,
         icon: Int,

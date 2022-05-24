@@ -34,6 +34,7 @@
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_recent_2.xml" value="0.33" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_my_health_upcoming.xml" value="0.33" />
         <entry key="..\:/Intealth/classick-beats/app/src/main/res/layout/itemview_water_in_take.xml" value="0.5" />
+        <entry key="..\:/project/classick-beats/app/src/main/res/drawable-hdpi/dot.xml" value="0.1" />
         <entry key="..\:/project/classick-beats/app/src/main/res/drawable/bg_gradient_sky_pink.xml" value="0.1" />
         <entry key="..\:/project/classick-beats/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right.xml" value="0.145" />
         <entry key="..\:/project/classick-beats/app/src/main/res/drawable/your_height.xml" value="0.145" />
@@ -41,6 +42,10 @@
         <entry key="..\:/project/classick-beats/app/src/main/res/layout/fragment_logging_home.xml" value="0.13451086956521738" />
         <entry key="..\:/project/classick-beats/app/src/main/res/layout/fragment_my_health.xml" value="0.184375" />
         <entry key="..\:/project/classick-beats/app/src/main/res/layout/fragment_save_weight.xml" value="0.184375" />
+        <entry key="..\:/project/classick-beats/app/src/main/res/layout/fragment_scan.xml" value="0.1" />
+        <entry key="..\:/project/classick-beats/app/src/main/res/layout/item_sscale_slider.xml" value="0.13451086956521738" />
+        <entry key="..\:/project/classick-beats/app/src/main/res/layout/layout_line_graph.xml" value="0.12771739130434784" />
+        <entry key="..\:/project/classick-beats/app/src/main/res/layout/layout_slider.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.24074074074074073" />
         <entry key="app/src/main/res/drawable/bg_blue_gradient.xml" value="0.321025641025641" />
         <entry key="app/src/main/res/drawable/bg_circle.xml" value="0.1485" />

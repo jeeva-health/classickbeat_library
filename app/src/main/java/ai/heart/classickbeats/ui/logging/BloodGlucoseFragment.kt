@@ -1,10 +1,9 @@
 package ai.heart.classickbeats.ui.logging
 
 import ai.heart.classickbeats.R
-import ai.heart.classickbeats.ui.common.ui.AddIcon
-import ai.heart.classickbeats.ui.common.ui.HistoryLayout
-import ai.heart.classickbeats.ui.common.ui.ToolBarWithBackAndAction
+import ai.heart.classickbeats.ui.common.ui.*
 import ai.heart.classickbeats.ui.logging.model.DateTimeValueModel
+import ai.heart.classickbeats.ui.logging.model.GlucoseTagModel
 import ai.heart.classickbeats.ui.theme.*
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,11 +14,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,12 +31,17 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import java.util.*
 
 class BloodGlucoseFragment : Fragment() {
 
@@ -63,10 +69,38 @@ class BloodGlucoseFragment : Fragment() {
     }
 
 
+    @OptIn(ExperimentalMaterialApi::class)
     @Preview(showBackground = true)
     @Composable
     fun MainCompose() {
         ClassicBeatsTheme {
+
+            BottomSheetContainer(modifier = Modifier)
+        }
+    }
+
+    @OptIn(ExperimentalMaterialApi::class)
+    private var bottomSheetScaffoldState: BottomSheetScaffoldState? = null
+
+    private var coroutineScope: CoroutineScope? = null
+
+    @ExperimentalMaterialApi
+    @Composable
+    fun BottomSheetContainer(modifier: Modifier) {
+
+        bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+            bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
+        )
+        coroutineScope = rememberCoroutineScope()
+
+        BottomSheetScaffold(
+            scaffoldState = bottomSheetScaffoldState!!,
+            sheetContent = {
+                Dialog(modifier = modifier)
+            },
+            sheetPeekHeight = 0.dp
+        ) {
+
             Column(
                 modifier = Modifier
                     .background(color = colorResource(id = R.color.ice_blue))
@@ -79,7 +113,7 @@ class BloodGlucoseFragment : Fragment() {
                     title = "Blood Glucose Level",
                     backAction = ::onNavigateBack,
                 ) {
-                    AddIcon(onAction = { onNavigateBack() }, actionTitle = "Add")
+                    AddIcon(onAction = { onNavigateAddGlucose() }, actionTitle = "Add")
                 }
 
 
@@ -93,7 +127,7 @@ class BloodGlucoseFragment : Fragment() {
         }
     }
 
-
+    @OptIn(ExperimentalMaterialApi::class)
     @Composable
     fun GraphLayout(modifier: Modifier) {
         Column(
@@ -141,7 +175,15 @@ class BloodGlucoseFragment : Fragment() {
                         )
                         .align(Alignment.CenterVertically)
                         .padding(8.dp, 4.dp)
-                        .clickable {/*TODO*/ }
+                        .clickable {
+                            coroutineScope!!.launch {
+                                if (bottomSheetScaffoldState!!.bottomSheetState.isCollapsed) {
+                                    bottomSheetScaffoldState!!.bottomSheetState.expand()
+                                } else {
+                                    bottomSheetScaffoldState!!.bottomSheetState.collapse()
+                                }
+                            }
+                        }
                 ) {
                     Text(
                         // modifier = Modifier.padding(16.dp),
@@ -184,8 +226,26 @@ class BloodGlucoseFragment : Fragment() {
                     .height(150.dp)
                     .background(color = RosyPink),
                 color = RosyPink
-            ) {}
+            ) {
+                var data: MutableList<LineChartModel> = ArrayList()
+
+                data.add(LineChartModel(150f, Date(2022, 2, 1)))
+                data.add(LineChartModel(126f, Date(2022, 2, 3)))
+                data.add(LineChartModel(100f, Date(2022, 2, 6)))
+                data.add(LineChartModel(160f, Date(2022, 2, 4)))
+                data.add(LineChartModel(100f, Date(2022, 2, 6)))
+                LineChart(modifier = Modifier, data = data)
+            }
         }
+    }
+
+    @Composable
+    fun LineChart(modifier: Modifier, data: List<LineChartModel>) {
+        AndroidView(modifier = modifier.fillMaxWidth(),
+            factory = { context ->
+                CustomLineGraph(context, null, data)
+            },
+            update = {})
     }
 
     @Composable
@@ -252,55 +312,57 @@ class BloodGlucoseFragment : Fragment() {
 
     }
 
-//    @Composable
-//    fun HistoryLayout(modifier: Modifier, dtvList: List<DateTimeValueModel>) {
-//        Column(
-//            modifier = modifier
-//                .padding(16.dp, 4.dp)
-//                .fillMaxWidth()
-//                .background(color = White, shape = RoundedCornerShape(8.dp))
-//                .padding(16.dp, 4.dp)
-//        ) {
-//            Text(
-//                text = "History",
-//                fontSize = 20.sp,
-//                fontWeight = FontWeight.Bold,
-//                color = CharcoalGray,
-//                modifier = Modifier.padding(0.dp, 16.dp)
-//            )
-//            Row(
-//                modifier = Modifier
-//                    .background(color = PaleGray, shape = RoundedCornerShape(4.dp))
-//                    .padding(12.dp, 9.dp)
-//                    .align(alignment = Alignment.CenterHorizontally)
-//            ) {
-//                Text(
-//                    text = "Date & Time",
-//                    color = WarmGray,
-//                    fontWeight = FontWeight.Bold,
-//                    fontSize = 14.sp
-//                )
-//                Spacer(modifier = Modifier.weight(1f))
-//                Text(
-//                    text = "mmHg",
-//                    color = WarmGray,
-//                    fontWeight = FontWeight.Bold,
-//                    fontSize = 14.sp
-//                )
-//
-//            }
-//            LazyColumn {
-//                items(dtvList) { dtv: DateTimeValueModel ->
-//                    ItemHistory(modifier = Modifier, dtv = dtv)
-//                    Divider(color = PaleGray, thickness = 1.dp)
-//                }
-//            }
-//        }
-//    }
+
+    @Composable
+    fun Dialog(modifier: Modifier) {
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .background(color = IceBlue)
+                .padding(32.dp)
+        ) {
+            Column(
+                modifier = Modifier,
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                Text(
+                    modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 16.dp),
+                    text = "Filter by Tag",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Start
+                )
+
+                val d1 = GlucoseTagModel(R.drawable.juice, "Fasting", true)
+                val d2 = GlucoseTagModel(R.drawable.juice, "Post Meal", false)
+                val d3 = GlucoseTagModel(R.drawable.juice, "Bedtime", true)
+                val d4 = GlucoseTagModel(R.drawable.juice, "Random", false)
+                val d5 = GlucoseTagModel(R.drawable.juice, "Random", false)
+                val d6 = GlucoseTagModel(R.drawable.juice, "Random", false)
+                val ddList: List<GlucoseTagModel> = arrayListOf(d1, d2, d3, d4, d5, d6)
 
 
+                LazyRow(modifier = Modifier.fillMaxWidth()) {
+                    items(ddList) { dd: GlucoseTagModel ->
+                        ItemTag(modifier = Modifier, dd.icon,
+                            tag = dd.tag, selected = dd.selected,
+                            onClick = {}
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    //........................................Function...................................//
     private fun onNavigateBack() {
-        navController.navigateUp()
+        navController.navigate(BloodGlucoseFragmentDirections.actionBloodGlucoseFragmentToMyHealthFragment())
+    }
+
+    private fun onNavigateAddGlucose() {
+        navController.navigate(BloodGlucoseFragmentDirections.actionBloodGlucoseFragmentToAddBloodGlucoseFragment())
     }
 
 

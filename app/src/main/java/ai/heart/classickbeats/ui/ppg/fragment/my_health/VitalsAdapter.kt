@@ -130,8 +130,6 @@ class VitalsAdapter constructor(
                 itemClickListener.invoke(model.function)
             }
         }
-
-
     }
 
 

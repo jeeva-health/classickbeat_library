@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.ui.logging
 
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.ui.common.ui.CustomSliderScale
 import ai.heart.classickbeats.ui.common.ui.DateTimeItem
 import ai.heart.classickbeats.ui.common.ui.ItemTag
 import ai.heart.classickbeats.ui.common.ui.ToolBarWithBackAndAction
@@ -20,9 +21,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
@@ -38,9 +38,21 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 
 class AddBloodGlucoseFragment : Fragment() {
+
+    private val navController: NavController by lazy {
+        Navigation.findNavController(
+            requireActivity(),
+            R.id.nav_host_fragment
+        )
+    }
+   // var glucoseLevelReading = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,6 +76,7 @@ class AddBloodGlucoseFragment : Fragment() {
     @Composable
     @Preview(showBackground = true)
     fun MainCompose() {
+
         val brush = Brush.verticalGradient(
             listOf(Color(0xFFE1F2F6), Color(0xFFD3062A)),
         )
@@ -79,7 +92,7 @@ class AddBloodGlucoseFragment : Fragment() {
             ToolBarWithBackAndAction(
                 modifier = Modifier,
                 title = "Blood Glucose Level",
-                backAction = {},
+                backAction = {onBackPressed()},
             ) {}
 
             DateTimeItem(
@@ -106,7 +119,7 @@ class AddBloodGlucoseFragment : Fragment() {
             )
 
             Button(
-                onClick = { onBackPressed() },
+                onClick = { /*todo*/ },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
@@ -135,38 +148,12 @@ class AddBloodGlucoseFragment : Fragment() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Row(
-                modifier = Modifier
-                    .padding(0.dp, 0.dp, 0.dp, 32.dp)
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .align(alignment = Alignment.CenterHorizontally),
-                horizontalArrangement = Arrangement.Center
-
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(0.dp, 32.dp, 8.dp, 0.dp),
-                    text = "160",
-                    fontSize = 24.sp,
-                )
-                Text(
-                    text = "mg/dl",
-                    modifier = Modifier
-                        .align(alignment = Alignment.Bottom)
-                )
-
-            }
-
-            Surface(
+            ScaleLayout(
                 modifier = Modifier
                     .padding(0.dp, 16.dp)
-                    .fillMaxWidth()
-                    .height(100.dp),
-                color = RosyPink
-            ) {
-                /*TODO*/
-            }
+                    .fillMaxWidth(),
+                maxValue = 300
+            )
 
             Text(
                 text = "Add a Tag",
@@ -220,16 +207,57 @@ class AddBloodGlucoseFragment : Fragment() {
                         .padding(2.dp, 0.dp)
                         .align(alignment = Alignment.CenterVertically)
                 )
-
-
             }
         }
+    }
+
+    @Composable
+    fun ScaleLayout(modifier: Modifier, maxValue: Int) {
+
+        var re:MutableLiveData<String> = MutableLiveData("00")
+
+        var  glucoseLevelReading by remember {
+            mutableStateOf("00")
+        }
+        var reading:String? = ""
+
+
+        Row(
+            modifier = Modifier
+                .padding(0.dp, 0.dp, 0.dp, 8.dp)
+                .fillMaxWidth()
+                ,
+            horizontalArrangement = Arrangement.Center
+
+        ) {
+
+            Text(
+                text = "" + re.value,
+                modifier = Modifier
+                    .padding(0.dp, 8.dp, 8.dp, 0.dp),
+                fontSize = 24.sp,
+            )
+            Text(
+                text = "mg/dl",
+                modifier = Modifier
+                    .align(alignment = Alignment.Bottom)
+            )
+        }
+
+        AndroidView(modifier = modifier.fillMaxWidth(),
+            factory = { context ->
+                CustomSliderScale(context, null, maxValue)
+            },
+            update = {
+                re.value = it.reading.toString()
+            })
+
     }
 
 
     //..........................FUNCTIONS...........................//
     private fun onBackPressed() {
-        TODO("Not yet implemented")
+        navController.navigate(AddBloodGlucoseFragmentDirections.actionAddBloodGlucoseFragmentToBloodGlucoseFragment())
     }
 
 

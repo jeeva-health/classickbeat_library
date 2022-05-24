@@ -24,16 +24,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 
 
 @Preview
 @Composable
-fun CommonComponents(){
+fun CommonComponents() {
     DateTimeItem(
         modifier = Modifier,
         icon = R.drawable.date,
         unit = "Date",
         value = "Today"
+    )
+
+    ItemTag(modifier = Modifier, 0,
+        tag = "tag", selected = true,
+        onClick = {}
     )
 }
 
@@ -214,3 +220,4 @@ fun ItemTag(modifier: Modifier, icon: Int, tag: String, selected: Boolean, onCli
         )
     }
 }
+

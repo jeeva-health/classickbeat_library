@@ -36,8 +36,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 
 class AddBloodPressureFragment : Fragment() {
+
+    private val navController: NavController by lazy {
+        Navigation.findNavController(
+            requireActivity(),
+            R.id.nav_host_fragment
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,7 +84,7 @@ class AddBloodPressureFragment : Fragment() {
             ToolBarWithBackAndAction(
                 modifier = Modifier,
                 title = "Blood Glucose Level",
-                backAction = {},
+                backAction = {onBackPressed()},
             ) {}
             DateTimeItem(
                 modifier = Modifier,
@@ -116,39 +125,6 @@ class AddBloodPressureFragment : Fragment() {
                     color = White,
                 )
             }
-        }
-    }
-
-    @Composable
-    fun ToolBarLayout(modifier: Modifier) {
-        Row(
-            modifier = modifier
-                .height(56.dp)
-                .fillMaxWidth()
-                .background(Color.White),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Column(
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .width(24.dp)
-                    .height(24.dp)
-                    .clickable { onBackPressed() },
-                content = {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_baseline_arrow_back),
-                        contentDescription = null
-                    )
-                }
-            )
-
-            Text(
-                // modifier = Modifier.padding(16.dp),
-                text = "Blood Pressure",
-                fontSize = 20.sp,
-                fontFamily = FontFamily.SansSerif,
-            )
         }
     }
 
@@ -244,7 +220,7 @@ class AddBloodPressureFragment : Fragment() {
 
     //..........................FUNCTIONS...........................//
     private fun onBackPressed() {
-        TODO("Not yet implemented")
+        navController.navigate(AddBloodPressureFragmentDirections.actionBloodPressureFragmentSelf())
     }
 
 
