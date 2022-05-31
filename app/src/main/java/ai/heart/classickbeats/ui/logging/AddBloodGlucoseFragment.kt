@@ -21,8 +21,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
@@ -40,11 +44,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.paging.ExperimentalPagingApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import timber.log.Timber
 
+@OptIn(ExperimentalPagingApi::class)
 class AddBloodGlucoseFragment : Fragment() {
 
     private val navController: NavController by lazy {
@@ -53,7 +59,9 @@ class AddBloodGlucoseFragment : Fragment() {
             R.id.nav_host_fragment
         )
     }
-    // var glucoseLevelReading = ""
+
+
+    private val loggingViewModel:LoggingViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,7 +83,7 @@ class AddBloodGlucoseFragment : Fragment() {
 
     @SuppressLint("ResourceType")
     @Composable
-    @Preview(showBackground = true)
+ @Preview()
     fun MainCompose() {
 
         val brush = Brush.verticalGradient(
@@ -100,13 +108,15 @@ class AddBloodGlucoseFragment : Fragment() {
                 modifier = Modifier,
                 icon = R.drawable.date,
                 unit = "Date",
-                value = "Today"
+                value = "Today",
+                onClick = {}
             )
             DateTimeItem(
                 modifier = Modifier,
                 icon = R.drawable.time,
                 unit = "Time",
-                value = "2:30 PM"
+                value = "2:30 PM",
+                onClick = {}
             )
 
             ReadingLayout(modifier = Modifier)
@@ -215,16 +225,12 @@ class AddBloodGlucoseFragment : Fragment() {
     @Composable
     fun ScaleLayout(modifier: Modifier, maxValue: Int) {
 
-        val re = MutableStateFlow(0)
-
-        var glucoseLevelReading by remember {
-            mutableStateOf("00")
+        val re = remember {
+            MutableStateFlow(0)
         }
 
-        var count = 0
-
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .padding(0.dp, 0.dp, 0.dp, 8.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
@@ -244,13 +250,18 @@ class AddBloodGlucoseFragment : Fragment() {
             )
         }
 
-        AndroidView(modifier = modifier.fillMaxWidth(),
-            factory = { context ->
-                CustomSliderScale(context, null, maxValue,re)
-            },
-            update = {
+        Surface(
+            modifier = Modifier,
+            color = RosyPink
+        ) {
+            AndroidView(modifier = Modifier.fillMaxWidth(),
+                factory = { context ->
+                    CustomSliderScale(context, null, maxValue, re)
+                },
+                update = {
+                    //run only for first time
                 })
-
+        }
     }
 
 
@@ -261,4 +272,6 @@ class AddBloodGlucoseFragment : Fragment() {
 
 
 }
+
+
 

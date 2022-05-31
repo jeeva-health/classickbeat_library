@@ -62,9 +62,11 @@ class BloodGlucoseFragment : Fragment() {
             // Dispose of the Composition when the view's LifecycleOwner
             // is destroyed
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+
             setContent {
                 MainCompose()
             }
+
         }
     }
 
@@ -203,8 +205,6 @@ class BloodGlucoseFragment : Fragment() {
                         colorFilter = ColorFilter.tint(DarkIndigo),
                         alignment = Alignment.Center
                     )
-
-
                 }
             }
 
@@ -223,10 +223,9 @@ class BloodGlucoseFragment : Fragment() {
                 modifier = Modifier
                     .padding(0.dp, 4.dp)
                     .fillMaxWidth()
-                    .height(150.dp)
-                    ,
+                    .height(150.dp),
             ) {
-                var data: MutableList<LineChartModel> = ArrayList()
+                val data: MutableList<LineChartModel> = ArrayList()
 
                 data.add(LineChartModel(150f, Date(2022, 2, 1)))
                 data.add(LineChartModel(126f, Date(2022, 2, 3)))
@@ -240,11 +239,13 @@ class BloodGlucoseFragment : Fragment() {
 
     @Composable
     fun LineChart(modifier: Modifier, data: List<LineChartModel>) {
-        AndroidView(modifier = modifier.fillMaxWidth(),
-            factory = { context ->
-                CustomLineGraph(context, null, data)
-            },
-            update = {})
+        ClassicBeatsTheme() {
+            AndroidView(modifier = modifier.fillMaxWidth().height(500.dp),
+                factory = { context ->
+                    CustomLineGraph(context, null, data)
+                },
+                update = {})
+        }
     }
 
     @Composable

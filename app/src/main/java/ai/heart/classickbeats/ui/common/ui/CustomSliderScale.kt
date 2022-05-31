@@ -40,6 +40,7 @@ class CustomSliderScale @JvmOverloads constructor(
                 super.onScrolled(recyclerView, dx, dy)
                 val firstItem: Int = manager.findFirstVisibleItemPosition()
                 val lastItem: Int = manager.findLastCompletelyVisibleItemPosition() + 1
+
                 re.value = (firstItem + (lastItem - firstItem) /2)
 
             }

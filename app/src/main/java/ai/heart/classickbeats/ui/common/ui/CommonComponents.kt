@@ -30,12 +30,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 @Preview
 @Composable
 fun CommonComponents() {
-    DateTimeItem(
-        modifier = Modifier,
-        icon = R.drawable.date,
-        unit = "Date",
-        value = "Today"
-    )
+
 
     ItemTag(modifier = Modifier, 0,
         tag = "tag", selected = true,
@@ -124,7 +119,7 @@ fun ItemHistory(modifier: Modifier, dtv: DateTimeValueModel) {
 }
 
 @Composable
-fun DateTimeItem(modifier: Modifier, icon: Int, unit: String, value: String) {
+fun DateTimeItem(modifier: Modifier, icon: Int, unit: String, value: String,onClick: () -> Unit) {
     Row(
         modifier = modifier
             .padding(16.dp, 4.dp)
@@ -133,7 +128,8 @@ fun DateTimeItem(modifier: Modifier, icon: Int, unit: String, value: String) {
                 color = colorResource(id = R.color.white),
                 shape = RoundedCornerShape(8.dp)
             )
-            .padding(16.dp),
+            .padding(16.dp)
+            .clickable {onClick.invoke()},
     ) {
         Image(
             modifier = Modifier

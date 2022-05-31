@@ -1,12 +1,8 @@
 package ai.heart.classickbeats.ui.logging
 
 import ai.heart.classickbeats.R
-import ai.heart.classickbeats.ui.common.ui.AddIcon
-import ai.heart.classickbeats.ui.common.ui.CustomSliderScale
-import ai.heart.classickbeats.ui.common.ui.HistoryLayout
-import ai.heart.classickbeats.ui.common.ui.ToolBarWithBackAndAction
+import ai.heart.classickbeats.ui.common.ui.*
 import ai.heart.classickbeats.ui.logging.model.DateTimeValueModel
-import ai.heart.classickbeats.ui.ppg.fragment.my_health.MyHealthFragmentDirections
 import ai.heart.classickbeats.ui.theme.*
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -35,6 +31,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import java.util.*
 
 class BloodPressureFragment : Fragment() {
 
@@ -76,7 +73,7 @@ class BloodPressureFragment : Fragment() {
                 ToolBarWithBackAndAction(
                     modifier = Modifier,
                     title = "Blood Pressure",
-                    backAction = {onNavigateBack()},
+                    backAction = { onNavigateBack() },
                 ) {
                     AddIcon(onAction = { onNavigateAddPressure() }, actionTitle = "Add")
                 }
@@ -132,8 +129,27 @@ class BloodPressureFragment : Fragment() {
                 modifier = Modifier
                     .padding(0.dp, 16.dp)
                     .fillMaxWidth()
-                    .height(150.dp)
-            ){}
+                    .height(250.dp)
+            ) {
+
+                val chatData: MutableList<CandleStickChartModel> = ArrayList()
+
+                chatData.add(CandleStickChartModel(20f, 10f, 12f, 15f, Date(2022, 2, 1)))
+                chatData.add(CandleStickChartModel(20f, 10f, 14f, 15f, Date(2022, 2, 2)))
+                chatData.add(CandleStickChartModel(20f, 10f, 15f, 15f, Date(2022, 2, 3)))
+                chatData.add(CandleStickChartModel(20f, 10f, 18f, 15f, Date(2022, 2, 4)))
+                chatData.add(CandleStickChartModel(18f, 11f, 18f, 15f, Date(2022, 2, 4)))
+                chatData.add(CandleStickChartModel(25f, 10f, 18f, 15f, Date(2022, 2, 4)))
+                chatData.add(CandleStickChartModel(12f, 10f, 10f, 15f, Date(2022, 2, 5)))
+
+                AndroidView(modifier = modifier
+                    .fillMaxWidth()
+                    .height(500.dp),
+                    factory = { context ->
+                        CustomCandleStickChat(context, null, chatData)
+                    },
+                    update = {/**/ })
+            }
         }
     }
 
@@ -174,13 +190,12 @@ class BloodPressureFragment : Fragment() {
     }
 
 
-
     //..............................Functions......................................//
     private fun onNavigateBack() {
         navController.navigateUp()
     }
 
-    private fun onNavigateAddPressure(){
+    private fun onNavigateAddPressure() {
         navController.navigate(BloodPressureFragmentDirections.actionBloodPressureFragmentToAddBloodPressureFragment())
     }
 

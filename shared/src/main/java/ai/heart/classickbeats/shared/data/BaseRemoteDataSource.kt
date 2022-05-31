@@ -41,14 +41,18 @@ open class BaseRemoteDataSource(
     private suspend fun <T : Any> apiResponse(
         call: suspend () -> Response<T>
     ): Result<T> {
+
         val response = call.invoke()
+
         return if (response.isSuccessful)
             Result.Success(response.body()!!)
         else {
-            if (response.code() == HTTP_UNAUTHORIZED) {
+            if (response.code() == HTTP_UNAUTHORIZED) { //when we get error code from response
                 sessionManager.saveRefreshTokenStatus(false)
             }
+
             val errorJson = response.errorBody()?.string()
+
             val errorMessage = try {
                 val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
                 val error = ErrorJsonAdapter(moshi).fromJson(errorJson)
