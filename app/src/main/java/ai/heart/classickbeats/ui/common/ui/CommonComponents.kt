@@ -24,7 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 
 
 @Preview
@@ -119,7 +118,7 @@ fun ItemHistory(modifier: Modifier, dtv: DateTimeValueModel) {
 }
 
 @Composable
-fun DateTimeItem(modifier: Modifier, icon: Int, unit: String, value: String,onClick: () -> Unit) {
+fun DateTimeItem(modifier: Modifier, icon: Int, unit: String, value: String, onClick: () -> Unit) {
     Row(
         modifier = modifier
             .padding(16.dp, 4.dp)
@@ -129,7 +128,7 @@ fun DateTimeItem(modifier: Modifier, icon: Int, unit: String, value: String,onCl
                 shape = RoundedCornerShape(8.dp)
             )
             .padding(16.dp)
-            .clickable {onClick.invoke()},
+            .clickable { onClick.invoke() },
     ) {
         Image(
             modifier = Modifier

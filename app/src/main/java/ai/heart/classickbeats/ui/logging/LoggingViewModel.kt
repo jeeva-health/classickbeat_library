@@ -9,6 +9,7 @@ import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.error
 import ai.heart.classickbeats.shared.result.succeeded
 import ai.heart.classickbeats.shared.util.toDbFormatString
+import ai.heart.classickbeats.utils.LoggingUtils.getLogTimeStampString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -88,27 +89,6 @@ class LoggingViewModel @Inject constructor(
         }
     }
 
-    fun uploadGlucoseLevelEntry(
-        glucoseLevel: Int,
-        tag: Int,
-        notes: String? = null,
-        time: Time?,
-        date: Date?
-    ) {
-        viewModelScope.launch {
-            setShowLoadingTrue()
-            val timeStamp = getLogTimeStampString(time, date)
-            val glucoseLogEntity = GlucoseLogEntity(
-                glucoseLevel = glucoseLevel,
-                tag = tag,
-                timeStamp = timeStamp,
-                note = notes
-            )
-            loggingRepository.recordGlucoseLevel(glucoseLogEntity)
-            navigateBack()
-        }
-    }
-
     fun uploadWaterIntakeEntry(
         quantity: Float,
         notes: String? = null,
@@ -139,38 +119,5 @@ class LoggingViewModel @Inject constructor(
             loggingRepository.recordWeight(weightLogEntity)
             navigateBack()
         }
-    }
-
-    private fun getLogTimeStampString(timeInput: Time?, dateInput: Date?): String {
-        val time = timeInput ?: Time(0, 0)
-        val date = dateInput ?: throw Exception("Date must be set")
-        val timeStampStr =
-            "${date.year}" +
-                    "-${
-                        String.format(
-                            "%02d",
-                            date.month
-                        )
-                    }-${
-                        String.format(
-                            "%02d",
-                            date.day
-                        )
-                    } ${
-                        String.format(
-                            "%02d",
-                            time.hourOfDay
-                        )
-                    }:${
-                        String.format(
-                            "%02d",
-                            time.minute
-                        )
-                    }"
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-        inputFormat.timeZone = TimeZone.getDefault()
-        val timeStamp = inputFormat.parse(timeStampStr)
-        val timeStampUTC = Date(timeStamp.time - TimeZone.getDefault().rawOffset)
-        return timeStampUTC.toDbFormatString()
     }
 }

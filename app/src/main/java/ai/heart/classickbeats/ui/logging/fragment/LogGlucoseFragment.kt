@@ -1,10 +1,11 @@
-package ai.heart.classickbeats.ui.logging
+package ai.heart.classickbeats.ui.logging.fragment
 
 import ai.heart.classickbeats.NavHomeDirections
 import ai.heart.classickbeats.R
-import ai.heart.classickbeats.databinding.FragmentLogWaterIntakeBinding
+import ai.heart.classickbeats.databinding.FragmentLogGlucoseBinding
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.common.DateTimePickerViewModel
+import ai.heart.classickbeats.ui.logging.LoggingViewModel
 import ai.heart.classickbeats.utils.*
 import android.os.Bundle
 import android.view.View
@@ -20,9 +21,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @AndroidEntryPoint
-class LogWaterIntakeFragment : Fragment(R.layout.fragment_log_water_intake) {
+class LogGlucoseFragment : Fragment(R.layout.fragment_log_glucose) {
 
-    private var binding: FragmentLogWaterIntakeBinding? = null
+    private var binding: FragmentLogGlucoseBinding? = null
 
     private val loggingViewModel: LoggingViewModel by activityViewModels()
 
@@ -35,11 +36,11 @@ class LogWaterIntakeFragment : Fragment(R.layout.fragment_log_water_intake) {
 
         setLightStatusBar()
 
-        binding = FragmentLogWaterIntakeBinding.bind(view)
+        binding = FragmentLogGlucoseBinding.bind(view)
 
         navController = findNavController()
 
-        binding?.amountLayout?.requestFocus()
+        binding?.glucoseLayout?.requestFocus()
 
         val currentDate = getCurrentDate()
 
@@ -58,7 +59,7 @@ class LogWaterIntakeFragment : Fragment(R.layout.fragment_log_water_intake) {
         binding?.dateLayout?.addOnEditTextAttachedListener(dateEditTextAttachListener)
 
         binding?.saveBtn?.setSafeOnClickListener {
-            saveWaterIntakeLog()
+            saveGlucoseLevelLog()
         }
 
         binding?.backArrow?.setSafeOnClickListener {
@@ -109,12 +110,19 @@ class LogWaterIntakeFragment : Fragment(R.layout.fragment_log_water_intake) {
         navController.navigate(action)
     }
 
-    private fun saveWaterIntakeLog() {
+    private fun saveGlucoseLevelLog() {
         binding?.apply {
-            val quantity = amountLayout.editText?.text?.toString()?.toFloat() ?: -1.0f
+            val glucoseLevel = glucoseLayout.editText?.text?.toString()?.toInt() ?: -1
+            val tag = when (tagChipGroup.checkedChipId) {
+                R.id.chip_fasting -> 1
+                R.id.chip_before_meal -> 2
+                R.id.chip_after_meal -> 3
+                else -> 4
+            }
             val note = notesLayout.editText?.text?.toString()
-            loggingViewModel.uploadWaterIntakeEntry(
-                quantity = quantity,
+            loggingViewModel.uploadGlucoseLevelEntry(
+                glucoseLevel = glucoseLevel,
+                tag = tag,
                 notes = note,
                 time = dateTimePickerViewModel.selectedLogTime.value?.peekContent(),
                 date = dateTimePickerViewModel.selectedLogDate.value?.peekContent()
