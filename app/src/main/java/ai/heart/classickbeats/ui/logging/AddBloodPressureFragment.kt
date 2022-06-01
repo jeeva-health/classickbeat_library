@@ -86,7 +86,7 @@ class AddBloodPressureFragment : Fragment() {
                 modifier = Modifier,
                 title = "Blood Glucose Level",
                 backAction = { onBackPressed() },
-            ) {}
+            )
             DateTimeItem(
                 modifier = Modifier,
                 icon = R.drawable.date,
@@ -98,7 +98,7 @@ class AddBloodPressureFragment : Fragment() {
                 icon = R.drawable.time,
                 unit = "Time",
                 value = "2:30 PM"
-            )
+            ){}
             ReadingLayout(modifier = Modifier)
 
             Spacer(
