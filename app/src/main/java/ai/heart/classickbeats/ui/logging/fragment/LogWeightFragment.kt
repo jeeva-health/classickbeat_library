@@ -1,10 +1,11 @@
-package ai.heart.classickbeats.ui.logging
+package ai.heart.classickbeats.ui.logging.fragment
 
 import ai.heart.classickbeats.NavHomeDirections
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentLogWeightBinding
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.common.DateTimePickerViewModel
+import ai.heart.classickbeats.ui.logging.LoggingViewModel
 import ai.heart.classickbeats.utils.*
 import android.os.Bundle
 import android.view.View

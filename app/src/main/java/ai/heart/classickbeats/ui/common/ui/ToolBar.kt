@@ -17,26 +17,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-@Preview
-@Composable
-fun ToolBar(){
-
-}
 
 @Composable
 fun ToolBarWithBackAndAction(
     modifier: Modifier,
     title: String,
     backAction: () -> Unit,
-    action: @Composable ()->Unit
+    action: (@Composable () -> Unit)? = null
 ) {
     Row(
         modifier = modifier
-            .padding(0.dp,50.dp,0.dp,0.dp)
+            .padding(0.dp, 50.dp, 0.dp, 0.dp)
             .height(56.dp)
             .fillMaxWidth()
             .background(color = White),
@@ -71,7 +64,7 @@ fun ToolBarWithBackAndAction(
                 .fillMaxHeight()
                 .weight(1f)
         )
-        action()
+        action?.invoke()
     }
 }
 

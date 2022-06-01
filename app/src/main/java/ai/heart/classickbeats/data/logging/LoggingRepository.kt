@@ -1,7 +1,12 @@
 package ai.heart.classickbeats.data.logging
 
+import ai.heart.classickbeats.domain.BloodGlucose
+import ai.heart.classickbeats.domain.toDto
+import ai.heart.classickbeats.model.entity.BaseLogEntity
+import ai.heart.classickbeats.model.entity.BpLogEntity
+import ai.heart.classickbeats.model.entity.WaterLogEntity
+import ai.heart.classickbeats.model.entity.WeightLogEntity
 import ai.heart.classickbeats.shared.mapper.input.LoggingListMapper
-import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.result.Result
 import ai.heart.classickbeats.shared.result.error
 import androidx.paging.ExperimentalPagingApi
@@ -9,7 +14,6 @@ import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import timber.log.Timber
 import javax.inject.Inject
-
 
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
@@ -37,8 +41,8 @@ class LoggingRepository @Inject constructor(
     suspend fun recordBloodPressure(bpLogEntity: BpLogEntity): Result<Long> =
         recordRemoteDataSource.recordBloodPressure(bpLogEntity)
 
-    suspend fun recordGlucoseLevel(glucoseLogEntity: GlucoseLogEntity): Result<Long> =
-        recordRemoteDataSource.recordGlucoseLevel(glucoseLogEntity)
+    suspend fun recordGlucoseLevel(bloodGlucose: BloodGlucose): Result<Long> =
+        recordRemoteDataSource.recordGlucoseLevel(bloodGlucose.toDto())
 
     suspend fun recordWaterIntake(waterLogEntity: WaterLogEntity): Result<Long> =
         recordRemoteDataSource.recordWaterIntake(waterLogEntity)
