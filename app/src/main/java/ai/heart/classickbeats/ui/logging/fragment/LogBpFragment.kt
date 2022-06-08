@@ -118,7 +118,6 @@ class LogBpFragment : Fragment(R.layout.fragment_log_bp) {
             loggingViewModel.uploadBloodPressureEntry(
                 systolic = systolicPressure,
                 diastolic = diastolicPressure,
-                notes = note,
                 time = dateTimePickerViewModel.selectedLogTime.value?.peekContent(),
                 date = dateTimePickerViewModel.selectedLogDate.value?.peekContent()
             )

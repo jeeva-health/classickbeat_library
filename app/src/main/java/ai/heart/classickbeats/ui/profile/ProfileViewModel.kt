@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.ui.profile
 
-import ai.heart.classickbeats.data.user.UserRepository
+import ai.heart.classickbeats.network.user.UserRepository
 import ai.heart.classickbeats.model.User
 import ai.heart.classickbeats.shared.result.Event
 import androidx.lifecycle.LiveData

@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.ui.history.viewmodel
 
-import ai.heart.classickbeats.data.record.RecordRepository
+import ai.heart.classickbeats.network.record.RecordRepository
 import ai.heart.classickbeats.model.*
 import ai.heart.classickbeats.model.entity.*
 import ai.heart.classickbeats.shared.result.Event

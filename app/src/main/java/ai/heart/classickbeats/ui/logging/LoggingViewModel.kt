@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.ui.logging
 
-import ai.heart.classickbeats.data.logging.LoggingRepository
+import ai.heart.classickbeats.domain.BloodPressure
+import ai.heart.classickbeats.network.logging.LoggingRepository
 import ai.heart.classickbeats.model.Date
 import ai.heart.classickbeats.model.Time
 import ai.heart.classickbeats.model.entity.*
@@ -8,7 +9,6 @@ import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
 import ai.heart.classickbeats.shared.result.error
 import ai.heart.classickbeats.shared.result.succeeded
-import ai.heart.classickbeats.shared.util.toDbFormatString
 import ai.heart.classickbeats.utils.LoggingUtils.getLogTimeStampString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -18,8 +18,7 @@ import androidx.paging.ExperimentalPagingApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 
@@ -71,20 +70,18 @@ class LoggingViewModel @Inject constructor(
     fun uploadBloodPressureEntry(
         systolic: Int,
         diastolic: Int,
-        notes: String? = null,
         time: Time?,
         date: Date?
     ) {
         viewModelScope.launch {
             setShowLoadingTrue()
             val timeStamp = getLogTimeStampString(time, date)
-            val bpLogEntity = BpLogEntity(
-                systolic = systolic,
-                diastolic = diastolic,
-                timeStamp = timeStamp,
-                note = notes
+            val bloodPressure = BloodPressure(
+                systolicLevel = systolic.toFloat(),
+                diastolicLevel = diastolic.toFloat(),
+                time = ZonedDateTime.parse(timeStamp)
             )
-            loggingRepository.recordBloodPressure(bpLogEntity)
+            loggingRepository.recordBloodPressure(bloodPressure)
             navigateBack()
         }
     }

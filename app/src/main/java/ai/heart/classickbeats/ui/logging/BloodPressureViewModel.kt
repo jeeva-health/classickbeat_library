@@ -1,9 +1,9 @@
 package ai.heart.classickbeats.ui.logging
 
+import ai.heart.classickbeats.domain.BloodPressure
 import ai.heart.classickbeats.network.logging.LoggingRepository
-import ai.heart.classickbeats.domain.BloodGlucose
 import ai.heart.classickbeats.shared.result.Event
-import ai.heart.classickbeats.ui.logging.model.BloodGlucoseViewData
+import ai.heart.classickbeats.ui.logging.model.BloodPressureViewData
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class BloodGlucoseViewModel @Inject constructor(
+class BloodPressureViewModel @Inject constructor(
     private val loggingRepository: LoggingRepository
 ) : ViewModel() {
 
@@ -29,24 +29,24 @@ class BloodGlucoseViewModel @Inject constructor(
         _showLoading.postValue(Event(true))
     }
 
-    val defaultData = BloodGlucoseViewData(
+    val defaultData = BloodPressureViewData(
         timeString = "2:30 PM",
         dateString = "Today",
-        reading = 80,
-        tag = BloodGlucose.TAG.FASTING,
-        note = null
+        systolicLevel = 80,
+        diastolicLevel = 80
+
     )
 
-    fun uploadGlucoseLevelEntry(data: BloodGlucoseViewData) {
+    fun uploadPressureLevelEntry(data: BloodPressureViewData) {
         viewModelScope.launch {
             setShowLoadingTrue()
-            val bloodGlucose = BloodGlucose(
+            val bloodPressure = BloodPressure(
                 time = TODO(),
-                reading = data.reading.toFloat(),
-                tag = data.tag,
-                note = data.note
+                systolicLevel = data.systolicLevel.toFloat(),
+                diastolicLevel = data.diastolicLevel.toFloat()
+
             )
-            loggingRepository.recordGlucoseLevel(bloodGlucose)
+            loggingRepository.recordBloodPressure(bloodPressure)
             _showLoading.value = Event(false)
             apiError = null
         }

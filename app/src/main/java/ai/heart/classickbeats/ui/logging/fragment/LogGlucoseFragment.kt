@@ -112,21 +112,21 @@ class LogGlucoseFragment : Fragment(R.layout.fragment_log_glucose) {
 
     private fun saveGlucoseLevelLog() {
         binding?.apply {
-            val glucoseLevel = glucoseLayout.editText?.text?.toString()?.toInt() ?: -1
-            val tag = when (tagChipGroup.checkedChipId) {
-                R.id.chip_fasting -> 1
-                R.id.chip_before_meal -> 2
-                R.id.chip_after_meal -> 3
-                else -> 4
-            }
-            val note = notesLayout.editText?.text?.toString()
-            loggingViewModel.uploadGlucoseLevelEntry(
-                glucoseLevel = glucoseLevel,
-                tag = tag,
-                notes = note,
-                time = dateTimePickerViewModel.selectedLogTime.value?.peekContent(),
-                date = dateTimePickerViewModel.selectedLogDate.value?.peekContent()
-            )
+//            val glucoseLevel = glucoseLayout.editText?.text?.toString()?.toInt() ?: -1
+//            val tag = when (tagChipGroup.checkedChipId) {
+//                R.id.chip_fasting -> 1
+//                R.id.chip_before_meal -> 2
+//                R.id.chip_after_meal -> 3
+//                else -> 4
+//            }
+//            val note = notesLayout.editText?.text?.toString()
+//            loggingViewModel.uploadGlucoseLevelEntry(
+//                glucoseLevel = glucoseLevel,
+//                tag = tag,
+//                notes = note,
+//                time = dateTimePickerViewModel.selectedLogTime.value?.peekContent(),
+//                date = dateTimePickerViewModel.selectedLogDate.value?.peekContent()
+//            )
         }
     }
 
