@@ -147,7 +147,7 @@ class HistoryViewModel @Inject constructor(
         input.forEach { baseLogEntity ->
             val (value1, value2, timeStamp) = when (baseLogEntity.type) {
                 LogType.BloodPressure -> Triple(
-                    (baseLogEntity as BpLogEntity).systolic,
+                    (baseLogEntity as PressureLogEntity).systolic,
                     baseLogEntity.diastolic,
                     baseLogEntity.timeStamp?.toDateWithSeconds()
                 )

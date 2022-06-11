@@ -4,7 +4,6 @@ import ai.heart.classickbeats.domain.BloodGlucose
 import ai.heart.classickbeats.domain.BloodPressure
 import ai.heart.classickbeats.domain.toDto
 import ai.heart.classickbeats.model.entity.BaseLogEntity
-import ai.heart.classickbeats.model.entity.BpLogEntity
 import ai.heart.classickbeats.model.entity.WaterLogEntity
 import ai.heart.classickbeats.model.entity.WeightLogEntity
 import ai.heart.classickbeats.shared.mapper.input.LoggingListMapper

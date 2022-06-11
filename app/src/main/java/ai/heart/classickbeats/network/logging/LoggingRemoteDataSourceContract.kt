@@ -1,7 +1,10 @@
 package ai.heart.classickbeats.network.logging
 
-import ai.heart.classickbeats.model.entity.*
-import ai.heart.classickbeats.model.response.*
+import ai.heart.classickbeats.model.entity.PressureLogEntity
+import ai.heart.classickbeats.model.entity.GlucoseLogEntity
+import ai.heart.classickbeats.model.entity.WaterLogEntity
+import ai.heart.classickbeats.model.entity.WeightLogEntity
+import ai.heart.classickbeats.model.response.LoggingListResponse
 import ai.heart.classickbeats.shared.data.BaseRemoteDataSource
 import ai.heart.classickbeats.shared.network.SessionManager
 import ai.heart.classickbeats.shared.result.Result
@@ -27,9 +30,9 @@ class LoggingRemoteDataSourceContract internal constructor(
         return Result.Error(response.error)
     }
 
-    override suspend fun recordBloodPressure(bpLogEntity: PressureLogEntity): Result<Long> =
+    override suspend fun recordBloodPressure(pressureLogEntity: PressureLogEntity): Result<Long> =
         withContext(ioDispatcher) {
-            val response = safeApiCall { loggingApiService.recordBloodPressure(bpLogEntity) }
+            val response = safeApiCall { loggingApiService.recordBloodPressure(pressureLogEntity) }
             if (response.succeeded) {
                 val id = response.data?.responseData?.id ?: -1L
                 return@withContext Result.Success(id)

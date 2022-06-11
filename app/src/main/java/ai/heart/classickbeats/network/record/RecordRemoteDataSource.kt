@@ -53,9 +53,9 @@ class RecordRemoteDataSource internal constructor(
         return Result.Error(response.error)
     }
 
-    override suspend fun recordBloodPressure(bpLogEntity: BpLogEntity): Result<Long> =
+    override suspend fun recordBloodPressure(pressureLogEntity: PressureLogEntity): Result<Long> =
         withContext(ioDispatcher) {
-            val response = safeApiCall { apiService.recordBloodPressure(bpLogEntity) }
+            val response = safeApiCall { apiService.recordBloodPressure(pressureLogEntity) }
             if (response.succeeded) {
                 val id = response.data?.responseData?.id ?: -1L
                 return@withContext Result.Success(id)

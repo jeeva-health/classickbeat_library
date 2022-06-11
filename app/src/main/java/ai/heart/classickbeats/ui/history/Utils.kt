@@ -25,7 +25,7 @@ object Utils {
         val leftLogEntity = (leftEntity as TimelineItem.LogItem?)?.logEntity
         val rightLogEntity = (rightEntity as TimelineItem.LogItem?)?.logEntity
         val leftDate: String? = when (leftLogEntity?.type) {
-            LogType.BloodPressure -> (leftLogEntity as BpLogEntity).timeStamp
+            LogType.BloodPressure -> (leftLogEntity as PressureLogEntity).timeStamp
             LogType.GlucoseLevel -> (leftLogEntity as GlucoseLogEntity).timeStamp
             LogType.WaterIntake -> (leftLogEntity as WaterLogEntity).timeStamp
             LogType.Weight -> (leftLogEntity as WeightLogEntity).timeStamp
@@ -34,7 +34,7 @@ object Utils {
             else -> null
         }?.toDateStringWithoutTime()
         val rightDate: String? = when (rightLogEntity?.type) {
-            LogType.BloodPressure -> (rightLogEntity as BpLogEntity).timeStamp
+            LogType.BloodPressure -> (rightLogEntity as PressureLogEntity).timeStamp
             LogType.GlucoseLevel -> (rightLogEntity as GlucoseLogEntity).timeStamp
             LogType.WaterIntake -> (rightLogEntity as WaterLogEntity).timeStamp
             LogType.Weight -> (rightLogEntity as WeightLogEntity).timeStamp

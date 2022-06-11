@@ -3,7 +3,7 @@ package ai.heart.classickbeats.ui.logging.fragment
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentLoggingHomeBinding
 import ai.heart.classickbeats.model.LogType
-import ai.heart.classickbeats.model.entity.BpLogEntity
+import ai.heart.classickbeats.model.entity.PressureLogEntity
 import ai.heart.classickbeats.model.entity.GlucoseLogEntity
 import ai.heart.classickbeats.model.entity.WaterLogEntity
 import ai.heart.classickbeats.model.entity.WeightLogEntity
@@ -66,9 +66,9 @@ class LoggingHomeFragment : Fragment(R.layout.fragment_logging_home) {
             loggingViewModel.loggingData?.forEach { logEntity ->
                 when (logEntity.type) {
                     LogType.BloodPressure -> {
-                        val bpLogEntity = logEntity as BpLogEntity
-                        val diastolic = bpLogEntity.diastolic
-                        val systolic = bpLogEntity.systolic
+                        val pressureLogEntity = logEntity as PressureLogEntity
+                        val diastolic = pressureLogEntity.diastolic
+                        val systolic = pressureLogEntity.systolic
                         val bpString = "$systolic/$diastolic"
                         bpValue.text = bpString
                     }

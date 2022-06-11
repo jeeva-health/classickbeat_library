@@ -43,10 +43,10 @@ class TimelineAdapter constructor(
             var time: String? = null
             when (itemData.type) {
                 LogType.BloodPressure -> {
-                    val bpLogEntity = itemData as BpLogEntity
+                    val pressureLogEntity = itemData as PressureLogEntity
                     title = context.getString(R.string.blood_pressure)
-                    val systolic = bpLogEntity.systolic
-                    val diastolic = bpLogEntity.diastolic
+                    val systolic = pressureLogEntity.systolic
+                    val diastolic = pressureLogEntity.diastolic
                     value = "$systolic/$diastolic"
                     unit = context.getString(R.string.mmhg)
                     time = itemData.timeStamp?.toTimeString()
@@ -183,7 +183,7 @@ class HistoryItemDiffCallback : DiffUtil.ItemCallback<TimelineItem>() {
             val new = newItem.logEntity
             if (old.type == new.type) {
                 when (old.type) {
-                    LogType.BloodPressure -> old as BpLogEntity == new as BpLogEntity
+                    LogType.BloodPressure -> old as PressureLogEntity == new as PressureLogEntity
                     LogType.GlucoseLevel -> old as GlucoseLogEntity == new as GlucoseLogEntity
                     LogType.WaterIntake -> old as WaterLogEntity == new as WaterLogEntity
                     LogType.Weight -> old as WeightLogEntity == new as WeightLogEntity
@@ -208,7 +208,7 @@ class HistoryItemDiffCallback : DiffUtil.ItemCallback<TimelineItem>() {
             val new = newItem.logEntity
             if (old.type == new.type) {
                 when (old.type) {
-                    LogType.BloodPressure -> old as BpLogEntity == new as BpLogEntity
+                    LogType.BloodPressure -> old as PressureLogEntity == new as PressureLogEntity
                     LogType.GlucoseLevel -> old as GlucoseLogEntity == new as GlucoseLogEntity
                     LogType.WaterIntake -> old as WaterLogEntity == new as WaterLogEntity
                     LogType.Weight -> old as WeightLogEntity == new as WeightLogEntity

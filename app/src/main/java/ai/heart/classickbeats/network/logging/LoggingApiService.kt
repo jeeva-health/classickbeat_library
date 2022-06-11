@@ -1,7 +1,10 @@
 package ai.heart.classickbeats.network.logging
 
 import ai.heart.classickbeats.BuildConfig
-import ai.heart.classickbeats.model.entity.*
+import ai.heart.classickbeats.model.entity.PressureLogEntity
+import ai.heart.classickbeats.model.entity.GlucoseLogEntity
+import ai.heart.classickbeats.model.entity.WaterLogEntity
+import ai.heart.classickbeats.model.entity.WeightLogEntity
 import ai.heart.classickbeats.model.response.ApiResponse
 import ai.heart.classickbeats.model.response.LoggingListResponse
 import retrofit2.Response
@@ -20,7 +23,7 @@ interface LoggingApiService {
     suspend fun getLoggingData(): Response<LoggingListResponse>
 
     @POST("record/bp/add/")
-    suspend fun recordBloodPressure(@Body bpLogEntity: PressureLogEntity): Response<ApiResponse>
+    suspend fun recordBloodPressure(@Body pressureLogEntity: PressureLogEntity): Response<ApiResponse>
 
     @POST("record/glucose/add/")
     suspend fun recordGlucoseLevel(@Body glucoseLogEntity: GlucoseLogEntity): Response<ApiResponse>

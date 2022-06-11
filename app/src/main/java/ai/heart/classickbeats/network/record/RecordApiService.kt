@@ -31,7 +31,7 @@ interface RecordApiService {
     suspend fun getScanDetail(@Path("id") id: Long): Response<ScanDetailResponse>
 
     @POST("record/bp/add/")
-    suspend fun recordBloodPressure(@Body bpLogEntity: BpLogEntity): Response<ApiResponse>
+    suspend fun recordBloodPressure(@Body pressureLogEntity: PressureLogEntity): Response<ApiResponse>
 
     @POST("record/glucose/add/")
     suspend fun recordGlucoseLevel(@Body glucoseLogEntity: GlucoseLogEntity): Response<ApiResponse>

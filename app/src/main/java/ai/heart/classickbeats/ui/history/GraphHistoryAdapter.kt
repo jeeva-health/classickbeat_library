@@ -43,9 +43,9 @@ class GraphHistoryAdapter constructor(
             val time: String?
             when (itemData.type) {
                 LogType.BloodPressure -> {
-                    val bpLogEntity = itemData as BpLogEntity
-                    val systolic = bpLogEntity.systolic
-                    val diastolic = bpLogEntity.diastolic
+                    val pressureLogEntity = itemData as PressureLogEntity
+                    val systolic = pressureLogEntity.systolic
+                    val diastolic = pressureLogEntity.diastolic
                     value = "$systolic/$diastolic"
                     unit = context.getString(R.string.mmhg)
                     time = itemData.timeStamp?.toTimeString()

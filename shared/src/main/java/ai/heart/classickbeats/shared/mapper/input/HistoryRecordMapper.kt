@@ -36,7 +36,7 @@ class HistoryRecordMapper @Inject constructor() :
             LogType.BloodPressure -> {
                 val diastolic = input.diastolic ?: -1
                 val systolic = input.systolic ?: -1
-                BpLogEntity(
+                PressureLogEntity(
                     id = id,
                     systolic = systolic,
                     diastolic = diastolic,

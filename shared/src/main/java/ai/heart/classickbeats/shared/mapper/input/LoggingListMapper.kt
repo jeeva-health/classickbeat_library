@@ -39,7 +39,7 @@ class LoggingListMapper @Inject constructor(
                     LogType.BloodPressure -> {
                         val diastolic = fields.diastolic ?: -1
                         val systolic = fields.systolic ?: -1
-                        BpLogEntity(
+                        PressureLogEntity(
                             id = id,
                             systolic = systolic,
                             diastolic = diastolic,
