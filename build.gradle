@@ -3,13 +3,13 @@ buildscript {
     ext {
         kotlin_version = '1.5.30'
         kotlin_gradle_plugin = '1.6.10'
-        kotlin_stdlib = '1.6.10'
+        kotlin_stdlib = '1.6.21'
 
-        core_ktx = '1.7.0'
+        core_ktx = '1.8.0'
         activity_ktx = '1.4.0'
         fragment_ktx = '1.4.1'
 
-        version_okhttp = '5.0.0-alpha.5'
+        version_okhttp = '4.9.3'
         version_retrofit = "2.9.0"
         version_retrofit_coroutines_adapter = "0.9.2"
         version_moshi = '1.13.0'
@@ -18,7 +18,7 @@ buildscript {
         lifecycle_version = '2.3.1'
         recyclerViewVersion = "1.1.0"
         work_version = "2.4.0"
-        hilt_version = '2.41'
+        hilt_version = '2.42'
         hilt_jetpack_version = '1.0.0'
         nav_version = "2.4.1"
         camerax_version = '1.1.0-alpha08'
