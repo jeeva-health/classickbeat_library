@@ -5,12 +5,11 @@ import ai.heart.classickbeats.domain.BloodGlucose
 import ai.heart.classickbeats.domain.toStringValue
 import ai.heart.classickbeats.ui.common.ui.CustomSliderScale
 import ai.heart.classickbeats.ui.common.ui.DateTimeItem
-import ai.heart.classickbeats.ui.common.ui.ItemTag
 import ai.heart.classickbeats.ui.common.ui.ToolBarWithBackAndAction
+import ai.heart.classickbeats.ui.logging.BloodGlucoseViewModel
 import ai.heart.classickbeats.ui.logging.model.BloodGlucoseViewData
 import ai.heart.classickbeats.ui.logging.model.GlucoseTagModel
 import ai.heart.classickbeats.ui.theme.*
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,10 +35,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.paging.ExperimentalPagingApi
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@SuppressLint("ResourceType")
+@ExperimentalPagingApi
+@ExperimentalCoroutinesApi
 @Composable
-fun BloodGlucoseMainCompose(
+fun AddBloodGlucoseScreen(viewModel: BloodGlucoseViewModel) {
+    val title = "Blood Pressure"
+    val data = viewModel.defaultData
+    val onSubmit = { glucoseData: BloodGlucoseViewData ->
+        viewModel.uploadGlucoseLevelEntry(glucoseData)
+    }
+    val onBackPressed = {
+
+    }
+    AddBloodGlucoseView(
+        title = title,
+        data = data,
+        onSubmit = onSubmit,
+        onBackPressed = onBackPressed
+    )
+}
+
+@Composable
+fun AddBloodGlucoseView(
     title: String,
     data: BloodGlucoseViewData,
     onSubmit: (BloodGlucoseViewData) -> Unit,
@@ -53,9 +73,10 @@ fun BloodGlucoseMainCompose(
             .background(color = LightPink)
     ) {
         ToolBarWithBackAndAction(
-            modifier = Modifier,
             title = title,
-            backAction = { onBackPressed() },
+            onBackPressed = { onBackPressed() },
+            action = {},
+            modifier = Modifier,
         )
 
         DateTimeItem(
@@ -186,7 +207,7 @@ private fun GlucoseTagView(
 
         LazyRow(modifier = Modifier.fillMaxWidth()) {
             items(ddList) { dd: GlucoseTagModel ->
-                ItemTag(
+                GlucoseTagItemView(
                     modifier = Modifier,
                     icon = dd.icon,
                     tag = dd.tag.toStringValue(context),

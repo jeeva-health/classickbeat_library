@@ -1,9 +1,9 @@
 package ai.heart.classickbeats.ui.logging.fragment
 
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.logging.BloodGlucoseViewModel
-import ai.heart.classickbeats.ui.logging.compose.BloodGlucoseMainCompose
-
+import ai.heart.classickbeats.ui.logging.compose.AddBloodGlucoseScreen
 import ai.heart.classickbeats.ui.theme.ClassicBeatsTheme
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,14 +24,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class AddBloodGlucoseFragment : Fragment() {
 
+    private val viewModel: BloodGlucoseViewModel by viewModels()
+
     private val navController: NavController by lazy {
         Navigation.findNavController(
             requireActivity(),
             R.id.nav_host_fragment
         )
     }
-
-    private val viewModel: BloodGlucoseViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,14 +42,20 @@ class AddBloodGlucoseFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ClassicBeatsTheme() {
-                   BloodGlucoseMainCompose(title = "Blood Glucose Level",
-                       data = viewModel.defaultData,
-                       onSubmit = {}) {
-
-                   }
+                    AddBloodGlucoseScreen(viewModel)
                 }
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.navigateBack.observe(viewLifecycleOwner, EventObserver {
+            if (it) {
+                onBackPressed()
+            }
+        })
     }
 
     private fun onBackPressed() {

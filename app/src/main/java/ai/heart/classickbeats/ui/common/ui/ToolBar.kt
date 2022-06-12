@@ -2,6 +2,7 @@ package ai.heart.classickbeats.ui.common.ui
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.ui.theme.CharcoalGray
+import ai.heart.classickbeats.ui.theme.ClassicBeatsTheme
 import ai.heart.classickbeats.ui.theme.RosyPink
 import ai.heart.classickbeats.ui.theme.White
 import androidx.compose.foundation.Image
@@ -10,6 +11,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,15 +19,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
 fun ToolBarWithBackAndAction(
-    modifier: Modifier,
     title: String,
-    backAction: () -> Unit,
-    action: (@Composable () -> Unit)? = null
+    onBackPressed: () -> Unit,
+    modifier: Modifier = Modifier,
+    action: @Composable () -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -42,7 +45,7 @@ fun ToolBarWithBackAndAction(
                 .padding(16.dp)
                 .width(24.dp)
                 .height(24.dp)
-                .clickable { backAction },
+                .clickable(onClick = onBackPressed),
             content = {
                 Image(
                     painter = painterResource(id = R.drawable.ic_baseline_arrow_back),
@@ -64,7 +67,7 @@ fun ToolBarWithBackAndAction(
                 .fillMaxHeight()
                 .weight(1f)
         )
-        action?.invoke()
+        action()
     }
 }
 
@@ -107,4 +110,12 @@ fun AddIcon(onAction: () -> Unit, actionTitle: String) {
     }
 }
 
-
+@Preview
+@Composable
+fun PreviewToolBarWithBackAndAction() {
+    ClassicBeatsTheme {
+        Surface {
+            ToolBarWithBackAndAction(title = "Toolbar", onBackPressed = { }, action = {})
+        }
+    }
+}

@@ -25,9 +25,9 @@ class BloodGlucoseViewModel @Inject constructor(
 
     private val _showLoading = MutableLiveData(Event(false))
     val showLoading: LiveData<Event<Boolean>> = _showLoading
-    fun setShowLoadingTrue() {
-        _showLoading.postValue(Event(true))
-    }
+
+    private val _navigateBack = MutableLiveData(Event(false))
+    val navigateBack: LiveData<Event<Boolean>> = _navigateBack
 
     val defaultData = BloodGlucoseViewData(
         timeString = "2:30 PM",
@@ -37,9 +37,13 @@ class BloodGlucoseViewModel @Inject constructor(
         note = null
     )
 
+    fun navigateBack() {
+        _navigateBack.postValue(Event(true))
+    }
+
     fun uploadGlucoseLevelEntry(data: BloodGlucoseViewData) {
         viewModelScope.launch {
-            setShowLoadingTrue()
+            _showLoading.postValue(Event(true))
             val bloodGlucose = BloodGlucose(
                 time = TODO(),
                 reading = data.reading.toFloat(),
@@ -47,7 +51,7 @@ class BloodGlucoseViewModel @Inject constructor(
                 note = data.note
             )
             loggingRepository.recordGlucoseLevel(bloodGlucose)
-            _showLoading.value = Event(false)
+            _showLoading.postValue(Event(false))
             apiError = null
         }
     }

@@ -26,9 +26,9 @@ class BloodPressureViewModel @Inject constructor(
 
     private val _showLoading = MutableLiveData(Event(false))
     val showLoading: LiveData<Event<Boolean>> = _showLoading
-    fun setShowLoadingTrue() {
-        _showLoading.postValue(Event(true))
-    }
+
+    private val _navigateBack = MutableLiveData(Event(false))
+    val navigateBack: LiveData<Event<Boolean>> = _navigateBack
 
     val defaultData = BloodPressureViewData(
         timeString = "2:30 PM",
@@ -40,7 +40,7 @@ class BloodPressureViewModel @Inject constructor(
 
     fun uploadPressureLevelEntry(data: BloodPressureViewData) {
         viewModelScope.launch {
-            setShowLoadingTrue()
+            _showLoading.postValue(Event(true))
             val bloodPressure = BloodPressure(
                 time = TODO(),
                 systolicLevel = data.systolicLevel.toFloat(),
@@ -48,7 +48,7 @@ class BloodPressureViewModel @Inject constructor(
 
             )
             loggingRepository.recordBloodPressure(bloodPressure)
-            _showLoading.value = Event(false)
+            _showLoading.postValue(Event(false))
             apiError = null
         }
     }
