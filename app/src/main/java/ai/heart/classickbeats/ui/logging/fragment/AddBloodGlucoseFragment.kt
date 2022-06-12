@@ -2,7 +2,8 @@ package ai.heart.classickbeats.ui.logging.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.ui.logging.BloodGlucoseViewModel
-import ai.heart.classickbeats.ui.logging.compose.MainCompose
+import ai.heart.classickbeats.ui.logging.compose.BloodGlucoseMainCompose
+
 import ai.heart.classickbeats.ui.theme.ClassicBeatsTheme
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -41,7 +42,11 @@ class AddBloodGlucoseFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ClassicBeatsTheme() {
-                   // MainCompose()
+                   BloodGlucoseMainCompose(title = "Blood Glucose Level",
+                       data = viewModel.defaultData,
+                       onSubmit = {}) {
+
+                   }
                 }
             }
         }

@@ -28,7 +28,6 @@ class AddBloodPressureFragment : Fragment() {
     }
 
 
-    @OptIn(ExperimentalPagingApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,7 +39,6 @@ class AddBloodPressureFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ClassicBeatsTheme() {
-                    //  MainCompose()
                     val date = remember { mutableStateOf("") }
                     val dateCalendar = Calendar.getInstance()
                     val year = dateCalendar.get(Calendar.YEAR)
@@ -60,10 +58,10 @@ class AddBloodPressureFragment : Fragment() {
 
 
                     val model = BloodPressureViewData(
-                        date,
-                        time,
-                        systolic,
-                        diastolic
+                        date.value,
+                        time.value,
+                        systolic.value,
+                        diastolic.value
                     )
 
 
@@ -86,5 +84,6 @@ class AddBloodPressureFragment : Fragment() {
     private fun onBackPressed() {
         navController.navigate(AddBloodPressureFragmentDirections.actionBloodPressureFragmentSelf())
     }
+
 }
 
