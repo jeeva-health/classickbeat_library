@@ -1,30 +1,31 @@
-package ai.heart.classickbeats.ui.common.ui
+package ai.heart.classickbeats.ui.common.compose
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.model.Date
 import ai.heart.classickbeats.model.Time
-import ai.heart.classickbeats.ui.logging.model.DateTimeValueModel
-import ai.heart.classickbeats.ui.theme.*
+import ai.heart.classickbeats.ui.logging.model.HistoryItemViewData
+import ai.heart.classickbeats.ui.theme.CharcoalGray
+import ai.heart.classickbeats.ui.theme.ClassicBeatsTheme
+import ai.heart.classickbeats.ui.theme.PaleGray
+import ai.heart.classickbeats.ui.theme.WarmGray
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.widget.DatePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,86 +35,117 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun HistoryLayout(
-    modifier: Modifier,
     title: String,
     unit: String,
-    dtvList: List<DateTimeValueModel>
+    dtvList: List<HistoryItemViewData>,
+    modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .padding(16.dp, 4.dp)
-            .fillMaxWidth()
-            .background(color = White, shape = RoundedCornerShape(8.dp))
-            .padding(16.dp, 4.dp)
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
     ) {
-        Text(
-            text = title,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = CharcoalGray,
-            modifier = Modifier.padding(0.dp, 16.dp)
-        )
-        Row(
+        Column(
             modifier = Modifier
-                .background(color = PaleGray, shape = RoundedCornerShape(4.dp))
-                .padding(12.dp, 9.dp)
-                .align(alignment = Alignment.CenterHorizontally)
+                .fillMaxWidth()
+                .padding(8.dp)
         ) {
             Text(
-                text = "Date & Time",
-                color = WarmGray,
+                text = title,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                fontSize = 14.sp
+                color = CharcoalGray,
+                modifier = Modifier.padding(8.dp)
             )
-            Spacer(modifier = Modifier.weight(1f))
-            Text(
-                text = unit,
-                color = WarmGray,
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp
-            )
-
-        }
-        LazyColumn {
-            items(dtvList) { dtv: DateTimeValueModel ->
-                ItemHistory(modifier = Modifier, dtv = dtv)
-                Divider(color = PaleGray, thickness = 1.dp)
+            Row(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .padding(top = 4.dp)
+                    .background(color = PaleGray, shape = RoundedCornerShape(4.dp))
+                    .padding(vertical = 8.dp, horizontal = 12.dp)
+                    .align(alignment = Alignment.CenterHorizontally)
+            ) {
+                Text(
+                    text = "Date & Time",
+                    color = WarmGray,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = unit,
+                    color = WarmGray,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
+                )
+            }
+            LazyColumn {
+                itemsIndexed(dtvList) { index: Int, data: HistoryItemViewData ->
+                    HistoryItemView(data = data)
+                    if (index != dtvList.size - 1) {
+                        Divider(color = PaleGray, thickness = 1.dp)
+                    }
+                }
             }
         }
     }
 }
 
+@Preview
 @Composable
-fun ItemHistory(modifier: Modifier, dtv: DateTimeValueModel) {
+fun PreviewHistoryLayout() {
+    val list = listOf(
+        HistoryItemViewData(date = "Today", time = "12:45 pm", value = "125"),
+        HistoryItemViewData(date = "Today", time = "12:45 pm", value = "125"),
+        HistoryItemViewData(date = "Today", time = "12:45 pm", value = "125"),
+        HistoryItemViewData(date = "Today", time = "12:45 pm", value = "125"),
+        HistoryItemViewData(date = "Today", time = "12:45 pm", value = "125")
+    )
+    ClassicBeatsTheme {
+        Surface {
+            HistoryLayout(title = "History", unit = "mg/dl", dtvList = list)
+        }
+    }
+}
+
+@Composable
+fun HistoryItemView(
+    data: HistoryItemViewData,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp, 8.dp, 8.dp, 8.dp),
+            .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column() {
+        Column(modifier = Modifier.padding(start = 4.dp)) {
             Text(
-                text = dtv.date,
+                text = data.date,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = dtv.time,
+                text = data.time,
                 fontSize = 14.sp
             )
         }
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = dtv.value,
+            text = data.value,
             fontSize = 18.sp,
-            modifier = Modifier.fillMaxHeight(),
-
-            )
+            modifier = Modifier.fillMaxHeight()
+        )
     }
 }
 
 @Composable
-fun DateTimeItem(modifier: Modifier, icon: Int, unit: String, value: String, onClick: () -> Unit) {
+fun DateTimeSelectionView(
+    icon: Int,
+    label: String,
+    value: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier
             .padding(16.dp, 4.dp)
@@ -139,7 +171,7 @@ fun DateTimeItem(modifier: Modifier, icon: Int, unit: String, value: String, onC
                     modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 4.dp),
                     color = CharcoalGray,
                     fontSize = 12.sp,
-                    text = unit
+                    text = label
                 )
                 Text(
                     color = CharcoalGray,
@@ -158,37 +190,50 @@ fun DateTimeItem(modifier: Modifier, icon: Int, unit: String, value: String, onC
             painter = painterResource(R.drawable.ic_baseline_keyboard_arrow_down_24),
             contentDescription = null
         )
-
     }
 }
 
-fun showTimePicker(context: Context, hour: Int, minute: Int, onTimeChange: (Time) -> Unit) {
+@Preview
+@Composable
+fun PreviewDateTimeSelectionView() {
+    ClassicBeatsTheme {
+        Surface {
+            DateTimeSelectionView(
+                icon = R.drawable.date,
+                label = "Unit",
+                value = "Value",
+                onClick = {},
+            )
+        }
+    }
+}
 
+fun showTimePicker(
+    context: Context,
+    defaultTime: Time,
+    onTimeChange: (Time) -> Unit
+) {
     val timePickerDialog = TimePickerDialog(
         context,
         { _, hour: Int, minute: Int ->
             val time = Time(hour, minute)
-//            time.value = "$hour:$minute"
             onTimeChange(time)
-        }, hour, minute, false
+        }, defaultTime.hourOfDay, defaultTime.minute, false
     )
     timePickerDialog.show()
 }
 
 fun showDatePicker(
     context: Context,
-    year: Int,
-    month: Int,
-    day: Int,
+    defaultDate: Date,
     onDateChange: (Date) -> Unit
 ) {
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
             val date = Date(dayOfMonth, month, year)
-//                "$dayOfMonth/"+(month+1)+"/$year"
             onDateChange(date)
-        }, year, month, day
+        }, defaultDate.year, defaultDate.month, defaultDate.day
     )
     datePickerDialog.show()
 }

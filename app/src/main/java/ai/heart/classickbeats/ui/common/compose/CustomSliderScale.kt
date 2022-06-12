@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.common.ui
+package ai.heart.classickbeats.ui.common.compose
 
 import ai.heart.classickbeats.R
 import android.annotation.SuppressLint

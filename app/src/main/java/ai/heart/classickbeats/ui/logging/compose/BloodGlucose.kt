@@ -3,8 +3,8 @@ package ai.heart.classickbeats.ui.logging.compose
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.domain.BloodGlucose
 import ai.heart.classickbeats.domain.toStringValue
-import ai.heart.classickbeats.ui.common.ui.*
-import ai.heart.classickbeats.ui.logging.model.DateTimeValueModel
+import ai.heart.classickbeats.ui.common.compose.*
+import ai.heart.classickbeats.ui.logging.model.HistoryItemViewData
 import ai.heart.classickbeats.ui.logging.model.GlucoseTagModel
 import ai.heart.classickbeats.ui.theme.*
 import androidx.compose.foundation.Image
@@ -111,10 +111,11 @@ private fun GlucoseMainPageView(
 
         GraphLayout(onToggleTagView = onToggleTagView)
 
-        val d1 = DateTimeValueModel("12 March", "12:00 PM", "120/190")
-        val d2 = DateTimeValueModel("12 March", "12:00 PM", "120/190")
-        val d3 = DateTimeValueModel("12 March", "12:00 PM", "120/190")
-        val dd: List<DateTimeValueModel> = arrayListOf(d1, d2, d3)
+        val d1 = HistoryItemViewData("12 March", "12:00 PM", "120/190")
+        val d2 = HistoryItemViewData("12 March", "12:00 PM", "120/190")
+        val d3 = HistoryItemViewData("12 March", "12:00 PM", "120/190")
+        val dd: List<HistoryItemViewData> = arrayListOf(d1, d2, d3)
+
         HistoryLayout(modifier = Modifier, title = "History", unit = "mmHg", dtvList = dd)
     }
 }

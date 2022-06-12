@@ -3,7 +3,7 @@ package ai.heart.classickbeats.ui.logging.compose
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.model.Date
 import ai.heart.classickbeats.model.Time
-import ai.heart.classickbeats.ui.common.ui.*
+import ai.heart.classickbeats.ui.common.compose.*
 import ai.heart.classickbeats.ui.logging.BloodPressureViewModel
 import ai.heart.classickbeats.ui.logging.model.BloodPressureViewData
 import ai.heart.classickbeats.ui.theme.*
@@ -73,20 +73,23 @@ fun AddBloodPressureView(
             action = {},
             modifier = Modifier,
         )
-        DateTimeItem(
+
+        DateTimeSelectionView(
             modifier = Modifier,
             icon = R.drawable.date,
-            unit = "Date",
+            label = "Date",
             value = data.dateString,
-            onClick = { showDatePicker(context, 0, 0, 0, { date: Date -> Unit }) }
+            onClick = { showDatePicker(context, Date(0, 0, 0), { date: Date -> Unit }) }
         )
-        DateTimeItem(
+
+        DateTimeSelectionView(
             modifier = Modifier,
             icon = R.drawable.time,
-            unit = "Time",
+            label = "Time",
             value = data.timeString,
-            onClick = { showTimePicker(context, 0, 0, { time: Time -> Unit }) }
+            onClick = { showTimePicker(context, Time(0, 0), { time: Time -> Unit }) }
         )
+
         ReadingLayout(modifier = Modifier)
 
         Spacer(
@@ -224,7 +227,5 @@ fun ScaleLayout(
                     //run only for first time
                 })
         }
-
     }
-
 }

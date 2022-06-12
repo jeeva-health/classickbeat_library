@@ -3,9 +3,9 @@ package ai.heart.classickbeats.ui.logging.compose
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.domain.BloodGlucose
 import ai.heart.classickbeats.domain.toStringValue
-import ai.heart.classickbeats.ui.common.ui.CustomSliderScale
-import ai.heart.classickbeats.ui.common.ui.DateTimeItem
-import ai.heart.classickbeats.ui.common.ui.ToolBarWithBackAndAction
+import ai.heart.classickbeats.ui.common.compose.CustomSliderScale
+import ai.heart.classickbeats.ui.common.compose.DateTimeSelectionView
+import ai.heart.classickbeats.ui.common.compose.ToolBarWithBackAndAction
 import ai.heart.classickbeats.ui.logging.BloodGlucoseViewModel
 import ai.heart.classickbeats.ui.logging.model.BloodGlucoseViewData
 import ai.heart.classickbeats.ui.logging.model.GlucoseTagModel
@@ -79,17 +79,17 @@ fun AddBloodGlucoseView(
             modifier = Modifier,
         )
 
-        DateTimeItem(
-            modifier = Modifier,
+        DateTimeSelectionView(
             icon = R.drawable.date,
-            unit = "Date",
-            value = data.dateString
-        ) {}
+            label = "Date",
+            value = data.dateString,
+            onClick = {}
+        )
 
-        DateTimeItem(
+        DateTimeSelectionView(
             modifier = Modifier,
             icon = R.drawable.time,
-            unit = "Time",
+            label = "Time",
             value = data.timeString,
             onClick = {}
         )

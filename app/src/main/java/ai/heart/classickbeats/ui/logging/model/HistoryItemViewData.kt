@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.ui.logging.model
 
-data class DateTimeValueModel(
+data class HistoryItemViewData(
     val date: String,
     val time: String,
     val value: String
