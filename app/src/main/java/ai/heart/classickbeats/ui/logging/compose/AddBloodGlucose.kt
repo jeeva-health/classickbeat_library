@@ -39,7 +39,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 
 @SuppressLint("ResourceType")
 @Composable
-fun MainCompose(
+fun BloodGlucoseMainCompose(
     title: String,
     data: BloodGlucoseViewData,
     onSubmit: (BloodGlucoseViewData) -> Unit,
