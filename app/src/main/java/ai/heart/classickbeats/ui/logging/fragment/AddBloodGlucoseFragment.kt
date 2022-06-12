@@ -41,7 +41,7 @@ class AddBloodGlucoseFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ClassicBeatsTheme() {
-                    MainCompose()
+                   // MainCompose()
                 }
             }
         }

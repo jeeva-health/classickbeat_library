@@ -1,7 +1,7 @@
 package ai.heart.classickbeats.di
 
 import ai.heart.classickbeats.data.logging.LoggingApiService
-import ai.heart.classickbeats.data.logging.LoggingRemoteDataSource
+import ai.heart.classickbeats.data.logging.LoggingRemoteDataSourceContract
 import ai.heart.classickbeats.shared.network.SessionManager
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
@@ -34,8 +34,8 @@ object LoggingDataModule {
     fun provideLoggingRemoteDataSource(
         loggingApiService: LoggingApiService,
         sessionManager: SessionManager
-    ): LoggingRemoteDataSource {
-        return LoggingRemoteDataSource(
+    ): LoggingRemoteDataSourceContract {
+        return LoggingRemoteDataSourceContract(
             loggingApiService = loggingApiService,
             sessionManager = sessionManager
         )
