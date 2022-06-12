@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -40,9 +42,19 @@ class BloodPressureFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                BloodPressureScreen()
+                MainCompose()
             }
         }
+    }
+
+
+    @Composable
+    @Preview(showBackground = true)
+    fun MainCompose() {
+        BloodPressureScreen(
+            onBackPress = {onNavigateBack()},
+            onAddPressure = {onNavigateAddPressure()}
+        )
     }
 
     private fun onNavigateBack() {

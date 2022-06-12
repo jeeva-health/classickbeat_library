@@ -16,6 +16,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Surface
@@ -27,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -191,4 +193,40 @@ fun showDatePicker(
         }, year, month, day
     )
     datePickerDialog.show()
+}
+
+@Composable
+fun ItemGraph(modifier: Modifier, color: Color, type: String, value: String) {
+    Row(
+        modifier = modifier
+            .padding(12.dp, 25.dp)
+    ) {
+        Box(
+            modifier = Modifier
+
+                .size(16.dp)
+                .background(color = color, shape = CircleShape)
+                .border(width = 3.dp, color = Color.White, shape = CircleShape)
+                .align(alignment = Alignment.Top)
+        )
+        Column(modifier = modifier) {
+
+            Text(
+                text = type,
+                fontSize = 16.sp,
+                color = CharcoalGray,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.SansSerif,
+                modifier = Modifier.padding(4.dp, 0.dp)
+            )
+
+            Text(
+                text = value,
+                fontSize = 12.sp,
+                color = WarmGray,
+                fontFamily = FontFamily.SansSerif,
+                modifier = Modifier.padding(4.dp, 0.dp)
+            )
+        }
+    }
 }

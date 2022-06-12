@@ -3,9 +3,9 @@ package ai.heart.classickbeats.ui.logging.compose
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.domain.BloodGlucose
 import ai.heart.classickbeats.domain.toStringValue
-import ai.heart.classickbeats.ui.common.ui.CustomSliderScale
-import ai.heart.classickbeats.ui.common.ui.DateTimeItem
-import ai.heart.classickbeats.ui.common.ui.ToolBarWithBackAndAction
+import ai.heart.classickbeats.model.Date
+import ai.heart.classickbeats.model.Time
+import ai.heart.classickbeats.ui.common.ui.*
 import ai.heart.classickbeats.ui.logging.BloodGlucoseViewModel
 import ai.heart.classickbeats.ui.logging.model.BloodGlucoseViewData
 import ai.heart.classickbeats.ui.logging.model.GlucoseTagModel
@@ -42,7 +42,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 @Composable
 fun AddBloodGlucoseScreen(viewModel: BloodGlucoseViewModel) {
-    val title = "Blood Pressure"
+    val title = "Add Blood Glucose"
     val data = viewModel.defaultData
     val onSubmit = { glucoseData: BloodGlucoseViewData ->
         viewModel.uploadGlucoseLevelEntry(glucoseData)
@@ -84,14 +84,14 @@ fun AddBloodGlucoseView(
             icon = R.drawable.date,
             unit = "Date",
             value = data.dateString
-        ) {}
+        ) { showDatePicker(context, 0, 0, 0, { date: Date -> Unit }) }
 
         DateTimeItem(
             modifier = Modifier,
             icon = R.drawable.time,
             unit = "Time",
             value = data.timeString,
-            onClick = {}
+            onClick = { showTimePicker(context, 0, 0, { time: Time -> Unit }) }
         )
 
         ReadingLayout(
@@ -142,7 +142,7 @@ fun ReadingLayout(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        ScaleLayout(
+        GLucoseScaleLayout(
             defaultReading = defaultReading,
             maxValue = 300,
             modifier = Modifier
@@ -220,9 +220,12 @@ private fun GlucoseTagView(
 }
 
 @Composable
-fun ScaleLayout(defaultReading: Int, maxValue: Int, modifier: Modifier = Modifier) {
+fun GLucoseScaleLayout(defaultReading: Int,
+                maxValue: Int,
+                modifier: Modifier = Modifier) {
 
-    val (glucoseLevelReading, updateReading) = remember { mutableStateOf(defaultReading) }
+    val (glucoseLevelReading, updateReading) =
+        remember { mutableStateOf(defaultReading) }
 
     Row(
         modifier = Modifier
@@ -245,7 +248,8 @@ fun ScaleLayout(defaultReading: Int, maxValue: Int, modifier: Modifier = Modifie
         )
     }
 
-    AndroidView(modifier = modifier.fillMaxWidth(),
+    AndroidView(modifier = modifier.fillMaxWidth()
+        .background(color = RosyPink),
         factory = { context ->
             CustomSliderScale(
                 context = context,

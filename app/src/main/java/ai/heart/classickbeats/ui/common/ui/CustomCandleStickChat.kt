@@ -1,11 +1,11 @@
 package ai.heart.classickbeats.ui.common.ui
 
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.model.Date
 import android.content.Context
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import androidx.compose.ui.graphics.PaintingStyle.Companion.Fill
 import com.github.mikephil.charting.charts.CandleStickChart
 import com.github.mikephil.charting.data.CandleData
 import com.github.mikephil.charting.data.CandleDataSet

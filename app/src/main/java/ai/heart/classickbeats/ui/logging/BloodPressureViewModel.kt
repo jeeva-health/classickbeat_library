@@ -5,6 +5,7 @@ import ai.heart.classickbeats.data.logging.LoggingRepository
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.ui.logging.model.BloodPressureViewData
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,13 +31,16 @@ class BloodPressureViewModel @Inject constructor(
     private val _navigateBack = MutableLiveData(Event(false))
     val navigateBack: LiveData<Event<Boolean>> = _navigateBack
 
+
     val defaultData = BloodPressureViewData(
         timeString = "2:30 PM",
         dateString = "Today",
-        systolicLevel = 80,
-        diastolicLevel = 80
-
+        systolicLevel = 85,
+        diastolicLevel = 85
     )
+
+    val _sysValue = mutableStateOf(defaultData.systolicLevel)
+    val _diaValue = mutableStateOf(defaultData.diastolicLevel)
 
     fun uploadPressureLevelEntry(data: BloodPressureViewData) {
         viewModelScope.launch {

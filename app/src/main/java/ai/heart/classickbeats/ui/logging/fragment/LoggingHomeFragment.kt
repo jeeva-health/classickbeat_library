@@ -95,13 +95,13 @@ class LoggingHomeFragment : Fragment(R.layout.fragment_logging_home) {
     }
 
     private fun navigateToLogBpFragment() {
-        val action = LoggingHomeFragmentDirections.actionLoggingHomeFragmentToLogBpFragment()
-        navController.navigate(action)
+//        val action = LoggingHomeFragmentDirections.actionLoggingHomeFragmentToLogBpFragment()
+//        navController.navigate(action)
     }
 
     private fun navigateToLogGlucoseFragment() {
-        val action = LoggingHomeFragmentDirections.actionLoggingHomeFragmentToLogGlucoseFragment()
-        navController.navigate(action)
+//        val action = LoggingHomeFragmentDirections.actionLoggingHomeFragmentToLogGlucoseFragment()
+//        navController.navigate(action)
     }
 
     private fun navigateToLogWaterIntakeFragment() {
