@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.ui.common.compose
 
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.model.Date
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
@@ -8,7 +9,6 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import java.util.*
 
 data class BarModel(
     val reading: Float,
@@ -18,7 +18,7 @@ data class BarModel(
 class CustomBarChat @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, dataPoints: List<BarModel>
 ) : FrameLayout(context, attrs) {
- 
+
 
     init {
         val view = inflate(context, R.layout.layout_bar_chat, this)
@@ -27,7 +27,7 @@ class CustomBarChat @JvmOverloads constructor(
         val entries: MutableList<BarEntry> = ArrayList<BarEntry>()
 
         for ((j, data) in dataPoints.withIndex()) {
-            entries.add(BarEntry(dataPoints[j].reading, j.toFloat() ))
+            entries.add(BarEntry(dataPoints[j].reading, j.toFloat()))
         }
 
         val dataSet = BarDataSet(entries, "")

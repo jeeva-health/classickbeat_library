@@ -19,9 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
-
 class MyHealthFragment : Fragment(R.layout.fragment_my_health) {
-
 
     private val binding by viewBinding(FragmentMyHealthBinding::bind)
 
@@ -52,18 +50,34 @@ class MyHealthFragment : Fragment(R.layout.fragment_my_health) {
         boardModelList.add(
             BoardModel(
                 R.drawable.blood_pressure,
-                "Blood pressure",
+                BoardModel.BLOOD_PRESSURE,
                 "85/75",
                 "MMHG",
                 false
             )
         )
-        boardModelList.add(BoardModel(R.drawable.heart_rate, "Heart Rate", "92", "BPM", true))
-        boardModelList.add(BoardModel(R.drawable.your_weight, "Body Weight", "75", "KG", false))
+        boardModelList.add(
+            BoardModel(
+                R.drawable.heart_rate,
+                BoardModel.HEART_RATE,
+                "92",
+                "BPM",
+                true
+            )
+        )
+        boardModelList.add(
+            BoardModel(
+                R.drawable.your_weight,
+                BoardModel.BODY_WEIGHT,
+                "75",
+                "KG",
+                false
+            )
+        )
         boardModelList.add(
             BoardModel(
                 R.drawable.water_intake,
-                "Water Intake",
+                BoardModel.WATER_INTAKE,
                 "1.95",
                 "LITERS",
                 true
@@ -72,7 +86,7 @@ class MyHealthFragment : Fragment(R.layout.fragment_my_health) {
         boardModelList.add(
             BoardModel(
                 R.drawable.blood_glucose,
-                "Blood Glucose",
+                BoardModel.BLOOD_GLUCOSE,
                 "200",
                 "MG/DL",
                 false
@@ -168,23 +182,26 @@ class MyHealthFragment : Fragment(R.layout.fragment_my_health) {
 
     }
 
-    private fun boardItemClickListener() = fun(function: Int) {
-        when (function) {
-            FUNCTION_HEART -> {
+    private fun boardItemClickListener() = fun(action: String) {
+        when (action) {
+            BoardModel.HEART_RATE -> {
                 findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToScanFragment())
             }
-            FUNCTION_WEIGHT -> {
+            BoardModel.BODY_WEIGHT -> {
                 findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToSaveWeightFragment())
             }
-            FUNCTION_INTAKE -> {
+            BoardModel.WATER_INTAKE -> {
                 findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToWaterIntakeFragment())
             }
-            FUNCTION_BLOOD_PRESSURE -> {
+            BoardModel.BLOOD_PRESSURE -> {
                 findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToBloodPressureFragment())
+            }
+            BoardModel.BLOOD_GLUCOSE -> {
+                findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToBloodGlucoseFragment())
             }
             else -> {
                 //todo nothing
-                Toast.makeText(context, "elsed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "selection error", Toast.LENGTH_SHORT).show()
             }
         }
     }

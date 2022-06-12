@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.ui.common.compose
 
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.model.Date
 import android.content.Context
 import android.graphics.Paint
 import android.util.AttributeSet
@@ -9,7 +10,6 @@ import com.github.mikephil.charting.charts.CandleStickChart
 import com.github.mikephil.charting.data.CandleData
 import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
-import java.util.*
 
 data class CandleStickChartModel(
     val shadowH: Float,
@@ -38,7 +38,7 @@ class CustomCandleStickChat @JvmOverloads constructor(
         candleDataSet.apply {
             color = R.color.rosy_pink
             shadowColor = R.color.ice_blue
-            decreasingColor=R.color.moderate_green
+            decreasingColor = R.color.moderate_green
             decreasingPaintStyle = Paint.Style.FILL
             increasingColor = R.color.pale_red
             increasingPaintStyle = Paint.Style.FILL

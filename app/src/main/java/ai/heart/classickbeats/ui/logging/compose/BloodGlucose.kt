@@ -4,8 +4,8 @@ import ai.heart.classickbeats.R
 import ai.heart.classickbeats.domain.BloodGlucose
 import ai.heart.classickbeats.domain.toStringValue
 import ai.heart.classickbeats.ui.common.compose.*
-import ai.heart.classickbeats.ui.logging.model.HistoryItemViewData
 import ai.heart.classickbeats.ui.logging.model.GlucoseTagModel
+import ai.heart.classickbeats.ui.logging.model.HistoryItemViewData
 import ai.heart.classickbeats.ui.theme.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,17 +38,7 @@ import java.util.*
 
 @ExperimentalMaterialApi
 @Composable
-fun BloodGlucoseScreen() {
-
-    BottomSheetContainer(
-        onAddGlucose = {},
-        onBackPressed = {}
-    )
-}
-
-@ExperimentalMaterialApi
-@Composable
-fun BottomSheetContainer(
+fun BloodGlucoseScreen(
     onAddGlucose: () -> Unit,
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
@@ -262,41 +252,6 @@ fun ChatIndicator(modifier: Modifier, color: Color, value: String) {
     }
 }
 
-@Composable
-fun ItemGraph(modifier: Modifier, color: Color, type: String, value: String) {
-    Row(
-        modifier = modifier
-            .padding(12.dp, 25.dp)
-    ) {
-        Box(
-            modifier = Modifier
-
-                .size(16.dp)
-                .background(color = color, shape = CircleShape)
-                .border(width = 3.dp, color = Color.White, shape = CircleShape)
-                .align(alignment = Alignment.Top)
-        )
-        Column(modifier = modifier) {
-
-            Text(
-                text = type,
-                fontSize = 16.sp,
-                color = CharcoalGray,
-                fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.SansSerif,
-                modifier = Modifier.padding(4.dp, 0.dp)
-            )
-
-            Text(
-                text = value,
-                fontSize = 12.sp,
-                color = WarmGray,
-                fontFamily = FontFamily.SansSerif,
-                modifier = Modifier.padding(4.dp, 0.dp)
-            )
-        }
-    }
-}
 
 @Composable
 fun GlucoseTagBottomSheetDialog(

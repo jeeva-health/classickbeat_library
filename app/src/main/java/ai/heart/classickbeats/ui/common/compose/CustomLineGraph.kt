@@ -1,6 +1,7 @@
 package ai.heart.classickbeats.ui.common.compose
 
 import ai.heart.classickbeats.R
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
@@ -12,6 +13,7 @@ import java.util.*
 
 data class LineChartModel(val float: Float, val date: Date)
 
+@SuppressLint("ViewConstructor")
 class CustomLineGraph @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, dataPoints: List<LineChartModel>
 ) : FrameLayout(context, attrs) {

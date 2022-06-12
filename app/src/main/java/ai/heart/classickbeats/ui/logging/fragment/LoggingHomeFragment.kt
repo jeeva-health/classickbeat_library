@@ -3,13 +3,15 @@ package ai.heart.classickbeats.ui.logging.fragment
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentLoggingHomeBinding
 import ai.heart.classickbeats.model.LogType
-import ai.heart.classickbeats.model.entity.PressureLogEntity
 import ai.heart.classickbeats.model.entity.GlucoseLogEntity
+import ai.heart.classickbeats.model.entity.PressureLogEntity
 import ai.heart.classickbeats.model.entity.WaterLogEntity
 import ai.heart.classickbeats.model.entity.WeightLogEntity
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.logging.LoggingViewModel
-import ai.heart.classickbeats.utils.*
+import ai.heart.classickbeats.utils.setLightStatusBar
+import ai.heart.classickbeats.utils.setSafeOnClickListener
+import ai.heart.classickbeats.utils.viewBinding
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -95,13 +97,13 @@ class LoggingHomeFragment : Fragment(R.layout.fragment_logging_home) {
     }
 
     private fun navigateToLogBpFragment() {
-        val action = LoggingHomeFragmentDirections.actionLoggingHomeFragmentToLogBpFragment()
-        navController.navigate(action)
+//        val action = LoggingHomeFragmentDirections.actionLoggingHomeFragmentToLogBpFragment()
+//        navController.navigate(action)
     }
 
     private fun navigateToLogGlucoseFragment() {
-        val action = LoggingHomeFragmentDirections.actionLoggingHomeFragmentToLogGlucoseFragment()
-        navController.navigate(action)
+//        val action = LoggingHomeFragmentDirections.actionLoggingHomeFragmentToLogGlucoseFragment()
+//        navController.navigate(action)
     }
 
     private fun navigateToLogWaterIntakeFragment() {

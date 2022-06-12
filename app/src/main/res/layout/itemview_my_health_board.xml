@@ -29,18 +29,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/boardIcon" />
 
-    <ImageView
+    <FrameLayout
         android:id="@+id/boardImage"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginTop="12dp"
         android:maxHeight="200dp"
         android:minHeight="100dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/boardAction"
-        app:srcCompat="@drawable/bg_gradient_sky_pink" />
+       />
 
     <TextView
         android:id="@+id/boardValue"

@@ -41,8 +41,19 @@ class BloodGlucoseFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                BloodGlucoseScreen()
+                BloodGlucoseScreen(
+                    onBackPressed = { onNavigateBack() },
+                    onAddGlucose = { onNavigateAddGlucose() }
+                )
             }
         }
+    }
+
+    private fun onNavigateBack() {
+        navController.navigateUp()
+    }
+
+    private fun onNavigateAddGlucose() {
+        navController.navigate(BloodGlucoseFragmentDirections.actionBloodGlucoseFragmentToAddBloodGlucoseFragment())
     }
 }
