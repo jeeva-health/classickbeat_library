@@ -7,7 +7,7 @@ import ai.heart.classickbeats.ui.common.ui.*
 import ai.heart.classickbeats.ui.logging.model.BloodPressureViewData
 import ai.heart.classickbeats.ui.theme.*
 import android.annotation.SuppressLint
-import androidx.compose.Context
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -56,14 +56,14 @@ fun AddPressureMainCompose(
             icon = R.drawable.date,
             unit = "Date",
             value = data.dateString,
-            onClick = { showDatePicker(context, 0, 0, 0,{date: Date ->  Unit }) }
+            onClick = { showDatePicker(context, 0, 0, 0, { date: Date -> Unit }) }
         )
         DateTimeItem(
             modifier = Modifier,
             icon = R.drawable.time,
             unit = "Time",
             value = data.timeString,
-            onClick = { showTimePicker(context, 0, 0,{time:Time-> Unit}) }
+            onClick = { showTimePicker(context, 0, 0, { time: Time -> Unit }) }
         )
         ReadingLayout(modifier = Modifier)
 

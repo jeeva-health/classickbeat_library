@@ -3,14 +3,13 @@ package ai.heart.classickbeats.ui.logging.fragment
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.domain.BloodGlucose
 import ai.heart.classickbeats.ui.common.ui.*
-import ai.heart.classickbeats.ui.logging.fragment.BloodGlucoseFragmentDirections
 import ai.heart.classickbeats.ui.logging.model.DateTimeValueModel
 import ai.heart.classickbeats.ui.logging.model.GlucoseTagModel
 import ai.heart.classickbeats.ui.theme.*
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.compose.View
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -237,7 +236,9 @@ class BloodGlucoseFragment : Fragment() {
     @Composable
     fun LineChart(modifier: Modifier, data: List<LineChartModel>) {
         ClassicBeatsTheme() {
-            AndroidView(modifier = modifier.fillMaxWidth().height(500.dp),
+            AndroidView(modifier = modifier
+                .fillMaxWidth()
+                .height(500.dp),
                 factory = { context ->
                     CustomLineGraph(context, null, data)
                 },
