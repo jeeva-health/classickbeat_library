@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.ui.profile.reminder
 
-import ai.heart.classickbeats.network.reminder.ReminderRepository
+import ai.heart.classickbeats.data.reminder.ReminderRepository
 import ai.heart.classickbeats.model.Reminder
 import ai.heart.classickbeats.model.Time
 import ai.heart.classickbeats.shared.result.Event

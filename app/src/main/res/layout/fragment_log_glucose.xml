@@ -149,7 +149,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:minWidth="96dp"
-            android:text="@string/before_meal"
+            android:text="before_meal"
             android:textAlignment="center"
             app:checkedIconVisible="true"
             app:chipCornerRadius="4dp" />
@@ -160,7 +160,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:minWidth="96dp"
-            android:text="@string/_1_2_hours_after_eating"
+            android:text="1_2_hours_after_eating"
             android:textAlignment="center"
             app:checkedIconVisible="true"
             app:chipCornerRadius="4dp" />

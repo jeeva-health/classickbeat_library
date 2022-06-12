@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.logging
+package ai.heart.classickbeats.ui.logging.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.ui.common.ui.*

@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.ui.logging
 
-import ai.heart.classickbeats.network.logging.LoggingRepository
+import ai.heart.classickbeats.data.logging.LoggingRepository
 import ai.heart.classickbeats.domain.BloodGlucose
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.ui.logging.model.BloodGlucoseViewData

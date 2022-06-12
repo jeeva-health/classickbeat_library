@@ -1,7 +1,9 @@
-package ai.heart.classickbeats.ui.logging
+package ai.heart.classickbeats.ui.logging.fragment
 
 import ai.heart.classickbeats.R
+import ai.heart.classickbeats.domain.BloodGlucose
 import ai.heart.classickbeats.ui.common.ui.*
+import ai.heart.classickbeats.ui.logging.fragment.BloodGlucoseFragmentDirections
 import ai.heart.classickbeats.ui.logging.model.DateTimeValueModel
 import ai.heart.classickbeats.ui.logging.model.GlucoseTagModel
 import ai.heart.classickbeats.ui.theme.*
@@ -44,7 +46,6 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class BloodGlucoseFragment : Fragment() {
-
     private val navController: NavController by lazy {
         Navigation.findNavController(
             requireActivity(),
@@ -57,16 +58,13 @@ class BloodGlucoseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         return ComposeView(requireContext()).apply {
             // Dispose of the Composition when the view's LifecycleOwner
             // is destroyed
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-
             setContent {
                 MainCompose()
             }
-
         }
     }
 
@@ -76,7 +74,6 @@ class BloodGlucoseFragment : Fragment() {
     @Composable
     fun MainCompose() {
         ClassicBeatsTheme {
-
             BottomSheetContainer(modifier = Modifier)
         }
     }
@@ -335,19 +332,17 @@ class BloodGlucoseFragment : Fragment() {
                     textAlign = TextAlign.Start
                 )
 
-                val d1 = GlucoseTagModel(R.drawable.juice, "Fasting", true)
-                val d2 = GlucoseTagModel(R.drawable.juice, "Post Meal", false)
-                val d3 = GlucoseTagModel(R.drawable.juice, "Bedtime", true)
-                val d4 = GlucoseTagModel(R.drawable.juice, "Random", false)
-                val d5 = GlucoseTagModel(R.drawable.juice, "Random", false)
-                val d6 = GlucoseTagModel(R.drawable.juice, "Random", false)
-                val ddList: List<GlucoseTagModel> = arrayListOf(d1, d2, d3, d4, d5, d6)
+                val d1 = GlucoseTagModel(R.drawable.juice, BloodGlucose.TAG.FASTING)
+                val d2 = GlucoseTagModel(R.drawable.juice, BloodGlucose.TAG.POST_MEAL)
+                val d3 = GlucoseTagModel(R.drawable.juice, BloodGlucose.TAG.BED_TIME)
+                val d4 = GlucoseTagModel(R.drawable.juice, BloodGlucose.TAG.RANDOM)
+                val ddList: List<GlucoseTagModel> = arrayListOf(d1, d2, d3, d4)
 
 
                 LazyRow(modifier = Modifier.fillMaxWidth()) {
                     items(ddList) { dd: GlucoseTagModel ->
                         ItemTag(modifier = Modifier, dd.icon,
-                            tag = dd.tag, selected = dd.selected,
+                            tag = dd.tag.toString(), selected = false,
                             onClick = {}
                         )
                     }

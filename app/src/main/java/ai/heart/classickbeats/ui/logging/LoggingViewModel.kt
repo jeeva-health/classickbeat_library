@@ -1,7 +1,7 @@
 package ai.heart.classickbeats.ui.logging
 
 import ai.heart.classickbeats.domain.BloodPressure
-import ai.heart.classickbeats.network.logging.LoggingRepository
+import ai.heart.classickbeats.data.logging.LoggingRepository
 import ai.heart.classickbeats.model.Date
 import ai.heart.classickbeats.model.Time
 import ai.heart.classickbeats.model.entity.*

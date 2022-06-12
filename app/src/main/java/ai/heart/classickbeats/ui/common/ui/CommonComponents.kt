@@ -3,6 +3,10 @@ package ai.heart.classickbeats.ui.common.ui
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.ui.logging.model.DateTimeValueModel
 import ai.heart.classickbeats.ui.theme.*
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Context
+import android.widget.DatePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.util.*
 
 
 @Preview
@@ -215,4 +221,26 @@ fun ItemTag(modifier: Modifier, icon: Int, tag: String, selected: Boolean, onCli
         )
     }
 }
+
+ fun showTimePicker(context: Context, time: MutableState<String>, hour:Int,minute:Int) {
+     
+    val timePickerDialog = TimePickerDialog(
+        context,
+        { _, hour: Int, minute: Int ->
+            time.value = "$hour:$minute"
+        }, hour, minute, false
+    )
+    timePickerDialog.show()
+}
+
+ fun showDatePicker(context: Context, date: MutableState<String>, year:Int,month:Int,day:Int) {
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+            date.value = "$dayOfMonth/"+(month+1)+"/$year"
+        }, year, month, day
+    )
+    datePickerDialog.show()
+}
+
 
