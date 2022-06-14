@@ -3,9 +3,9 @@ package ai.heart.classickbeats.ui.logging.compose
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.domain.BloodGlucose
 import ai.heart.classickbeats.domain.toStringValue
-import ai.heart.classickbeats.ui.common.compose.CustomSliderScale
-import ai.heart.classickbeats.ui.common.compose.DateTimeSelectionView
-import ai.heart.classickbeats.ui.common.compose.ToolBarWithBackAndAction
+import ai.heart.classickbeats.model.Date
+import ai.heart.classickbeats.model.Time
+import ai.heart.classickbeats.ui.common.compose.*
 import ai.heart.classickbeats.ui.logging.BloodGlucoseViewModel
 import ai.heart.classickbeats.ui.logging.model.BloodGlucoseViewData
 import ai.heart.classickbeats.ui.logging.model.GlucoseTagModel
@@ -80,10 +80,11 @@ fun AddBloodGlucoseView(
         )
 
         DateTimeSelectionView(
+            modifier = Modifier,
             icon = R.drawable.date,
             label = "Date",
             value = data.dateString,
-            onClick = {}
+            onClick = { showDatePicker(context, Date(2, 2, 2222)) { } }
         )
 
         DateTimeSelectionView(
@@ -91,7 +92,7 @@ fun AddBloodGlucoseView(
             icon = R.drawable.time,
             label = "Time",
             value = data.timeString,
-            onClick = {}
+            onClick = { showTimePicker(context, Time(3, 30)) { } }
         )
 
         ReadingLayout(
@@ -142,7 +143,7 @@ fun ReadingLayout(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        ScaleLayout(
+        GLucoseScaleLayout(
             defaultReading = defaultReading,
             maxValue = 300,
             modifier = Modifier
@@ -162,9 +163,8 @@ fun ReadingLayout(
                 painter = painterResource(id = R.drawable.ic_plus),
                 contentDescription = null,
                 modifier = Modifier.align(alignment = Alignment.CenterVertically),
-                colorFilter = ColorFilter.tint(DarkIndigo),
-
-                )
+                colorFilter = ColorFilter.tint(DarkIndigo)
+            )
 
             Text(
                 text = "Add Note",
@@ -220,9 +220,14 @@ private fun GlucoseTagView(
 }
 
 @Composable
-fun ScaleLayout(defaultReading: Int, maxValue: Int, modifier: Modifier = Modifier) {
+fun GLucoseScaleLayout(
+    defaultReading: Int,
+    maxValue: Int,
+    modifier: Modifier = Modifier
+) {
 
-    val (glucoseLevelReading, updateReading) = remember { mutableStateOf(defaultReading) }
+    val (glucoseLevelReading, updateReading) =
+        remember { mutableStateOf(defaultReading) }
 
     Row(
         modifier = Modifier

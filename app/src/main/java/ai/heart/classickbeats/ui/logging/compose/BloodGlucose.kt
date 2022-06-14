@@ -217,7 +217,8 @@ fun LineChart(modifier: Modifier, data: List<LineChartModel>) {
         AndroidView(
             modifier = modifier
                 .fillMaxWidth()
-                .height(500.dp),
+                .height(500.dp)
+            ,
             factory = { context ->
                 CustomLineGraph(context, null, data)
             },

@@ -18,8 +18,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,33 +31,32 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.paging.ExperimentalPagingApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
 
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @Composable
 fun AddBloodPressureScreen(viewModel: BloodPressureViewModel) {
     val title = "Blood Pressure"
-    val data = viewModel.defaultData
     val onSubmit = { bpData: BloodPressureViewData ->
         viewModel.uploadPressureLevelEntry(bpData)
     }
     val onBackPressed = {}
     AddBloodPressureView(
         title = title,
-        data = data,
         onSubmit = onSubmit,
-        onBackPressed = onBackPressed
+        onBackPressed = onBackPressed,
+        viewModel = viewModel
     )
 }
 
+@OptIn(ExperimentalPagingApi::class, ExperimentalCoroutinesApi::class)
 @SuppressLint("ResourceType")
 @Composable
 fun AddBloodPressureView(
     title: String,
-    data: BloodPressureViewData,
     onSubmit: (BloodPressureViewData) -> Unit,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    viewModel: BloodPressureViewModel
 ) {
     val context = LocalContext.current
     Column(
@@ -73,24 +71,25 @@ fun AddBloodPressureView(
             action = {},
             modifier = Modifier,
         )
-
         DateTimeSelectionView(
             modifier = Modifier,
             icon = R.drawable.date,
             label = "Date",
-            value = data.dateString,
-            onClick = { showDatePicker(context, Date(0, 0, 0), { date: Date -> Unit }) }
+            value = viewModel.defaultData.dateString,
+            onClick = { showDatePicker(context, Date(2, 2, 2222)) { } }
         )
-
         DateTimeSelectionView(
             modifier = Modifier,
             icon = R.drawable.time,
             label = "Time",
-            value = data.timeString,
-            onClick = { showTimePicker(context, Time(0, 0), { time: Time -> Unit }) }
+            value = viewModel.defaultData.timeString,
+            onClick = { showTimePicker(context, Time(3, 30)) { } }
         )
 
-        ReadingLayout(modifier = Modifier)
+        ReadingLayout(
+            modifier = Modifier,
+            data = viewModel
+        )
 
         Spacer(
             modifier = Modifier
@@ -121,14 +120,18 @@ fun AddBloodPressureView(
 }
 
 
+@OptIn(ExperimentalPagingApi::class, ExperimentalCoroutinesApi::class)
 @Composable
-fun ReadingLayout(modifier: Modifier) {
-    var sysReading = remember {
-        MutableStateFlow(0)
-    }
-    var diaReading = remember {
-        MutableStateFlow(0)
-    }
+fun ReadingLayout(
+    modifier: Modifier,
+    data: BloodPressureViewModel
+) {
+//    val (sysReading, updateSysReading) = remember {
+//        mutableStateOf(data.systolicLevel)
+//    }
+//    val (diaReading, updateDiaReading) = remember {
+//        mutableStateOf(data.diastolicLevel)
+//    }
     Column(
         modifier = modifier
             .padding(16.dp, 10.dp)
@@ -149,10 +152,9 @@ fun ReadingLayout(modifier: Modifier) {
             Text(
                 modifier = Modifier
                     .padding(0.dp, 32.dp, 8.dp, 0.dp),
-                text = "" + sysReading.collectAsState().value + "/" + diaReading.collectAsState().value,
-                fontSize = 24.sp,
-
-                )
+                text = "${data._sysValue.value}/${data._diaValue.value}",
+                fontSize = 24.sp
+            )
             Text(
                 text = "(mmHg)",
                 modifier = Modifier
@@ -160,31 +162,33 @@ fun ReadingLayout(modifier: Modifier) {
             )
 
         }
-        ScaleLayout(
+        ScaleLayoutPressure(
             modifier = Modifier,
             diagnostic = "Systolic (High)",
             color = RosyPink,
             maxValue = 360,
-            reading = sysReading
+            reading = data._sysValue
         )
-        ScaleLayout(
+        ScaleLayoutPressure(
             modifier = Modifier,
             diagnostic = "Diastolic (Low)",
             color = DarkSkyBlue,
             maxValue = 360,
-            reading = diaReading
+            reading = data._diaValue
+
         )
     }
 }
 
 @Composable
-fun ScaleLayout(
+fun ScaleLayoutPressure(
     modifier: Modifier,
     diagnostic: String,
     color: Color,
     maxValue: Int,
-    reading: MutableStateFlow<Int>
+    reading: MutableState<Int>
 ) {
+
 
     Column(
         modifier = modifier
@@ -221,7 +225,13 @@ fun ScaleLayout(
         ) {
             AndroidView(modifier = Modifier.fillMaxWidth(),
                 factory = { context ->
-                    CustomSliderScale(context, 0, maxValue) {}
+                    CustomSliderScale(
+                        context = context,
+                        currentReading = reading.value,
+                        maxValue = maxValue,
+                        onReadingChange = { newValue ->
+                            reading.value = newValue
+                        })
                 },
                 update = {
                     //run only for first time
