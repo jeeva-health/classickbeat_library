@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 
 @Composable
 fun HistoryLayout(
@@ -143,6 +144,7 @@ fun HistoryItemView(
 @Composable
 fun DateTimeSelectionView(
     icon: Int,
+    actionIcon: Int,
     label: String,
     value: String,
     onClick: () -> Unit,
@@ -188,9 +190,9 @@ fun DateTimeSelectionView(
         Image(
             modifier = Modifier
                 .weight(1f)
-                .align(Alignment.CenterVertically),
-            painter = painterResource(R.drawable.ic_baseline_keyboard_arrow_down_24),
-            contentDescription = null
+                .align(Alignment.CenterVertically)
+                .padding(4.dp),
+            painter = painterResource(id = actionIcon), contentDescription = null
         )
     }
 }
@@ -202,6 +204,7 @@ fun PreviewDateTimeSelectionView() {
         Surface {
             DateTimeSelectionView(
                 icon = R.drawable.date,
+                actionIcon = R.drawable.ic_baseline_keyboard_arrow_down_24,
                 label = "Unit",
                 value = "Value",
                 onClick = {},
@@ -358,5 +361,20 @@ fun PreviewGlucoseTagItemViewSelected() {
                 onClick = { }
             )
         }
+    }
+}
+
+@Composable
+fun LineChart(modifier: Modifier, data: List<LineChartModel>) {
+    ClassicBeatsTheme() {
+        AndroidView(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(500.dp),
+            factory = { context ->
+                CustomLineGraph(context, null, data)
+            },
+            update = {}
+        )
     }
 }

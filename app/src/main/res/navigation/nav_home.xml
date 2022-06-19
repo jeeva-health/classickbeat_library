@@ -52,11 +52,11 @@
             app:destination="@id/myHealthFragment" />
     </fragment>
 
-<!--    <fragment-->
-<!--        android:id="@+id/logBpFragment"-->
-<!--        android:name="ai.heart.classickbeats.ui.logging.fragment.LogBpFragment"-->
-<!--        android:label="fragment_log_bp"-->
-<!--        tools:layout="@layout/fragment_log_bp" />-->
+    <!--    <fragment-->
+    <!--        android:id="@+id/logBpFragment"-->
+    <!--        android:name="ai.heart.classickbeats.ui.logging.fragment.LogBpFragment"-->
+    <!--        android:label="fragment_log_bp"-->
+    <!--        tools:layout="@layout/fragment_log_bp" />-->
 
     <fragment
         android:id="@+id/timelineFragment"
@@ -79,15 +79,15 @@
         android:name="ai.heart.classickbeats.ui.logging.fragment.LoggingHomeFragment"
         android:label="fragment_logging_home"
         tools:layout="@layout/fragment_logging_home">
-<!--        <action-->
-<!--            android:id="@+id/action_loggingHomeFragment_to_logBpFragment"-->
-<!--            app:destination="@id/logBpFragment" />-->
+        <!--        <action-->
+        <!--            android:id="@+id/action_loggingHomeFragment_to_logBpFragment"-->
+        <!--            app:destination="@id/logBpFragment" />-->
         <action
             android:id="@+id/action_loggingHomeFragment_to_logWeightFragment"
             app:destination="@id/logWeightFragment" />
-<!--        <action-->
-<!--            android:id="@+id/action_loggingHomeFragment_to_logGlucoseFragment"-->
-<!--            app:destination="@id/logGlucoseFragment" />-->
+        <!--        <action-->
+        <!--            android:id="@+id/action_loggingHomeFragment_to_logGlucoseFragment"-->
+        <!--            app:destination="@id/logGlucoseFragment" />-->
         <action
             android:id="@+id/action_loggingHomeFragment_to_logWaterIntakeFragment"
             app:destination="@id/logWaterIntakeFragment" />
@@ -165,6 +165,9 @@
         <action
             android:id="@+id/action_myHealthFragment_to_bloodGlucoseFragment"
             app:destination="@id/bloodGlucoseFragment" />
+        <action
+            android:id="@+id/action_myHealthFragment_to_heartRateFragment"
+            app:destination="@id/heartRateFragment" />
     </fragment>
 
     <fragment
@@ -191,9 +194,8 @@
 
     <fragment
         android:id="@+id/bloodPressureFragment"
-        android:name="ai.heart.classickbeats.ui.logging.fragment.BloodPressureFragment"
-        android:label="fragment_blood_pressure"
-        >
+        android:name="ai.heart.classickbeats.ui.logging.fragment.bloodPressure.BloodPressureFragment"
+        android:label="fragment_blood_pressure">
         <action
             android:id="@+id/action_bloodPressureFragment_to_addBloodPressureFragment"
             app:destination="@id/addBloodPressureFragment" />
@@ -204,9 +206,8 @@
     </fragment>
     <fragment
         android:id="@+id/addBloodPressureFragment"
-        android:name="ai.heart.classickbeats.ui.logging.fragment.AddBloodPressureFragment"
-        android:label="fragment_blood_pressure"
-        >
+        android:name="ai.heart.classickbeats.ui.logging.fragment.bloodPressure.AddBloodPressureFragment"
+        android:label="fragment_blood_pressure">
         <action
             android:id="@+id/action_bloodPressureFragment_self"
             app:destination="@id/bloodPressureFragment" />
@@ -215,9 +216,8 @@
 
     <fragment
         android:id="@+id/bloodGlucoseFragment"
-        android:name="ai.heart.classickbeats.ui.logging.fragment.BloodGlucoseFragment"
-        android:label="fragment_blood_glucose"
-        >
+        android:name="ai.heart.classickbeats.ui.logging.fragment.bloodGlucose.BloodGlucoseFragment"
+        android:label="fragment_blood_glucose">
 
         <action
             android:id="@+id/action_bloodGlucoseFragment_to_myHealthFragment"
@@ -229,9 +229,8 @@
 
     <fragment
         android:id="@+id/addBloodGlucoseFragment"
-        android:name="ai.heart.classickbeats.ui.logging.fragment.AddBloodGlucoseFragment"
-        android:label="fragment_add_blood_glucose"
-        >
+        android:name="ai.heart.classickbeats.ui.logging.fragment.bloodGlucose.AddBloodGlucoseFragment"
+        android:label="fragment_add_blood_glucose">
 
         <action
             android:id="@+id/action_addBloodGlucoseFragment_to_bloodGlucoseFragment"
@@ -254,6 +253,22 @@
     </fragment>
 
     <fragment
+        android:id="@+id/heartRateFragment"
+        android:name="ai.heart.classickbeats.ui.logging.fragment.heartRate.HeartRateFragment"
+        android:label="fragment_heart_rate"
+         >
+        <action
+            android:id="@+id/action_heartRateFragment_to_myHealthFragment"
+            app:destination="@id/myHealthFragment" />
+        <action
+            android:id="@+id/action_heartRateFragment_to_measureBPMKnowMoreFragment"
+            app:destination="@id/measureBPMKnowMoreFragment" />
+        <action
+            android:id="@+id/action_heartRateFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/scanTutorialFragment"
         android:name="ai.heart.classickbeats.ui.ppg.fragment.ScanTutorialFragment"
         android:label="fragment_scan_tutorial"
@@ -265,17 +280,27 @@
         android:label="fragment_log_weight"
         tools:layout="@layout/fragment_log_weight" />
 
-<!--    <fragment-->
-<!--        android:id="@+id/logGlucoseFragment"-->
-<!--        android:name="ai.heart.classickbeats.ui.logging.fragment.LogGlucoseFragment"-->
-<!--        android:label="fragment_log_glucose"-->
-<!--        tools:layout="@layout/fragment_log_glucose" />-->
+    <!--    <fragment-->
+    <!--        android:id="@+id/logGlucoseFragment"-->
+    <!--        android:name="ai.heart.classickbeats.ui.logging.fragment.LogGlucoseFragment"-->
+    <!--        android:label="fragment_log_glucose"-->
+    <!--        tools:layout="@layout/fragment_log_glucose" />-->
 
     <fragment
         android:id="@+id/logWaterIntakeFragment"
         android:name="ai.heart.classickbeats.ui.logging.fragment.LogWaterIntakeFragment"
         android:label="fragment_log_water_intake"
         tools:layout="@layout/fragment_log_water_intake" />
+
+    <fragment
+        android:id="@+id/measureBPMKnowMoreFragment"
+        android:name="ai.heart.classickbeats.ui.logging.fragment.heartRate.MeasureBPMKnowMoreFragment"
+        android:label="fragment_measure_heart_rate_know_more">
+
+        <action
+            android:id="@+id/action_measureBPMKnowMoreFragment_to_heartRateFragment"
+            app:destination="@id/heartRateFragment" />
+    </fragment>
 
     <dialog
         android:id="@+id/timePickerFragment"
@@ -458,5 +483,6 @@
     <action
         android:id="@+id/action_global_confirmationDialogFragment"
         app:destination="@id/confirmationDialogFragment" />
+
 
 </navigation>

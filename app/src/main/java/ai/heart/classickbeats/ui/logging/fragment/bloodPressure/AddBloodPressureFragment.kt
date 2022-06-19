@@ -1,9 +1,9 @@
-package ai.heart.classickbeats.ui.logging.fragment
+package ai.heart.classickbeats.ui.logging.fragment.bloodPressure
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.shared.result.EventObserver
-import ai.heart.classickbeats.ui.logging.BloodGlucoseViewModel
-import ai.heart.classickbeats.ui.logging.compose.AddBloodGlucoseScreen
+import ai.heart.classickbeats.ui.logging.BloodPressureViewModel
+import ai.heart.classickbeats.ui.logging.compose.AddBloodPressureScreen
 import ai.heart.classickbeats.ui.theme.ClassicBeatsTheme
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,9 +22,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class AddBloodGlucoseFragment : Fragment() {
+class AddBloodPressureFragment : Fragment() {
 
-    private val viewModel: BloodGlucoseViewModel by viewModels()
+    private val viewModel: BloodPressureViewModel by viewModels()
 
     private val navController: NavController by lazy {
         Navigation.findNavController(
@@ -34,15 +34,15 @@ class AddBloodGlucoseFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ClassicBeatsTheme() {
-                    AddBloodGlucoseScreen(viewModel)
+                    AddBloodPressureScreen(viewModel)
                 }
             }
         }

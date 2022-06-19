@@ -26,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
@@ -82,6 +83,7 @@ fun AddBloodGlucoseView(
         DateTimeSelectionView(
             modifier = Modifier,
             icon = R.drawable.date,
+            actionIcon = R.drawable.ic_baseline_keyboard_arrow_down_24,
             label = "Date",
             value = data.dateString,
             onClick = { showDatePicker(context, Date(2, 2, 2222)) { } }
@@ -90,6 +92,7 @@ fun AddBloodGlucoseView(
         DateTimeSelectionView(
             modifier = Modifier,
             icon = R.drawable.time,
+            actionIcon = R.drawable.ic_baseline_keyboard_arrow_down_24,
             label = "Time",
             value = data.timeString,
             onClick = { showTimePicker(context, Time(3, 30)) { } }

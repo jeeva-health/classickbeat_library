@@ -285,5 +285,7 @@
     <string name="back">Back</string>
     <string name="click">click</string>
     <string name="image">image</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
 
 </resources>

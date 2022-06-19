@@ -73,6 +73,7 @@ fun AddBloodPressureView(
         )
         DateTimeSelectionView(
             modifier = Modifier,
+            actionIcon = R.drawable.ic_baseline_keyboard_arrow_down_24 ,
             icon = R.drawable.date,
             label = "Date",
             value = viewModel.defaultData.dateString,
@@ -81,6 +82,7 @@ fun AddBloodPressureView(
         DateTimeSelectionView(
             modifier = Modifier,
             icon = R.drawable.time,
+            actionIcon = R.drawable.ic_baseline_keyboard_arrow_down_24 ,
             label = "Time",
             value = viewModel.defaultData.timeString,
             onClick = { showTimePicker(context, Time(3, 30)) { } }

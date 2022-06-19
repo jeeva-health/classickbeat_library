@@ -185,7 +185,7 @@ class MyHealthFragment : Fragment(R.layout.fragment_my_health) {
     private fun boardItemClickListener() = fun(action: String) {
         when (action) {
             BoardModel.HEART_RATE -> {
-                findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToScanFragment())
+                findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToHeartRateFragment())
             }
             BoardModel.BODY_WEIGHT -> {
                 findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToSaveWeightFragment())
@@ -209,7 +209,7 @@ class MyHealthFragment : Fragment(R.layout.fragment_my_health) {
     private fun itemClickListener() = fun(function: Int) {
         when (function) {
             FUNCTION_HEART -> {
-                findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToBloodGlucoseFragment())
+                findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToHeartRateFragment())
             }
             FUNCTION_WEIGHT -> {
                 findNavController().navigate(MyHealthFragmentDirections.actionMyHealthFragmentToSaveWeightFragment())

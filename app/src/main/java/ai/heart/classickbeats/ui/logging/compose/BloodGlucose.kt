@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
@@ -89,7 +90,7 @@ private fun GlucoseMainPageView(
     onToggleTagView: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().background(Brush.linearGradient(listOf(IceBlue,IceBlue, LightPink)))
     ) {
         ToolBarWithBackAndAction(
             modifier = Modifier,
@@ -211,21 +212,7 @@ fun GraphLayout(
     }
 }
 
-@Composable
-fun LineChart(modifier: Modifier, data: List<LineChartModel>) {
-    ClassicBeatsTheme() {
-        AndroidView(
-            modifier = modifier
-                .fillMaxWidth()
-                .height(500.dp)
-            ,
-            factory = { context ->
-                CustomLineGraph(context, null, data)
-            },
-            update = {}
-        )
-    }
-}
+
 
 @Composable
 fun ChatIndicator(modifier: Modifier, color: Color, value: String) {

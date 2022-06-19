@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.ui.logging.fragment
+package ai.heart.classickbeats.ui.logging.fragment.bloodGlucose
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.ui.logging.BloodGlucoseViewModel
