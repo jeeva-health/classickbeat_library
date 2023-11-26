@@ -1,4 +1,4 @@
-package ai.heart.classickbeats.model
+package ai.heart.classickbeats.model.entity
 
 enum class LogType {
     BloodPressure,

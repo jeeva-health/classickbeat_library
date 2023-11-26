@@ -1,8 +1,7 @@
 package ai.heart.classickbeats
 
 import ai.heart.classickbeats.databinding.ActivityMainBinding
-import ai.heart.classickbeats.model.Constants
-import ai.heart.classickbeats.shared.network.SessionManager
+//import ai.heart.classickbeats.model.Constants
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -31,11 +30,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
 
-    @Inject
-    lateinit var updateManager: UpdateManager
+//    @Inject
+//    lateinit var updateManager: UpdateManager
 
-    @Inject
-    lateinit var sessionManager: SessionManager
+//    @Inject
+//    lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,89 +49,58 @@ class MainActivity : AppCompatActivity() {
         val view = binding?.root
         setContentView(view)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding?.rootLayout!!) { rootLayout: View, windowInsets: WindowInsetsCompat ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            rootLayout.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                leftMargin = insets.left
-                topMargin = 0
-                rightMargin = insets.right
-                bottomMargin = insets.bottom
-            }
-            WindowInsetsCompat.CONSUMED
-        }
+//        ViewCompat.setOnApplyWindowInsetsListener(binding?.rootLayout!!) { rootLayout: View, windowInsets: WindowInsetsCompat ->
+//            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            rootLayout.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+//                leftMargin = insets.left
+//                topMargin = 0
+//                rightMargin = insets.right
+//                bottomMargin = insets.bottom
+//            }
+//            WindowInsetsCompat.CONSUMED
+//        }
 
         navController = this.findNavController(R.id.nav_host_fragment)
 
-        binding?.bottomNavigation?.setOnItemSelectedListener { menuItem ->
-            menuItem.onNavDestinationSelected(navController)
-        }
 
-        createNotificationChannel()
+//        createNotificationChannel()
 
-        binding?.bottomNavigation?.setOnItemSelectedListener { item: MenuItem ->
-            when (item.itemId) {
-                R.id.historyFragment -> {
-                    navController.navigate(R.id.historyFragment)
-                    true
-                }
-                R.id.loggingHomeFragment -> {
-                    navController.navigate(R.id.loggingHomeFragment)
-                    true
-                }
-                R.id.scanFragment -> {
-                    navController.navigate(R.id.scanFragment)
-                    true
-                }
-                R.id.wellnessHomeFragment -> {
-                    navController.navigate(R.id.wellnessHomeFragment)
-                    true
-                }
-                R.id.profileHomeFragment -> {
-                    navController.navigate(R.id.profileHomeFragment)
-                    true
-                }
-                else -> {
-                    false
-                }
-            }
-        }
-
-        updateManager.checkForImmediateUpdate()
+//        updateManager.checkForImmediateUpdate()
     }
 
     override fun onResume() {
         super.onResume()
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding?.apply {
-                when (destination.id) {
-                    R.id.scanFragment, R.id.historyFragment,
-                    R.id.loggingHomeFragment, R.id.wellnessHomeFragment, R.id.profileHomeFragment -> {
-                        showBottomNavigation()
-                    }
-                    else -> {
-                        hideBottomNavigation()
-                    }
-                }
-            }
-        }
+//        navController.addOnDestinationChangedListener { _, destination, _ ->
+//            binding?.apply {
+//                when (destination.id) {
+//                    R.id.scanFragment, R.id.historyFragment,
+//                    R.id.loggingHomeFragment, R.id.wellnessHomeFragment, R.id.profileHomeFragment -> {
+//                        showBottomNavigation()
+//                    }
+//                    else -> {
+//                        hideBottomNavigation()
+//                    }
+//                }
+//            }
+//        }
     }
 
-    private fun createNotificationChannel() {
-        val name = getString(R.string.playback_channel_name)
-        val descriptionText = getString(R.string.playback_channel_description)
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel =
-            NotificationChannel(Constants.PLAYBACK_CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-            }
-        // Register the channel with the system
-        val notificationManager: NotificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
-    }
+//    private fun createNotificationChannel() {
+//        val name = getString(R.string.playback_channel_name)
+//        val descriptionText = getString(R.string.playback_channel_description)
+//        val importance = NotificationManager.IMPORTANCE_DEFAULT
+//        val channel =
+//            NotificationChannel(Constants.PLAYBACK_CHANNEL_ID, name, importance).apply {
+//                description = descriptionText
+//            }
+//        // Register the channel with the system
+//        val notificationManager: NotificationManager =
+//            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//        notificationManager.createNotificationChannel(channel)
+//    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == UpdateManager.IMMEDIATE_UPDATE_REQUEST_CODE) {
             if (resultCode != RESULT_OK) {
@@ -140,5 +108,5 @@ class MainActivity : AppCompatActivity() {
                 // TODO(Start updated again)
             }
         }
-    }
+    }*/
 }

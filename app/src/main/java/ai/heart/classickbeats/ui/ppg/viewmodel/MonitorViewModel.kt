@@ -1,27 +1,18 @@
 package ai.heart.classickbeats.ui.ppg.viewmodel
 
 import ai.heart.classickbeats.compute.ProcessingData
-import ai.heart.classickbeats.data.record.RecordRepository
-import ai.heart.classickbeats.data.user.UserRepository
+//import ai.heart.classickbeats.data.record.RecordRepository
 import ai.heart.classickbeats.domain.CameraReading
 import ai.heart.classickbeats.model.Constants.SCAN_DURATION
-import ai.heart.classickbeats.model.User
-import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.result.Event
-import ai.heart.classickbeats.shared.result.data
 import android.os.CountDownTimer
 import android.text.format.DateUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -29,11 +20,11 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 @HiltViewModel
 class MonitorViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val recordRepository: RecordRepository
+//    private val userRepository: UserRepository,
+//    private val recordRepository: RecordRepository
 ) : ViewModel() {
 
-    var user: User? = null
+//    var user: User? = null
 
     private var timer: CountDownTimer? = null
 
@@ -114,22 +105,22 @@ class MonitorViewModel @Inject constructor(
     // Make sure 1000/f_interp is an integer
     val fInterp = 100.0
 
-    fun fetchUser() {
+  /*  fun fetchUser() {
         viewModelScope.launch {
             userRepository.getUserAsFlow().collectLatest {
                 user = it
             }
         }
-    }
+    }*/
 
-    fun endScanHandling() {
+  /*  fun endScanHandling() {
         viewModelScope.launch(Dispatchers.Default) {
             endTimer()
             uploadRawData()
         }
-    }
+    }*/
 
-    private suspend fun uploadRawData() {
+ /*   private suspend fun uploadRawData() {
         val timeStamp0 = timeList.firstOrNull() ?: 0
         val accelerationTime0 = accelerationTimeList.firstOrNull() ?: 0
         val ppgEntity = PPGEntity(
@@ -145,7 +136,7 @@ class MonitorViewModel @Inject constructor(
         val result = recordRepository.recordPPG(ppgEntity)
         Timber.i("TrackTime: upload raw upload completed id: ${result.data}")
         ppgId = result.data ?: -1
-    }
+    }*/
 
     fun addFrameDataToList(cameraReading: CameraReading) {
         val red = cameraReading.red
@@ -188,16 +179,16 @@ class MonitorViewModel @Inject constructor(
         }
     }
 
-    fun uploadScanSurvey(sleepRating: Int, moodRating: Int, scanState: String) {
-        viewModelScope.launch {
-            if (ppgId != -1L) {
-                val ppgEntity = PPGEntity(
-                    sleepRating = sleepRating,
-                    moodRating = moodRating,
-                    scanState = scanState
-                )
-                recordRepository.updatePPG(ppgId, ppgEntity)
-            }
-        }
-    }
+//    fun uploadScanSurvey(sleepRating: Int, moodRating: Int, scanState: String) {
+//        viewModelScope.launch {
+//            if (ppgId != -1L) {
+//                val ppgEntity = PPGEntity(
+//                    sleepRating = sleepRating,
+//                    moodRating = moodRating,
+//                    scanState = scanState
+//                )
+//                recordRepository.updatePPG(ppgId, ppgEntity)
+//            }
+//        }
+//    }
 }

@@ -1,6 +1,5 @@
 package ai.heart.classickbeats.model.entity
 
-import ai.heart.classickbeats.model.LogType
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 

@@ -1,6 +1,6 @@
 package ai.heart.classickbeats.compute
 
-import ai.heart.classickbeats.model.Constants.SCAN_DURATION
+import  ai.heart.classickbeats.model.Constants.SCAN_DURATION
 import org.apache.commons.math3.analysis.interpolation.AkimaSplineInterpolator
 import timber.log.Timber
 import kotlin.math.absoluteValue
@@ -13,7 +13,7 @@ object ProcessingData {
     fun sd(data: DoubleArray): Double {
         val mean = data.average()
         return data
-            .fold(0.0, { accumulator, next -> accumulator + (next - mean).pow(2.0) })
+            .fold(0.0) { accumulator, next -> accumulator + (next - mean).pow(2.0) }
             .let {
                 sqrt(it / data.size)
             }

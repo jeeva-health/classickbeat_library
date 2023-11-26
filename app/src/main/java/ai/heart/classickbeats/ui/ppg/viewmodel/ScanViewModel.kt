@@ -1,9 +1,9 @@
 package ai.heart.classickbeats.ui.ppg.viewmodel
 
-import ai.heart.classickbeats.domain.usecase.GetRecentPpgScanHistoryDataByCountUseCase
-import ai.heart.classickbeats.domain.usecase.GetRecentPpgScanHistoryDataByDurationUseCase
-import ai.heart.classickbeats.domain.prefs.FirstScanCompleteActionUseCase
-import ai.heart.classickbeats.domain.prefs.FistScanCompletedUseCase
+//import ai.heart.classickbeats.domain.usecase.GetRecentPpgScanHistoryDataByCountUseCase
+//import ai.heart.classickbeats.domain.usecase.GetRecentPpgScanHistoryDataByDurationUseCase
+//import ai.heart.classickbeats.domain.prefs.FirstScanCompleteActionUseCase
+//import ai.heart.classickbeats.domain.prefs.FistScanCompletedUseCase
 import ai.heart.classickbeats.model.entity.PPGEntity
 import ai.heart.classickbeats.shared.result.Event
 import ai.heart.classickbeats.shared.result.data
@@ -22,10 +22,10 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 @HiltViewModel
 class ScanViewModel @Inject constructor(
-    private val firstScanCompleteActionUseCase: FirstScanCompleteActionUseCase,
-    private val firstScanCompletedUseCase: FistScanCompletedUseCase,
-    private val getPpgScanHistoryDataByCountUseCase: GetRecentPpgScanHistoryDataByCountUseCase,
-    private val getPpgScanHistoryDataByDurationUseCase: GetRecentPpgScanHistoryDataByDurationUseCase
+//    private val firstScanCompleteActionUseCase: FirstScanCompleteActionUseCase,
+//    private val firstScanCompletedUseCase: FistScanCompletedUseCase,
+//    private val getPpgScanHistoryDataByCountUseCase: GetRecentPpgScanHistoryDataByCountUseCase,
+//    private val getPpgScanHistoryDataByDurationUseCase: GetRecentPpgScanHistoryDataByDurationUseCase
 ) : ViewModel() {
 
     private val _navigateToScanFragment = MutableLiveData<Event<Unit>>()
@@ -34,9 +34,10 @@ class ScanViewModel @Inject constructor(
     val historyScanData = mutableListOf<PPGEntity>()
 
     val isFirstTimeScanCompleted = liveData {
-        val result = firstScanCompletedUseCase(Unit)
-        Timber.i("isFirstTimeScanCompleted: ${result.data}")
-        if (result.data == false) {
+//        val result = firstScanCompletedUseCase(Unit)
+        val result = true
+        Timber.i("isFirstTimeScanCompleted: ${result}")
+        if (result == false) {
             emit(Event(false))
         } else {
             emit(Event(true))
@@ -44,23 +45,26 @@ class ScanViewModel @Inject constructor(
     }
 
     fun setFirstScanCompleted() {
-        viewModelScope.launch {
-            firstScanCompleteActionUseCase(true)
-            Timber.i("firstScanCompletedSet")
-        }
+//        viewModelScope.launch {
+//            firstScanCompleteActionUseCase(true)
+//            Timber.i("firstScanCompletedSet")
+//        }
     }
 
     fun getStartedClick() {
-        viewModelScope.launch {
-            firstScanCompleteActionUseCase(true)
-            _navigateToScanFragment.postValue(Event(Unit))
-        }
+//        viewModelScope.launch {
+//            firstScanCompleteActionUseCase(true)
+//            _navigateToScanFragment.postValue(Event(Unit))
+//        }
     }
 
     fun getPpgHistoryDataByCount(limit: Int) {
         viewModelScope.launch {
-            val result = getPpgScanHistoryDataByCountUseCase(limit)
-            result.data?.let { processScanHistoryData(it) }
+//            val result = getPpgScanHistoryDataByCountUseCase(limit)
+//            result.data?.let { processScanHistoryData(it) }
+
+            val result = emptyList<PPGEntity>()
+            result.let { processScanHistoryData(it) }
         }
     }
 
@@ -68,8 +72,10 @@ class ScanViewModel @Inject constructor(
         viewModelScope.launch {
             val startDate = Date().getDateAddedBy(daysDiff)
             val startDateStr = startDate.toDbFormatString()
-            val result = getPpgScanHistoryDataByDurationUseCase(startDateStr)
-            result.data?.let { processScanHistoryData(it) }
+//            val result = getPpgScanHistoryDataByDurationUseCase(startDateStr)
+//            result.data?.let { processScanHistoryData(it) }
+            val result = emptyList<PPGEntity>()
+            processScanHistoryData(result)
         }
     }
 

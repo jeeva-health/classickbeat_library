@@ -61,13 +61,13 @@ fun Fragment.postOnMainLooper(call: () -> Unit) {
     }
 }
 
-fun Fragment.showBottomNavigation() {
-    requireActivity().showBottomNavigation()
-}
-
-fun Fragment.hideBottomNavigation() {
-    requireActivity().hideBottomNavigation()
-}
+//fun Fragment.showBottomNavigation() {
+//    requireActivity().showBottomNavigation()
+//}
+//
+//fun Fragment.hideBottomNavigation() {
+//    requireActivity().hideBottomNavigation()
+//}
 
 fun Fragment.showLoadingBar() {
     requireActivity().showLoadingBar()

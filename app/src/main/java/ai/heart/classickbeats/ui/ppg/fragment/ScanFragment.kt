@@ -6,7 +6,6 @@ import ai.heart.classickbeats.databinding.FragmentScanBinding
 import ai.heart.classickbeats.domain.CameraReading
 import ai.heart.classickbeats.graph.RunningGraph
 import ai.heart.classickbeats.model.Constants.SCAN_DURATION
-import ai.heart.classickbeats.navigateToHeartRateFragment
 import ai.heart.classickbeats.shared.result.EventObserver
 import ai.heart.classickbeats.ui.common.CircleProgressBar
 import ai.heart.classickbeats.ui.ppg.AccelerometerListener
@@ -60,7 +59,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private val scanViewModel: ScanViewModel by activityViewModels()
 
-    private lateinit var navController: NavController
+//    private lateinit var navController: NavController
 
     private var chart: LineChart? = null
 
@@ -154,7 +153,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             recordValue = recordAccelerationValue
         )
 
-        monitorViewModel.fetchUser()
+//        monitorViewModel.fetchUser()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -162,22 +161,22 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
         //redirect to my health fragment delete after test
         binding.heartRateTv.setOnClickListener{
-            findNavController().navigate(ScanFragmentDirections.actionScanFragmentToMyHealthFragment())
+//            findNavController().navigate(ScanFragmentDirections.actionScanFragmentToMyHealthFragment())
         }
 
 
-        setLightStatusBar()
+//        setLightStatusBar()
 
-        navController = findNavController()
+//        navController = findNavController()
 
         // To make sure the bottom navigation is correctly set
-        requireActivity().navigateToHeartRateFragment()
+//        requireActivity().navigateToHeartRateFragment()
 
         // If its first scan show the scan tutorial dialog fragment
         scanViewModel.isFirstTimeScanCompleted.observe(viewLifecycleOwner, EventObserver {
-            if (!it) {
-                navigateToScanTutorialFragment()
-            }
+//            if (!it) {
+//                navigateToScanTutorialFragment()
+//            }
         })
 
         // Resets the dynamic heart rate
@@ -215,8 +214,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
 
         binding.info.setSafeOnClickListener {
-            val action = ScanFragmentDirections.actionScanFragmentToHrvInfoBottomSheetFragment()
-            navController.navigate(action)
+//            val action = ScanFragmentDirections.actionScanFragmentToHrvInfoBottomSheetFragment()
+//            navController.navigate(action)
         }
 
         monitorViewModel.timerProgress.observe(viewLifecycleOwner, EventObserver {
@@ -253,7 +252,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         binding.countdown.visibility = View.VISIBLE
         binding.viewFinderLayout.visibility = View.VISIBLE
         startInitialCountdown()
-        hideBottomNavigation()
+//        hideBottomNavigation()
     }
 
     private fun startInitialCountdown() {
@@ -468,12 +467,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private fun endScanning() {
         Timber.i("endScanning called")
         monitorViewModel.isProcessing = false
-        monitorViewModel.endScanHandling()
+//        monitorViewModel.endScanHandling()
         session?.abortCaptures()
         camera?.close()
         stopBackgroundThread()
         imageCounter = 0
-        navigateToScanQuestionFragment()
+//        navigateToScanQuestionFragment()
         scanViewModel.setFirstScanCompleted()
     }
 
@@ -490,12 +489,12 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         binding.circularProgressBar.setProgressWithAnimation(0.0f)
         binding.heartRate.text = "_ _"
 
-        lifecycleScope.launchWhenResumed {
-            delay(2000)
-            postOnMainLooper {
-                navController.navigate(R.id.scanFragment)
-            }
-        }
+//        lifecycleScope.launchWhenResumed {
+//            delay(2000)
+//            postOnMainLooper {
+//                navController.navigate(R.id.scanFragment)
+//            }
+//        }
     }
 
     override fun onResume() {
@@ -576,15 +575,15 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         binding.heartRate.text = heartRateStr
     }
 
-    private fun navigateToScanQuestionFragment() {
-        val action = ScanFragmentDirections.actionScanFragmentToScanQuestionFragment()
-        navController.navigate(action)
-    }
-
-    private fun navigateToScanTutorialFragment() {
-        val action = ScanFragmentDirections.actionScanFragmentToScanTutorialFragment()
-        navController.navigate(action)
-    }
+//    private fun navigateToScanQuestionFragment() {
+//        val action = ScanFragmentDirections.actionScanFragmentToScanQuestionFragment()
+//        navController.navigate(action)
+//    }
+//
+//    private fun navigateToScanTutorialFragment() {
+//        val action = ScanFragmentDirections.actionScanFragmentToScanTutorialFragment()
+//        navController.navigate(action)
+//    }
 
     private fun updateScanMessage(countdownType: Int, countdownTime: Int) {
         val messageId = if (countdownType == 0) {

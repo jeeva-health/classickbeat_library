@@ -30,63 +30,9 @@ fun Activity.showSnackbar(message: String, isShort: Boolean = true) {
     } else {
         BaseTransientBottomBar.LENGTH_LONG
     }
-    mainActivityOperation {
-        Snackbar.make(it.bottomNavigation, message, length)
-            .apply { anchorView = it.bottomNavigation }.show()
-    }
 }
 
-fun Activity.showBottomNavigation() {
-    mainActivityOperation {
-        it.bottomNavigation.visibility = View.VISIBLE
-    }
-}
 
-fun Activity.hideBottomNavigation() {
-    mainActivityOperation {
-        it.bottomNavigation.visibility = View.GONE
-    }
-}
-
-fun Activity.selectHistoryFragmentInBottomNavigation() {
-    mainActivityOperation {
-        if (it.bottomNavigation.selectedItemId != R.id.historyFragment) {
-            it.bottomNavigation.selectedItemId = R.id.historyFragment
-        }
-    }
-}
-
-fun Activity.navigateToLoggingFragment() {
-    mainActivityOperation {
-        if (it.bottomNavigation.selectedItemId != R.id.loggingHomeFragment) {
-            it.bottomNavigation.selectedItemId = R.id.loggingHomeFragment
-        }
-    }
-}
-
-fun Activity.navigateToHeartRateFragment() {
-    mainActivityOperation {
-        if (it.bottomNavigation.selectedItemId != R.id.scanFragment) {
-            it.bottomNavigation.selectedItemId = R.id.scanFragment
-        }
-    }
-}
-
-fun Activity.navigateToWellnessFragment() {
-    mainActivityOperation {
-        if (it.bottomNavigation.selectedItemId != R.id.wellnessHomeFragment) {
-            it.bottomNavigation.selectedItemId = R.id.wellnessHomeFragment
-        }
-    }
-}
-
-fun Activity.navigateToProfileFragment() {
-    mainActivityOperation {
-        if (it.bottomNavigation.selectedItemId != R.id.profileHomeFragment) {
-            it.bottomNavigation.selectedItemId = R.id.profileHomeFragment
-        }
-    }
-}
 
 fun Activity.showLoadingBar() {
     Timber.i("showLoadingBar() called")
