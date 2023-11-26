@@ -28,8 +28,6 @@ class ScanViewModel @Inject constructor(
 //    private val getPpgScanHistoryDataByDurationUseCase: GetRecentPpgScanHistoryDataByDurationUseCase
 ) : ViewModel() {
 
-    private val _navigateToScanFragment = MutableLiveData<Event<Unit>>()
-    val navigateToScanFragment: LiveData<Event<Unit>> = _navigateToScanFragment
 
     val historyScanData = mutableListOf<PPGEntity>()
 
@@ -51,12 +49,12 @@ class ScanViewModel @Inject constructor(
 //        }
     }
 
-    fun getStartedClick() {
+//    fun getStartedClick() {
 //        viewModelScope.launch {
 //            firstScanCompleteActionUseCase(true)
 //            _navigateToScanFragment.postValue(Event(Unit))
 //        }
-    }
+//    }
 
     fun getPpgHistoryDataByCount(limit: Int) {
         viewModelScope.launch {

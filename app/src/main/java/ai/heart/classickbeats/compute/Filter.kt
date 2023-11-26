@@ -10,11 +10,11 @@ import kotlin.math.sqrt
 object Filter {
 
     fun hilbert(X: List<Double>): DoubleArray {
-//        Timber.i("TrackTime: Hilbert starting (fn)")
+        Timber.i("TrackTime: Hilbert starting (fn)")
         val h = Hilbert(X.toDoubleArray())
         h.hilbertTransform()
         h.output
-//        Timber.i("TrackTime: Hilbert computed (fn)")
+        Timber.i("TrackTime: Hilbert computed (fn)")
         return h.amplitudeEnvelope
     }
 
@@ -37,8 +37,8 @@ object Filter {
         val filteredPeaks = out.filterByProminence(peaks, 0.4, null)
         Timber.i("Size, Prominent Peaks: ${filteredPeaks.size}, ${Arrays.toString(filteredPeaks)}")
 //        filteredPeaks = out.filterByWidth(filteredPeaks, 20.0, null)
-//        Timber.i("Size, Wide and Prominent Peaks: ${filteredPeaks.size}, ${Arrays.toString(filteredPeaks)}")
-//        Timber.i("TrackTime: Prominent Peaks detected (fn)")
+        Timber.i("Size, Wide and Prominent Peaks: ${filteredPeaks.size}, ${Arrays.toString(filteredPeaks)}")
+        Timber.i("TrackTime: Prominent Peaks detected (fn)")
 
         val peaksHeights = mutableListOf<Double>()
         for (i in filteredPeaks) {

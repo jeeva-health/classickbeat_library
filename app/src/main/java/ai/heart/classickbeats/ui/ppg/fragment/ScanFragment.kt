@@ -219,7 +219,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
 
         monitorViewModel.timerProgress.observe(viewLifecycleOwner, EventObserver {
-            updateScanMessage(countdownType, it)
+//            updateScanMessage(countdownType, it)
             if (it == 0) {
                 if (countdownType == 0) {
                     binding.countdown.visibility = View.GONE
@@ -474,6 +474,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         imageCounter = 0
 //        navigateToScanQuestionFragment()
         scanViewModel.setFirstScanCompleted()
+        //todo scan complete here
     }
 
     private fun endIncompleteScanning() {
@@ -495,6 +496,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 //                navController.navigate(R.id.scanFragment)
 //            }
 //        }
+        Timber.i("endIncompleteScanning called")
+        // Resets the dynamic heart rate
+        updateDynamicHeartRate(-1)
+
     }
 
     override fun onResume() {
@@ -508,8 +513,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
 
         // TODO(Ritesh: move to appropriate location)
-        scanViewModel.getPpgHistoryDataByCount(10)
-        scanViewModel.getPpgHistoryDataByDuration(-100)
+//        scanViewModel.getPpgHistoryDataByCount(10)
+//        scanViewModel.getPpgHistoryDataByDuration(-100)
     }
 
     override fun onPause() {

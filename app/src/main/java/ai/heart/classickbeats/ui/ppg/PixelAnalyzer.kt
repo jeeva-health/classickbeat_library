@@ -47,7 +47,7 @@ class PixelAnalyzer constructor(
                 sec++
                 frameRate += ++counter
             }
-            //Timber.i("frameRate: ${counter} Seconds: $sec SumRate: $frameRate")
+            Timber.i("frameRate: $counter Seconds: $sec SumRate: $frameRate")
             counter = 0
         }
     }
