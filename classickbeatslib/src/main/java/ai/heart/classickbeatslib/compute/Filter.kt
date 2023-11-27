@@ -13,7 +13,8 @@ object Filter {
     fun hilbert(X: List<Double>): DoubleArray {
         Timber.i("TrackTime: Hilbert starting (fn)")
         val h = Hilbert(X.toDoubleArray())
-        h.transform()
+        h.hilbertTransform()
+//        h.transform() //todo this line has been changed
         h.output
         Timber.i("TrackTime: Hilbert computed (fn)")
         return h.amplitudeEnvelope

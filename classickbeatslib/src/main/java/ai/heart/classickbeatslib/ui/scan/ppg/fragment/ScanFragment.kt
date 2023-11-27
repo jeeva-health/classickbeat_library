@@ -221,7 +221,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 //        }
 
         monitorViewModel.timerProgress.observe(viewLifecycleOwner, EventObserver {
-//            updateScanMessage(countdownType, it)
+            updateScanMessage(countdownType, it)
             if (it == 0) {
                 if (countdownType == 0) {
                     binding.countdown.visibility = View.GONE
@@ -583,6 +583,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             heartRateStr = "$bpm"
         }
         binding.heartRate.text = heartRateStr
+
+        //todo heart rate updating
     }
 
 //    private fun navigateToScanQuestionFragment() {
