@@ -1,0 +1,285 @@
+<resources>
+    <string name="rupee_amount">\u20B9 %s</string>
+
+    <string name="enter_name">Enter your name</string>
+    <string name="enter_age">Enter your age</string>
+    <string name="enter_weight">Enter your weight</string>
+    <string name="enter_height">Enter your height</string>
+    <string name="height_feet">Height - Feet</string>
+    <string name="height_inches">Height - Inches</string>
+    <string name="gender">Gender</string>
+    <string name="full_name">Full Name</string>
+    <string name="fill_your_details">Fill your details so that we can provide you with more accurate results</string>
+    <string name="help_us_know_you">Help us know you better</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="register">Register</string>
+    <string name="sign_up_google">Connect with Google</string>
+    <string name="terms_and_condition">By continuing, you agree to our Terms &amp; Conditions</string>
+
+    <!--    OnBoarding-->
+    <string name="onboarding_action_1">Scan your pulse with your phone camera</string>
+    <string name="onboarding_message_1">Simply put your finger on the phone camera to analyze your beating heart.</string>
+    <string name="onboarding_action_2">Track and log your daily health vitals</string>
+    <string name="onboarding_message_2">Check trends and gain insights on your important vitals</string>
+    <string name="onboarding_action_3">Get detailed analysis of your fitness and stress levels</string>
+    <string name="onboarding_message_3">Let powerful AI algorithms keep you informed about your health.</string>
+    <string name="onboarding_action_4">Meditate and stay calm with curated sounds</string>
+    <string name="onboarding_message_4">Check out our meditation sessions to relax both your mind and body</string>
+    <string name="get_started">Get Started</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="on_boarding_image">Onboarding Image</string>
+
+    <!--    Notification-->
+    <string name="playback_channel_name">Playback</string>
+    <string name="playback_channel_description">Playback channel</string>
+
+    <!--    Navigation menu-->
+    <string name="history">History</string>
+    <string name="logging">Logging</string>
+    <string name="measure">Measure</string>
+    <string name="wellness">Wellness</string>
+    <string name="profile">Profile</string>
+
+    <!--    Scan tutorial-->
+    <string name="scan_tutorial_1">Place the tip of your finger on the back camera and the flash, completely covering them.</string>
+    <string name="scan_tutorial_2">Apply gentle pressure in order to stabilize the finger.</string>
+    <string name="scan_tutorial_3">If the smartphone is too large to hold it in one hand comfortably, use one hand to hold the phone and the other to take the reading.</string>
+    <string name="scan_tutorial_4">Sit down if possible and keep your arm at roughly the same level as the chest.</string>
+    <string name="scan_tutorial_5">Do not move or talk. Please follow all instructions for accurate results.</string>
+    <string name="start_scan">Start Scanning</string>
+
+    <!--    Scan-->
+    <string name="double_underscore">_ _</string>
+    <string name="start">Start</string>
+    <string name="scan_message_1">Please relax and stay still. Do not move or talk.</string>
+    <string name="scan_message_2">Breath as you usually do. Do not take very deep breaths.</string>
+    <string name="scan_message_3">Maintain slight pressure on the camera with your finger.</string>
+    <string name="scan_message_4">If the dynamic graph is very noisy, please calm down and try again.</string>
+    <string name="scan_message_5">Intealth assesses your Heart Rate Variability (HRV) - the time distribution between successive heartbeats.</string>
+    <string name="scan_message_6">HRV is controlled by the Autonomic Nervous System (ANS). It quantifies the state and health of your body’s stress response.</string>
+    <string name="scan_message_7">The higher the HRV, the more relaxed your physiological state is.</string>
+    <string name="scan_message_8">With regular HRV measurements, you can keep track of how stressed you are. We recommend taking daily measurements.</string>
+    <string name="scan_message_9">Meditation and exercise have a positive effect on your mind and body, increasing your HRV.</string>
+    <string name="scan_message_10">Intealth has guided chakra meditation exercises that helps you to achieve your health and well-being goals.</string>
+    <string name="scan_message_11">We are almost done.</string>
+
+    <!--    HRV help screen-->
+    <string name="how_to_scan_your_hrv">How to scan your pulse?</string>
+    <string name="hrv_message_1">1. Place the tip of your finger on the back camera and the flash, completely covering them.</string>
+    <string name="hrv_message_2">2. Apply gentle pressure in order to stabilize the finger.</string>
+    <string name="hrv_message_3">3. If the smartphone is too large to hold it in one hand comfortably, use one hand to hold the phone and the other to take the reading.</string>
+    <string name="hrv_message_4">4. Preferably, sit down on a chair and place your arm on a table at roughly the same level as the chest.</string>
+    <string name="hrv_message_5">5. Do not move or talk. Breath normally and do not take deep breaths. Make sure to follow all instructions for accurate results.</string>
+
+    <!--    Meditation -->
+    <string name="english_lang">English</string>
+    <string name="hindi_lang">Hindi</string>
+    <string name="guided_meditation">Guided</string>
+    <string name="self_guided_meditation">Self-guided</string>
+    <string name="minutes_short">mins</string>
+    <string name="meditation_notification_title">Intealth</string>
+    <string name="meditation_notification_message">Meditation</string>
+    <string name="meditation_ticker_text">Ticker</string>
+    <string name="listen_to_meditations">Listen to meditations and relax your mind and body</string>
+    <string name="sleep">Sleep</string>
+    <string name="blood_pressure">Blood Pressure</string>
+    <string name="anger">Anger</string>
+    <string name="stress">Stress</string>
+    <string name="immunity">Immunity</string>
+    <string name="listen_short_meditation">Listen to the short meditation clip</string>
+    <string name="submit_feedback">Submit meditation feedback</string>
+    <string name="press_play">Press play to start</string>
+    <string name="sleep_meditation_title">Sleep Well</string>
+    <string name="bp_meditation_title">Release the Pressure</string>
+    <string name="anger_meditation_title">Stay Calm</string>
+    <string name="stress_meditation_title">Ease your Mind</string>
+    <string name="immunity_meditation_title">Feel Good</string>
+    <string name="sleep_meditation_message">Meditation lowers the heart rate by encouraging slower and deeper breaths and prepares us for a sound sleep. Let\'s use this exercise to put our body and mind in a completely relaxed state to improve sleep quality. </string>
+    <string name="bp_meditation_message">Sound meditation that helps calm the mind can also lower the blood pressure. With an exercise aimed at improving the health of our heart, let\'s reach a state of \"restful alertness\".</string>
+    <string name="anger_meditation_message">Several studies have confirmed that meditation can reduce signs of anger and frustration. Through this exercise, let\'s learn to identify our emotions associated with rage and anger and slow down our reactions to them.</string>
+    <string name="stress_meditation_message">Meditation is one of the most popular ways to relieve stress. Let\'s be more mindful and build our resilience to stress with this chakra meditation aimed at easing your mind.</string>
+    <string name="immunity_meditation_message">Research has shown a positive correlation between regular meditation and improved immune system response. Let\'s practice this chakra meditation exercise to improve our body\'s ability to ward off diseases.</string>
+    <string name="reminder_sleep_message">Set a daily reminder to listen this meditation and sleep well</string>
+    <string name="reminder_bp_message">Set a daily reminder to listen this meditation and rest your heart</string>
+    <string name="reminder_anger_message">Set a daily reminder to listen this meditation and stay calm</string>
+    <string name="reminder_stress_message">Set a daily reminder to listen this meditation and ease your mind</string>
+    <string name="reminder_immunity_message">Set a daily reminder to listen this meditation and feel good</string>
+
+    <!--    Logging-->
+    <string name="hint_add_a_comment">Add note about this measurement</string>
+    <string name="water_intake">Water Intake</string>
+    <string name="weight">Weight</string>
+    <string name="date">Date</string>
+    <string name="notes">Notes</string>
+    <string name="save">Save</string>
+    <string name="systolic">Systolic (High)</string>
+    <string name="diastolic">Diastolic (Low)</string>
+    <string name="time">Time</string>
+    <string name="amount">Amount</string>
+    <string name="blood_glucose_level">Blood Glucose Level</string>
+    <string name="add_a_tag">Add a tag</string>
+    <string name="fasting">Fasting</string>
+    <string name="post_meal">Post meal</string>
+    <string name="bedtime">Bedtime</string>
+    <string name="random_time">Random</string>
+    <string name="blood_glucose">Blood Glucose</string>
+    <string name="heart_rate">Heart Rate</string>
+    <string name="record_question">What would you like to record today?</string>
+    <string name="medication">Medication</string>
+    <string name="bpm">BPM</string>
+    <string name="kg">kg</string>
+    <string name="ltrs">ltr</string>
+    <string name="mg_dl">mg/dl</string>
+    <string name="mmhg">mmHg</string>
+
+    <!--    Scan Result-->
+    <string name="bio_age_more">The reading suggests that your fitness level is worse than the average person of your age. DISCLAIMER: Fitness level assessment is not meant for medical purposes. It might change with every reading until a baseline is set.</string>
+    <string name="bio_age_less">The reading suggests that your fitness level is better than the average person of your age. DISCLAIMER: Fitness level assessment is not meant for medical purposes. It might change with every reading until a baseline is set.</string>
+    <string name="bio_age_same">The reading suggests that your fitness level is similar to the average person of your age. DISCLAIMER: Fitness level assessment is not meant for medical purposes. It might change with every reading until a baseline is set.</string>
+    <string name="sedentary_lifestyle">The reading suggests that your lifestyle is less active than the average person of your age. DISCLAIMER: Lifestyle assessment is not meant for medical purposes. It might change with every reading until a baseline is set.</string>
+    <string name="active_lifestyle">The reading suggests that your lifestyle is more active than the average person of your age. DISCLAIMER: Lifestyle assessment is not meant for medical purposes. It might change with every reading until a baseline is set.</string>
+    <string name="biological_age">Heart Age</string>
+    <string name="younger">Younger</string>
+    <string name="older">Older</string>
+    <string name="lifestyle">Lifestyle</string>
+    <string name="undesirable">Undesirable</string>
+    <string name="desirable">Desirable</string>
+    <string name="sedentary">Sedentary</string>
+    <string name="moderately_active">Moderately Active</string>
+    <string name="active">Active</string>
+    <string name="very_active">Very Active</string>
+    <string name="insufficient_heart_rate_data">Insufficient pulse scans. Complete a total of 6 scans across 3 different days to set up your baseline and get detailed insights on stress.</string>
+    <string name="collect_more_gems"><![CDATA[Collect 20 HRV gems to get a detailed stress analysis report >]]></string>
+    <string name="hrv_metrics">HRV Metrics</string>
+    <string name="sdnn">SDNN</string>
+    <string name="normal_range_sdnn">Normal range: 30–96 ms</string>
+    <string name="explanation_sdnn">SDNN is the standard deviation of the heartbeat intervals in the HRV waveform. Higher value implies that your body is under less stress.</string>
+    <string name="pnn50">pNN50</string>
+    <string name="normal_range_pnn">Normal range: 5–40%</string>
+    <string name="explanation_pnn">pNN50 is the percentage of successive heartbeat intervals that differ by more than 50 ms. Balanced value means your body is coping well.</string>
+    <string name="rmssd">RMSSD</string>
+    <string name="normal_range_rmssd">Normal range: 30–96 ms</string>
+    <string name="explanation_rmssd">RMSSD is the root mean square of successive differences between normal heartbeats. Higher value means your body is recovering well.</string>
+    <string name="waveform_non_medical">The waveform is only for reference. It is not intended for medical use.</string>
+    <string name="stress_levels">Stress Levels</string>
+    <string name="more">More</string>
+    <string name="normal">Normal</string>
+    <string name="less">Less</string>
+    <string name="done">Done</string>
+    <string name="high_stress">High Stress</string>
+    <string name="normal_stress">Normal Stress</string>
+    <string name="low_stress">Low Stress</string>
+    <string name="less_stress_msg">You are LESS STRESSED than usual</string>
+    <string name="normal_stress_msg">You are STRESSED as usual</string>
+    <string name="high_stress_msg">You are MORE STRESSED than usual</string>
+    <string name="discard">Discard</string>
+    <string name="discard_title">Are you sure you want to discard the scan result?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <!--    Scan Question-->
+    <string name="scan_question_text">Scan successful! Give us a few moments till we process your detailed insights</string>
+    <string name="sleep_question">How well did you sleep today?</string>
+    <string name="mood_question">How is your mood today?</string>
+    <string name="healthy_question">Do you feel healthy today?</string>
+    <string name="before_scanning_question">What were you up to before scanning?</string>
+    <string name="chip_eating">Eating</string>
+    <string name="chip_sleeping">Sleeping</string>
+    <string name="chip_working">Working</string>
+    <string name="chip_chilling">Chilling</string>
+    <string name="chip_just_woke_up">Just woke up</string>
+    <string name="chip_workout">Exercising</string>
+    <string name="chip_other">Other</string>
+    <string name="gems">Gems</string>
+    <string name="view_result">View Result</string>
+    <string name="gently_cover_camera">Gently cover the back camera and the flash with your index finger</string>
+    <string name="pressure_message">Apply gentle pressure on the camera and flash to stabilize your finger</string>
+    <string name="movement_message">Do not move or talk while you are taking the reading</string>
+    <string name="breathing_message">Breath normally. Do not take very deep or shallow breaths</string>
+    <string name="running_graph_message">Take cue from the running graph to assess the quality of the reading</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="poor_quality_message">Poor quality recording, please try again.</string>
+
+    <!--    Profile-->
+    <string name="earn_gems_message_1">Earn %d gems with every invite to unlock premium features</string>
+    <string name="earn_gems_message_2">Every time your friend downloads the Intealth app, you get %d gems and they get %d gems.</string>
+    <string name="invite_message">Hey! I’m using the Intealth app to keep a regular check of my HRV metrics and important vitals to maintain a healthy lifestyle. You can download and try it here: %s</string>
+    <string name="view_your_pulse_waveform">View your pulse waveform- Find how your heartbeat rhythm changed during the measurement.</string>
+    <string name="view_your_hrv_metric">View your HRV metric- Learn about how the time intervals between your heart beat changed during the measurement.</string>
+    <string name="upgrade_to_pro">Upgrade to PRO</string>
+    <string name="yearly">Yearly</string>
+    <string name="upgrade">Upgrade</string>
+    <string name="first_week_free_message">Enjoy your first week FREE, with premium features</string>
+    <string name="timeline">Timeline</string>
+    <string name="short_meditation_completion_message">Well done! You have completed a short meditation.</string>
+    <string name="meditation_feedback_question">How did the meditation make you feel?</string>
+    <string name="how_to_measure_your_pulse">How to measure your pulse?</string>
+    <string name="sign_out_title">Are you sure you want to sign out?</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="cancel">Cancel</string>
+
+    <!--    Reminder-->
+    <string name="set_a_reminder">Set a reminder</string>
+    <string name="add_name">Add Name</string>
+    <string name="select_time">Select Time</string>
+    <string name="set_reminder_frequency">Set reminder frequency</string>
+    <string name="custom">Custom</string>
+    <string name="monday">Monday</string>
+    <string name="monday_short">M</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="tuesday_short">Tu</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="wednesday_short">W</string>
+    <string name="thursday">Thursday</string>
+    <string name="thursday_short">Th</string>
+    <string name="friday">Friday</string>
+    <string name="friday_short">F</string>
+    <string name="saturday">Saturday</string>
+    <string name="saturday_short">Sa</string>
+    <string name="sunday">Sunday</string>
+    <string name="sunday_short">Su</string>
+    <string name="delete">Delete</string>
+    <string name="save_reminder">Save Reminder</string>
+    <string name="reminder_ppg">Scan Heart  Rate</string>
+    <string name="reminder_meditation">Meditate</string>
+    <string name="reminder_blood_pressure">Log Blood Pressure</string>
+    <string name="reminder_blood_glucose">Log Blood Glucose Level</string>
+    <string name="reminder_water_intake">Log Water Intake</string>
+    <string name="reminder_weight">Log Weight</string>
+    <string name="reminder_medicine">Log Medicine</string>
+    <string name="reminder_type">Select type of Reminder</string>
+    <string name="scans">scans</string>
+    <string name="days">days</string>
+
+    <!--    Feedback-->
+    <string name="send_feedback">Send Feedback</string>
+    <string name="feedback_message">Tell us what you love about the app or what we could be doing better</string>
+    <string name="write_here">Write Here</string>
+    <string name="feedback_submitted">Feedback submitted</string>
+    <string name="connect_with_google">Connect with Google</string>
+    <string name="other">Other</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="choose_your_gender">Choose Your Gender</string>
+    <string name="gender_selection_msg">Health-related insights and personalized recommendations are built based on your gender.</string>
+    <string name="height">HEIGHT</string>
+    <string name="yyyy">YYYY</string>
+    <string name="mm">MM</string>
+    <string name="dd">DD</string>
+    <string name="why_we_ask">Why we ask ?</string>
+    <string name="health_related">Health-related insights and personalized recommendations are built based on your date of birth.</string>
+    <string name="got_it">GOT IT</string>
+    <string name="feet">FEET</string>
+    <string name="cm">CM</string>
+    <string name="_00">00</string>
+    <string name="inch">INCH</string>
+    <string name="your_height">YOUR HEIGHT</string>
+
+    <string name="back">Back</string>
+    <string name="click">click</string>
+    <string name="image">image</string>
+
+</resources>

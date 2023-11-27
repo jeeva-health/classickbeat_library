@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context=".ScanBeatPrimerActivity">
+
+    <TextView
+        android:id="@+id/heart_rate_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="56dp"
+        android:text="@string/heart_rate"
+        android:textAllCaps="true"
+        android:textColor="?attr/pageTitleColor"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:backgroundTint="@color/transparent"
+        android:src="@drawable/ic_info"
+        app:layout_constraintBottom_toBottomOf="@id/heart_rate_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/heart_rate_tv" />
+
+    <TextView
+        android:id="@+id/heart_rate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/double_underscore"
+        app:layout_constraintStart_toStartOf="@id/heart_rate_tv"
+        app:layout_constraintTop_toBottomOf="@id/heart_rate_tv"
+        tools:text="56" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/bpm"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/heart_rate"
+        app:layout_constraintStart_toEndOf="@id/heart_rate" />
+
+    <FrameLayout
+        android:id="@+id/view_finder_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/bg_circle"
+        android:outlineProvider="background"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/circular_progress_bar"
+        app:layout_constraintEnd_toEndOf="@id/circular_progress_bar"
+        app:layout_constraintStart_toStartOf="@id/circular_progress_bar"
+        app:layout_constraintTop_toTopOf="@id/circular_progress_bar">
+
+        <TextureView
+            android:id="@+id/view_finder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+    <ai.heart.classickbeatslib.ui.scan.common.CircleProgressBar
+        android:id="@+id/circular_progress_bar"
+        android:layout_width="248dp"
+        android:layout_height="248dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45"
+        app:progress="0"
+        app:progressBarThickness="8dp" />
+
+    <TextView
+        android:id="@+id/start_btn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/bg_circle"
+        android:gravity="center"
+        android:text="@string/start"
+        android:textColor="@color/bright_blue_2"
+        android:textSize="60dp"
+        app:layout_constraintBottom_toBottomOf="@id/circular_progress_bar"
+        app:layout_constraintEnd_toEndOf="@id/circular_progress_bar"
+        app:layout_constraintStart_toStartOf="@id/circular_progress_bar"
+        app:layout_constraintTop_toTopOf="@id/circular_progress_bar"
+        tools:ignore="SpUsage" />
+
+    <TextView
+        android:id="@+id/countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="72sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/view_finder_layout"
+        app:layout_constraintEnd_toEndOf="@id/view_finder_layout"
+        app:layout_constraintStart_toStartOf="@id/view_finder_layout"
+        app:layout_constraintTop_toTopOf="@id/view_finder_layout"
+        tools:text="5" />
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="42dp"
+        android:gravity="center"
+        android:text="@string/gently_cover_camera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/circular_progress_bar" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/line_chart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/view_finder_layout"
+        app:layout_constraintEnd_toEndOf="@id/view_finder_layout"
+        app:layout_constraintStart_toStartOf="@id/view_finder_layout"
+        app:layout_constraintTop_toTopOf="@id/view_finder_layout" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
