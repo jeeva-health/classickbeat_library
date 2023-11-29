@@ -18,7 +18,7 @@
 
         <activity
             android:theme="@style/AppBaseTheme"
-            android:name=".ScanBeatActivity"
+            android:name="ai.heart.classickbeats.ScanBeatActivity"
             android:exported="false" />
     </application>
 

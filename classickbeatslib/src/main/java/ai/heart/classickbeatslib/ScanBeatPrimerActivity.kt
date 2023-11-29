@@ -9,5 +9,6 @@ class ScanBeatPrimerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scan_beat_primer)
 
 
+
     }
 }

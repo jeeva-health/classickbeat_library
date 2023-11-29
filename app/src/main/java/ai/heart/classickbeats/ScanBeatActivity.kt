@@ -1,6 +1,5 @@
-package ai.heart.classickbeatslib
+package ai.heart.classickbeats
 
-import ai.heart.classickbeatslib.ui.scan.ppg.fragment.ScanFragment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,7 +12,7 @@ class ScanBeatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scan_beat)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, ScanFragment())
+                .replace(R.id.container, ai.heart.classickbeats.ui.fragment.ScanFragment())
                 .commitNow()
         }
     }

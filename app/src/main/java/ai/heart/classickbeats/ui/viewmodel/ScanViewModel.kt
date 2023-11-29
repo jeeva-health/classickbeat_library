@@ -1,4 +1,4 @@
-package ai.heart.classickbeatslib.ui.scan.ppg.viewmodel
+package ai.heart.classickbeats.ui.viewmodel
 
 import ai.heart.classickbeatslib.model.entity.PPGEntity
 import ai.heart.classickbeatslib.shared.result.Event

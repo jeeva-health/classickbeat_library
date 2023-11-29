@@ -7,4 +7,122 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="light_blue_gray">#b4afe7</color>
+    <color name="charcoal_grey">#494454</color>
+
+    <color name="transparent">#0fff</color>
+
+    <color name="orange">#FF4500</color>
+
+    <color name="yellow">#ffff00</color>
+    <color name="vivid_yellow">#e9d311</color>
+    <color name="vivid_yellow_2">#f4d00f</color>
+
+    <color name="bright_orange">#f8a142</color>
+
+    <color name="very_pale_red">#fffbfb</color>
+    <color name="light_grayish_red">#f2dede</color>
+    <color name="light_grayish_red_3">#f8f4f4</color>
+    <color name="light_grayish_red_4">#f1efef</color>
+    <color name="grayish_red_2">#c7c5c5</color>
+    <color name="dark_grayish_red">#918d8d</color>
+    <color name="dark_grayish_red_2">#ada7a7</color>
+    <color name="very_soft_red">#ccf9b49f</color>
+    <color name="very_soft_red_2">#f9b49f</color>
+    <color name="soft_red">#f98a7a</color>
+    <color name="soft_red_2">#f79678</color>
+    <color name="bright_red">#ed4545</color>
+    <color name="bright_red_2">#f46a41</color>
+    <color name="bright_red_3">#dc2c2c</color>
+    <color name="dark_red">#962222</color>
+
+    <color name="light_grayish_orange">#F2E7DE</color>
+    <color name="very_soft_orange">#FEB395</color>
+
+    <color name="strong_pink">#d81b60</color>
+    <color name="very_dark_pink">#5f0339</color>
+
+    <color name="very_soft_blue">#b4daf8</color>
+    <color name="soft_blue">#7cbef3</color>
+    <color name="soft_blue_2">#61c3f2</color>
+    <color name="bright_blue">#32a4fc</color>
+    <color name="bright_blue_2">#3096ec</color>
+    <color name="vivid_blue">#1D56D9</color>
+    <color name="strong_blue">#0071bc</color>
+    <color name="dark_blue_3">#07399e</color>
+    <color name="dark_blue_4">#1440ad</color>
+    <color name="dark_blue_5">#137daa</color>
+    <color name="dark_blue_6">#092d86</color>
+    <color name="very_dark_blue">#1C1662</color>
+
+    <color name="very_soft_violet">#cabcf0</color>
+    <color name="soft_violet">#957ae1</color>
+    <color name="moderate_violet">#6137d2</color>
+    <color name="dark_violet">#412296</color>
+    <color name="dark_violet_2">#cc2a1662</color>
+    <color name="very_dark_violet">#2a1662</color>
+
+    <color name="moderate_green">#7ac943</color>
+    <color name="moderate_green_2">#88d44d</color>
+
+    <color name="very_dark_cyan">#163C29</color>
+
+    <color name="soft_cyan_2">#7befa8</color>
+    <color name="moderate_cyan">#38bda9</color>
+    <color name="strong_cyan">#1dce9b</color>
+
+    <color name="very_light_grey">#e6e6e6</color>
+    <color name="very_light_grey_2">#fafafa</color>
+    <color name="very_light_grey_3">#fcfcfc</color>
+    <color name="light_grey">#47c4c4c4</color>
+    <color name="dark_grey">#979797</color>
+    <color name="dark_grey_2">#999999</color>
+    <color name="dark_grey_3">#808080</color>
+    <color name="dark_grey_4">#444444</color>
+    <color name="dark_grey_5">#9E9E9E</color>
+    <color name="very_dark_grey">#333333</color>
+    <color name="very_dark_grey_2">#5f5f5f</color>
+    <color name="very_dark_grey_3">#212121</color>
+    <color name="very_dark_grey_4">#666666</color>
+    <color name="color_dark_grey_2">#494949</color>
+
+    <color name="google_sign_color">#8a000000</color>
+
+    <color name="red">@android:color/holo_red_dark</color>
+
+
+    <color name="colorPrimary">@color/moderate_cyan</color>
+    <color name="colorAccent">@color/strong_pink</color>
+    <color name="colorDividerAndBorder">@color/very_light_grey</color>
+    <color name="colorSurface">@color/white</color>
+    <color name="colorOnSurface">@color/black</color>
+    <color name="colorBackground">@color/white</color>
+
+    <color name="positiveOption">#807ac943</color>
+    <color name="progressPositive">#f0b4b743</color>
+    <color name="progressNegative">#f8f4f4</color>
+
+    <color name="dim_background">#2F000000</color>
+
+    <!-- Scrim colors -->
+    <color name="system_ui_scrim_light">#B3FFFFFF</color> <!-- 70% white -->
+    <color name="system_ui_scrim_black">#40000000</color> <!-- 25% black -->
+
+    <!-- We use a dark scrim by default since light status is API 23+ -->
+    <color name="status_bar_scrim">@color/system_ui_scrim_black</color>
+    <!-- We use a dark scrim by default since light nav bar is API 27+ -->
+    <color name="dark_indigo">#1c1662</color>
+    <color name="twilight">#615d92</color>
+    <color name="rosy_pink">#f35b6e</color>
+    <color name="soft_blue_3">#4ab9ea</color>
+    <color name="pale_red">#de4141</color>
+    <color name="light_pink">#fff8f9</color>
+    <color name="ice_blue">#E1F2F6</color>
+
+    <color name="nav_bar_scrim">@color/system_ui_scrim_black</color>
 </resources>

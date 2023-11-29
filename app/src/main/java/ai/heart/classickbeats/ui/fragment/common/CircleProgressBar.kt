@@ -1,6 +1,6 @@
-package ai.heart.classickbeatslib.ui.scan.common
+package ai.heart.classickbeats.ui.fragment.common
 
-import ai.heart.classickbeatslib.R
+import ai.heart.classickbeats.R
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Canvas

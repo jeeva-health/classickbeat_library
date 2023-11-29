@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
-    tools:context=".ui.scan.ppg.fragment.ScanFragment">
+    tools:context="ai.heart.classickbeats.ui.fragment.ScanFragment">
 
     <TextView
         android:id="@+id/heart_rate_tv"
@@ -60,7 +60,7 @@
 
     </FrameLayout>
 
-    <ai.heart.classickbeatslib.ui.scan.common.CircleProgressBar
+    <ai.heart.classickbeats.ui.fragment.common.CircleProgressBar
         android:id="@+id/circular_progress_bar"
         android:layout_width="0dp"
         android:layout_height="0dp"

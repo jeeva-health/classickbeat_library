@@ -1,20 +1,11 @@
-package ai.heart.classickbeatslib.ui.scan.ppg.fragment
+package ai.heart.classickbeats.ui.fragment
 
 
-import ai.heart.classickbeatslib.ui.scan.ppg.AccelerometerListener
-import ai.heart.classickbeatslib.ui.scan.ppg.PixelAnalyzer
-import ai.heart.classickbeatslib.ui.scan.ppg.viewmodel.MonitorViewModel
-import ai.heart.classickbeatslib.ui.scan.ppg.viewmodel.ScanViewModel
-import ai.heart.classickbeatslib.R
-import ai.heart.classickbeatslib.compute.ProcessingData
-import ai.heart.classickbeatslib.databinding.FragmentScanBinding
-import ai.heart.classickbeatslib.domain.CameraReading
-import ai.heart.classickbeatslib.graph.RunningGraph
-import ai.heart.classickbeatslib.model.Constants.SCAN_DURATION
-import ai.heart.classickbeatslib.shared.result.EventObserver
-import ai.heart.classickbeatslib.ui.scan.common.CircleProgressBar
+import ai.heart.classickbeats.R
+import ai.heart.classickbeats.databinding.FragmentScanBinding
+import ai.heart.classickbeats.ui.fragment.common.CircleProgressBar
+import ai.heart.classickbeats.ui.viewmodel.ScanViewModel
 import ai.heart.classickbeatslib.utils.postOnMainLooper
-import ai.heart.classickbeatslib.utils.setSafeOnClickListener
 import ai.heart.classickbeatslib.utils.showLongToast
 import ai.heart.classickbeatslib.utils.viewBinding
 import android.Manifest
@@ -55,6 +46,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private lateinit var  monitorViewModel: MonitorViewModel
 
     private lateinit var scanViewModel: ScanViewModel
+
+    private lateinit var circularProgressBar: CircleProgressBar
 
 //    private lateinit var navController: NavController
 
@@ -116,8 +109,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private var pixelAnalyzer: PixelAnalyzer? = null
 
     private lateinit var textureView: TextureView
-
-    private lateinit var circularProgressBar: CircleProgressBar
 
     private var width: Int = 0
     private var height: Int = 0
@@ -342,6 +333,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private val onImageAvailableListener =
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
+
             if (monitorViewModel.isProcessing) {
                 imageCounter++
                 if (imageCounter >= fps * 1) {
@@ -557,7 +549,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
         Timber.i("TrackTime: Updating Dynamic BPM in thread.")
         val windowSize = 101
-
 
         // TODO(Harsh: check if leveledSignal is needed for dynamic bpm, else split below function)
         val leveledSignal = ProcessingData.computeLeveledSignal(
