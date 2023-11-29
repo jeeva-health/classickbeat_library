@@ -3,7 +3,6 @@ package ai.heart.classickbeatslib.ui.scan.ppg.viewmodel
 
 import ai.heart.classickbeatslib.compute.ProcessingData
 import ai.heart.classickbeatslib.domain.CameraReading
-import ai.heart.classickbeatslib.model.Constants.SCAN_DURATION
 import ai.heart.classickbeatslib.shared.result.Event
 import android.os.CountDownTimer
 import android.text.format.DateUtils
@@ -15,7 +14,7 @@ import java.util.concurrent.TimeUnit
 class MonitorViewModel : ViewModel() {
 
 //    var user: User? = null
-
+val SCAN_DURATION = 30
     private var timer: CountDownTimer? = null
 
     private val mean1List = mutableListOf<Double>()

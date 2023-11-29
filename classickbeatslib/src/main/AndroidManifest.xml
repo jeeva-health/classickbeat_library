@@ -16,10 +16,7 @@
             android:name=".ScanBeatPrimerActivity"
             android:exported="false" />
 
-        <activity
-            android:theme="@style/AppBaseTheme"
-            android:name="ai.heart.classickbeats.ScanBeatActivity"
-            android:exported="false" />
+
     </application>
 
 </manifest>

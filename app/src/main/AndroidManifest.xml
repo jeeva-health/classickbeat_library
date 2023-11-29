@@ -18,18 +18,18 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Classickbeats"
+        android:theme="@style/AppBaseTheme"
         tools:replace="android:theme"
         tools:targetApi="33">
 
         <activity
             android:name=".ScanBeatActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Classickbeats">
+            android:label="app_name"
+            android:theme="@style/AppBaseTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

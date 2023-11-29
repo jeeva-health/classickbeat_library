@@ -3,10 +3,14 @@ package ai.heart.classickbeats.ui.fragment
 
 import ai.heart.classickbeats.R
 import ai.heart.classickbeats.databinding.FragmentScanBinding
-import ai.heart.classickbeats.ui.fragment.common.CircleProgressBar
+import ai.heart.classickbeatslib.ui.scan.ppg.common.CircleProgressBar
 import ai.heart.classickbeats.ui.viewmodel.ScanViewModel
-import ai.heart.classickbeatslib.utils.postOnMainLooper
-import ai.heart.classickbeatslib.utils.showLongToast
+import ai.heart.classickbeatslib.MonitorCallback
+import ai.heart.classickbeatslib.graph.RunningGraph
+import ai.heart.classickbeatslib.shared.result.Event
+import ai.heart.classickbeatslib.shared.result.EventObserver
+import ai.heart.classickbeatslib.ui.scan.ppg.MonitorClass
+import ai.heart.classickbeatslib.utils.setSafeOnClickListener
 import ai.heart.classickbeatslib.utils.viewBinding
 import android.Manifest
 import android.annotation.SuppressLint
@@ -15,7 +19,6 @@ import android.content.Context.CAMERA_SERVICE
 import android.content.pm.PackageManager
 import android.graphics.ImageFormat
 import android.graphics.SurfaceTexture
-import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.hardware.camera2.*
 import android.media.ImageReader
@@ -30,12 +33,10 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.charts.LineChart
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @ExperimentalCoroutinesApi
@@ -43,7 +44,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private val binding by viewBinding(FragmentScanBinding::bind)
 
-    private lateinit var  monitorViewModel: MonitorViewModel
+    private var monitorClass: MonitorClass = MonitorClass()
 
     private lateinit var scanViewModel: ScanViewModel
 
@@ -55,7 +56,6 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private lateinit var sensorManager: SensorManager
 
-    private var mAccelerometer: Sensor? = null
 
     private var countdownType: Int = 0
 
@@ -64,6 +64,8 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
     private var imageReader: ImageReader? = null
     private var mBackgroundHandler: Handler? = null
     private var mBackgroundThread: HandlerThread? = null
+
+    private val dynamicGraphCoordinates = MutableLiveData<Event<Pair<Int, Double>>>()
 
     private val requiredPermissions = listOf(
         Manifest.permission.CAMERA,
@@ -106,45 +108,67 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
     }
 
-    private var pixelAnalyzer: PixelAnalyzer? = null
-
     private lateinit var textureView: TextureView
 
     private var width: Int = 0
     private var height: Int = 0
 
-    private lateinit var accelerometerListener: AccelerometerListener
 
-    private var fps = 30
-
-    private var imageCounter = 0
-
-    private var badImageCounter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+
         scanViewModel = ViewModelProvider(this)[ScanViewModel::class.java]
 
-        monitorViewModel = ViewModelProvider(this)[MonitorViewModel::class.java]
+        val monitorCallback = object : MonitorCallback {
+            override fun onStartScanning() {
+
+            }
+
+            override fun onEndScanning() {
+
+            }
+
+            override fun onScanStopUnexpectedly(s: String?) {
+                chart?.data?.clearValues()
+
+                binding.circularProgressBar.setProgressWithAnimation(0.0f)
+                binding.heartRate.text = "_ _"
+            }
+
+            override fun updateHeartRate(bpm: Int?) {
+                binding.heartRate.text = "$bpm"
+            }
+
+            override fun scanCoordinateUpdate(pair: Pair<Int, Double>) {
+
+            }
 
 
-        pixelAnalyzer = PixelAnalyzer(requireContext())
+        }
+        monitorClass.initialize(requireActivity(), monitorCallback)
 
-        fps = monitorViewModel.fps
+//        monitorViewModel = ViewModelProvider(this)[MonitorViewModel::class.java]
+
+
+//        pixelAnalyzer = PixelAnalyzer(requireContext())
+
+//        fps = monitorViewModel.fps
 
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        mAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+//        mAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
-        if (mAccelerometer == null) {
-            TODO("No Accelerometer found")
-        }
+//        if (mAccelerometer == null) {
+//            TODO("No Accelerometer found")
+//        }
 
-        accelerometerListener = AccelerometerListener(
-            accelerationHandler = handleAcceleration,
-            recordValue = recordAccelerationValue
-        )
+//        accelerometerListener = AccelerometerListener(
+//            accelerationHandler = handleAcceleration,
+//            recordValue = recordAccelerationValue
+//        )
 
 //        monitorViewModel.fetchUser()
     }
@@ -153,7 +177,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         super.onViewCreated(view, savedInstanceState)
 
         //redirect to my health fragment delete after test
-        binding.heartRateTv.setOnClickListener{
+        binding.heartRateTv.setOnClickListener {
 //            findNavController().navigate(ScanFragmentDirections.actionScanFragmentToMyHealthFragment())
         }
 
@@ -166,14 +190,14 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 //        requireActivity().navigateToHeartRateFragment()
 
         // If its first scan show the scan tutorial dialog fragment
-        scanViewModel.isFirstTimeScanCompleted.observe(viewLifecycleOwner, EventObserver {
-//            if (!it) {
-//                navigateToScanTutorialFragment()
-//            }
-        })
+//        scanViewModel.isFirstTimeScanCompleted.observe(viewLifecycleOwner, EventObserver {
+////            if (!it) {
+////                navigateToScanTutorialFragment()
+////            }
+//        })
 
         // Resets the dynamic heart rate
-        updateDynamicHeartRate(-1)
+//        updateDynamicHeartRate(-1)
 
         checkPermission(Manifest.permission.CAMERA)
         checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -194,6 +218,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 //            requestLayout()
         }
 
+        binding.message.setOnClickListener {
+
+        }
+
         textureView = binding.viewFinder
 
         circularProgressBar = binding.circularProgressBar
@@ -211,22 +239,22 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 ////            navController.navigate(action)
 //        }
 
-        monitorViewModel.timerProgress.observe(viewLifecycleOwner, EventObserver {
+        monitorClass.timerProgress.observe(viewLifecycleOwner, EventObserver {
             updateScanMessage(countdownType, it)
             if (it == 0) {
                 if (countdownType == 0) {
                     binding.countdown.visibility = View.GONE
-                    startScanning()
+                    monitorClass.startScanning()
                 } else {
-                    if (monitorViewModel.isProcessing) {
-                        endScanning()
+                    if (monitorClass.isProcessing) {
+//                        monitorViewModel.endScanning()
                     }
                 }
             } else {
                 if (countdownType == 0) {
                     binding.countdown.text = it.toString()
                 } else {
-                    val progress = ((SCAN_DURATION - it + 1) * 100 / SCAN_DURATION).toFloat()
+                    val progress = ((monitorClass.scanDuration - it + 1) * 100 / monitorClass.scanDuration ).toFloat()
                     circularProgressBar.setProgressWithAnimation(progress)
                     circularProgressBar.invalidate()
                     circularProgressBar.requestLayout()
@@ -234,7 +262,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             }
         })
 
-        monitorViewModel.dynamicGraphCoordinates.observe(viewLifecycleOwner, EventObserver {
+        dynamicGraphCoordinates.observe(viewLifecycleOwner, EventObserver {
             val (x, y) = it
             RunningGraph.addEntry(chart!!, x, y)
         })
@@ -250,7 +278,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
 
     private fun startInitialCountdown() {
         countdownType = 0
-        monitorViewModel.startTimer(5 * DateUtils.SECOND_IN_MILLIS)
+        monitorClass.startTimer(5 * DateUtils.SECOND_IN_MILLIS)
     }
 
     private val surfaceTextureListener = object : TextureView.SurfaceTextureListener {
@@ -334,40 +362,42 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         ImageReader.OnImageAvailableListener { reader: ImageReader ->
             val img = reader.acquireLatestImage() ?: return@OnImageAvailableListener
 
-            if (monitorViewModel.isProcessing) {
-                imageCounter++
-                if (imageCounter >= fps * 1) {
-                    val cameraReading: CameraReading? = pixelAnalyzer?.processImageRenderScript(img)
-                    cameraReading?.apply {
-                        if (green / red > 0.5 || blue / red > 0.5) {
-                            badImageCounter++
-                        } else {
-                            badImageCounter = 0
-                        }
-                        if (badImageCounter >= 45) {
-                            postOnMainLooper {
-                                showLongToast("Please place the finger on the camera and flash completely")
-                                endIncompleteScanning()
-                            }
-                        }
-                        monitorViewModel.addFrameDataToList(cameraReading)
-                        monitorViewModel.calculateCenteredSignal()
-                    }
+            /* if (monitorViewModel.isProcessing) {
+                 imageCounter++
+                 if (imageCounter >= fps * 1) {
+                     val cameraReading: CameraReading? = pixelAnalyzer?.processImageRenderScript(img)
+                     cameraReading?.apply {
+                         if (green / red > 0.5 || blue / red > 0.5) {
+                             badImageCounter++
+                         } else {
+                             badImageCounter = 0
+                         }
+                         if (badImageCounter >= 45) {
+                             postOnMainLooper {
+                                 showLongToast("Please place the finger on the camera and flash completely")
+                                 endIncompleteScanning()
+                             }
+                         }
+                         monitorViewModel.addFrameDataToList(cameraReading)
+                         monitorViewModel.calculateCenteredSignal()
+                     }
 
-                    //Calculating dynamic BPM
-                    if (imageCounter % (5 * fps) == 0 && imageCounter > (6 * fps)) {
-                        lifecycleScope.launchWhenResumed {
-                            val dynamicBPM = calculateDynamicBPM(
-                                monitorViewModel.centeredSignal.toList(),
-                                monitorViewModel.timeList.toList()
-                            )
-                            postOnMainLooper {
-                                updateDynamicHeartRate(dynamicBPM)
-                            }
-                        }
-                    }
-                }
-            }
+                     //Calculating dynamic BPM
+                     if (imageCounter % (5 * fps) == 0 && imageCounter > (6 * fps)) {
+                         lifecycleScope.launchWhenResumed {
+                             val dynamicBPM = calculateDynamicBPM(
+                                 monitorViewModel.centeredSignal.toList(),
+                                 monitorViewModel.timeList.toList()
+                             )
+                             postOnMainLooper {
+                                 updateDynamicHeartRate(dynamicBPM)
+                             }
+                         }
+                     }
+                 }
+             }*/
+
+            monitorClass.startAnalyzingBeat(img)
             img.close()
         }
 
@@ -419,7 +449,10 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             builder.addTarget(Surface(texture))
             builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF)
             builder.set(CaptureRequest.CONTROL_AWB_LOCK, true)
-            builder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range.create(fps, fps))
+            builder.set(
+                CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE,
+                Range.create(monitorClass.fps, monitorClass.fps)
+            )
 //            builder.set(CaptureRequest.SENSOR_SENSITIVITY, 50);
 //            builder.set(CaptureRequest.SENSOR_EXPOSURE_TIME, 10000000);
             builder.build()
@@ -446,75 +479,26 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private fun startScanning() {
-        if (monitorViewModel.isProcessing) {
-            Timber.e("scanning already running")
-        } else {
-            countdownType = 1
-            monitorViewModel.resetReadings()
-            monitorViewModel.isProcessing = true
-            monitorViewModel.startTimer()
-        }
-    }
 
-    private fun endScanning() {
-        Timber.i("endScanning called")
-        monitorViewModel.isProcessing = false
-//        monitorViewModel.endScanHandling()
-        session?.abortCaptures()
-        camera?.close()
-        stopBackgroundThread()
-        imageCounter = 0
-//        navigateToScanQuestionFragment()
-        scanViewModel.setFirstScanCompleted()
-        //todo scan complete here
-    }
-
-    private fun endIncompleteScanning() {
-        monitorViewModel.isProcessing = false
-        monitorViewModel.endTimer()
-        session?.abortCaptures()
-        camera?.close()
-        stopBackgroundThread()
-        imageCounter = 0
-        badImageCounter = 0
-        chart?.data?.clearValues()
-
-        binding.circularProgressBar.setProgressWithAnimation(0.0f)
-        binding.heartRate.text = "_ _"
-
-//        lifecycleScope.launchWhenResumed {
-//            delay(2000)
-//            postOnMainLooper {
-//                navController.navigate(R.id.scanFragment)
-//            }
+//    override fun onResume() {
+//        super.onResume()
+//        mAccelerometer?.also { accelerometer ->
+//            sensorManager.registerListener(
+//                accelerometerListener,
+//                accelerometer,
+//                SensorManager.SENSOR_DELAY_UI
+//            )
 //        }
-        Timber.i("endIncompleteScanning called")
-        // Resets the dynamic heart rate
-        updateDynamicHeartRate(-1)
+//
+//        // TODO(Ritesh: move to appropriate location)
+////        scanViewModel.getPpgHistoryDataByCount(10)
+////        scanViewModel.getPpgHistoryDataByDuration(-100)
+//    }
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mAccelerometer?.also { accelerometer ->
-            sensorManager.registerListener(
-                accelerometerListener,
-                accelerometer,
-                SensorManager.SENSOR_DELAY_UI
-            )
-        }
-
-        // TODO(Ritesh: move to appropriate location)
-//        scanViewModel.getPpgHistoryDataByCount(10)
-//        scanViewModel.getPpgHistoryDataByDuration(-100)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        sensorManager.unregisterListener(accelerometerListener)
-    }
+//    override fun onPause() {
+//        super.onPause()
+//        sensorManager.unregisterListener(accelerometerListener)
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -522,61 +506,62 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
             session?.abortCaptures()
             camera?.close()
             stopBackgroundThread()
-            monitorViewModel.endTimer()
+//            monitorViewModel.endTimer()
         } catch (e: CameraAccessException) {
             Timber.e(e)
         }
     }
 
-    private val handleAcceleration = fun() {
-        if (monitorViewModel.isProcessing) {
-            Timber.i("Moving too much!")
-            showLongToast("Moving too much!")
-            endIncompleteScanning()
+
+    /*   private val handleAcceleration = fun() {
+           if (monitorViewModel.isProcessing) {
+               Timber.i("Moving too much!")
+               showLongToast("Moving too much!")
+               monitorViewModel.endIncompleteScanning()
+           }
+       }
+
+       private val recordAccelerationValue = fun(x: Float, y: Float, z: Float, timeStamp: Long) {
+           if (monitorViewModel.isProcessing) {
+               monitorViewModel.addAccelerationReading(x, y, z, timeStamp)
+           }
+       }*/
+
+    /*    private suspend fun calculateDynamicBPM(
+            centeredSignal: List<Double>,
+            timeStamp: List<Int>
+        ) = withContext(Dispatchers.Default) {
+
+            Timber.i("TrackTime: Updating Dynamic BPM in thread.")
+            val windowSize = 101
+
+            // TODO(Harsh: check if leveledSignal is needed for dynamic bpm, else split below function)
+            val leveledSignal = ProcessingData.computeLeveledSignal(
+                timeList = timeStamp,
+                centeredSignalList = centeredSignal,
+                windowSize = windowSize
+            )
+
+            val (ibiList, _) = ProcessingData.calculateIbiListAndQuality(
+                leveledSignal,
+                monitorViewModel.fInterp
+            )
+
+            val (meanNN, _, _, _, _) = ProcessingData.calculatePulseStats(ibiList)
+            val bpm = (60 * 1000.0) / meanNN
+            return@withContext bpm.toInt()
+
         }
-    }
 
-    private val recordAccelerationValue = fun(x: Float, y: Float, z: Float, timeStamp: Long) {
-        if (monitorViewModel.isProcessing) {
-            monitorViewModel.addAccelerationReading(x, y, z, timeStamp)
-        }
-    }
+        private fun updateDynamicHeartRate(bpm: Int) {
+            var heartRateStr = "_ _"
+            if (bpm >= 0) {
+                heartRateStr = "$bpm"
+            }
+            binding.heartRate.text = heartRateStr
 
-    private suspend fun calculateDynamicBPM(
-        centeredSignal: List<Double>,
-        timeStamp: List<Int>
-    ) = withContext(Dispatchers.Default) {
-
-        Timber.i("TrackTime: Updating Dynamic BPM in thread.")
-        val windowSize = 101
-
-        // TODO(Harsh: check if leveledSignal is needed for dynamic bpm, else split below function)
-        val leveledSignal = ProcessingData.computeLeveledSignal(
-            timeList = timeStamp,
-            centeredSignalList = centeredSignal,
-            windowSize = windowSize
-        )
-
-        val (ibiList, _) = ProcessingData.calculateIbiListAndQuality(
-            leveledSignal,
-            monitorViewModel.fInterp
-        )
-
-        val (meanNN, _, _, _, _) = ProcessingData.calculatePulseStats(ibiList)
-        val bpm = (60 * 1000.0) / meanNN
-        return@withContext bpm.toInt()
-
-    }
-
-    private fun updateDynamicHeartRate(bpm: Int) {
-        var heartRateStr = "_ _"
-        if (bpm >= 0) {
-            heartRateStr = "$bpm"
-        }
-        binding.heartRate.text = heartRateStr
-
-        //todo heart rate updating
-    }
+            //todo heart rate updating
+        }*/
 
 //    private fun navigateToScanQuestionFragment() {
 //        val action = ScanFragmentDirections.actionScanFragmentToScanQuestionFragment()
@@ -592,7 +577,7 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {
         val messageId = if (countdownType == 0) {
             R.string.scan_message_1
         } else {
-            val time = SCAN_DURATION - countdownTime
+            val time = monitorClass.scanDuration  - countdownTime
             when {
                 time <= 5 -> R.string.scan_message_3
                 time <= 9 -> R.string.scan_message_5

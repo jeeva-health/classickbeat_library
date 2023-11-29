@@ -1,6 +1,6 @@
 package ai.heart.classickbeatslib.compute
 
-import ai.heart.classickbeatslib.model.Constants.SCAN_DURATION
+import ai.heart.classickbeatslib.shared.Constant.SCAN_DURATION
 import org.apache.commons.math3.analysis.interpolation.AkimaSplineInterpolator
 import timber.log.Timber
 import kotlin.math.absoluteValue
