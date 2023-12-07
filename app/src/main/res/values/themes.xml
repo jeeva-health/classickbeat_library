@@ -1,0 +1,96 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/dark_violet</item>
+        <item name="colorPrimaryVariant">@color/orange</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="android:forceDarkAllowed" tools:targetApi="q">true</item>
+
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <!-- Window decor -->
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+        <item name="android:navigationBarColor">@color/nav_bar_scrim</item>
+        <item name="backgroundColor">@color/very_dark_blue</item>
+
+        <!-- Widget styles -->
+        <item name="toolbarStyle">@style/Widget.Jeeva.Toolbar</item>
+        <item name="textInputStyle">@style/Widget.Jeeva.TextInputLayout</item>
+        <item name="materialButtonStyle">@style/Widget.Jeeva.Button</item>
+        <item name="switchStyle">@style/Widget.Jeeva.Switch</item>
+
+        <!-- Text appearances -->
+        <item name="textAppearanceBody2">@style/TextAppearance.Jeeva.Body2</item>
+        <item name="textAppearanceButton">@style/TextAppearance.Jeeva.Button</item>
+
+        <!-- Text color -->
+        <item name="normalTextColor">@color/very_dark_grey_3</item>
+        <item name="pageTitleColor">@color/very_dark_grey_3</item>
+        <item name="headingColor">@color/moderate_violet</item>
+        <item name="categoryNameColor">@color/very_light_grey_3</item>
+        <item name="categoryTitleColor">@color/very_soft_violet</item>
+        <item name="explanationTextColor">@color/soft_red_2</item>
+        <item name="meditationListenTextColor">@color/bright_blue</item>
+        <item name="reminderTextColor">@color/very_light_grey_3</item>
+        <item name="lightCardColor">@color/very_light_grey_3</item>
+        <item name="meditationQuestionColor">@color/bright_red_2</item>
+        <item name="onLoggingCardColor">@color/white</item>
+        <item name="scanMessageColor">@color/very_dark_violet</item>
+
+        <item name="timeTextColor">@color/dark_grey_5</item>
+        <item name="timelineColor">@color/dark_violet</item>
+
+        <item name="borderColor">@color/dark_grayish_red_2</item>
+
+        <item name="sliderTrackColorInactive">@color/light_grayish_red</item>
+        <item name="sliderThumbColor">@color/very_light_grey_3</item>
+        <item name="sliderTickColor">@color/white</item>
+
+        <item name="bioAgeTextColor">@color/bright_blue_2</item>
+        <item name="lifeStyleTextColor">@color/bright_red_2</item>
+
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
+
+        <item name="chipStyle">@style/Widget.Jeeva.App.Chip</item>
+    </style>
+
+    <!--  Button-->
+    <style name="ThemeOverlay.Jeeva.Button" parent="">
+        <item name="colorPrimary">@color/bright_blue</item>
+        <item name="colorOnPrimary">@color/very_pale_red</item>
+    </style>
+
+    <style name="ThemeOverlay.Jeeva.ButtonSecondary" parent="">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/vivid_blue</item>
+    </style>
+
+    <!--  Material Switch-->
+    <style name="ThemeOverlay.Jeeva.Switch" parent="">
+        <item name="colorOnSurface">@color/very_soft_orange</item>
+        <item name="colorSecondary">@color/very_soft_orange</item>
+    </style>
+
+    <style name="ThemeOverlay.Jeeva.TextInputLayout" parent="">
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.Jeeva.Subtitle1</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.Jeeva.Caption</item>
+        <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox
+        </item>
+    </style>
+
+
+    <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.Jeeva.ModalBottomSheetDialog</item>
+    </style>
+
+</resources>

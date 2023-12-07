@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "339312108441",
+    "project_id": "classick-beats",
+    "storage_bucket": "classick-beats.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:339312108441:android:fb8233d40ec65fef312908",
+        "android_client_info": {
+          "package_name": "ai.heart.classickbeats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "339312108441-8iotlnna8eof8l01j1umcpqcvgehv8b1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJYCYE84BMfDB57axw9xsL_NGlL8z0udM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "339312108441-8iotlnna8eof8l01j1umcpqcvgehv8b1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

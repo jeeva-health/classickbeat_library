@@ -1,0 +1,212 @@
+<resources>
+    <string name="app_name">इंटेल्थ</string>
+    <string name="app_name_small_case">इंटेल्थ</string>
+    <string name="app_tagline">स्वास्थ्य। प्राणशक्ति। दीर्घायु।</string>
+
+    <string name="rupee_amount">\u20B9 %s</string>
+
+    <string name="enter_name">अपना नाम दर्ज करें</string>
+    <string name="enter_age">अपनी आयु दर्ज करें</string>
+    <string name="enter_weight">अपना वजन दर्ज करें</string>
+    <string name="enter_height">अपनी ऊंचाई दर्ज करें</string>
+    <string name="register">रजिस्टर करें</string>
+    <string name="sign_up_google">गूगल के माध्यम से जुड़ें</string>
+    <string name="terms_and_condition">जारी रखकर, आप हमारे Terms &amp; Conditions से सहमत होते हैं।</string>
+
+    <!--    OnBoarding-->
+    <string name="onboarding_message_1">अपने फ़ोन कैमरे से अपनी नब्ज स्कैन करें।</string>
+    <string name="onboarding_message_2">अपनी दैनिक स्वास्थ्य संबंधी जानकारी को ट्रैक और लॉग करें।</string>
+    <string name="onboarding_message_3">अपने तनाव के स्तर का विस्तृत विश्लेषण प्राप्त करें।</string>
+    <string name="onboarding_message_4">विशेष ध्वनियों के साथ ध्यान करें और मन शांत रखें।</string>
+    <string name="get_started">शुरू करें</string>
+    <string name="skip">छोड़ें</string>
+    <string name="next">अगला</string>
+
+    <!--    Notification-->
+    <string name="playback_channel_name">Playback</string>
+    <string name="playback_channel_description">Playback channel</string>
+
+    <!--    Navigation menu-->
+    <string name="history">इतिहास</string>
+    <string name="logging">संलेखन</string>
+    <string name="heart_rate">हृदय दर</string>
+    <string name="wellness">कल्याण</string>
+    <string name="profile">प्रोफ़ाइल</string>
+
+    <!--    Scan tutorial-->
+    <string name="scan_tutorial_1">अपनी अंगुली की नोक को पीछे के कैमरे और फ्लैश पर रखें, उन्हें पूरी तरह से ढक दें। </string>
+    <string name="scan_tutorial_2">उंगली को स्थिर करने के लिए हल्का दबाव डालें। </string>
+    <string name="scan_tutorial_3">अगर स्मार्टफोन एक हाथ में आराम से पकड़ने के लिए बड़ा है, तो एक हाथ से फोन को पकड़ें और दूसरे को रीडिंग लेने के लिए इस्तेमाल करें। </string>
+    <string name="scan_tutorial_4">एक कुर्सी पर बैठें और अपनी भुजा को छाती के समान स्तर पर एक मेज पर रखें। </string>
+    <string name="scan_tutorial_5">कृपया हिलें या बात न करें। सटीक परिणामों के लिए सभी निर्देशों का पालन करना सुनिश्चित करें। </string>
+    <string name="start_scan">स्कैनिंग शुरू करें</string>
+
+    <!--    Scan-->
+    <string name="default_heart_rate">_ _</string>
+    <string name="start">शुरू करें</string>
+    <string name="scan_message_1">कृपया आराम करें और स्थिर रहें। हिलें या बात नहीं करें।</string>
+    <string name="scan_message_2">सांस लें जैसा आप आमतौर पर करते हैं। बहुत गहरी सांसें न लें।</string>
+    <string name="scan_message_3">अपनी अंगुली से कैमरे पर हल्का दबाव बनाए रखें।</string>
+    <string name="scan_message_4">यदि ग्राफ़ व्यवस्थित नहीं है, तो कृपया शांत हो जाएं और पुनः प्रयास करें।</string>
+    <string name="scan_message_5">इंटेल्थ आपके हृदय गति परिवर्तनशीलता (HRV) का आकलन करता है - क्रमिक दिल की धड़कनों के बीच का समय वितरण।</string>
+    <string name="scan_message_6">HRV को ऑटोनोमिक नर्वस सिस्टम (ANS) द्वारा नियंत्रित किया जाता है। यह आपके शरीर की तनाव प्रतिक्रिया की स्थिति और स्वास्थ्य की मात्रा निर्धारित करता है।</string>
+    <string name="scan_message_7">HRV जितना अधिक होगा, आपकी शारीरिक स्थिति उतनी ही अधिक शिथिल होगी।</string>
+    <string name="scan_message_8">नियमित HRV माप के साथ आप ट्रैक कर सकते हैं कि आप कितने तनावग्रस्त हैं। हम दैनिक माप लेने की सलाह देते हैं।</string>
+    <string name="scan_message_9">ध्यान और व्यायाम आपके मन और शरीर पर सकारात्मक प्रभाव डालते हैं, जिससे आपका HRV बढ़ता है।</string>
+    <string name="scan_message_10">इंटेल्थ ने चक्र ध्यान अभ्यासों को निर्देशित किया है जो आपको अपने स्वास्थ्य और कल्याण के लक्ष्यों को प्राप्त करने मे सहायता करेगा।</string>
+    <string name="scan_message_11">आपकी स्कैनिंग समाप्त होने वाली है।</string>
+
+    <!--    HRV help screen-->
+    <string name="how_to_scan_your_hrv">अपने HRV को कैसे स्कैन करें?</string>
+    <string name="hrv_message_1">1. अपनी अंगुली की नोक को पीछे के कैमरे और फ्लैश पर रखें, उन्हें पूरी तरह से ढक दें।</string>
+    <string name="hrv_message_2">2. उंगली को स्थिर करने के लिए हल्का दबाव डालें।</string>
+    <string name="hrv_message_3">3. अगर स्मार्टफोन एक हाथ में आराम से पकड़ने के लिए बड़ा है, तो फोन को एक हाथ से पकड़ें और दूसरे हाथ से रीडिंग लेने के लिए उपयोग करें।</string>
+    <string name="hrv_message_4">4. एक कुर्सी पर बैठें और अपनी भुजा को छाती के समान स्तर पर एक मेज पर रखें।</string>
+    <string name="hrv_message_5">5. कृपया हिलें या बात न करें। सटीक परिणामों के लिए सभी निर्देशों का पालन करना सुनिश्चित करें।</string>
+
+    <!--    Meditation -->
+    <string name="english_lang">English</string>
+    <string name="hindi_lang">Hindi</string>
+    <string name="guided_meditation">Guided</string>
+    <string name="self_guided_meditation">Self-guided</string>
+    <string name="minutes_short">mins</string>
+    <string name="meditation_notification_title">इंटेल्थ</string>
+    <string name="meditation_notification_message">ध्यान</string>
+    <string name="meditation_ticker_text">Ticker</string>
+    <string name="listen_to_meditations">ध्यान करें और अपने मन और शरीर को आराम दें</string>
+    <string name="sleep">नींद</string>
+    <string name="blood_pressure">रक्तचाप</string>
+    <string name="anger">क्रोध</string>
+    <string name="stress">तनाव</string>
+    <string name="immunity">रोग प्रतिरोधक क्षमता</string>
+    <string name="listen_short_meditation">लघु ध्यान सुनें</string>
+    <string name="submit_feedback">ध्यान प्रतिक्रिया सबमिट करें</string>
+    <string name="press_play">शुरू करने के लिए प्ले दबाएं</string>
+    <string name="sleep_meditation_title">संतोषजनक निद्रा</string>
+    <string name="bp_meditation_title">ह्रदय को आराम</string>
+    <string name="anger_meditation_title">शांत रहें</string>
+    <string name="stress_meditation_title">अपने दिमाग को आराम दें</string>
+    <string name="immunity_meditation_title">अच्छा महसूस कराएं</string>
+    <string name="sleep_meditation_message">थके हुए होने पर नींद न आने से ज़्यादा निराशाजनक कुछ होता। एक ध्यान अभ्यास के साथ अपने दिमाग और शरीर को पूर्णतः विश्राम की अवस्था में लाएँ।</string>
+    <string name="bp_meditation_message">dummy text</string>
+    <string name="anger_meditation_message">dummy text</string>
+    <string name="stress_meditation_message">dummy text</string>
+    <string name="immunity_meditation_message">dummy text</string>
+    <string name="reminder_sleep_message">इस ध्यान को सुनने और अच्छी नींद लेने के लिए एक दैनिक रिमाइंडर सेट करें</string>
+    <string name="reminder_bp_message">इस ध्यान को सुनने और ह्रदय को आराम देने के लिए एक दैनिक रिमाइंडर सेट करें</string>
+    <string name="reminder_anger_message">इस ध्यान को सुनने और शांत रहने के लिए एक दैनिक रिमाइंडर सेट करें</string>
+    <string name="reminder_stress_message">इस ध्यान को सुनने और अपने दिमाग को आराम देने के लिए एक दैनिक रिमाइंडर सेट करें</string>
+    <string name="reminder_immunity_message">इस ध्यान को सुनने और अच्छा महसूस करने के लिए एक दैनिक रिमाइंडर सेट करें</string>
+
+    <!--    Logging-->
+    <string name="hint_add_a_comment">इस माप के बारे में नोट जोड़ें</string>
+    <string name="water_intake">पानी सेवन</string>
+    <string name="weight">वज़न</string>
+    <string name="date">दिनांक</string>
+    <string name="notes">टिप्पणी</string>
+    <string name="save">दर्ज करें</string>
+    <string name="systolic">सिस्टोलिक</string>
+    <string name="diastolic">डायस्टोलिक</string>
+    <string name="time">समय</string>
+    <string name="amount">मात्रा</string>
+    <string name="blood_glucose_level">रक्त ग्लूकोज स्तर</string>
+    <string name="add_a_tag">टैग जोड़ें</string>
+    <string name="fasting">उपवास</string>
+    <string name="before_meal">भोजन से पहले</string>
+    <string name="_1_2_hours_after_eating">खाने के 1-2 घंटे बाद</string>
+    <string name="bedtime">सोने के समय</string>
+    <string name="blood_glucose">रक्त ग्लूकोज</string>
+    <string name="measure">मापें</string>
+    <string name="record_question">आज आप क्या दर्ज करना चाहेंगे?</string>
+    <string name="medication">दवाई</string>
+    <string name="bpm">BPM</string>
+    <string name="kg">kg</string>
+    <string name="ltrs">ltr</string>
+    <string name="mg_dl">mg/dl</string>
+    <string name="mmhg">mmHg</string>
+
+    <!--    Scan Result-->
+    <string name="bio_age_more">रीडिंग के हिसाब से आपका फिटनेस स्तर आपकी उम्र के औसत व्यक्ति से खराब है। डिस्क्लेमर: फिटनेस स्तर का मूल्यांकन चिकित्सा उद्देश्यों के लिए नहीं है। बेसलाइन सेट होने तक यह हर रीडिंग के साथ बदल सकता है।</string>
+    <string name="bio_age_less">रीडिंग के हिसाब से आपका फिटनेस स्तर आपकी उम्र के औसत व्यक्ति से बेहतर है। डिस्क्लेमर: फिटनेस स्तर का मूल्यांकन चिकित्सा उद्देश्यों के लिए नहीं है। बेसलाइन सेट होने तक यह हर रीडिंग के साथ बदल सकता है।</string>
+    <string name="bio_age_same">रीडिंग के हिसाब से आपका फिटनेस स्तर आपकी उम्र के औसत व्यक्ति के समान है। डिस्क्लेमर: फिटनेस स्तर का मूल्यांकन चिकित्सा उद्देश्यों के लिए नहीं है। बेसलाइन सेट होने तक यह हर रीडिंग के साथ बदल सकता है।</string>
+    <string name="sedentary_lifestyle">रीडिंग के हिसाब से आपकी जीवनशैली आपकी उम्र के औसत व्यक्ति की तुलना में कम सक्रिय है। डिस्क्लेमर: जीवन शैली का मूल्यांकन चिकित्सा उद्देश्यों के लिए नहीं है। बेसलाइन सेट होने तक यह हर रीडिंग के साथ बदल सकता है।</string>
+    <string name="active_lifestyle">रीडिंग के हिसाब से आपकी जीवनशैली आपकी उम्र के औसत व्यक्ति की तुलना में अधिक सक्रिय है। डिस्क्लेमर: जीवन शैली का मूल्यांकन चिकित्सा उद्देश्यों के लिए नहीं है। बेसलाइन सेट होने तक यह हर रीडिंग के साथ बदल सकता है।</string>
+    <string name="biological_age">फिटनेस-समायोजित आयु</string>
+    <string name="younger">युवा</string>
+    <string name="older">वृद्ध</string>
+    <string name="lifestyle">जीवनशैली</string>
+    <string name="undesirable">अनुपयुक्त</string>
+    <string name="desirable">उपयुक्त</string>
+    <string name="active">सक्रिय</string>
+    <string name="sedentary">गतिहीन</string>
+    <string name="insufficient_heart_rate_data">अपर्याप्त हृदय गति रीडिंग। अपनी बेसलाइन निर्धारित करने और विस्तृत तनाव विश्लेषण रिपोर्ट प्राप्त करने के लिए 10 HRV स्कैन पूरे करें।</string>
+    <string name="collect_more_gems"><![CDATA[विस्तृत तनाव विश्लेषण रिपोर्ट प्राप्त करने के लिए 20 HRV रत्न एकत्रित करें। >]]></string>
+    <string name="hrv_metrics">HRV मीटर</string>
+    <string name="sdnn">SDNN</string>
+    <string name="normal_range_sdnn">सामान्य रेंज: 30–96 ms</string>
+    <string name="explanation_sdnn">SDNN दिल की धड़कन के अंतराल का मानक विचलन है। उच्च मूल्य का अर्थ है कि आपका शरीर कम तनाव में है।</string>
+    <string name="pnn50">pNN50</string>
+    <string name="normal_range_pnn">सामान्य रेंज: 5–40%</string>
+    <string name="explanation_pnn">pNN50 लगातार दिल की धड़कन के अंतराल का वो प्रतिशत है जो 50ms से अधिक भिन्न होता है। सामान्य रेंज का अर्थ है कि आपकी सेहत संतुलित है।</string>
+    <string name="rmssd">RMSSD</string>
+    <string name="normal_range_rmssd">सामान्य रेंज: 30–96 ms</string>
+    <string name="explanation_rmssd">RMSSD सामान्य दिल की धड़कन के बीच क्रमिक अंतर का मूल माध्य वर्ग है। उच्च मूल्य का अर्थ है कि आपका शरीर अच्छी तरह से ठीक हो रहा है।</string>
+    <string name="waveform_non_medical">यह वेव्फ़ॉर्म केवल संदर्भ के लिए है। यह चिकित्सा उपयोग के लिए उपयुक्त नहीं है।.</string>
+    <string name="stress_levels">तनाव स्तर</string>
+    <string name="more">अधिक</string>
+    <string name="normal">सामान्य</string>
+    <string name="less">कम</string>
+    <string name="done">पूर्ण</string>
+    <string name="high_stress">उच्च तनाव</string>
+    <string name="normal_stress">सामान्य तनाव</string>
+    <string name="low_stress">कम तनाव</string>
+    <string name="less_stress_msg">आप सामान्य से कम तनाव में हैं।</string>
+    <string name="normal_stress_msg">आपके तनाव का स्तर सामान्य है।</string>
+    <string name="high_stress_msg">आप सामान्य से अधिक तनावग्रस्त हैं।</string>
+
+    <!--    Scan Question-->
+    <string name="scan_question_text">स्कैन सफल! आपकी विस्तृत जानकारी को संसाधित करने के लिए हमें कुछ क्षण दें।</string>
+    <string name="sleep_question">आज आप कितनी अच्छी तरह सोए?</string>
+    <string name="mood_question">आज आपका मूड कैसा है?</string>
+    <string name="healthy_question">क्या आप आज स्वस्थ महसूस कर रहे हैं?</string>
+    <string name="before_scanning_question">स्कैन करने से पहले आप क्या कर रहे थे?</string>
+    <string name="chip_eating">भोजन</string>
+    <string name="chip_napping">झपकी</string>
+    <string name="chip_working">काम</string>
+    <string name="chip_chilling">कुछ नहीं</string>
+    <string name="chip_just_woke_up">अभी उठे</string>
+    <string name="chip_workout">व्यायाम</string>
+    <string name="chip_other">अन्य</string>
+    <string name="gems">रत्न</string>
+    <string name="view_result">परिणाम देखें</string>
+    <string name="gently_cover_camera">अपनी उंगली से बैक कैमरा और फ्लैश को आराम से कवर करें।</string>
+    <string name="pressure_message">अपनी अंगुली को स्थिर करने के लिए कैमरे और फ्लैश पर हल्का दबाव डालें।</string>
+    <string name="movement_message">स्कैन के दौरान हिलें या बात न करें।</string>
+    <string name="breathing_message">सामान्य रूप से सांस लें। बहुत गहरी या छोटी सांसें न लें।</string>
+    <string name="running_graph_message">स्कैन की गुणवत्ता का आकलन करने के लिए चल रहे ग्राफ से संकेत लें।</string>
+    <string name="daily">दैनिक</string>
+    <string name="weekly">साप्ताहिक</string>
+    <string name="monthly">मासिक</string>
+
+    <!--    Profile-->
+    <string name="earn_gems_message_1">Earn %d gems with every invite to unlock premium features</string>
+    <string name="earn_gems_message_2">Every time your friend downloads the Intealth app, you get %d gems and they get %d gems.</string>
+    <string name="invite_message">Hey! I’m using the Intealth app to keep a regular check of my HRV metrics and important vitals to maintain a healthy lifestyle. You can download and try it here: %s</string>
+    <string name="view_your_pulse_waveform">View your pulse waveform- Find how your heartbeat rhythm changed during the measurement.</string>
+    <string name="view_your_hrv_metric">View your HRV metric- Learn about how the time intervals between your heart beat changed during the measurement.</string>
+    <string name="upgrade_to_pro">Upgrade to PRO</string>
+    <string name="yearly">Yearly</string>
+    <string name="upgrade">Upgrade</string>
+    <string name="first_week_free_message">Enjoy your first week FREE, with premium features</string>
+    <string name="timeline">Timeline</string>
+    <string name="short_meditation_completion_message">Well done! You have completed a short meditation.</string>
+    <string name="meditation_feedback_question">How did the meditation make you feel?</string>
+    <string name="gender">Gender</string>
+
+    <string name="exception_pound_count">POUND count must be same for maskPattern and returnMaskPattern</string>
+    <string name="exception_mask_pound">Custom mask maskPattern must contain #</string>
+    <string name="exception_mask_pound_static">Static mask must contain maskPattern</string>
+    <string name="exception_return_pound">Custom mask returnType must contain #</string>
+    <string name="exception_unselected_mask">maskType must be selected</string>
+
+</resources>
